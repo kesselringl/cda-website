@@ -1,0 +1,1684 @@
+{
+ "updated": "2026-10-27T13:48:20.899Z",
+ "season": "2026/27",
+ "teams": {
+  "1": {
+   "label": "CDA I",
+   "league": "3K WINMAU 2. Bundesliga Süd",
+   "source": "3k",
+   "sourceUrl": "https://portal.3k-darts.com/frontend/events/10/event/1408/phase/2101/group/40479",
+   "fetched": "2026-10-27T13:48:20.899Z",
+   "table": [
+    {
+     "pos": 1,
+     "name": "Clochard Darter Augsburg",
+     "played": 6,
+     "w": 4,
+     "d": 2,
+     "l": 0,
+     "sets": "41:31",
+     "legs": "206:193",
+     "points": 10,
+     "us": true
+    },
+    {
+     "pos": 2,
+     "name": "DSC Bandits 1",
+     "played": 6,
+     "w": 4,
+     "d": 1,
+     "l": 1,
+     "sets": "42:30",
+     "legs": "211:183",
+     "points": 9,
+     "us": false
+    },
+    {
+     "pos": 3,
+     "name": "DVK 1",
+     "played": 6,
+     "w": 3,
+     "d": 2,
+     "l": 1,
+     "sets": "43:29",
+     "legs": "226:181",
+     "points": 8,
+     "us": false
+    },
+    {
+     "pos": 4,
+     "name": "DC Urbach",
+     "played": 6,
+     "w": 3,
+     "d": 2,
+     "l": 1,
+     "sets": "41:31",
+     "legs": "212:191",
+     "points": 8,
+     "us": false
+    },
+    {
+     "pos": 5,
+     "name": "Darts Pub Walldorf",
+     "played": 6,
+     "w": 2,
+     "d": 2,
+     "l": 2,
+     "sets": "37:35",
+     "legs": "199:197",
+     "points": 6,
+     "us": false
+    },
+    {
+     "pos": 6,
+     "name": "Nostradartmus 1",
+     "played": 6,
+     "w": 1,
+     "d": 2,
+     "l": 3,
+     "sets": "34:38",
+     "legs": "195:207",
+     "points": 4,
+     "us": false
+    },
+    {
+     "pos": 7,
+     "name": "Bären 1",
+     "played": 6,
+     "w": 1,
+     "d": 2,
+     "l": 3,
+     "sets": "31:41",
+     "legs": "193:212",
+     "points": 4,
+     "us": false
+    },
+    {
+     "pos": 8,
+     "name": "1. DSC Honzrath",
+     "played": 6,
+     "w": 1,
+     "d": 1,
+     "l": 4,
+     "sets": "29:43",
+     "legs": "183:212",
+     "points": 3,
+     "us": false
+    },
+    {
+     "pos": 9,
+     "name": "Dart Team Essenbach",
+     "played": 6,
+     "w": 0,
+     "d": 2,
+     "l": 4,
+     "sets": "26:46",
+     "legs": "176:225",
+     "points": 2,
+     "us": false
+    }
+   ],
+   "matchdays": [
+    {
+     "round": 1,
+     "date": "2026-09-05",
+     "venue": {
+      "name": "Hüthers Holzmühle",
+      "street": "Gutenbergstr. 24",
+      "zip": "66987",
+      "city": "Thaleischweiler-Fröschen"
+     },
+     "home": false,
+     "games": [
+      {
+       "time": "12:00",
+       "home": "Nostradartmus 1",
+       "away": "Clochard Darter Augsburg",
+       "score": "5:7",
+       "legs": "32:39"
+      },
+      {
+       "time": "15:00",
+       "home": "Clochard Darter Augsburg",
+       "away": "Dart Team Essenbach",
+       "score": "7:5",
+       "legs": "34:30"
+      }
+     ]
+    },
+    {
+     "round": 2,
+     "date": "2026-09-26",
+     "venue": {
+      "name": "TSV Dinkelscherben",
+      "street": "Burggasse 50",
+      "zip": "86424",
+      "city": "Dinkelscherben"
+     },
+     "home": true,
+     "games": [
+      {
+       "time": "12:00",
+       "home": "Clochard Darter Augsburg",
+       "away": "Bären 1",
+       "score": "6:6",
+       "legs": "33:36"
+      },
+      {
+       "time": "18:00",
+       "home": "1. DSC Honzrath",
+       "away": "Clochard Darter Augsburg",
+       "score": "4:8",
+       "legs": "29:32"
+      }
+     ]
+    },
+    {
+     "round": 3,
+     "date": "2026-10-24",
+     "venue": {
+      "name": "Zur alten Rose",
+      "street": "Häuserstraße 22",
+      "zip": "68789",
+      "city": "Sankt Leon-Rot"
+     },
+     "home": false,
+     "games": [
+      {
+       "time": "15:00",
+       "home": "DVK 1",
+       "away": "Clochard Darter Augsburg",
+       "score": "5:7",
+       "legs": "35:34"
+      },
+      {
+       "time": "18:00",
+       "home": "Clochard Darter Augsburg",
+       "away": "Darts Pub Walldorf",
+       "score": "6:6",
+       "legs": "34:31"
+      }
+     ]
+    },
+    {
+     "round": 4,
+     "date": "2026-11-07",
+     "venue": {
+      "name": "TSV Dinkelscherben",
+      "street": "Burggasse 50",
+      "zip": "86424",
+      "city": "Dinkelscherben"
+     },
+     "home": true,
+     "games": [
+      {
+       "time": "12:00",
+       "home": "Clochard Darter Augsburg",
+       "away": "DC Urbach",
+       "score": null,
+       "legs": null
+      },
+      {
+       "time": "18:00",
+       "home": "DSC Bandits 1",
+       "away": "Clochard Darter Augsburg",
+       "score": null,
+       "legs": null
+      }
+     ]
+    },
+    {
+     "round": 5,
+     "date": "2027-02-06",
+     "venue": {
+      "name": "TSV Dinkelscherben",
+      "street": "Burggasse 50",
+      "zip": "86424",
+      "city": "Dinkelscherben"
+     },
+     "home": true,
+     "games": [
+      {
+       "time": "12:00",
+       "home": "Clochard Darter Augsburg",
+       "away": "Dart Team Essenbach",
+       "score": null,
+       "legs": null
+      },
+      {
+       "time": "18:00",
+       "home": "Nostradartmus 1",
+       "away": "Clochard Darter Augsburg",
+       "score": null,
+       "legs": null
+      }
+     ]
+    },
+    {
+     "round": 6,
+     "date": "2027-03-06",
+     "venue": {
+      "name": "Vereinsheim DJK Flörsheim",
+      "street": "Hauptstrasse 91 A",
+      "zip": "65439",
+      "city": "Flörsheim am Main"
+     },
+     "home": false,
+     "games": [
+      {
+       "time": "15:00",
+       "home": "1. DSC Honzrath",
+       "away": "Clochard Darter Augsburg",
+       "score": null,
+       "legs": null
+      },
+      {
+       "time": "18:00",
+       "home": "Clochard Darter Augsburg",
+       "away": "Bären 1",
+       "score": null,
+       "legs": null
+      }
+     ]
+    },
+    {
+     "round": 7,
+     "date": "2027-04-03",
+     "venue": {
+      "name": "Mehrzweckhalle Sembach",
+      "street": "Marktstr. 11",
+      "zip": "67681",
+      "city": "Sembach"
+     },
+     "home": false,
+     "games": [
+      {
+       "time": "15:00",
+       "home": "Darts Pub Walldorf",
+       "away": "Clochard Darter Augsburg",
+       "score": null,
+       "legs": null
+      },
+      {
+       "time": "18:00",
+       "home": "Clochard Darter Augsburg",
+       "away": "DVK 1",
+       "score": null,
+       "legs": null
+      }
+     ]
+    },
+    {
+     "round": 8,
+     "date": "2027-05-08",
+     "venue": {
+      "name": "Mehlstüble",
+      "street": "Schloßstraße 11",
+      "zip": "73660",
+      "city": "Urbach"
+     },
+     "home": false,
+     "games": [
+      {
+       "time": "12:00",
+       "home": "DC Urbach",
+       "away": "Clochard Darter Augsburg",
+       "score": null,
+       "legs": null
+      },
+      {
+       "time": "15:00",
+       "home": "Clochard Darter Augsburg",
+       "away": "DSC Bandits 1",
+       "score": null,
+       "legs": null
+      }
+     ]
+    }
+   ],
+   "players": [
+    {
+     "name": "Leon Kesselring",
+     "single": "5:1",
+     "double": "4:2",
+     "total": "9:3",
+     "singleLegs": "22:9"
+    },
+    {
+     "name": "Franz Rötzsch",
+     "single": "3:1",
+     "double": "3:0",
+     "total": "6:1",
+     "singleLegs": "12:8"
+    },
+    {
+     "name": "Marco Geiger",
+     "single": "3:3",
+     "double": "5:1",
+     "total": "8:4",
+     "singleLegs": "17:17"
+    },
+    {
+     "name": "Bastian Rauh",
+     "single": "3:1",
+     "double": "3:1",
+     "total": "6:2",
+     "singleLegs": "13:7"
+    },
+    {
+     "name": "Marcus Kreiner",
+     "single": "4:2",
+     "double": "3:3",
+     "total": "7:5",
+     "singleLegs": "18:17"
+    },
+    {
+     "name": "Ivo Schubert",
+     "single": "3:1",
+     "double": "2:2",
+     "total": "5:3",
+     "singleLegs": "14:10"
+    },
+    {
+     "name": "Florian Kaiser",
+     "single": "2:2",
+     "double": "3:1",
+     "total": "5:3",
+     "singleLegs": "9:12"
+    },
+    {
+     "name": "Markus Stiegeler",
+     "single": "1:0",
+     "double": "0:1",
+     "total": "1:1",
+     "singleLegs": "4:2"
+    },
+    {
+     "name": "Tobias Jäckle",
+     "single": "0:1",
+     "double": "1:1",
+     "total": "1:2",
+     "singleLegs": "0:4"
+    },
+    {
+     "name": "Jürgen Pistl",
+     "single": "2:2",
+     "double": "1:3",
+     "total": "3:5",
+     "singleLegs": "12:10"
+    },
+    {
+     "name": "Simon Schreier",
+     "single": "1:2",
+     "double": "1:2",
+     "total": "2:4",
+     "singleLegs": "10:11"
+    },
+    {
+     "name": "Florian Zitzler",
+     "single": "0:2",
+     "double": "1:1",
+     "total": "1:3",
+     "singleLegs": "4:8"
+    },
+    {
+     "name": "Markus Görg",
+     "single": "0:3",
+     "double": "1:2",
+     "total": "1:5",
+     "singleLegs": "3:12"
+    }
+   ]
+  },
+  "2": {
+   "label": "CDA II",
+   "league": "1. Bezirksliga Schwaben",
+   "source": "nuliga",
+   "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211693",
+   "fetched": "2026-10-27T13:48:20.899Z",
+   "table": [
+    {
+     "pos": 1,
+     "name": "Clochard Darter Augsburg II",
+     "played": 4,
+     "w": 4,
+     "d": 0,
+     "l": 0,
+     "sets": "26:14",
+     "legs": "87:69",
+     "points": "8:0",
+     "us": true
+    },
+    {
+     "pos": 2,
+     "name": "D´Augschburger",
+     "played": 5,
+     "w": 4,
+     "d": 0,
+     "l": 1,
+     "sets": "31:19",
+     "legs": "112:83",
+     "points": "8:2",
+     "us": false
+    },
+    {
+     "pos": 3,
+     "name": "DJK Lechhausen II",
+     "played": 4,
+     "w": 3,
+     "d": 1,
+     "l": 0,
+     "sets": "27:13",
+     "legs": "98:63",
+     "points": "7:1",
+     "us": false
+    },
+    {
+     "pos": 4,
+     "name": "D.C. Warriors Peterswörth",
+     "played": 4,
+     "w": 2,
+     "d": 1,
+     "l": 1,
+     "sets": "27:13",
+     "legs": "90:65",
+     "points": "5:3",
+     "us": false
+    },
+    {
+     "pos": 5,
+     "name": "Steeldarter Kühlenthal",
+     "played": 5,
+     "w": 2,
+     "d": 1,
+     "l": 2,
+     "sets": "21:29",
+     "legs": "86:111",
+     "points": "5:5",
+     "us": false
+    },
+    {
+     "pos": 6,
+     "name": "SV Gablingen Schmutter Darter",
+     "played": 4,
+     "w": 2,
+     "d": 0,
+     "l": 2,
+     "sets": "24:16",
+     "legs": "89:69",
+     "points": "4:4",
+     "us": false
+    },
+    {
+     "pos": 7,
+     "name": "Walter Frosch Darters",
+     "played": 4,
+     "w": 1,
+     "d": 2,
+     "l": 1,
+     "sets": "20:20",
+     "legs": "78:78",
+     "points": "4:4",
+     "us": false
+    },
+    {
+     "pos": 8,
+     "name": "DC River Darts",
+     "played": 4,
+     "w": 1,
+     "d": 1,
+     "l": 2,
+     "sets": "20:20",
+     "legs": "85:79",
+     "points": "3:5",
+     "us": false
+    },
+    {
+     "pos": 9,
+     "name": "Flying Hobby Darters Rennertshofen",
+     "played": 3,
+     "w": 1,
+     "d": 0,
+     "l": 2,
+     "sets": "12:18",
+     "legs": "54:67",
+     "points": "2:4",
+     "us": false
+    },
+    {
+     "pos": 10,
+     "name": "SV Steingriff II",
+     "played": 5,
+     "w": 1,
+     "d": 0,
+     "l": 4,
+     "sets": "16:34",
+     "legs": "81:118",
+     "points": "2:8",
+     "us": false
+    },
+    {
+     "pos": 11,
+     "name": "Dscheina Darter Donauwörth",
+     "played": 3,
+     "w": 0,
+     "d": 0,
+     "l": 3,
+     "sets": "8:22",
+     "legs": "41:69",
+     "points": "0:6",
+     "us": false
+    },
+    {
+     "pos": 12,
+     "name": "DJK Lechhausen III",
+     "played": 3,
+     "w": 0,
+     "d": 0,
+     "l": 3,
+     "sets": "8:22",
+     "legs": "44:74",
+     "points": "0:6",
+     "us": false
+    }
+   ],
+   "matches": [
+    {
+     "half": "V",
+     "round": 1,
+     "date": "2026-09-16",
+     "time": "19:00",
+     "moved": true,
+     "home": "Dscheina Darter Donauwörth",
+     "away": "Clochard Darter Augsburg II",
+     "score": "4:6",
+     "venue": "Vereinsheim Nordheim"
+    },
+    {
+     "half": "V",
+     "round": 2,
+     "date": "2026-09-24",
+     "time": "20:00",
+     "moved": false,
+     "home": "Steeldarter Kühlenthal",
+     "away": "Clochard Darter Augsburg II",
+     "score": "2:8",
+     "venue": "Madhouse"
+    },
+    {
+     "half": "V",
+     "round": 3,
+     "date": "2026-09-30",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg II",
+     "away": "SV Gablingen Schmutter Darter",
+     "score": "6:4",
+     "venue": "Billardcafe Dinkelscherben"
+    },
+    {
+     "half": "V",
+     "round": 4,
+     "date": "2026-10-12",
+     "time": "20:00",
+     "moved": false,
+     "home": "D.C. Warriors Peterswörth",
+     "away": "Clochard Darter Augsburg II",
+     "score": "4:6",
+     "venue": "SSV Peterswörth 1965 e.V. - Sportheim SSV Peterswörth"
+    },
+    {
+     "half": "V",
+     "round": 5,
+     "date": "2026-10-28",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg II",
+     "away": "DJK Lechhausen III",
+     "score": null,
+     "venue": "Billardcafe Dinkelscherben"
+    },
+    {
+     "half": "V",
+     "round": 6,
+     "date": "2026-11-10",
+     "time": "20:00",
+     "moved": false,
+     "home": "Flying Hobby Darters Rennertshofen",
+     "away": "Clochard Darter Augsburg II",
+     "score": null,
+     "venue": "Sportheim Rennertshofen"
+    },
+    {
+     "half": "V",
+     "round": 7,
+     "date": "2026-11-25",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg II",
+     "away": "D´Augschburger",
+     "score": null,
+     "venue": "Billardcafe Dinkelscherben"
+    },
+    {
+     "half": "V",
+     "round": 8,
+     "date": "2026-12-01",
+     "time": "20:00",
+     "moved": false,
+     "home": "DC River Darts",
+     "away": "Clochard Darter Augsburg II",
+     "score": null,
+     "venue": "Josis Billard Lounge"
+    },
+    {
+     "half": "V",
+     "round": 9,
+     "date": "2026-12-16",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg II",
+     "away": "Walter Frosch Darters",
+     "score": null,
+     "venue": "Billardcafe Dinkelscherben"
+    },
+    {
+     "half": "V",
+     "round": 10,
+     "date": "2027-01-12",
+     "time": "20:00",
+     "moved": false,
+     "home": "DJK Lechhausen II",
+     "away": "Clochard Darter Augsburg II",
+     "score": null,
+     "venue": "Pfarrsaal Unsere liebe Frau"
+    },
+    {
+     "half": "V",
+     "round": 11,
+     "date": "2027-01-20",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg II",
+     "away": "SV Steingriff II",
+     "score": null,
+     "venue": "Billardcafe Dinkelscherben"
+    },
+    {
+     "half": "R",
+     "round": 1,
+     "date": "2027-02-03",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg II",
+     "away": "Dscheina Darter Donauwörth",
+     "score": null,
+     "venue": "Billardcafe Dinkelscherben"
+    },
+    {
+     "half": "R",
+     "round": 2,
+     "date": "2027-02-17",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg II",
+     "away": "Steeldarter Kühlenthal",
+     "score": null,
+     "venue": "Billardcafe Dinkelscherben"
+    },
+    {
+     "half": "R",
+     "round": 3,
+     "date": "2027-03-03",
+     "time": "20:00",
+     "moved": false,
+     "home": "SV Gablingen Schmutter Darter",
+     "away": "Clochard Darter Augsburg II",
+     "score": null,
+     "venue": "Sportheim SV Gablingen"
+    },
+    {
+     "half": "R",
+     "round": 4,
+     "date": "2027-03-10",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg II",
+     "away": "D.C. Warriors Peterswörth",
+     "score": null,
+     "venue": "Billardcafe Dinkelscherben"
+    },
+    {
+     "half": "R",
+     "round": 5,
+     "date": "2027-03-15",
+     "time": "20:00",
+     "moved": false,
+     "home": "DJK Lechhausen III",
+     "away": "Clochard Darter Augsburg II",
+     "score": null,
+     "venue": "Pfarrsaal Unsere liebe Frau"
+    },
+    {
+     "half": "R",
+     "round": 6,
+     "date": "2027-04-07",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg II",
+     "away": "Flying Hobby Darters Rennertshofen",
+     "score": null,
+     "venue": "Billardcafe Dinkelscherben"
+    },
+    {
+     "half": "R",
+     "round": 7,
+     "date": "2027-04-12",
+     "time": "20:00",
+     "moved": false,
+     "home": "D´Augschburger",
+     "away": "Clochard Darter Augsburg II",
+     "score": null,
+     "venue": "Sergio´s"
+    },
+    {
+     "half": "R",
+     "round": 8,
+     "date": "2027-04-28",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg II",
+     "away": "DC River Darts",
+     "score": null,
+     "venue": "Billardcafe Dinkelscherben"
+    },
+    {
+     "half": "R",
+     "round": 9,
+     "date": "2027-05-10",
+     "time": "20:00",
+     "moved": false,
+     "home": "Walter Frosch Darters",
+     "away": "Clochard Darter Augsburg II",
+     "score": null,
+     "venue": "Sportverein Niederhofen/Ehingen"
+    },
+    {
+     "half": "R",
+     "round": 10,
+     "date": "2027-06-02",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg II",
+     "away": "DJK Lechhausen II",
+     "score": null,
+     "venue": "Billardcafe Dinkelscherben"
+    },
+    {
+     "half": "R",
+     "round": 11,
+     "date": "2027-06-07",
+     "time": "20:00",
+     "moved": false,
+     "home": "SV Steingriff II",
+     "away": "Clochard Darter Augsburg II",
+     "score": null,
+     "venue": "Liberty, Sportheim Steingriff"
+    }
+   ],
+   "players": [
+    {
+     "name": "Andreas Mors",
+     "games": 3,
+     "single": "4:2"
+    },
+    {
+     "name": "Robert Strehl",
+     "games": 1,
+     "single": "0:2"
+    },
+    {
+     "name": "Michael Voigt",
+     "games": 1,
+     "single": "0:2"
+    },
+    {
+     "name": "Claus Mader",
+     "games": 0,
+     "single": null
+    },
+    {
+     "name": "Leo Hörmann",
+     "games": 2,
+     "single": "3:1"
+    },
+    {
+     "name": "Jonas Thoma",
+     "games": 4,
+     "single": "8:0"
+    },
+    {
+     "name": "Ewald Lautenschlager",
+     "games": 4,
+     "single": "3:5"
+    },
+    {
+     "name": "Dominik Thoma",
+     "games": 0,
+     "single": null
+    },
+    {
+     "name": "Martin Hungbaur",
+     "games": 1,
+     "single": "2:0"
+    }
+   ]
+  },
+  "3": {
+   "label": "CDA III",
+   "league": "3. Bezirksliga Schwaben Süd",
+   "source": "nuliga",
+   "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211696",
+   "fetched": "2026-10-27T13:48:20.899Z",
+   "table": [
+    {
+     "pos": 1,
+     "name": "Foxvalley DC",
+     "played": 4,
+     "w": 3,
+     "d": 1,
+     "l": 0,
+     "sets": "27:13",
+     "legs": "96:61",
+     "points": "7:1",
+     "us": false
+    },
+    {
+     "pos": 2,
+     "name": "DJK Lechhausen V",
+     "played": 5,
+     "w": 3,
+     "d": 1,
+     "l": 1,
+     "sets": "32:18",
+     "legs": "114:78",
+     "points": "7:3",
+     "us": false
+    },
+    {
+     "pos": 3,
+     "name": "Pegasus Darter II",
+     "played": 4,
+     "w": 2,
+     "d": 2,
+     "l": 0,
+     "sets": "22:18",
+     "legs": "86:81",
+     "points": "6:2",
+     "us": false
+    },
+    {
+     "pos": 4,
+     "name": "Rabbits Lechfeld",
+     "played": 3,
+     "w": 2,
+     "d": 1,
+     "l": 0,
+     "sets": "19:11",
+     "legs": "69:46",
+     "points": "5:1",
+     "us": false
+    },
+    {
+     "pos": 5,
+     "name": "DC River Darts II",
+     "played": 3,
+     "w": 2,
+     "d": 0,
+     "l": 1,
+     "sets": "14:16",
+     "legs": "53:64",
+     "points": "4:2",
+     "us": false
+    },
+    {
+     "pos": 6,
+     "name": "DC Bavarian Knights Hurlach",
+     "played": 4,
+     "w": 2,
+     "d": 0,
+     "l": 2,
+     "sets": "24:16",
+     "legs": "91:65",
+     "points": "4:4",
+     "us": false
+    },
+    {
+     "pos": 7,
+     "name": "FC Ebershausen Darts",
+     "played": 3,
+     "w": 1,
+     "d": 1,
+     "l": 1,
+     "sets": "15:15",
+     "legs": "59:59",
+     "points": "3:3",
+     "us": false
+    },
+    {
+     "pos": 8,
+     "name": "Clochard Darter Augsburg III",
+     "played": 4,
+     "w": 1,
+     "d": 1,
+     "l": 2,
+     "sets": "21:19",
+     "legs": "83:75",
+     "points": "3:5",
+     "us": true
+    },
+    {
+     "pos": 9,
+     "name": "SV Bergheim Darts",
+     "played": 4,
+     "w": 1,
+     "d": 1,
+     "l": 2,
+     "sets": "20:20",
+     "legs": "81:79",
+     "points": "3:5",
+     "us": false
+    },
+    {
+     "pos": 10,
+     "name": "DC Bavarian Knights Hurlach II",
+     "played": 4,
+     "w": 0,
+     "d": 0,
+     "l": 4,
+     "sets": "10:30",
+     "legs": "49:99",
+     "points": "0:8",
+     "us": false
+    },
+    {
+     "pos": 11,
+     "name": "DJK Lechhausen VI",
+     "played": 4,
+     "w": 0,
+     "d": 0,
+     "l": 4,
+     "sets": "6:34",
+     "legs": "32:106",
+     "points": "0:8",
+     "us": false
+    }
+   ],
+   "matches": [
+    {
+     "half": "V",
+     "round": 1,
+     "date": "2026-09-15",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg III",
+     "away": "DC Bavarian Knights Hurlach II",
+     "score": "8:2",
+     "venue": "Bismarck Bistro"
+    },
+    {
+     "half": "V",
+     "round": 2,
+     "date": "2026-10-08",
+     "time": "20:00",
+     "moved": true,
+     "home": "FC Ebershausen Darts",
+     "away": "Clochard Darter Augsburg III",
+     "score": "6:4",
+     "venue": "FC Ebershausen"
+    },
+    {
+     "half": "V",
+     "round": 4,
+     "date": "2026-10-13",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg III",
+     "away": "Foxvalley DC",
+     "score": "5:5",
+     "venue": "Bismarck Bistro"
+    },
+    {
+     "half": "V",
+     "round": 5,
+     "date": "2026-10-26",
+     "time": "20:00",
+     "moved": false,
+     "home": "DJK Lechhausen V",
+     "away": "Clochard Darter Augsburg III",
+     "score": "6:4",
+     "venue": "Pfarrsaal Unsere liebe Frau"
+    },
+    {
+     "half": "V",
+     "round": 6,
+     "date": "2026-11-10",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg III",
+     "away": "DC Bavarian Knights Hurlach",
+     "score": null,
+     "venue": "Bismarck Bistro"
+    },
+    {
+     "half": "V",
+     "round": 7,
+     "date": "2026-11-24",
+     "time": "20:00",
+     "moved": false,
+     "home": "SV Bergheim Darts",
+     "away": "Clochard Darter Augsburg III",
+     "score": null,
+     "venue": "Schützenraum der Mößmannhalle"
+    },
+    {
+     "half": "V",
+     "round": 8,
+     "date": "2026-12-01",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg III",
+     "away": "Rabbits Lechfeld",
+     "score": null,
+     "venue": "Bismarck Bistro"
+    },
+    {
+     "half": "V",
+     "round": 9,
+     "date": "2026-12-15",
+     "time": "20:00",
+     "moved": false,
+     "home": "DC River Darts II",
+     "away": "Clochard Darter Augsburg III",
+     "score": null,
+     "venue": "Josis Billard Lounge"
+    },
+    {
+     "half": "V",
+     "round": 10,
+     "date": "2027-01-12",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg III",
+     "away": "Pegasus Darter II",
+     "score": null,
+     "venue": "Bismarck Bistro"
+    },
+    {
+     "half": "V",
+     "round": 11,
+     "date": "2027-01-20",
+     "time": "20:00",
+     "moved": false,
+     "home": "DJK Lechhausen VI",
+     "away": "Clochard Darter Augsburg III",
+     "score": null,
+     "venue": "Pfarrsaal Unsere liebe Frau"
+    },
+    {
+     "half": "R",
+     "round": 1,
+     "date": "2027-02-02",
+     "time": "20:00",
+     "moved": false,
+     "home": "DC Bavarian Knights Hurlach II",
+     "away": "Clochard Darter Augsburg III",
+     "score": null,
+     "venue": "SV Hurlach - Sport und Mehrzweckhalle"
+    },
+    {
+     "half": "R",
+     "round": 2,
+     "date": "2027-02-16",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg III",
+     "away": "FC Ebershausen Darts",
+     "score": null,
+     "venue": "Bismarck Bistro"
+    },
+    {
+     "half": "R",
+     "round": 4,
+     "date": "2027-03-08",
+     "time": "20:00",
+     "moved": false,
+     "home": "Foxvalley DC",
+     "away": "Clochard Darter Augsburg III",
+     "score": null,
+     "venue": "Fuchstalhalle"
+    },
+    {
+     "half": "R",
+     "round": 5,
+     "date": "2027-03-16",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg III",
+     "away": "DJK Lechhausen V",
+     "score": null,
+     "venue": "Bismarck Bistro"
+    },
+    {
+     "half": "R",
+     "round": 6,
+     "date": "2027-04-06",
+     "time": "20:00",
+     "moved": false,
+     "home": "DC Bavarian Knights Hurlach",
+     "away": "Clochard Darter Augsburg III",
+     "score": null,
+     "venue": "SV Hurlach - Sport und Mehrzweckhalle"
+    },
+    {
+     "half": "R",
+     "round": 7,
+     "date": "2027-04-13",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg III",
+     "away": "SV Bergheim Darts",
+     "score": null,
+     "venue": "Bismarck Bistro"
+    },
+    {
+     "half": "R",
+     "round": 8,
+     "date": "2027-04-28",
+     "time": "20:00",
+     "moved": false,
+     "home": "Rabbits Lechfeld",
+     "away": "Clochard Darter Augsburg III",
+     "score": null,
+     "venue": "SpVgg Lagerlechfeld"
+    },
+    {
+     "half": "R",
+     "round": 9,
+     "date": "2027-05-11",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg III",
+     "away": "DC River Darts II",
+     "score": null,
+     "venue": "Bismarck Bistro"
+    },
+    {
+     "half": "R",
+     "round": 10,
+     "date": "2027-06-03",
+     "time": "20:00",
+     "moved": false,
+     "home": "Pegasus Darter II",
+     "away": "Clochard Darter Augsburg III",
+     "score": null,
+     "venue": null
+    },
+    {
+     "half": "R",
+     "round": 11,
+     "date": "2027-06-08",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg III",
+     "away": "DJK Lechhausen VI",
+     "score": null,
+     "venue": "Bismarck Bistro"
+    }
+   ],
+   "players": [
+    {
+     "name": "Manfred Tochtermann",
+     "games": 1,
+     "single": "0:2"
+    },
+    {
+     "name": "Carola Wüstner",
+     "games": 2,
+     "single": "2:2"
+    },
+    {
+     "name": "Robert Strehl",
+     "games": 4,
+     "single": "6:2"
+    },
+    {
+     "name": "Markus Ziegler",
+     "games": 3,
+     "single": "5:1"
+    },
+    {
+     "name": "Simon Schmidbaur",
+     "games": 2,
+     "single": "3:1"
+    },
+    {
+     "name": "Dennis Mandl",
+     "games": 4,
+     "single": "2:6"
+    }
+   ]
+  },
+  "4": {
+   "label": "CDA IV",
+   "league": "4. Bezirksliga Schwaben Süd 4",
+   "source": "nuliga",
+   "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211701",
+   "fetched": "2026-10-27T13:48:20.899Z",
+   "table": [
+    {
+     "pos": 1,
+     "name": "Grüne Eiche Schönbach IV",
+     "played": 4,
+     "w": 4,
+     "d": 0,
+     "l": 0,
+     "sets": "30:10",
+     "legs": "102:45",
+     "points": "8:0",
+     "us": false
+    },
+    {
+     "pos": 2,
+     "name": "Clochard Darter Augsburg IV",
+     "played": 4,
+     "w": 3,
+     "d": 1,
+     "l": 0,
+     "sets": "25:15",
+     "legs": "91:67",
+     "points": "7:1",
+     "us": true
+    },
+    {
+     "pos": 3,
+     "name": "SC Oberbernbach II",
+     "played": 3,
+     "w": 3,
+     "d": 0,
+     "l": 0,
+     "sets": "21:9",
+     "legs": "71:42",
+     "points": "6:0",
+     "us": false
+    },
+    {
+     "pos": 4,
+     "name": "D´Augschburger III",
+     "played": 4,
+     "w": 2,
+     "d": 1,
+     "l": 1,
+     "sets": "25:15",
+     "legs": "91:71",
+     "points": "5:3",
+     "us": false
+    },
+    {
+     "pos": 5,
+     "name": "Steeldarter Kühlenthal VI",
+     "played": 3,
+     "w": 2,
+     "d": 0,
+     "l": 1,
+     "sets": "22:8",
+     "legs": "72:42",
+     "points": "4:2",
+     "us": false
+    },
+    {
+     "pos": 6,
+     "name": "SV Gablingen Schmutter Darter VI",
+     "played": 3,
+     "w": 2,
+     "d": 0,
+     "l": 1,
+     "sets": "16:14",
+     "legs": "64:57",
+     "points": "4:2",
+     "us": false
+    },
+    {
+     "pos": 7,
+     "name": "TSV Göggingen",
+     "played": 4,
+     "w": 1,
+     "d": 1,
+     "l": 2,
+     "sets": "20:20",
+     "legs": "78:78",
+     "points": "3:5",
+     "us": false
+    },
+    {
+     "pos": 8,
+     "name": "TSV Pöttmes III",
+     "played": 4,
+     "w": 1,
+     "d": 1,
+     "l": 2,
+     "sets": "13:27",
+     "legs": "49:96",
+     "points": "3:5",
+     "us": false
+    },
+    {
+     "pos": 9,
+     "name": "TSV Pöttmes II",
+     "played": 4,
+     "w": 0,
+     "d": 2,
+     "l": 2,
+     "sets": "11:29",
+     "legs": "62:94",
+     "points": "2:6",
+     "us": false
+    },
+    {
+     "pos": 10,
+     "name": "SC Oberbernbach III",
+     "played": 4,
+     "w": 0,
+     "d": 0,
+     "l": 4,
+     "sets": "13:27",
+     "legs": "58:94",
+     "points": "0:8",
+     "us": false
+    },
+    {
+     "pos": 11,
+     "name": "SV Gablingen Schmutter Darter VII",
+     "played": 5,
+     "w": 0,
+     "d": 0,
+     "l": 5,
+     "sets": "14:36",
+     "legs": "67:119",
+     "points": "0:10",
+     "us": false
+    }
+   ],
+   "matches": [
+    {
+     "half": "V",
+     "round": 1,
+     "date": "2026-09-16",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg IV",
+     "away": "SC Oberbernbach III",
+     "score": "7:3",
+     "venue": "Bismarck Bistro"
+    },
+    {
+     "half": "V",
+     "round": 2,
+     "date": "2026-09-22",
+     "time": "20:00",
+     "moved": false,
+     "home": "SV Gablingen Schmutter Darter VII",
+     "away": "Clochard Darter Augsburg IV",
+     "score": "3:7",
+     "venue": "Sportheim SV Gablingen"
+    },
+    {
+     "half": "V",
+     "round": 3,
+     "date": "2026-09-30",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg IV",
+     "away": "D´Augschburger III",
+     "score": "5:5",
+     "venue": "Bismarck Bistro"
+    },
+    {
+     "half": "V",
+     "round": 4,
+     "date": "2026-10-14",
+     "time": "20:00",
+     "moved": false,
+     "home": "TSV Göggingen",
+     "away": "Clochard Darter Augsburg IV",
+     "score": "4:6",
+     "venue": "Bezirkssportanlage Karl Mögele"
+    },
+    {
+     "half": "V",
+     "round": 5,
+     "date": "2026-11-04",
+     "time": "20:00",
+     "moved": true,
+     "home": "Clochard Darter Augsburg IV",
+     "away": "TSV Pöttmes II",
+     "score": null,
+     "venue": "Bismarck Bistro"
+    },
+    {
+     "half": "V",
+     "round": 6,
+     "date": "2026-11-11",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg IV",
+     "away": "SC Oberbernbach II",
+     "score": null,
+     "venue": "Bismarck Bistro"
+    },
+    {
+     "half": "V",
+     "round": 7,
+     "date": "2026-11-26",
+     "time": "20:00",
+     "moved": false,
+     "home": "SV Gablingen Schmutter Darter VI",
+     "away": "Clochard Darter Augsburg IV",
+     "score": null,
+     "venue": "Sportheim SV Gablingen"
+    },
+    {
+     "half": "V",
+     "round": 8,
+     "date": "2026-12-02",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg IV",
+     "away": "Grüne Eiche Schönbach IV",
+     "score": null,
+     "venue": "Bismarck Bistro"
+    },
+    {
+     "half": "V",
+     "round": 9,
+     "date": "2026-12-17",
+     "time": "20:00",
+     "moved": false,
+     "home": "Steeldarter Kühlenthal VI",
+     "away": "Clochard Darter Augsburg IV",
+     "score": null,
+     "venue": "Madhouse"
+    },
+    {
+     "half": "V",
+     "round": 10,
+     "date": "2027-01-13",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg IV",
+     "away": "TSV Pöttmes III",
+     "score": null,
+     "venue": "Bismarck Bistro"
+    },
+    {
+     "half": "R",
+     "round": 1,
+     "date": "2027-02-02",
+     "time": "20:00",
+     "moved": false,
+     "home": "SC Oberbernbach III",
+     "away": "Clochard Darter Augsburg IV",
+     "score": null,
+     "venue": "Sportheim SC Oberbernbach"
+    },
+    {
+     "half": "R",
+     "round": 2,
+     "date": "2027-02-17",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg IV",
+     "away": "SV Gablingen Schmutter Darter VII",
+     "score": null,
+     "venue": "Bismarck Bistro"
+    },
+    {
+     "half": "R",
+     "round": 3,
+     "date": "2027-03-04",
+     "time": "20:00",
+     "moved": false,
+     "home": "D´Augschburger III",
+     "away": "Clochard Darter Augsburg IV",
+     "score": null,
+     "venue": "Sergio´s"
+    },
+    {
+     "half": "R",
+     "round": 4,
+     "date": "2027-03-10",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg IV",
+     "away": "TSV Göggingen",
+     "score": null,
+     "venue": "Bismarck Bistro"
+    },
+    {
+     "half": "R",
+     "round": 5,
+     "date": "2027-03-17",
+     "time": "20:00",
+     "moved": false,
+     "home": "TSV Pöttmes II",
+     "away": "Clochard Darter Augsburg IV",
+     "score": null,
+     "venue": "Sportheim TSV Pöttmes"
+    },
+    {
+     "half": "R",
+     "round": 6,
+     "date": "2027-04-06",
+     "time": "20:00",
+     "moved": false,
+     "home": "SC Oberbernbach II",
+     "away": "Clochard Darter Augsburg IV",
+     "score": null,
+     "venue": "Sportheim SC Oberbernbach"
+    },
+    {
+     "half": "R",
+     "round": 7,
+     "date": "2027-04-14",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg IV",
+     "away": "SV Gablingen Schmutter Darter VI",
+     "score": null,
+     "venue": "Bismarck Bistro"
+    },
+    {
+     "half": "R",
+     "round": 8,
+     "date": "2027-04-28",
+     "time": "20:00",
+     "moved": false,
+     "home": "Grüne Eiche Schönbach IV",
+     "away": "Clochard Darter Augsburg IV",
+     "score": null,
+     "venue": "Schützenheim Grüne Eiche"
+    },
+    {
+     "half": "R",
+     "round": 9,
+     "date": "2027-05-12",
+     "time": "20:00",
+     "moved": false,
+     "home": "Clochard Darter Augsburg IV",
+     "away": "Steeldarter Kühlenthal VI",
+     "score": null,
+     "venue": "Bismarck Bistro"
+    },
+    {
+     "half": "R",
+     "round": 10,
+     "date": "2027-05-31",
+     "time": "20:00",
+     "moved": false,
+     "home": "TSV Pöttmes III",
+     "away": "Clochard Darter Augsburg IV",
+     "score": null,
+     "venue": "Sportheim TSV Pöttmes"
+    }
+   ],
+   "players": [
+    {
+     "name": "Sebastian Röck",
+     "games": 4,
+     "single": "3:4"
+    },
+    {
+     "name": "Andreas Wengenmayr",
+     "games": 2,
+     "single": "4:0"
+    },
+    {
+     "name": "Adrian Pirner",
+     "games": 2,
+     "single": "0:3"
+    },
+    {
+     "name": "Adrian Seidl",
+     "games": 0,
+     "single": null
+    },
+    {
+     "name": "Clemens Fleischmann",
+     "games": 3,
+     "single": "4:2"
+    },
+    {
+     "name": "Maximilian Urban",
+     "games": 4,
+     "single": "7:1"
+    },
+    {
+     "name": "Gerald Nitzer",
+     "games": 2,
+     "single": "0:2"
+    },
+    {
+     "name": "Dennis Meissner",
+     "games": 0,
+     "single": null
+    },
+    {
+     "name": "Fabian Schreyer",
+     "games": 2,
+     "single": "1:1"
+    }
+   ]
+  }
+ },
+ "week": "2026-W44"
+}
