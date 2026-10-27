@@ -1,0 +1,137 @@
+<title>Datenschutz · Clochard Darter Augsburg</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Archivo:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: Rechtstexte – ruhige Lesespalte, Kopf und Fuß wie auf der Startseite */
+:root{
+  --bg:#F3F5F1; --surface:#FFFFFF; --ink:#111913; --muted:#56635A; --line:#D9E0D7;
+  --green:#08872A; --green-bright:#0CA12D; --red:#E30212; --bone:#ECE6D3; --wire:#B9C2BB;
+  --board:#0E1510; --board-ink:#EEF2EC; --board-muted:#9FB0A3; --board-line:#26332A;
+  --chip:#E7EEE6; --tbd:#A35E00; --plate:#FFFFFF;
+  --f-display:"Big Shoulders Display","Arial Narrow","Roboto Condensed",Impact,sans-serif;
+  --f-body:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --radius:6px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0A0F0B; --surface:#121A14; --ink:#E6ECE5; --muted:#98A79B; --line:#243028;
+  --green:#2BC653; --green-bright:#2BC653; --red:#FF3A45; --bone:#D9D2BE; --wire:#56635A;
+  --board:#060907; --board-ink:#EEF2EC; --board-muted:#93A497; --board-line:#1F2A22;
+  --chip:#18231B; --tbd:#F0A54A; --plate:#F2F4F0; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0A0F0B; --surface:#121A14; --ink:#E6ECE5; --muted:#98A79B; --line:#243028;
+  --green:#2BC653; --green-bright:#2BC653; --red:#FF3A45; --bone:#D9D2BE; --wire:#56635A;
+  --board:#060907; --board-ink:#EEF2EC; --board-muted:#93A497; --board-line:#1F2A22;
+  --chip:#18231B; --tbd:#F0A54A; --plate:#F2F4F0; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--board)}
+a{color:var(--green)}
+:focus-visible{outline:3px solid var(--green-bright);outline-offset:3px;border-radius:2px}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--board);color:var(--board-ink);border-bottom:1px solid var(--board-line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:10px;max-width:1180px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--board-ink)}
+.brand img{width:40px;height:auto}
+.brand b{font-family:var(--f-display);font-weight:800;font-size:1.25rem;text-transform:uppercase;line-height:1;letter-spacing:.02em}
+.brand small{display:block;font-size:.72rem;color:var(--board-muted);letter-spacing:.08em;text-transform:uppercase;margin-top:3px}
+.back{white-space:nowrap;flex:none;color:var(--board-ink);text-decoration:none;font-weight:600;font-size:.92rem;padding:8px 12px;border:1px solid var(--board-line);border-radius:var(--radius)}
+.back:hover{border-color:var(--board-muted)}
+main{padding-block:56px 72px}
+.eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin:0}
+h1,h2{font-family:var(--f-display);text-transform:uppercase;line-height:.95;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.6rem,7vw,4rem);font-weight:900;margin-top:10px}
+h2{font-size:1.6rem;font-weight:800;margin-top:44px;padding-top:20px;border-top:1px solid var(--line)}
+h3{font-size:1.05rem;margin:24px 0 4px}
+p,ul,address{margin:10px 0 0;max-width:68ch}
+address{font-style:normal}
+ul{padding-left:1.2em}
+li+li{margin-top:4px}
+.lead{color:var(--muted);font-size:1.05rem;margin-top:14px}
+.facts{display:grid;grid-template-columns:200px 1fr;gap:10px 24px;margin-top:20px;max-width:none}
+.facts dt{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;padding-top:3px}
+.facts dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.todo{background:color-mix(in srgb,var(--tbd) 14%,transparent);color:var(--ink);border-left:3px solid var(--tbd);padding:2px 8px;border-radius:3px;font-style:normal}
+.stand{margin-top:48px;font-size:.88rem;color:var(--muted)}
+footer{background:var(--board);color:var(--board-muted);font-size:.88rem}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;padding-block:28px;max-width:1180px}
+footer nav{display:flex;gap:18px;flex-wrap:wrap}
+footer a{color:var(--board-ink);text-decoration:none}
+footer a:hover{text-decoration:underline}
+footer a[aria-current]{text-decoration:underline}
+@media (max-width:560px){.facts{grid-template-columns:1fr;gap:2px}.facts dd{margin-bottom:10px}main{padding-block:40px 56px}}
+</style>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="logo.png" alt="Vereinslogo Clochard Darter Augsburg"><span><b>Clochard Darter</b><small>Augsburg e.V. · seit 1986</small></span></a>
+    <a class="back" href="index.html">Zur Startseite</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="eyebrow">Rechtliches</p>
+  <h1>Datenschutz&shy;erklärung</h1>
+  <p class="lead">Kurz gesagt: Diese Seite setzt keine Cookies, nutzt keine Statistik- oder Werbedienste und lädt nichts von Google, Facebook oder Instagram. Personenbezogene Daten verarbeiten wir nur, wenn du dich über das Formular für die Competition anmeldest.</p>
+
+  <h2>1. Verantwortlicher</h2>
+  <address>
+    <b>Clochard Darter Augsburg e.V.</b><br>
+    vertreten durch den 1. Vorstand Adrian Seidl<br>
+    Lincolnstraße 2b, 86156 Augsburg<br>
+    Telefon 0821 512583 · Adi.Seidl@t-online.de
+  </address>
+
+  <h3>Datenschutzbeauftragter</h3>
+  <p>Für Mitgliedsvereine des BLSV ist der Datenschutzbeauftragte des Bayerischen Landes-Sportverbands erreichbar: <i class="todo">Name und Kontakt bitte beim BLSV bestätigen</i>. In der bisherigen Erklärung stand Prof. Dr. Rolf Lauser.</p>
+
+  <h2>2. Hosting und Server-Protokolle</h2>
+  <p>Diese Seite wird über <b>GitHub Pages</b> bereitgestellt, einen Dienst der GitHub Inc., 88 Colin P. Kelly Jr. St., San Francisco, CA 94107, USA. Beim Aufruf jeder Seite verarbeitet GitHub technisch notwendige Daten, vor allem deine IP-Adresse, Datum und Uhrzeit, die aufgerufene Adresse sowie Browser und Betriebssystem. GitHub braucht diese Daten, um die Seite auszuliefern und vor Angriffen zu schützen.</p>
+  <ul>
+    <li>Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse ist eine sichere und kostenlose Bereitstellung der Vereinsseite.</li>
+    <li>GitHub ist nach dem EU-US Data Privacy Framework zertifiziert. Damit ist die Übermittlung in die USA nach Art. 45 DSGVO zulässig.</li>
+    <li>Mehr dazu: <a href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">Datenschutzerklärung von GitHub</a></li>
+  </ul>
+
+  <h2>3. Schriften, Cookies und Analyse</h2>
+  <p>Die Schriftarten liegen auf unserem eigenen Webspace. Beim Aufruf wird keine Verbindung zu Google oder anderen Schriftanbietern aufgebaut.</p>
+  <p>Wir setzen <b>keine Cookies</b> und nutzen <b>keine Analyse- oder Trackingdienste</b>. Ein Cookie-Banner ist deshalb nicht nötig.</p>
+
+  <h2>4. Ergebnisse und Spielpläne</h2>
+  <p>Tabellen, Ergebnisse und Spielerbilanzen übernehmen wir aus den öffentlichen Ligaportalen 3K Darts und nuLiga (BDV). Dein Browser ruft dafür nur eine Datei auf unserer eigenen Seite ab. Eine Verbindung zu den Portalen entsteht dabei nicht.</p>
+
+  <h2>5. Namen unserer Spielerinnen und Spieler</h2>
+  <p>Auf der Seite nennen wir die für den Ligabetrieb gemeldeten Spielerinnen und Spieler mit Vor- und Nachnamen und ihrer Bilanz. Diese Angaben sind über die Ligaportale ohnehin öffentlich. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse ist die Darstellung unseres Spielbetriebs. Fotos veröffentlichen wir nur mit Einwilligung (Art. 6 Abs. 1 lit. a DSGVO). Wer nicht genannt werden möchte, meldet sich beim Vorstand. Wir entfernen den Eintrag dann.</p>
+
+  <h2>6. Anmeldung zur Donnerstags-Competition</h2>
+  <p>Wenn du dich über das Formular anmeldest, verarbeiten wir deinen Namen, deine E-Mail-Adresse oder Handynummer, den gewünschten Termin, die Personenzahl, deine Angabe zur Erfahrung und eine freiwillige Nachricht. Wir nutzen diese Angaben nur, um dich für den Abend einzuplanen und dir bei Bedarf zu antworten.</p>
+  <ul>
+    <li>Rechtsgrundlage: deine Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), die du jederzeit widerrufen kannst.</li>
+    <li>Die Anmeldung wird über den Formulardienst <i class="todo">Anbieter wird vor dem Start ergänzt</i> per E-Mail an den Verein weitergeleitet.</li>
+    <li>Wir löschen die Anmeldung spätestens drei Monate nach dem Termin, wenn du nicht Mitglied wirst.</li>
+  </ul>
+
+  <h2>7. Externe Links</h2>
+  <p>Links zu Instagram, Facebook, Google Maps, den Ligaportalen und unseren Partnern sind einfache Verweise. Daten fließen erst, wenn du einen dieser Links anklickst. Ab dann gilt die Datenschutzerklärung des jeweiligen Anbieters.</p>
+
+  <h2>8. Deine Rechte</h2>
+  <p>Du hast das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch (Art. 21). Eine Einwilligung kannst du jederzeit für die Zukunft widerrufen. Eine formlose Nachricht an den Vorstand genügt.</p>
+  <p>Außerdem kannst du dich bei der zuständigen Aufsichtsbehörde beschweren:</p>
+  <address>
+    Bayerisches Landesamt für Datenschutzaufsicht (BayLDA)<br>
+    Promenade 18, 91522 Ansbach<br>
+    <a href="https://www.lda.bayern.de" target="_blank" rel="noopener">www.lda.bayern.de</a>
+  </address>
+
+  <p class="stand">Stand: Oktober 2026</p>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Clochard Darter Augsburg e.V. · Steeldart seit 1986</span>
+    <nav aria-label="Rechtliches"><a href="index.html">Startseite</a><a href="impressum.html">Impressum</a><a href="datenschutz.html" aria-current="page">Datenschutz</a></nav>
+  </div>
+</footer>

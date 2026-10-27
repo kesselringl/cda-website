@@ -49,6 +49,9 @@ jobs:
             git push
           fi
 
+      - name: Seiten fertig machen (Gerüst, eigene Schriften)
+        run: node scripts/build.mjs
+
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
