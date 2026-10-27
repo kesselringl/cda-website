@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-27T13:48:20.899Z",
+ "updated": "2026-10-27T23:07:09.290Z",
  "season": "2026/27",
  "teams": {
   "1": {
@@ -7,7 +7,7 @@
    "league": "3K WINMAU 2. Bundesliga Süd",
    "source": "3k",
    "sourceUrl": "https://portal.3k-darts.com/frontend/events/10/event/1408/phase/2101/group/40479",
-   "fetched": "2026-10-27T13:48:20.899Z",
+   "fetched": "2026-10-27T23:07:09.290Z",
    "table": [
     {
      "pos": 1,
@@ -435,7 +435,7 @@
    "league": "1. Bezirksliga Schwaben",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211693",
-   "fetched": "2026-10-27T13:48:20.899Z",
+   "fetched": "2026-10-27T23:07:09.290Z",
    "table": [
     {
      "pos": 1,
@@ -879,7 +879,7 @@
    "league": "3. Bezirksliga Schwaben Süd",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211696",
-   "fetched": "2026-10-27T13:48:20.899Z",
+   "fetched": "2026-10-27T23:07:09.290Z",
    "table": [
     {
      "pos": 1,
@@ -931,6 +931,18 @@
     },
     {
      "pos": 5,
+     "name": "DC Bavarian Knights Hurlach",
+     "played": 5,
+     "w": 2,
+     "d": 1,
+     "l": 2,
+     "sets": "29:21",
+     "legs": "110:81",
+     "points": "5:5",
+     "us": false
+    },
+    {
+     "pos": 6,
      "name": "DC River Darts II",
      "played": 3,
      "w": 2,
@@ -942,27 +954,15 @@
      "us": false
     },
     {
-     "pos": 6,
-     "name": "DC Bavarian Knights Hurlach",
-     "played": 4,
-     "w": 2,
-     "d": 0,
-     "l": 2,
-     "sets": "24:16",
-     "legs": "91:65",
-     "points": "4:4",
-     "us": false
-    },
-    {
      "pos": 7,
      "name": "FC Ebershausen Darts",
-     "played": 3,
+     "played": 4,
      "w": 1,
-     "d": 1,
+     "d": 2,
      "l": 1,
-     "sets": "15:15",
-     "legs": "59:59",
-     "points": "3:3",
+     "sets": "20:20",
+     "legs": "75:78",
+     "points": "4:4",
      "us": false
     },
     {
@@ -1274,7 +1274,7 @@
    "league": "4. Bezirksliga Schwaben Süd 4",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211701",
-   "fetched": "2026-10-27T13:48:20.899Z",
+   "fetched": "2026-10-27T23:07:09.290Z",
    "table": [
     {
      "pos": 1,
@@ -1290,6 +1290,18 @@
     },
     {
      "pos": 2,
+     "name": "SC Oberbernbach II",
+     "played": 4,
+     "w": 4,
+     "d": 0,
+     "l": 0,
+     "sets": "27:13",
+     "legs": "93:60",
+     "points": "8:0",
+     "us": false
+    },
+    {
+     "pos": 3,
      "name": "Clochard Darter Augsburg IV",
      "played": 4,
      "w": 3,
@@ -1299,18 +1311,6 @@
      "legs": "91:67",
      "points": "7:1",
      "us": true
-    },
-    {
-     "pos": 3,
-     "name": "SC Oberbernbach II",
-     "played": 3,
-     "w": 3,
-     "d": 0,
-     "l": 0,
-     "sets": "21:9",
-     "legs": "71:42",
-     "points": "6:0",
-     "us": false
     },
     {
      "pos": 4,
@@ -1350,18 +1350,6 @@
     },
     {
      "pos": 7,
-     "name": "TSV Göggingen",
-     "played": 4,
-     "w": 1,
-     "d": 1,
-     "l": 2,
-     "sets": "20:20",
-     "legs": "78:78",
-     "points": "3:5",
-     "us": false
-    },
-    {
-     "pos": 8,
      "name": "TSV Pöttmes III",
      "played": 4,
      "w": 1,
@@ -1370,6 +1358,18 @@
      "sets": "13:27",
      "legs": "49:96",
      "points": "3:5",
+     "us": false
+    },
+    {
+     "pos": 8,
+     "name": "TSV Göggingen",
+     "played": 5,
+     "w": 1,
+     "d": 1,
+     "l": 3,
+     "sets": "24:26",
+     "legs": "96:100",
+     "points": "3:7",
      "us": false
     },
     {
