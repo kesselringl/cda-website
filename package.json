@@ -1,0 +1,13 @@
+{
+  "name": "cda-website",
+  "private": true,
+  "type": "module",
+  "description": "Website der Clochard Darter Augsburg e.V.",
+  "scripts": {
+    "fetch": "node scripts/fetch-data.mjs",
+    "test": "node scripts/test-parsers.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

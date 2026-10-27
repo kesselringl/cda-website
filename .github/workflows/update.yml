@@ -1,0 +1,65 @@
+name: Ergebnisse aktualisieren und veröffentlichen
+
+on:
+  schedule:
+    # Zeiten in UTC. Nachts einmal, dazu nach den Bezirksliga-Abenden (Mo–Do ~23:30 Uhr)
+    # und am Bundesliga-Samstag nach jedem Spielblock.
+    - cron: '17 3 * * *'
+    - cron: '37 22 * * 1-4'
+    - cron: '7 13,16,19,21 * * 6'
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Abrufprogramm testen
+        run: npm test
+
+      - name: Daten von 3K und nuLiga holen
+        run: npm run fetch
+
+      - name: Neuen Stand im Repository sichern
+        run: |
+          if ! git diff --quiet -- site/data.json; then
+            git config user.name  "CDA Ergebnis-Bot"
+            git config user.email "actions@users.noreply.github.com"
+            git add site/data.json
+            git commit -m "Ergebnisse aktualisiert"
+            git push
+          fi
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deploy
+        uses: actions/deploy-pages@v4
+
+      - name: Fehler melden
+        run: |
+          if [ -s .fetch-errors.txt ]; then
+            echo "::error::Mindestens eine Quelle konnte nicht abgerufen werden:"
+            cat .fetch-errors.txt
+            exit 1
+          fi

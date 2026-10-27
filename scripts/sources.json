@@ -1,0 +1,40 @@
+{
+  "season": "2026/27",
+  "teams": {
+    "1": {
+      "type": "3k",
+      "label": "CDA I",
+      "league": "3K WINMAU 2. Bundesliga Süd",
+      "eventId": 1408,
+      "phaseId": 2101,
+      "teamName": "Clochard Darter Augsburg",
+      "homeVenueMatch": "Dinkelscherben",
+      "sourceUrl": "https://portal.3k-darts.com/frontend/events/10/event/1408/phase/2101/group/40479",
+      "statsUrl": "https://portal.3k-darts.com/frontend/events/10/event/1408/statistics/player/results"
+    },
+    "2": {
+      "type": "nuliga",
+      "label": "CDA II",
+      "league": "1. Bezirksliga Schwaben",
+      "teamName": "Clochard Darter Augsburg II",
+      "groupUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211693",
+      "teamUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/teamPortrait?teamtable=1529586&championship=Schw+2026%2F27&group=211693"
+    },
+    "3": {
+      "type": "nuliga",
+      "label": "CDA III",
+      "league": "3. Bezirksliga Schwaben Süd",
+      "teamName": "Clochard Darter Augsburg III",
+      "groupUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211696",
+      "teamUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/teamPortrait?teamtable=1530089&championship=Schw+2026%2F27&group=211696"
+    },
+    "4": {
+      "type": "nuliga",
+      "label": "CDA IV",
+      "league": "4. Bezirksliga Schwaben Süd 4",
+      "teamName": "Clochard Darter Augsburg IV",
+      "groupUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211701",
+      "teamUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/teamPortrait?teamtable=1532379&championship=Schw+2026%2F27&group=211701"
+    }
+  }
+}
