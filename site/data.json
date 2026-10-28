@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-27T23:07:09.290Z",
+ "updated": "2026-10-28T23:10:36.634Z",
  "season": "2026/27",
  "teams": {
   "1": {
@@ -7,7 +7,7 @@
    "league": "3K WINMAU 2. Bundesliga Süd",
    "source": "3k",
    "sourceUrl": "https://portal.3k-darts.com/frontend/events/10/event/1408/phase/2101/group/40479",
-   "fetched": "2026-10-27T23:07:09.290Z",
+   "fetched": "2026-10-28T23:10:36.634Z",
    "table": [
     {
      "pos": 1,
@@ -435,18 +435,18 @@
    "league": "1. Bezirksliga Schwaben",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211693",
-   "fetched": "2026-10-27T23:07:09.290Z",
+   "fetched": "2026-10-28T23:10:36.634Z",
    "table": [
     {
      "pos": 1,
      "name": "Clochard Darter Augsburg II",
-     "played": 4,
-     "w": 4,
+     "played": 5,
+     "w": 5,
      "d": 0,
      "l": 0,
-     "sets": "26:14",
-     "legs": "87:69",
-     "points": "8:0",
+     "sets": "34:16",
+     "legs": "115:84",
+     "points": "10:0",
      "us": true
     },
     {
@@ -476,17 +476,29 @@
     {
      "pos": 4,
      "name": "D.C. Warriors Peterswörth",
-     "played": 4,
+     "played": 5,
      "w": 2,
-     "d": 1,
+     "d": 2,
      "l": 1,
-     "sets": "27:13",
-     "legs": "90:65",
-     "points": "5:3",
+     "sets": "32:18",
+     "legs": "109:86",
+     "points": "6:4",
      "us": false
     },
     {
      "pos": 5,
+     "name": "SV Gablingen Schmutter Darter",
+     "played": 5,
+     "w": 2,
+     "d": 1,
+     "l": 2,
+     "sets": "29:21",
+     "legs": "110:88",
+     "points": "5:5",
+     "us": false
+    },
+    {
+     "pos": 6,
      "name": "Steeldarter Kühlenthal",
      "played": 5,
      "w": 2,
@@ -495,18 +507,6 @@
      "sets": "21:29",
      "legs": "86:111",
      "points": "5:5",
-     "us": false
-    },
-    {
-     "pos": 6,
-     "name": "SV Gablingen Schmutter Darter",
-     "played": 4,
-     "w": 2,
-     "d": 0,
-     "l": 2,
-     "sets": "24:16",
-     "legs": "89:69",
-     "points": "4:4",
      "us": false
     },
     {
@@ -536,17 +536,29 @@
     {
      "pos": 9,
      "name": "Flying Hobby Darters Rennertshofen",
-     "played": 3,
+     "played": 4,
      "w": 1,
      "d": 0,
-     "l": 2,
-     "sets": "12:18",
+     "l": 3,
+     "sets": "16:24",
      "legs": "54:67",
-     "points": "2:4",
+     "points": "2:6",
      "us": false
     },
     {
      "pos": 10,
+     "name": "Dscheina Darter Donauwörth",
+     "played": 4,
+     "w": 1,
+     "d": 0,
+     "l": 3,
+     "sets": "14:26",
+     "legs": "41:69",
+     "points": "2:6",
+     "us": false
+    },
+    {
+     "pos": 11,
      "name": "SV Steingriff II",
      "played": 5,
      "w": 1,
@@ -558,27 +570,15 @@
      "us": false
     },
     {
-     "pos": 11,
-     "name": "Dscheina Darter Donauwörth",
-     "played": 3,
-     "w": 0,
-     "d": 0,
-     "l": 3,
-     "sets": "8:22",
-     "legs": "41:69",
-     "points": "0:6",
-     "us": false
-    },
-    {
      "pos": 12,
      "name": "DJK Lechhausen III",
-     "played": 3,
+     "played": 4,
      "w": 0,
      "d": 0,
-     "l": 3,
-     "sets": "8:22",
-     "legs": "44:74",
-     "points": "0:6",
+     "l": 4,
+     "sets": "10:30",
+     "legs": "59:102",
+     "points": "0:8",
      "us": false
     }
    ],
@@ -635,7 +635,7 @@
      "moved": false,
      "home": "Clochard Darter Augsburg II",
      "away": "DJK Lechhausen III",
-     "score": null,
+     "score": "8:2",
      "venue": "Billardcafe Dinkelscherben"
     },
     {
@@ -651,17 +651,6 @@
     },
     {
      "half": "V",
-     "round": 7,
-     "date": "2026-11-25",
-     "time": "20:00",
-     "moved": false,
-     "home": "Clochard Darter Augsburg II",
-     "away": "D´Augschburger",
-     "score": null,
-     "venue": "Billardcafe Dinkelscherben"
-    },
-    {
-     "half": "V",
      "round": 8,
      "date": "2026-12-01",
      "time": "20:00",
@@ -670,6 +659,17 @@
      "away": "Clochard Darter Augsburg II",
      "score": null,
      "venue": "Josis Billard Lounge"
+    },
+    {
+     "half": "V",
+     "round": 7,
+     "date": "2026-12-03",
+     "time": "20:00",
+     "moved": true,
+     "home": "Clochard Darter Augsburg II",
+     "away": "D´Augschburger",
+     "score": null,
+     "venue": "Billardcafe Dinkelscherben"
     },
     {
      "half": "V",
@@ -848,19 +848,24 @@
      "single": null
     },
     {
+     "name": "Sancha Koal",
+     "games": 1,
+     "single": "2:0"
+    },
+    {
+     "name": "Jonas Thoma",
+     "games": 5,
+     "single": "9:1"
+    },
+    {
      "name": "Leo Hörmann",
      "games": 2,
      "single": "3:1"
     },
     {
-     "name": "Jonas Thoma",
-     "games": 4,
-     "single": "8:0"
-    },
-    {
      "name": "Ewald Lautenschlager",
-     "games": 4,
-     "single": "3:5"
+     "games": 5,
+     "single": "5:5"
     },
     {
      "name": "Dominik Thoma",
@@ -869,8 +874,8 @@
     },
     {
      "name": "Martin Hungbaur",
-     "games": 1,
-     "single": "2:0"
+     "games": 2,
+     "single": "3:1"
     }
    ]
   },
@@ -879,10 +884,22 @@
    "league": "3. Bezirksliga Schwaben Süd",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211696",
-   "fetched": "2026-10-27T23:07:09.290Z",
+   "fetched": "2026-10-28T23:10:36.634Z",
    "table": [
     {
      "pos": 1,
+     "name": "Rabbits Lechfeld",
+     "played": 4,
+     "w": 3,
+     "d": 1,
+     "l": 0,
+     "sets": "29:11",
+     "legs": "99:49",
+     "points": "7:1",
+     "us": false
+    },
+    {
+     "pos": 2,
      "name": "Foxvalley DC",
      "played": 4,
      "w": 3,
@@ -894,7 +911,7 @@
      "us": false
     },
     {
-     "pos": 2,
+     "pos": 3,
      "name": "DJK Lechhausen V",
      "played": 5,
      "w": 3,
@@ -906,7 +923,7 @@
      "us": false
     },
     {
-     "pos": 3,
+     "pos": 4,
      "name": "Pegasus Darter II",
      "played": 4,
      "w": 2,
@@ -915,18 +932,6 @@
      "sets": "22:18",
      "legs": "86:81",
      "points": "6:2",
-     "us": false
-    },
-    {
-     "pos": 4,
-     "name": "Rabbits Lechfeld",
-     "played": 3,
-     "w": 2,
-     "d": 1,
-     "l": 0,
-     "sets": "19:11",
-     "legs": "69:46",
-     "points": "5:1",
      "us": false
     },
     {
@@ -1004,13 +1009,13 @@
     {
      "pos": 11,
      "name": "DJK Lechhausen VI",
-     "played": 4,
+     "played": 5,
      "w": 0,
      "d": 0,
-     "l": 4,
-     "sets": "6:34",
-     "legs": "32:106",
-     "points": "0:8",
+     "l": 5,
+     "sets": "6:44",
+     "legs": "35:136",
+     "points": "0:10",
      "us": false
     }
    ],
@@ -1274,7 +1279,7 @@
    "league": "4. Bezirksliga Schwaben Süd 4",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211701",
-   "fetched": "2026-10-27T23:07:09.290Z",
+   "fetched": "2026-10-28T23:10:36.634Z",
    "table": [
     {
      "pos": 1,
