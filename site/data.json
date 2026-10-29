@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-28T23:10:36.634Z",
+ "updated": "2026-10-29T23:12:20.818Z",
  "season": "2026/27",
  "teams": {
   "1": {
@@ -7,7 +7,7 @@
    "league": "3K WINMAU 2. Bundesliga Süd",
    "source": "3k",
    "sourceUrl": "https://portal.3k-darts.com/frontend/events/10/event/1408/phase/2101/group/40479",
-   "fetched": "2026-10-28T23:10:36.634Z",
+   "fetched": "2026-10-29T23:12:20.818Z",
    "table": [
     {
      "pos": 1,
@@ -435,7 +435,7 @@
    "league": "1. Bezirksliga Schwaben",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211693",
-   "fetched": "2026-10-28T23:10:36.634Z",
+   "fetched": "2026-10-29T23:12:20.818Z",
    "table": [
     {
      "pos": 1,
@@ -541,7 +541,7 @@
      "d": 0,
      "l": 3,
      "sets": "16:24",
-     "legs": "54:67",
+     "legs": "75:90",
      "points": "2:6",
      "us": false
     },
@@ -553,7 +553,7 @@
      "d": 0,
      "l": 3,
      "sets": "14:26",
-     "legs": "41:69",
+     "legs": "64:90",
      "points": "2:6",
      "us": false
     },
@@ -884,10 +884,22 @@
    "league": "3. Bezirksliga Schwaben Süd",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211696",
-   "fetched": "2026-10-28T23:10:36.634Z",
+   "fetched": "2026-10-29T23:12:20.818Z",
    "table": [
     {
      "pos": 1,
+     "name": "Pegasus Darter II",
+     "played": 5,
+     "w": 3,
+     "d": 2,
+     "l": 0,
+     "sets": "29:21",
+     "legs": "111:96",
+     "points": "8:2",
+     "us": false
+    },
+    {
+     "pos": 2,
      "name": "Rabbits Lechfeld",
      "played": 4,
      "w": 3,
@@ -899,7 +911,7 @@
      "us": false
     },
     {
-     "pos": 2,
+     "pos": 3,
      "name": "Foxvalley DC",
      "played": 4,
      "w": 3,
@@ -911,7 +923,7 @@
      "us": false
     },
     {
-     "pos": 3,
+     "pos": 4,
      "name": "DJK Lechhausen V",
      "played": 5,
      "w": 3,
@@ -920,18 +932,6 @@
      "sets": "32:18",
      "legs": "114:78",
      "points": "7:3",
-     "us": false
-    },
-    {
-     "pos": 4,
-     "name": "Pegasus Darter II",
-     "played": 4,
-     "w": 2,
-     "d": 2,
-     "l": 0,
-     "sets": "22:18",
-     "legs": "86:81",
-     "points": "6:2",
      "us": false
     },
     {
@@ -948,18 +948,6 @@
     },
     {
      "pos": 6,
-     "name": "DC River Darts II",
-     "played": 3,
-     "w": 2,
-     "d": 0,
-     "l": 1,
-     "sets": "14:16",
-     "legs": "53:64",
-     "points": "4:2",
-     "us": false
-    },
-    {
-     "pos": 7,
      "name": "FC Ebershausen Darts",
      "played": 4,
      "w": 1,
@@ -967,6 +955,18 @@
      "l": 1,
      "sets": "20:20",
      "legs": "75:78",
+     "points": "4:4",
+     "us": false
+    },
+    {
+     "pos": 7,
+     "name": "DC River Darts II",
+     "played": 4,
+     "w": 2,
+     "d": 0,
+     "l": 2,
+     "sets": "17:23",
+     "legs": "68:89",
      "points": "4:4",
      "us": false
     },
@@ -1279,7 +1279,7 @@
    "league": "4. Bezirksliga Schwaben Süd 4",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211701",
-   "fetched": "2026-10-28T23:10:36.634Z",
+   "fetched": "2026-10-29T23:12:20.818Z",
    "table": [
     {
      "pos": 1,
@@ -1320,37 +1320,37 @@
     {
      "pos": 4,
      "name": "D´Augschburger III",
-     "played": 4,
-     "w": 2,
+     "played": 5,
+     "w": 3,
      "d": 1,
      "l": 1,
-     "sets": "25:15",
+     "sets": "34:16",
      "legs": "91:71",
-     "points": "5:3",
+     "points": "7:3",
      "us": false
     },
     {
      "pos": 5,
      "name": "Steeldarter Kühlenthal VI",
-     "played": 3,
-     "w": 2,
+     "played": 4,
+     "w": 3,
      "d": 0,
      "l": 1,
-     "sets": "22:8",
-     "legs": "72:42",
-     "points": "4:2",
+     "sets": "29:11",
+     "legs": "94:57",
+     "points": "6:2",
      "us": false
     },
     {
      "pos": 6,
      "name": "SV Gablingen Schmutter Darter VI",
-     "played": 3,
+     "played": 4,
      "w": 2,
      "d": 0,
-     "l": 1,
-     "sets": "16:14",
+     "l": 2,
+     "sets": "17:23",
      "legs": "64:57",
-     "points": "4:2",
+     "points": "4:4",
      "us": false
     },
     {
@@ -1392,13 +1392,13 @@
     {
      "pos": 10,
      "name": "SC Oberbernbach III",
-     "played": 4,
+     "played": 5,
      "w": 0,
      "d": 0,
-     "l": 4,
-     "sets": "13:27",
-     "legs": "58:94",
-     "points": "0:8",
+     "l": 5,
+     "sets": "16:34",
+     "legs": "73:116",
+     "points": "0:10",
      "us": false
     },
     {
