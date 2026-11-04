@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03T23:17:33.868Z",
+ "updated": "2026-11-04T23:18:02.856Z",
  "season": "2026/27",
  "teams": {
   "1": {
@@ -7,7 +7,7 @@
    "league": "3K WINMAU 2. Bundesliga Süd",
    "source": "3k",
    "sourceUrl": "https://portal.3k-darts.com/frontend/events/10/event/1408/phase/2101/group/40479",
-   "fetched": "2026-11-03T23:17:33.868Z",
+   "fetched": "2026-11-04T23:18:02.856Z",
    "table": [
     {
      "pos": 1,
@@ -435,7 +435,7 @@
    "league": "1. Bezirksliga Schwaben",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211693",
-   "fetched": "2026-11-03T23:17:33.868Z",
+   "fetched": "2026-11-04T23:18:02.856Z",
    "table": [
     {
      "pos": 1,
@@ -884,7 +884,7 @@
    "league": "3. Bezirksliga Schwaben Süd",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211696",
-   "fetched": "2026-11-03T23:17:33.868Z",
+   "fetched": "2026-11-04T23:18:02.856Z",
    "table": [
     {
      "pos": 1,
@@ -1279,10 +1279,22 @@
    "league": "4. Bezirksliga Schwaben Süd 4",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211701",
-   "fetched": "2026-11-03T23:17:33.868Z",
+   "fetched": "2026-11-04T23:18:02.856Z",
    "table": [
     {
      "pos": 1,
+     "name": "Clochard Darter Augsburg IV",
+     "played": 5,
+     "w": 4,
+     "d": 1,
+     "l": 0,
+     "sets": "32:18",
+     "legs": "113:79",
+     "points": "9:1",
+     "us": true
+    },
+    {
+     "pos": 2,
      "name": "Grüne Eiche Schönbach IV",
      "played": 4,
      "w": 4,
@@ -1294,7 +1306,7 @@
      "us": false
     },
     {
-     "pos": 2,
+     "pos": 3,
      "name": "SC Oberbernbach II",
      "played": 4,
      "w": 4,
@@ -1304,18 +1316,6 @@
      "legs": "93:60",
      "points": "8:0",
      "us": false
-    },
-    {
-     "pos": 3,
-     "name": "Clochard Darter Augsburg IV",
-     "played": 4,
-     "w": 3,
-     "d": 1,
-     "l": 0,
-     "sets": "25:15",
-     "legs": "91:67",
-     "points": "7:1",
-     "us": true
     },
     {
      "pos": 4,
@@ -1380,13 +1380,13 @@
     {
      "pos": 9,
      "name": "TSV Pöttmes II",
-     "played": 4,
+     "played": 5,
      "w": 0,
      "d": 2,
-     "l": 2,
-     "sets": "11:29",
-     "legs": "62:94",
-     "points": "2:6",
+     "l": 3,
+     "sets": "14:36",
+     "legs": "74:116",
+     "points": "2:8",
      "us": false
     },
     {
@@ -1467,7 +1467,7 @@
      "moved": true,
      "home": "Clochard Darter Augsburg IV",
      "away": "TSV Pöttmes II",
-     "score": null,
+     "score": "7:3",
      "venue": "Bismarck Bistro"
     },
     {
@@ -1644,13 +1644,13 @@
     },
     {
      "name": "Andreas Wengenmayr",
-     "games": 2,
-     "single": "4:0"
+     "games": 3,
+     "single": "6:0"
     },
     {
      "name": "Adrian Pirner",
-     "games": 2,
-     "single": "0:3"
+     "games": 3,
+     "single": "0:5"
     },
     {
      "name": "Adrian Seidl",
@@ -1659,13 +1659,13 @@
     },
     {
      "name": "Clemens Fleischmann",
-     "games": 3,
-     "single": "4:2"
+     "games": 4,
+     "single": "6:2"
     },
     {
      "name": "Maximilian Urban",
-     "games": 4,
-     "single": "7:1"
+     "games": 5,
+     "single": "9:1"
     },
     {
      "name": "Gerald Nitzer",
