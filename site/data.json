@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-07T19:40:45.165Z",
+ "updated": "2026-11-07T21:36:40.460Z",
  "season": "2026/27",
  "teams": {
   "1": {
@@ -7,30 +7,30 @@
    "league": "3K WINMAU 2. Bundesliga Süd",
    "source": "3k",
    "sourceUrl": "https://portal.3k-darts.com/frontend/events/10/event/1408/phase/2101/group/40479",
-   "fetched": "2026-11-07T19:40:45.165Z",
+   "fetched": "2026-11-07T21:36:40.460Z",
    "table": [
     {
      "pos": 1,
      "name": "Clochard Darter Augsburg",
-     "played": 7,
-     "w": 5,
+     "played": 8,
+     "w": 6,
      "d": 2,
      "l": 0,
-     "sets": "49:35",
-     "legs": "246:217",
-     "points": 12,
+     "sets": "57:39",
+     "legs": "283:241",
+     "points": 14,
      "us": true
     },
     {
      "pos": 2,
      "name": "DVK 1",
-     "played": 7,
-     "w": 4,
+     "played": 8,
+     "w": 5,
      "d": 2,
      "l": 1,
-     "sets": "50:34",
-     "legs": "261:207",
-     "points": 10,
+     "sets": "59:37",
+     "legs": "301:235",
+     "points": 12,
      "us": false
     },
     {
@@ -48,12 +48,12 @@
     {
      "pos": 4,
      "name": "DSC Bandits 1",
-     "played": 7,
+     "played": 8,
      "w": 4,
      "d": 1,
-     "l": 2,
-     "sets": "47:37",
-     "legs": "244:220",
+     "l": 3,
+     "sets": "51:45",
+     "legs": "268:257",
      "points": 9,
      "us": false
     },
@@ -71,37 +71,37 @@
     },
     {
      "pos": 6,
-     "name": "Nostradartmus 1",
-     "played": 7,
+     "name": "Bären 1",
+     "played": 8,
      "w": 2,
-     "d": 2,
+     "d": 3,
      "l": 3,
-     "sets": "42:42",
-     "legs": "230:238",
-     "points": 6,
+     "sets": "44:52",
+     "legs": "267:277",
+     "points": 7,
      "us": false
     },
     {
      "pos": 7,
-     "name": "Bären 1",
-     "played": 7,
-     "w": 1,
-     "d": 3,
-     "l": 3,
-     "sets": "37:47",
-     "legs": "226:244",
-     "points": 5,
+     "name": "Nostradartmus 1",
+     "played": 8,
+     "w": 2,
+     "d": 2,
+     "l": 4,
+     "sets": "47:49",
+     "legs": "263:279",
+     "points": 6,
      "us": false
     },
     {
      "pos": 8,
      "name": "Dart Team Essenbach",
-     "played": 7,
+     "played": 8,
      "w": 1,
      "d": 2,
-     "l": 4,
-     "sets": "33:51",
-     "legs": "212:258",
+     "l": 5,
+     "sets": "36:60",
+     "legs": "240:298",
      "points": 4,
      "us": false
     },
@@ -222,8 +222,8 @@
        "time": "18:00",
        "home": "DSC Bandits 1",
        "away": "Clochard Darter Augsburg",
-       "score": null,
-       "legs": null
+       "score": "4:8",
+       "legs": "24:37"
       }
      ]
     },
@@ -338,31 +338,31 @@
    ],
    "players": [
     {
-     "name": "Leon Kesselring",
-     "single": "6:2",
-     "double": "5:2",
-     "total": "11:4",
-     "singleLegs": "27:14"
-    },
-    {
      "name": "Marco Geiger",
      "single": "5:3",
-     "double": "6:1",
-     "total": "11:4",
+     "double": "7:1",
+     "total": "12:4",
      "singleLegs": "25:17"
     },
     {
      "name": "Bastian Rauh",
      "single": "5:1",
-     "double": "4:1",
-     "total": "9:2",
+     "double": "5:1",
+     "total": "10:2",
      "singleLegs": "21:10"
+    },
+    {
+     "name": "Leon Kesselring",
+     "single": "6:2",
+     "double": "5:3",
+     "total": "11:5",
+     "singleLegs": "27:14"
     },
     {
      "name": "Florian Kaiser",
      "single": "4:2",
-     "double": "4:1",
-     "total": "8:3",
+     "double": "5:1",
+     "total": "9:3",
      "singleLegs": "17:15"
     },
     {
@@ -375,23 +375,23 @@
     {
      "name": "Ivo Schubert",
      "single": "4:1",
-     "double": "2:2",
-     "total": "6:3",
+     "double": "3:2",
+     "total": "7:3",
      "singleLegs": "18:12"
-    },
-    {
-     "name": "Marcus Kreiner",
-     "single": "4:3",
-     "double": "3:3",
-     "total": "7:6",
-     "singleLegs": "20:21"
     },
     {
      "name": "Leon Crump",
      "single": "1:1",
-     "double": "1:0",
-     "total": "2:1",
+     "double": "2:0",
+     "total": "3:1",
      "singleLegs": "6:5"
+    },
+    {
+     "name": "Marcus Kreiner",
+     "single": "4:3",
+     "double": "3:4",
+     "total": "7:7",
+     "singleLegs": "20:21"
     },
     {
      "name": "Jürgen Pistl",
@@ -399,6 +399,13 @@
      "double": "2:3",
      "total": "5:5",
      "singleLegs": "16:10"
+    },
+    {
+     "name": "Simon Seifert",
+     "single": "0:1",
+     "double": "1:1",
+     "total": "1:2",
+     "singleLegs": "2:4"
     },
     {
      "name": "Tobias Jäckle",
@@ -429,13 +436,6 @@
      "singleLegs": "6:6"
     },
     {
-     "name": "Simon Seifert",
-     "single": "0:1",
-     "double": "0:1",
-     "total": "0:2",
-     "singleLegs": "2:4"
-    },
-    {
      "name": "Markus Görg",
      "single": "0:4",
      "double": "1:2",
@@ -449,7 +449,7 @@
    "league": "1. Bezirksliga Schwaben",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211693",
-   "fetched": "2026-11-07T19:40:45.165Z",
+   "fetched": "2026-11-07T21:36:40.460Z",
    "table": [
     {
      "pos": 1,
@@ -898,7 +898,7 @@
    "league": "3. Bezirksliga Schwaben Süd",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211696",
-   "fetched": "2026-11-07T19:40:45.165Z",
+   "fetched": "2026-11-07T21:36:40.460Z",
    "table": [
     {
      "pos": 1,
@@ -1293,7 +1293,7 @@
    "league": "4. Bezirksliga Schwaben Süd 4",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211701",
-   "fetched": "2026-11-07T19:40:45.165Z",
+   "fetched": "2026-11-07T21:36:40.460Z",
    "table": [
     {
      "pos": 1,
