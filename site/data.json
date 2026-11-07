@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-07T13:50:16.003Z",
+ "updated": "2026-11-07T19:40:45.165Z",
  "season": "2026/27",
  "teams": {
   "1": {
@@ -7,7 +7,7 @@
    "league": "3K WINMAU 2. Bundesliga Süd",
    "source": "3k",
    "sourceUrl": "https://portal.3k-darts.com/frontend/events/10/event/1408/phase/2101/group/40479",
-   "fetched": "2026-11-07T13:50:16.003Z",
+   "fetched": "2026-11-07T19:40:45.165Z",
    "table": [
     {
      "pos": 1,
@@ -35,42 +35,54 @@
     },
     {
      "pos": 3,
-     "name": "DSC Bandits 1",
-     "played": 6,
+     "name": "DC Urbach",
+     "played": 8,
      "w": 4,
-     "d": 1,
-     "l": 1,
-     "sets": "42:30",
-     "legs": "211:183",
-     "points": 9,
+     "d": 2,
+     "l": 2,
+     "sets": "52:44",
+     "legs": "273:264",
+     "points": 10,
      "us": false
     },
     {
      "pos": 4,
-     "name": "DC Urbach",
+     "name": "DSC Bandits 1",
      "played": 7,
-     "w": 3,
-     "d": 2,
+     "w": 4,
+     "d": 1,
      "l": 2,
-     "sets": "45:39",
-     "legs": "236:231",
-     "points": 8,
+     "sets": "47:37",
+     "legs": "244:220",
+     "points": 9,
      "us": false
     },
     {
      "pos": 5,
      "name": "Darts Pub Walldorf",
-     "played": 7,
+     "played": 8,
      "w": 2,
      "d": 3,
-     "l": 2,
-     "sets": "43:41",
-     "legs": "231:230",
+     "l": 3,
+     "sets": "47:49",
+     "legs": "262:265",
      "points": 7,
      "us": false
     },
     {
      "pos": 6,
+     "name": "Nostradartmus 1",
+     "played": 7,
+     "w": 2,
+     "d": 2,
+     "l": 3,
+     "sets": "42:42",
+     "legs": "230:238",
+     "points": 6,
+     "us": false
+    },
+    {
+     "pos": 7,
      "name": "Bären 1",
      "played": 7,
      "w": 1,
@@ -82,39 +94,27 @@
      "us": false
     },
     {
-     "pos": 7,
-     "name": "Nostradartmus 1",
-     "played": 6,
+     "pos": 8,
+     "name": "Dart Team Essenbach",
+     "played": 7,
      "w": 1,
      "d": 2,
-     "l": 3,
-     "sets": "34:38",
-     "legs": "195:207",
+     "l": 4,
+     "sets": "33:51",
+     "legs": "212:258",
      "points": 4,
      "us": false
     },
     {
-     "pos": 8,
+     "pos": 9,
      "name": "1. DSC Honzrath",
-     "played": 7,
+     "played": 8,
      "w": 1,
      "d": 1,
-     "l": 5,
-     "sets": "34:50",
-     "legs": "209:247",
+     "l": 6,
+     "sets": "39:57",
+     "legs": "242:283",
      "points": 3,
-     "us": false
-    },
-    {
-     "pos": 9,
-     "name": "Dart Team Essenbach",
-     "played": 6,
-     "w": 0,
-     "d": 2,
-     "l": 4,
-     "sets": "26:46",
-     "legs": "176:225",
-     "points": 2,
      "us": false
     }
    ],
@@ -339,24 +339,31 @@
    "players": [
     {
      "name": "Leon Kesselring",
-     "single": "6:1",
+     "single": "6:2",
      "double": "5:2",
-     "total": "11:3",
-     "singleLegs": "26:10"
+     "total": "11:4",
+     "singleLegs": "27:14"
     },
     {
      "name": "Marco Geiger",
-     "single": "4:3",
+     "single": "5:3",
      "double": "6:1",
-     "total": "10:4",
-     "singleLegs": "21:17"
+     "total": "11:4",
+     "singleLegs": "25:17"
     },
     {
      "name": "Bastian Rauh",
-     "single": "4:1",
+     "single": "5:1",
      "double": "4:1",
-     "total": "8:2",
-     "singleLegs": "17:9"
+     "total": "9:2",
+     "singleLegs": "21:10"
+    },
+    {
+     "name": "Florian Kaiser",
+     "single": "4:2",
+     "double": "4:1",
+     "total": "8:3",
+     "singleLegs": "17:15"
     },
     {
      "name": "Franz Rötzsch",
@@ -366,25 +373,25 @@
      "singleLegs": "12:8"
     },
     {
-     "name": "Florian Kaiser",
-     "single": "3:2",
-     "double": "4:1",
-     "total": "7:3",
-     "singleLegs": "13:12"
+     "name": "Ivo Schubert",
+     "single": "4:1",
+     "double": "2:2",
+     "total": "6:3",
+     "singleLegs": "18:12"
     },
     {
      "name": "Marcus Kreiner",
-     "single": "4:2",
+     "single": "4:3",
      "double": "3:3",
-     "total": "7:5",
-     "singleLegs": "18:17"
+     "total": "7:6",
+     "singleLegs": "20:21"
     },
     {
-     "name": "Ivo Schubert",
-     "single": "3:1",
-     "double": "2:2",
-     "total": "5:3",
-     "singleLegs": "14:10"
+     "name": "Leon Crump",
+     "single": "1:1",
+     "double": "1:0",
+     "total": "2:1",
+     "singleLegs": "6:5"
     },
     {
      "name": "Jürgen Pistl",
@@ -394,25 +401,11 @@
      "singleLegs": "16:10"
     },
     {
-     "name": "Leon Crump",
-     "single": "0:1",
-     "double": "1:0",
-     "total": "1:1",
-     "singleLegs": "2:4"
-    },
-    {
      "name": "Tobias Jäckle",
      "single": "0:1",
      "double": "1:1",
      "total": "1:2",
      "singleLegs": "0:4"
-    },
-    {
-     "name": "Simon Seifert",
-     "single": null,
-     "double": "0:1",
-     "total": "0:1",
-     "singleLegs": null
     },
     {
      "name": "Simon Schreier",
@@ -436,6 +429,13 @@
      "singleLegs": "6:6"
     },
     {
+     "name": "Simon Seifert",
+     "single": "0:1",
+     "double": "0:1",
+     "total": "0:2",
+     "singleLegs": "2:4"
+    },
+    {
      "name": "Markus Görg",
      "single": "0:4",
      "double": "1:2",
@@ -449,7 +449,7 @@
    "league": "1. Bezirksliga Schwaben",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211693",
-   "fetched": "2026-11-07T13:50:16.003Z",
+   "fetched": "2026-11-07T19:40:45.165Z",
    "table": [
     {
      "pos": 1,
@@ -898,7 +898,7 @@
    "league": "3. Bezirksliga Schwaben Süd",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211696",
-   "fetched": "2026-11-07T13:50:16.003Z",
+   "fetched": "2026-11-07T19:40:45.165Z",
    "table": [
     {
      "pos": 1,
@@ -1293,7 +1293,7 @@
    "league": "4. Bezirksliga Schwaben Süd 4",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211701",
-   "fetched": "2026-11-07T13:50:16.003Z",
+   "fetched": "2026-11-07T19:40:45.165Z",
    "table": [
     {
      "pos": 1,
