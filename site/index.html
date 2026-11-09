@@ -369,6 +369,9 @@ input[type=text]:focus,select:focus,textarea:focus{outline:2px solid var(--green
 .consent a{color:var(--green)}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 .err{color:var(--red);font-weight:600;font-size:.9rem}
+.join-new{font-size:.95rem;opacity:.92;margin:4px 0 0}
+.join-sim{align-self:flex-start}
+.mode-info{font-size:.88rem;color:var(--muted);margin:-6px 0 0;min-height:1.2em}
 .signup .btn{justify-content:center;border:0;font:700 1rem var(--f-body);cursor:pointer}
 .draft-note{font-size:.78rem;color:var(--tbd)}
 .signup-done{align-items:flex-start;justify-content:center}
@@ -674,6 +677,8 @@ footer a:hover{text-decoration:underline}
             <div><small>Wann</small><b>Jeden Donnerstag ab 20 Uhr</b></div>
             <div><small>Wo</small><b>Bismarck Bistro, Bismarckstr. 7, 86159 Augsburg</b></div>
           </div>
+          <p class="join-new">Ab dem 7. Januar 2027 startet die neue Competition: alle drei Wochen CDA Masters mit eigener Rangliste und Finals, dazwischen 501, 301 Double-In und Sonderabende wie Cricket oder Bring a Friend.</p>
+          <a class="btn ghost join-sim" href="competition.html">So sieht das neue System aus (Simulation)</a>
         </div>
         <form class="signup" id="signup" novalidate>
           <div class="signup-head">
@@ -690,7 +695,22 @@ footer a:hover{text-decoration:underline}
           </div>
           <div class="row">
             <div class="field">
-              <label for="su-date">Welcher Donnerstag?</label>
+              <label for="su-mode">Spielmodus</label>
+              <select id="su-mode" name="modus">
+                <option value="">Alle Termine</option>
+                <option value="m501">CDA Masters (501)</option>
+                <option value="c501">Competition 501</option>
+                <option value="di301">301 Double-In / Double-Out</option>
+                <option value="cricket">Cricket-Nacht</option>
+                <option value="lucky">Lucky Doubles</option>
+                <option value="friend">Bring a Friend</option>
+              </select>
+            </div>
+          </div>
+          <p class="mode-info" id="su-mode-info"></p>
+          <div class="row">
+            <div class="field">
+              <label for="su-date">Welcher Termin?</label>
               <select id="su-date" name="termin" required></select>
             </div>
             <div class="field">
@@ -970,7 +990,8 @@ footer a:hover{text-decoration:underline}
       var d=new Date();d.setHours(20,0,0,0);var add=(4-d.getDay()+7)%7;if(add===0&&now.getHours()>=23)add=7;d.setDate(d.getDate()+add);
       target=d;end=new Date(d.getTime()+3*36e5);
       T.classList.remove('home');
-      set('t-kind','Offene Competition');set('t-wd','Donnerstag');
+      var nx=window.CDA_CAL?window.CDA_CAL.upcoming().filter(function(e){return e.mode!=='finals';})[0]:null;
+      set('t-kind',nx?(nx.mode==='alt'?'Offene Competition':window.CDA_CAL.MODE[nx.mode][0]):'Offene Competition');set('t-wd','Donnerstag');
       set('t-day',('0'+d.getDate()).slice(-2)+'.'+('0'+(d.getMonth()+1)).slice(-2)+'.');set('t-time','ab 20:00 Uhr');
       set('t-body','<p class="t-place"><b>Bismarck Bistro</b><br>Bismarckstraße 7, 86159 Augsburg</p>');
     }
@@ -1020,11 +1041,45 @@ footer a:hover{text-decoration:underline}
   try{fetch('data.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(d){if(d&&d.teams)applyLive(d);}).catch(function(){});}catch(e){}
 
   // Anmeldung Donnerstags-Competition
-  var sel=document.getElementById('su-date');
-  var d=new Date();d.setHours(12,0,0,0);
-  var add=(4-d.getDay()+7)%7; if(add===0&&new Date().getHours()>=20)add=7; d.setDate(d.getDate()+add);
+  // Terminkalender (wie im Competition-System): Saison = Kalenderjahr, Start am ersten Donnerstag ab 7.1.,
+  // Pause 23.12.–6.1., alle 3 Wochen CDA Masters (16 pro Saison), Finals am Samstag in der Woche des 17. Masters-Termins.
+  var RELAUNCH='2027-01-07';
+  var MODE={m501:['CDA Masters','501 Double-out · zählt für Rangliste und Finals · Startgeld 15 € (5 € Preisgeld am Abend, 10 € in den Masters-Pott)'],
+    c501:['Competition 501','501 Double-out · ohne Masters-Wertung'],di301:['301 Double-In','301 Double-in / Double-out · Punkte zählen erst nach dem ersten Doppel'],
+    cricket:['Cricket-Nacht','15 bis 20 und Bull mit Punkten · etwa alle 7 Wochen'],lucky:['Lucky Doubles','zugeloste Doppel, stark und schwach zusammen · etwa alle 12 Wochen'],
+    friend:['Bring a Friend','Mitglied und Gast spielen zusammen im Doppel · zum Saisonstart und etwa alle 4 Monate'],
+    finals:['CDA-Masters-Finals','beim TSV Dinkelscherben, nur für Qualifizierte'],alt:['Competition','offene Competition im bisherigen Format']};
+  function plusDays(iso,n){var t=new Date(iso+'T12:00:00Z');t.setUTCDate(t.getUTCDate()+n);return t.toISOString().slice(0,10);}
+  function cdaCalendar(year){
+    var out=[],d=new Date(Date.UTC(year,0,7,12)),i=0,ms=0,fin=false,lf=-99,lc=0,ll=2,alt=0;
+    while(d.getUTCDay()!==4)d.setUTCDate(d.getUTCDate()+1);
+    for(;d.getUTCFullYear()===year;d.setUTCDate(d.getUTCDate()+7)){
+      var iso=d.toISOString().slice(0,10);if(iso.slice(5)>='12-23')continue;
+      var m=null;
+      if(i%3===1&&!fin){if(ms<16){m='m501';ms++;}else{fin=true;out.push({date:iso,mode:'c501',note:'Finals am Samstag'});out.push({date:plusDays(iso,2),mode:'finals'});i++;continue;}}
+      if(!m){var w=i;if(i===0||w-lf>=16){m='friend';lf=w;}else if(w-lc>=7){m='cricket';lc=w;}else if(w-ll>=11){m='lucky';ll=w;}else{m=(alt++%2)?'di301':'c501';}}
+      out.push({date:iso,mode:m});i++;
+    }
+    return out;
+  }
+  function upcoming(){
+    var today=new Date().toISOString().slice(0,10),out=[],d=new Date(),y=d.getFullYear();
+    // bis zum Neustart: jeden Donnerstag im bisherigen Format (ohne Weihnachtspause)
+    var t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate(),12));while(t.getUTCDay()!==4)t.setUTCDate(t.getUTCDate()+1);
+    for(;t.toISOString().slice(0,10)<RELAUNCH;t.setUTCDate(t.getUTCDate()+7)){var iso=t.toISOString().slice(0,10),md=iso.slice(5);if(md>='12-23'||md<'01-07')continue;out.push({date:iso,mode:'alt'});}
+    [y,y+1,y+2].forEach(function(yy){if(yy>=2027)cdaCalendar(yy).forEach(function(e){out.push(e);});});
+    var h=new Date().getHours();return out.filter(function(e){return e.date>today||(e.date===today&&h<20);});
+  }
+  window.CDA_CAL={upcoming:upcoming,MODE:MODE};
+  if(typeof renderHero==='function'){try{renderHero();}catch(e){}}
+  var sel=document.getElementById('su-date'),msel=document.getElementById('su-mode'),minfo=document.getElementById('su-mode-info');
   var fmt=new Intl.DateTimeFormat('de-DE',{weekday:'short',day:'2-digit',month:'2-digit',year:'numeric'});
-  for(var i=0;i<6;i++){var o=document.createElement('option');o.value=d.toISOString().slice(0,10);o.textContent=fmt.format(d)+', ab 20 Uhr';sel.appendChild(o);d.setDate(d.getDate()+7);}
+  function fillDates(){
+    var want=msel.value,list=upcoming().filter(function(e){return e.mode!=='finals'&&(!want||e.mode===want);}).slice(0,want?8:6);
+    sel.innerHTML=list.map(function(e){var dt=new Date(e.date+'T12:00:00');return '<option value="'+e.date+'|'+e.mode+'">'+fmt.format(dt)+' · '+MODE[e.mode][0]+(e.note?' ('+e.note+')':'')+'</option>';}).join('')||'<option value="">Kein Termin in den nächsten Monaten</option>';
+    minfo.textContent=want?MODE[want][1]+(list.length?' · nächster Termin am '+fmt.format(new Date(list[0].date+'T12:00:00')):''):'Wähle einen Spielmodus, um nur dessen Termine zu sehen.';
+  }
+  msel.addEventListener('change',fillDates);fillDates();
   var form=document.getElementById('signup'),done=document.getElementById('signup-done'),err=document.getElementById('su-err');
   form.addEventListener('submit',function(e){
     e.preventDefault();
@@ -1038,9 +1093,9 @@ footer a:hover{text-decoration:underline}
     if(!ok){err.textContent=msgs.join(' ');err.hidden=false;return;}
     err.hidden=true;
     var n=+document.getElementById('su-count').value;
-    document.getElementById('done-text').textContent='Danke, '+name.value.trim().split(' ')[0]+'! Wir sehen uns am '+sel.options[sel.selectedIndex].textContent+' im Bismarck Bistro'+(n>1?' mit '+n+' Personen':'')+'. Im fertigen System bekommt der Verein jetzt automatisch eine E-Mail.';
+    document.getElementById('done-text').textContent='Danke, '+name.value.trim().split(' ')[0]+'! Wir sehen uns am '+(sel.selectedIndex>=0?sel.options[sel.selectedIndex].textContent:'nächsten Donnerstag')+' im Bismarck Bistro'+(n>1?' mit '+n+' Personen':'')+'. Im fertigen System bekommt der Verein jetzt automatisch eine E-Mail.';
     form.hidden=true;done.hidden=false;
   });
-  document.getElementById('su-again').addEventListener('click',function(){form.reset();done.hidden=true;form.hidden=false;});
+  document.getElementById('su-again').addEventListener('click',function(){form.reset();fillDates();done.hidden=true;form.hidden=false;});
 })();
 </script>

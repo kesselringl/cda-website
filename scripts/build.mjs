@@ -56,7 +56,8 @@ const GOOGLE = /\s*<link[^>]+fonts\.(googleapis|gstatic)\.com[^>]*>/g;
 const DESC = {
   'index.html': 'Clochard Darter Augsburg e.V. – Steeldart in Augsburg seit 1986. Vier Ligamannschaften, 2. Bundesliga Süd, offene Competition jeden Donnerstag im Bismarck Bistro.',
   'impressum.html': 'Impressum des Clochard Darter Augsburg e.V.',
-  'datenschutz.html': 'Datenschutzerklärung des Clochard Darter Augsburg e.V.'
+  'datenschutz.html': 'Datenschutzerklärung des Clochard Darter Augsburg e.V.',
+  'competition.html': 'Simulation der neuen CDA-Donnerstags-Competition mit CDA Masters, Rangliste, Statistiken und Finals – keine echten Ergebnisse.'
 };
 
 for (const f of (await readdir(SITE)).filter(n => n.endsWith('.html'))) {
