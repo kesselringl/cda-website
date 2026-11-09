@@ -456,12 +456,12 @@ simSeason('2026',null);
 /* ================= Oberfläche ================= */
 RNG=Math.random;
 var VENUES={bistro:{name:'Bismarck Bistro',boards:['pc','pc'],note:'2 Boards · je ein PC'},tsv:{name:'TSV Dinkelscherben',boards:['tablet','tablet','tablet','pc','pc','pc'],note:'6 Boards · Tablets und PCs'}};
-var S={legs:{lvl:0,auto:false,target:'23:30',fh:7,custom:null},view:SITE?'season':'gate',role:null,me:null,login:{},mode:'m501',season:'2026',showAll:false,venue:'bistro',boards:['pc','pc'],checked:{},ev:null,input:{},msg:{},sort:{k:'avg',d:-1},duel:[1,3],pid:1,back:'season'};
+var S={legs:{lvl:0,auto:true,target:'23:00',fh:7,custom:null},view:SITE?'season':'gate',role:null,me:null,login:{},mode:'m501',season:'2026',showAll:false,venue:'bistro',boards:['pc','pc'],checked:{},ev:null,input:{},msg:{},sort:{k:'avg',d:-1},duel:[1,3],pid:1,back:'season'};
 [1,2,3,4,11,12,15,10,20,7,26].forEach(function(i){S.checked[i]=true;});
 var TONIGHT='2027-01-14';
 function newTonight(){S.ev=newEv(S.mode,TONIGHT,S.boards);S.input={};S.msg={};}
 newTonight();
-(function(){var ev=S.ev;start(ev,Object.keys(S.checked).map(Number));for(var i=0;i<3;i++){simMatch(ev,0);simMatch(ev,1);}for(var j=0;j<9;j++)simVisit(ev,0);})();
+(function(){var ev=S.ev,ck=Object.keys(S.checked).map(Number);ev.legs=chooseLegs(MD(ev),ck.length).L;start(ev,ck);for(var i=0;i<3;i++){simMatch(ev,0);simMatch(ev,1);}for(var j=0;j<9;j++)simVisit(ev,0);})();
 
 var V=DOC.getElementById('view');
 function nb(){return S.ev.phase==='checkin'?S.boards.length:S.ev.boards.length;}
@@ -601,11 +601,11 @@ function legBox(md,LG,p){
   var seg=LEG_LVL.map(function(n,i){return btn('leglvl',n,!S.legs.auto&&!S.legs.custom&&S.legs.lvl===i,' data-l="'+i+'"');}).join('')+btn('legauto','Automatisch',S.legs.auto);
   var tgt='';
   if(S.legs.auto)tgt=md.finals?'<label class="legt">Maximale Spielzeit <select data-legfh="1">'+[5,6,7,8,9].map(function(h){return '<option value="'+h+'"'+(S.legs.fh===h?' selected':'')+'>'+h+' Stunden</option>';}).join('')+'</select></label>'
-    :'<label class="legt">Fertig bis <select data-legtarget="1">'+['22:30','23:00','23:30','0:00'].map(function(t){return '<option'+(S.legs.target===t?' selected':'')+'>'+t+' Uhr</option>';}).join('')+'</select></label>';
+    :'<label class="legt">Fertig bis <select data-legtarget="1">'+['22:30','23:00','23:30'].map(function(t){return '<option'+(S.legs.target===t?' selected':'')+'>'+t+' Uhr</option>';}).join('')+'</select></label>';
   var rows=(md.finals?[['g','Vorrunde'],['g2','Zwischenrunde'],['ko','K.-o.-Runde'],['fin','Finale']]:[['g','Gruppenphase'],['ko','K.-o.-Runde'],['fin','Finale']]).map(function(r){var ft=L[r[0]],def=legPreset(md,0)[r[0]];
     return '<li class="'+(ft<def?'cut':'')+'"><span>'+r[1]+'</span><span class="lsw"><button data-act="legadj" data-k="'+r[0]+'" data-d="-1" aria-label="'+r[1]+' kürzer"'+(ft<=1?' disabled':'')+'>−</button><b>'+bo(ft)+'</b><button data-act="legadj" data-k="'+r[0]+'" data-d="1" aria-label="'+r[1]+' länger"'+(ft>=4?' disabled':'')+'>+</button></span></li>';}).join('');
-  var note=S.legs.auto?(LG.fit?'Der Computer hat <b>„'+LEG_LVL[LG.lvl]+'“</b> gewählt. '+(LG.lvl===0?'Es passt ohne Kürzen.':'Er kürzt zuerst die '+(md.finals?'Vorrunde':'Gruppenphase')+', dann die '+(md.finals?'Zwischenrunde, dann die K.-o.-Runde':'K.-o.-Runde')+'. Das Finale bleibt am längsten.'):'<span class="warn-t">Auch mit den kürzesten Legs wird es knapp. Mehr Boards einplanen.</span>')
-    :S.legs.custom?'Eigene Einstellung. Mit einer Stufe oben geht es zurück zum Vorschlag.':'Kürzer: '+(md.finals?'Vorrunde':'Gruppenphase')+' nur Best of 1 · Kurz: zusätzlich '+(md.finals?'Zwischenrunde Best of 1':'Finale Best of 3')+' · Sehr kurz: auch die K.-o.-Runde kürzer.';
+  var note=(S.legs.auto&&S.legs.target==='23:00'&&!MODES[S.mode].finals?'Vorgabe: Der Abend ist immer bis 23 Uhr fertig. ':'')+(S.legs.auto?(LG.fit?'Der Computer hat <b>„'+LEG_LVL[LG.lvl]+'“</b> gewählt. '+(LG.lvl===0?'Es passt ohne Kürzen.':'Er kürzt zuerst die '+(md.finals?'Vorrunde':'Gruppenphase')+', dann die '+(md.finals?'Zwischenrunde, dann die K.-o.-Runde':'K.-o.-Runde')+'. Das Finale bleibt am längsten.'):'<span class="warn-t">Auch mit den kürzesten Legs wird es knapp. Mehr Boards einplanen.</span>')
+    :S.legs.custom?'Eigene Einstellung. Mit einer Stufe oben geht es zurück zum Vorschlag.':'Kürzer: '+(md.finals?'Vorrunde':'Gruppenphase')+' nur Best of 1 · Kurz: zusätzlich '+(md.finals?'Zwischenrunde Best of 1':'Finale Best of 3')+' · Sehr kurz: auch die K.-o.-Runde kürzer.');
   return '<div class="legbox"><h3>Legs</h3><div class="legseg">'+seg+'</div>'+tgt+'<ul class="legrows">'+rows+'</ul><p class="cap">'+note+'</p></div>';
 }
 function mItem(ev,m){
