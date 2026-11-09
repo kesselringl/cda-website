@@ -189,6 +189,7 @@ tr:last-child td{border-bottom:0}
 .pc-stats div+div{border-left:1px solid var(--line)}
 .pc-stats b{font-family:var(--f-display);font-weight:800;font-size:1.25rem;line-height:1;font-variant-numeric:tabular-nums}
 .pc-stats span{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.pc-stats.three{grid-template-columns:1fr 1fr 1fr}.pc-stats.three div{padding:8px 7px}.pc-stats.three b{font-size:1.08rem}.pc-stats.three span{letter-spacing:.06em;font-size:.58rem}
 .pc-hint{font-size:.7rem;color:var(--muted);padding:0 10px 8px;margin-top:-2px}
 .pcard.has-profile .pc-hint{color:var(--green);font-weight:700}
 .pc-back h4{margin:0 0 8px;font-family:var(--f-display);font-weight:900;font-size:1.2rem;text-transform:uppercase;line-height:1}
@@ -896,7 +897,7 @@ footer a:hover{text-decoration:underline}
     var front='<div class="pc-face pc-front"><div class="pc-photo">'+(pr.photo?'<img src="'+esc(pr.photo)+'" alt="Foto von '+esc(n)+'" loading="lazy">':'<span class="pc-mono" aria-hidden="true">'+ini+'</span>')+
       '<span class="pc-badge">CDA '+t.roman+'</span>'+(other?'<span class="pc-badge b2">auch CDA '+esc(other)+'</span>':'')+
       '<span class="pc-name"><small>'+esc(pr.nick?'„'+pr.nick+'“':first)+'</small><b>'+esc(pr.nick?n:last)+'</b></span></div>'+
-      '<div class="pc-stats"><div><b>'+rec+'</b><span>Einzel 26/27</span></div><div><b>'+q+'</b><span>Siegquote</span></div></div>'+
+      '<div class="pc-stats'+(t.avg?' three':'')+'"><div><b>'+rec+'</b><span>Einzel 26/27</span></div><div><b>'+q+'</b><span>Siegquote</span></div>'+(t.avg?'<div><b>'+(t.avg[n]?t.avg[n].toFixed(2).replace('.',','):'–')+'</b><span>Average</span></div>':'')+'</div>'+
       '<div class="pc-hint">'+(has?'Antippen für Steckbrief':'Steckbrief folgt')+'</div></div>';
     var back=has?'<div class="pc-face pc-back" aria-hidden="true"><h4>'+esc(n)+'</h4><dl>'+fields.map(function(f){return '<div><dt>'+f[1]+'</dt><dd>'+esc(String(pr[f[0]]))+'</dd></div>';}).join('')+'</dl>'+(pr.motto?'<p class="motto">„'+esc(pr.motto)+'“</p>':'')+'</div>':'';
     return '<li class="pcard'+(has?' has-profile':'')+'"><button type="button" class="pc-btn"'+(has?' aria-label="Steckbrief von '+esc(n)+' umdrehen"':' tabindex="-1" aria-disabled="true"')+'><span class="pc-in">'+front+back+'</span></button></li>';
@@ -1006,7 +1007,7 @@ footer a:hover{text-decoration:underline}
       if(me.pos){
         teams[1].table={label:'Platz '+me.pos+' · '+me.points+' Punkte'};
       }
-      if(t1.players){teams[1].stats={};t1.players.forEach(function(p){if(p.single)teams[1].stats[p.name]=p.single;});}
+      if(t1.players){teams[1].stats={};teams[1].avg={};t1.players.forEach(function(p){if(p.single)teams[1].stats[p.name]=p.single;if(p.avg)teams[1].avg[p.name]=p.avg;});}
     }
     ['2','3','4'].forEach(function(k){var t=T[k],tm=teams[k];if(!t||!t.table||!tm)return;var lab='CDA '+tm.roman,us=t.table.filter(function(r){return r.us;})[0];if(!us)return;
       tm.table={label:'Platz '+us.pos+' · '+us.points+' Punkte',stand:'nach '+us.played+' Begegnungen',rows:pick(t.table).map(function(r){return r?[r.pos,shortName(r.name,lab),r.sets,r.points,r.us?1:0]:['…'];})};

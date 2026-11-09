@@ -82,7 +82,10 @@ test('3K Spieltage, Tabelle und Spieler', () => {
   const players = { playerResults: [{ displayName: 'Kesselring, Leon', team: { name: CDA }, member: { player: { firstnameLastname: 'Leon Kesselring' } },
     singleResult: { matchCount: 6, matchWon: 5, matchLost: 1, legs1: 22, legs2: 9 }, doubleResult: { matchCount: 6, matchWon: 4, matchLost: 2 }, totalResult: { matchCount: 12, matchWon: 9, matchLost: 3 } },
     { displayName: 'Bauer, X', team: { name: 'DVK 1' }, singleResult: {} }] };
-  const r = parse3K(phase, rounds, players, { teamName: CDA, homeVenueMatch: 'Dinkelscherben' });
+  const stats = [{ displayName: 'Kesselring, Leon', team: { name: CDA }, dartsTotal: 793, scoreTotal: 19210 },
+    { displayName: 'Kesselring, Leon & Rauh, Bastian', team: { name: CDA }, dartsTotal: 100, scoreTotal: 2000 },
+    { displayName: 'Bauer, X', team: { name: 'DVK 1' }, dartsTotal: 10, scoreTotal: 500 }];
+  const r = parse3K(phase, rounds, players, { teamName: CDA, homeVenueMatch: 'Dinkelscherben' }, stats);
   assert.equal(r.table[0].name, CDA);
   assert.equal(r.table[0].points, 3);
   assert.equal(r.table[0].sets, '13:11');
@@ -92,7 +95,7 @@ test('3K Spieltage, Tabelle und Spieler', () => {
   assert.equal(r.matchdays[0].games[0].time, '15:00');
   assert.equal(r.matchdays[1].home, true);
   assert.deepEqual(r.matchdays[1].games.map(g => g.time), ['12:00', '18:00']);
-  assert.deepEqual(r.players, [{ name: 'Leon Kesselring', single: '5:1', double: '4:2', total: '9:3', singleLegs: '22:9' }]);
+  assert.deepEqual(r.players, [{ name: 'Leon Kesselring', single: '5:1', double: '4:2', total: '9:3', singleLegs: '22:9', avg: 72.67 }]);
 });
 
 console.log(`${n} Tests bestanden`);

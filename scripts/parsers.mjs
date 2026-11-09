@@ -33,7 +33,7 @@ const rec = s => { const m = String(s || '').match(/(\d+)\s*:\s*(\d+)/); return 
  * @param players Antwort von /frontend/event/{id}/player/results
  * @param cfg     Eintrag aus sources.json
  */
-export function parse3K(phase, rounds, players, cfg) {
+export function parse3K(phase, rounds, players, cfg, stats) {
   const us = cfg.teamName;
   const allMatches = [];
   const roundInfo = (phase.rounds || []).map(r => ({ id: r.id, name: r.name, index: r.index, date: berlinDateTime(r.dateFrom).date }));
@@ -95,6 +95,12 @@ export function parse3K(phase, rounds, players, cfg) {
     };
   });
 
+  // Saison-Average im Einzel: Punkte / Darts × 3 (Doppel-Einträge enthalten „&“ und bleiben außen vor)
+  const avg = {};
+  for (const e of Array.isArray(stats) ? stats : []) {
+    if (!e.team || e.team.name !== us || /&/.test(e.displayName || '') || !e.dartsTotal) continue;
+    avg[firstLast(e.displayName)] = Math.round(e.scoreTotal / e.dartsTotal * 300) / 100;
+  }
   const pl = ((players && players.playerResults) || [])
     .filter(p => p.team && p.team.name === us)
     .map(p => {
@@ -105,7 +111,8 @@ export function parse3K(phase, rounds, players, cfg) {
         single: s.matchCount ? `${s.matchWon}:${s.matchLost}` : null,
         double: d.matchCount ? `${d.matchWon}:${d.matchLost}` : null,
         total: g.matchCount ? `${g.matchWon}:${g.matchLost}` : null,
-        singleLegs: s.matchCount ? `${s.legs1}:${s.legs2}` : null
+        singleLegs: s.matchCount ? `${s.legs1}:${s.legs2}` : null,
+        avg: avg[nm] ?? avg[firstLast(p.displayName)] ?? null
       };
     });
 

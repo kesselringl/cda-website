@@ -43,7 +43,9 @@ async function load3K(cfg) {
   const rounds = [];
   for (const r of phase.rounds || []) rounds.push(await get(`${base}/phase/${cfg.phaseId}/round/${r.id}`));
   const players = await get(`${base}/player/results?`);
-  const res = parse3K(phase, rounds, players, cfg);
+  let stats = null;
+  try { stats = await get(`${base}/statistics?`); } catch (e) { console.warn('! 3K-Statistik (Average) nicht abrufbar:', e.message); }
+  const res = parse3K(phase, rounds, players, cfg, stats);
   if (!res.table.some(r => r.us)) throw new Error('3K: eigene Mannschaft nicht in der Tabelle gefunden');
   if (!res.matchdays.length) throw new Error('3K: keine Spieltage gefunden');
   return res;
