@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-07T21:36:40.460Z",
+ "updated": "2026-11-09T04:16:56.802Z",
  "season": "2026/27",
  "teams": {
   "1": {
@@ -7,7 +7,7 @@
    "league": "3K WINMAU 2. Bundesliga Süd",
    "source": "3k",
    "sourceUrl": "https://portal.3k-darts.com/frontend/events/10/event/1408/phase/2101/group/40479",
-   "fetched": "2026-11-07T21:36:40.460Z",
+   "fetched": "2026-11-09T04:16:56.802Z",
    "table": [
     {
      "pos": 1,
@@ -449,7 +449,7 @@
    "league": "1. Bezirksliga Schwaben",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211693",
-   "fetched": "2026-11-07T21:36:40.460Z",
+   "fetched": "2026-11-09T04:16:56.802Z",
    "table": [
     {
      "pos": 1,
@@ -898,7 +898,7 @@
    "league": "3. Bezirksliga Schwaben Süd",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211696",
-   "fetched": "2026-11-07T21:36:40.460Z",
+   "fetched": "2026-11-09T04:16:56.802Z",
    "table": [
     {
      "pos": 1,
@@ -1293,7 +1293,7 @@
    "league": "4. Bezirksliga Schwaben Süd 4",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211701",
-   "fetched": "2026-11-07T21:36:40.460Z",
+   "fetched": "2026-11-09T04:16:56.802Z",
    "table": [
     {
      "pos": 1,
@@ -1699,5 +1699,5 @@
    ]
   }
  },
- "week": "2026-W45"
+ "week": "2026-W46"
 }
