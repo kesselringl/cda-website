@@ -168,10 +168,37 @@ tr:last-child td{border-bottom:0}
 .team-info dt{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--board-muted)}
 .team-info dd{margin:2px 0 0;font-weight:600}
 .team-info .tbd{color:#F0A54A}
-.roster{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;list-style:none;margin:0;padding:0;min-width:0}
-.roster li{display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);font-weight:600;min-width:0}
-.roster li .ini{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--chip);color:var(--green);font-family:var(--f-display);font-weight:800;font-size:1rem}
-.roster li small{display:block;font-weight:500;color:var(--muted);font-size:.75rem}
+.roster{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:14px;list-style:none;margin:0;padding:0;min-width:0}
+.pcard{perspective:1000px;min-width:0}
+.pc-btn{display:block;width:100%;padding:0;border:0;background:none;font:inherit;color:inherit;text-align:left;cursor:default}
+.pcard.has-profile .pc-btn{cursor:pointer}
+.pc-in{position:relative;display:grid;transition:transform .6s cubic-bezier(.2,.8,.2,1);transform-style:preserve-3d}
+.pcard.flipped .pc-in{transform:rotateY(180deg)}
+.pc-face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0;border:1px solid var(--line);background:var(--surface)}
+.pc-back{transform:rotateY(180deg);background:var(--board);color:var(--board-ink);border-color:var(--board-line);padding:14px 14px 12px}
+.pc-photo{position:relative;aspect-ratio:4/5;background:radial-gradient(circle at 50% 42%,#1f2d23 0 30%,transparent 30.5%),radial-gradient(circle at 50% 42%,transparent 0 41%,rgba(12,161,45,.35) 41.5% 43%,transparent 43.5%),radial-gradient(circle at 50% 42%,transparent 0 54%,rgba(227,2,18,.3) 54.5% 56%,transparent 56.5%),linear-gradient(160deg,#16211a,#0b110d);overflow:hidden;max-width:100%}
+.pc-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%}
+.pc-mono{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);font-family:var(--f-display);font-weight:900;font-size:3.4rem;line-height:1;color:transparent;-webkit-text-stroke:2px #EEF2EC;letter-spacing:.02em}
+.pc-badge{position:absolute;left:10px;top:10px;font-size:.66rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;background:var(--green-bright);color:#fff;padding:3px 7px;border-radius:4px}
+.pc-badge.b2{left:auto;right:10px;background:#EEF2EC;color:#111913}
+.pc-name{position:absolute;left:0;right:0;bottom:0;padding:28px 12px 10px;background:linear-gradient(transparent,rgba(5,8,6,.88));color:#fff}
+.pc-name small{display:block;font-size:.78rem;font-weight:600;opacity:.85;line-height:1.2}
+.pc-name b{display:block;font-family:var(--f-display);font-weight:900;font-size:1.55rem;text-transform:uppercase;line-height:.95;overflow-wrap:anywhere}
+.pc-stats{display:grid;grid-template-columns:1fr 1fr;border-top:3px solid var(--red)}
+.pc-stats div{padding:8px 10px;display:flex;flex-direction:column;min-width:0}
+.pc-stats div+div{border-left:1px solid var(--line)}
+.pc-stats b{font-family:var(--f-display);font-weight:800;font-size:1.25rem;line-height:1;font-variant-numeric:tabular-nums}
+.pc-stats span{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.pc-hint{font-size:.7rem;color:var(--muted);padding:0 10px 8px;margin-top:-2px}
+.pcard.has-profile .pc-hint{color:var(--green);font-weight:700}
+.pc-back h4{margin:0 0 8px;font-family:var(--f-display);font-weight:900;font-size:1.2rem;text-transform:uppercase;line-height:1}
+.pc-back dl{margin:0;display:grid;gap:6px;font-size:.8rem;overflow:auto}
+.pc-back dt{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--board-muted)}
+.pc-back dd{margin:0;font-weight:600;line-height:1.3;overflow-wrap:anywhere}
+.pc-back .motto{font-style:italic;color:var(--green-bright);font-weight:600;font-size:.85rem;margin:auto 0 0;padding-top:8px;line-height:1.3}
+.pc-btn:focus-visible{outline:none}.pc-btn:focus-visible .pc-face{outline:3px solid var(--green-bright);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.pc-in{transition:none}}
+@media (max-width:420px){.roster{grid-template-columns:1fr 1fr;gap:10px}.pc-name b{font-size:1.3rem}.pc-mono{font-size:2.8rem}}
 .roster-note{margin-top:14px;font-size:.85rem;color:var(--muted)}
 
 /* Spieltage CDA I */
@@ -234,7 +261,6 @@ tr:last-child td{border-bottom:0}
 .round-label{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:12px 16px 4px;display:block}
 .season-link{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;padding:16px 20px}
 .season-link a{font-weight:700;color:var(--green)}
-.roster li small.stat{color:var(--green);font-weight:700}
 @media (max-width:760px){.team-season{grid-template-columns:1fr}.team-season .plan{grid-template-columns:1fr}.g-list li{grid-template-columns:76px minmax(0,1fr) auto}}
 
 /* Chronik */
@@ -732,10 +758,10 @@ footer a:hover{text-decoration:underline}
 
   // Kader
   var teams={
-    1:{roman:'I',table:{label:'Platz 1 · 10 Punkte'},link:true,liga:'3K WINMAU 2. Bundesliga Süd',ort:'Sportheim TSV Dinkelscherben',note:'Hinter den Namen steht die Einzelbilanz der Saison 2026/27 nach Spieltag 3. Auch im BDV-8er-Cup und im Schwabenpokal am Start.',
+    1:{roman:'I',table:{label:'Platz 1 · 10 Punkte'},link:true,liga:'3K WINMAU 2. Bundesliga Süd',ort:'Sportheim TSV Dinkelscherben',note:'Auf jeder Karte steht die Einzelbilanz der Saison. Steckbriefe mit Foto kommen nach und nach dazu. Auch im BDV-8er-Cup und im Schwabenpokal am Start.',
        stats:{'Leon Kesselring':'5:1','Marcus Kreiner':'4:2','Franz Rötzsch':'3:1','Bastian Rauh':'3:1','Ivo Schubert':'3:1','Marco Geiger':'3:3','Florian Kaiser':'2:2','Jürgen Pistl':'2:2','Markus Stiegeler':'1:0','Simon Schreier':'1:2','Tobias Jäckle':'0:1','Florian Zitzler':'0:2','Markus Görg':'0:3'},
        p:['Markus Stiegeler','Markus Görg','Simon Schreier','Leon Crump','Franz Rötzsch','Ivo Schubert','Florian Kaiser','Marco Geiger','Leon Kesselring','Marcus Kreiner','Florian Zitzler','Bastian Rauh','Jürgen Pistl','Leo Hörmann','Tobias Jäckle','Sancha Koal','Daniel Müller','Simon Seifert']},
-    2:{roman:'II',liga:'1. Bezirksliga Schwaben',ort:'Billard Café Dinkelscherben',note:'Hinter den Namen steht die Einzelbilanz der Saison 2026/27. Leo Hörmann und Robert Strehl sind in zwei Mannschaften gemeldet.',
+    2:{roman:'II',liga:'1. Bezirksliga Schwaben',ort:'Billard Café Dinkelscherben',note:'Auf jeder Karte steht die Einzelbilanz der Saison. Steckbriefe mit Foto kommen nach und nach dazu.',
        table:{label:'Platz 1 · 8:0 Punkte',stand:'nach 4 Begegnungen',rows:[[1,'CDA II','26:14','8:0',1],[2,'D´Augschburger','31:19','8:2'],[3,'DJK Lechhausen II','27:13','7:1'],[4,'D.C. Warriors Peterswörth','27:13','5:3'],[5,'Steeldarter Kühlenthal','21:29','5:5']]},
        stats:{'Jonas Thoma':'8:0','Andreas Mors':'4:2','Leo Hörmann':'3:1','Ewald Lautenschlager':'3:5','Martin Hungbaur':'2:0','Robert Strehl':'0:2','Michael Voigt':'0:2'},
        games:[
@@ -762,7 +788,7 @@ footer a:hover{text-decoration:underline}
         ['R','2027-06-02','20:00','CDA II','DJK Lechhausen II'],
         ['R','2027-06-07','20:00','SV Steingriff II','CDA II']],
        p:['Andreas Mors','Robert Strehl','Michael Voigt','Claus Mader','Leo Hörmann','Jonas Thoma','Ewald Lautenschlager','Dominik Thoma','Martin Hungbaur']},
-    3:{roman:'III',liga:'3. Bezirksliga Schwaben Süd',ort:'Bismarck Bistro, Augsburg',note:'Hinter den Namen steht die Einzelbilanz der Saison 2026/27. Robert Strehl ist auch für CDA II gemeldet.',
+    3:{roman:'III',liga:'3. Bezirksliga Schwaben Süd',ort:'Bismarck Bistro, Augsburg',note:'Auf jeder Karte steht die Einzelbilanz der Saison. Steckbriefe mit Foto kommen nach und nach dazu.',
        table:{label:'Platz 8 · 3:5 Punkte',stand:'nach 4 Begegnungen',rows:[[1,'Foxvalley DC','27:13','7:1'],[2,'DJK Lechhausen V','32:18','7:3'],[3,'Pegasus Darter II','22:18','6:2'],['…'],[7,'FC Ebershausen Darts','15:15','3:3'],[8,'CDA III','21:19','3:5',1],[9,'SV Bergheim Darts','20:20','3:5']]},
        stats:{'Robert Strehl':'6:2','Markus Ziegler':'5:1','Simon Schmidbaur':'3:1','Carola Wüstner':'2:2','Dennis Mandl':'2:6','Manfred Tochtermann':'0:2'},
        games:[
@@ -787,7 +813,7 @@ footer a:hover{text-decoration:underline}
         ['R','2027-06-03','20:00','Pegasus Darter II','CDA III'],
         ['R','2027-06-08','20:00','CDA III','DJK Lechhausen VI']],
        p:['Manfred Tochtermann','Robert Strehl','Carola Wüstner','Dennis Mandl','Markus Ziegler','Simon Schmidbaur']},
-    4:{roman:'IV',liga:'4. Bezirksliga Schwaben Süd 4',ort:'Bismarck Bistro, Augsburg',note:'Hinter den Namen steht die Einzelbilanz der Saison 2026/27.',
+    4:{roman:'IV',liga:'4. Bezirksliga Schwaben Süd 4',ort:'Bismarck Bistro, Augsburg',note:'Auf jeder Karte steht die Einzelbilanz der Saison. Steckbriefe mit Foto kommen nach und nach dazu.',
        table:{label:'Platz 2 · 7:1 Punkte',stand:'nach 4 Begegnungen',rows:[[1,'Grüne Eiche Schönbach IV','30:10','8:0'],[2,'CDA IV','25:15','7:1',1],[3,'SC Oberbernbach II','21:9','6:0'],[4,'D´Augschburger III','25:15','5:3'],[5,'Steeldarter Kühlenthal VI','22:8','4:2']]},
        stats:{'Maximilian Urban':'7:1','Andreas Wengenmayr':'4:0','Clemens Fleischmann':'4:2','Sebastian Röck':'3:4','Fabian Schreyer':'1:1','Gerald Nitzer':'0:2','Adrian Pirner':'0:3'},
        games:[
@@ -827,11 +853,7 @@ footer a:hover{text-decoration:underline}
     if(t.table)document.getElementById('t-table').textContent=t.table.label;
     renderSeason(t);
     var sorted=t.p.slice().sort(function(a,b){var la=a.split(' ').pop(),lb=b.split(' ').pop();return la.localeCompare(lb,'de');});
-    document.getElementById('roster').innerHTML=sorted.map(function(n){
-      var parts=n.split(' '),ini=parts[0][0]+parts[parts.length-1][0];
-      var st=t.stats&&t.stats[n]?'<small class="stat">Einzel '+t.stats[n]+'</small>':'';
-      return '<li><span class="ini">'+esc(ini)+'</span><span>'+esc(n)+st+(multi[n]?'<small>'+multi[n]+'</small>':'')+'</span></li>';
-    }).join('');
+    document.getElementById('roster').innerHTML=sorted.map(function(n){return cardHTML(n,t);}).join('');
     document.querySelectorAll('.tab').forEach(function(b){b.setAttribute('aria-selected',String(b.id==='tab-'+id));});
     document.getElementById('panel-team').setAttribute('aria-labelledby','tab-'+id);
   }
@@ -860,6 +882,30 @@ footer a:hover{text-decoration:underline}
     var plan='<details class="panel"><summary>Kompletter Spielplan 2026/27</summary><div class="plan"><div><span class="round-label">Vorrunde</span><ul class="g-list">'+t.games.filter(function(g){return g[0]==='V';}).map(function(g){return gRow(g,us,false,v);}).join('')+'</ul></div><div><span class="round-label">Rückrunde</span><ul class="g-list">'+t.games.filter(function(g){return g[0]==='R';}).map(function(g){return gRow(g,us,false,v);}).join('')+'</ul></div></div></details>';
     box.innerHTML=tb+nx+res+plan;
   }
+
+  // Spielerkarten: Grunddaten automatisch, Foto und Steckbrief aus players.json (nur mit Einwilligung)
+  var PROFILES=window.CDA_PROFILES||{};
+  var FIELDS=[['since','Im Verein seit'],['hand','Wurfhand'],['checkout','Lieblings-Checkout'],['darts','Darts'],['walkon','Walk-on-Song'],['typ','Spielertyp'],['erfolg','Größter Erfolg'],['highlight','Bestes Highlight'],['profi','Lieblings-Profi'],['beruf','Beruf'],['hobby','Hobby'],['cda','Was ich am CDA mag']];
+  function cardHTML(n,t){
+    var pr=PROFILES[n]||{},parts=n.split(' '),first=parts.slice(0,-1).join(' '),last=parts[parts.length-1];
+    var ini=(parts[0][0]+last[0]).toUpperCase(),st=t.stats&&t.stats[n],q='–',rec='–';
+    if(st){var w=+st.split(':')[0],l=+st.split(':')[1];rec=st;q=(w+l)?Math.round(w/(w+l)*100)+' %':'–';}
+    var other=multi[n]?multi[n].replace('CDA '+t.roman,'').replace(/[+ ]/g,'').trim():'';
+    var fields=FIELDS.filter(function(f){return pr[f[0]];});
+    var has=!!(pr.photo||fields.length||pr.motto);
+    var front='<div class="pc-face pc-front"><div class="pc-photo">'+(pr.photo?'<img src="'+esc(pr.photo)+'" alt="Foto von '+esc(n)+'" loading="lazy">':'<span class="pc-mono" aria-hidden="true">'+ini+'</span>')+
+      '<span class="pc-badge">CDA '+t.roman+'</span>'+(other?'<span class="pc-badge b2">auch CDA '+esc(other)+'</span>':'')+
+      '<span class="pc-name"><small>'+esc(pr.nick?'„'+pr.nick+'“':first)+'</small><b>'+esc(pr.nick?n:last)+'</b></span></div>'+
+      '<div class="pc-stats"><div><b>'+rec+'</b><span>Einzel 26/27</span></div><div><b>'+q+'</b><span>Siegquote</span></div></div>'+
+      '<div class="pc-hint">'+(has?'Antippen für Steckbrief':'Steckbrief folgt')+'</div></div>';
+    var back=has?'<div class="pc-face pc-back" aria-hidden="true"><h4>'+esc(n)+'</h4><dl>'+fields.map(function(f){return '<div><dt>'+f[1]+'</dt><dd>'+esc(String(pr[f[0]]))+'</dd></div>';}).join('')+'</dl>'+(pr.motto?'<p class="motto">„'+esc(pr.motto)+'“</p>':'')+'</div>':'';
+    return '<li class="pcard'+(has?' has-profile':'')+'"><button type="button" class="pc-btn"'+(has?' aria-label="Steckbrief von '+esc(n)+' umdrehen"':' tabindex="-1" aria-disabled="true"')+'><span class="pc-in">'+front+back+'</span></button></li>';
+  }
+  document.getElementById('roster').addEventListener('click',function(e){
+    var c=e.target.closest('.pcard.has-profile');if(!c)return;
+    var f=c.classList.toggle('flipped');c.querySelector('.pc-back').setAttribute('aria-hidden',String(!f));c.querySelector('.pc-front').setAttribute('aria-hidden',String(f));
+  });
+  try{fetch('players.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(p){if(p&&typeof p==='object'){PROFILES=p;show(currentTeam);}}).catch(function(){});}catch(e){}
   document.querySelectorAll('.tab').forEach(function(b){b.addEventListener('click',function(){show(b.id.split('-')[1]);});});
   show('1');
 

@@ -41,3 +41,13 @@ npm run fetch   # holt die echten Daten nach site/data.json
 ```
 
 Dafür wird nur Node.js 20 oder neuer gebraucht. Weitere Pakete sind nicht nötig.
+
+## Spielerkarte ergänzen
+
+Jeder gemeldete Spieler hat automatisch eine Karte mit Initialen und Saisonbilanz. Foto und Steckbrief kommen **nur mit Einwilligung** dazu:
+
+1. Foto (Hochformat 4:5, CDA-Trikot) als `site/spieler/vorname-nachname.webp` hochladen (*Add file → Upload files*).
+2. In `site/players.json` einen Eintrag nach der `_vorlage` anlegen, mit dem Namen genau wie auf der Homepage, z. B. `"Leon Kesselring": { "photo": "spieler/leon-kesselring.webp", "since": "2019", … }`.
+3. Speichern (*Commit changes*). Nach 1–2 Minuten ist die Karte online. Ein Klick auf die Karte dreht sie um und zeigt den Steckbrief.
+
+Will ein Spieler seine Daten zurückziehen, einfach seinen Eintrag und sein Foto löschen.

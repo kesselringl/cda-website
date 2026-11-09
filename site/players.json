@@ -1,0 +1,20 @@
+{
+  "_hinweis": "Nur Spieler mit schriftlicher Einwilligung eintragen. Name genau wie auf der Homepage (Vorname Nachname). Leere Felder einfach weglassen. Fotos nach site/spieler/ hochladen (Hochformat 4:5, z. B. leon-kesselring.webp).",
+  "_vorlage": {
+    "photo": "spieler/vorname-nachname.webp",
+    "nick": "",
+    "since": "",
+    "hand": "",
+    "checkout": "",
+    "darts": "",
+    "walkon": "",
+    "typ": "",
+    "erfolg": "",
+    "highlight": "",
+    "profi": "",
+    "beruf": "",
+    "hobby": "",
+    "cda": "",
+    "motto": ""
+  }
+}
