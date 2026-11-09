@@ -376,7 +376,12 @@ input[type=text]:focus,select:focus,textarea:focus{outline:2px solid var(--green
 #masters{display:none}
 body.v-masters #masters{display:block;min-height:70vh}
 body.v-masters main>section:not(#masters){display:none}
-.nav a.nav-ms[aria-current="page"]{background:var(--board-line);box-shadow:inset 0 -2px 0 var(--green-bright)}
+.nav a.nav-ms{display:inline-flex;align-items:center;gap:6px;color:#F2C75C;border:1.5px solid #E6B43A;background:rgba(230,180,58,.1);font-weight:700}
+.nav a.nav-ms:hover{background:rgba(230,180,58,.22)}
+.nav a.nav-ms .ms-ic{font-size:.85em;line-height:1}
+.nav a.nav-ms .ms-new{font-size:.6rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;background:var(--red);color:#fff;border-radius:99px;padding:2px 6px;line-height:1.2}
+.nav a.nav-ms[aria-current="page"]{background:#E6B43A;color:#1a1300;border-color:#E6B43A}
+.nav a.nav-ms[aria-current="page"] .ms-new{display:none}
 #masters .sec-head{margin-bottom:24px}
 .ms-lead{margin:0}
 .ms-tabs{margin-bottom:24px}
@@ -459,7 +464,7 @@ footer a:hover{text-decoration:underline}
     <nav class="nav" id="nav" data-open="false">
       <a href="#saison">Saison</a>
       <a href="#teams">Teams</a>
-      <a href="#masters" class="nav-ms">CDA Masters</a>
+      <a href="#masters" class="nav-ms"><span class="ms-ic" aria-hidden="true">★</span>CDA Masters<span class="ms-new">Neu</span></a>
       <a href="#verein">Verein</a>
       <a href="#spielorte">Spielorte</a>
       <a href="#partner">Partner</a>
@@ -803,7 +808,7 @@ footer a:hover{text-decoration:underline}
     <div class="wrap">
       <div class="sec-head">
         <div><p class="eyebrow">Donnerstags-Competition · Bismarck Bistro</p><h2 id="masters-title">CDA Masters</h2></div>
-        <p class="lead ms-lead">Alle drei Wochen zählt der Donnerstag für die Masters-Rangliste. Wer mindestens fünf Abende spielt, ist bei den Finals im Dezember dabei, wo der ganze Masters-Pott ausgespielt wird.</p>
+        <p class="lead ms-lead">Alle drei Wochen zählt der Donnerstag für die Masters-Rangliste. Die besten 32 mit mindestens fünf Abenden spielen im Dezember die Finals, bei denen der ganze Masters-Pott ausgespielt wird.</p>
       </div>
       <div class="tabs ms-tabs" role="tablist" aria-label="CDA Masters">
         <button class="tab" role="tab" id="mst-stats" data-ms="stats" aria-selected="true" aria-controls="msp-stats">Rangliste &amp; Statistiken</button>
@@ -820,7 +825,7 @@ footer a:hover{text-decoration:underline}
           <article><span class="ms-n">15 €</span><h3>Startgeld</h3><p>5 € gehen am Abend als Preisgeld an die Top 3 (50 / 30 / 20 %). 10 € wandern in den Masters-Pott für die Finals.</p></article>
           <article><span class="ms-n">16</span><h3>Masters-Abende</h3><p>Jeder dritte Donnerstag ist ein Masters-Abend: 501 Double-out, erst Gruppen, dann K.-o. mit Spiel um Platz 3. Die Siegerehrung erscheint am Ende auf allen Boards.</p></article>
           <article><span class="ms-n">Punkte</span><h3>Rangliste</h3><p>5 Punkte fürs Mitspielen, 2 für jeden Spieler, der hinter dir landet, 1 pro gewonnenem Match, dazu +10 / +6 / +3 für die Plätze 1 bis 3. Es zählen die besten 10 Abende.</p></article>
-          <article><span class="ms-n">5</span><h3>Qualifikation</h3><p>Wer mindestens fünf Masters-Abende gespielt hat, ist für die Finals qualifiziert. Gesetzt wird nach Masters-Punkten.</p></article>
+          <article><span class="ms-n">Top 32</span><h3>Qualifikation</h3><p>Wer mindestens fünf Masters-Abende gespielt hat, ist qualifiziert. Bei den Finals dabei sind die besten 32 davon nach Masters-Punkten, gesetzt wird ebenfalls nach Punkten.</p></article>
           <article><span class="ms-n">Finals</span><h3>Saisonfinale</h3><p>Beim TSV Dinkelscherben auf 6 Boards: Vorrunde in Vierergruppen, Zwischenrunde in Dreiergruppen, dann K.-o. Die Plätze 1 bis 6 werden alle ausgespielt.</p></article>
           <article><span class="ms-n">40 %</span><h3>Pott-Verteilung</h3><p>Der Masters-Pott geht an die Top 5 der Finals: 40 / 25 / 17 / 12 / 6 %. Bei 15 Spielern im Schnitt kommen rund 2.400 € zusammen.</p></article>
         </div>
