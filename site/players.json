@@ -33,7 +33,14 @@
     "photo": "spieler/leon-crump.webp"
   },
   "Leon Kesselring": {
-    "photo": "spieler/leon-kesselring.webp"
+    "photo": "spieler/leon-kesselring.webp",
+    "nick": "The Lion",
+    "since": "2018",
+    "hand": "Rechts",
+    "typ": "Ruhig, ehrgeizig, zielstrebig",
+    "checkout": "96",
+    "darts": "Target, 22 g",
+    "cda": "Das Team steht immer über den einzelnen Spielern, der Zusammenhalt ist unfassbar."
   },
   "Marco Geiger": {
     "photo": "spieler/marco-geiger.webp"
