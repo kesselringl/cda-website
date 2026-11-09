@@ -892,7 +892,7 @@ footer a:hover{text-decoration:underline}
     if(st){var w=+st.split(':')[0],l=+st.split(':')[1];rec=st;q=(w+l)?Math.round(w/(w+l)*100)+' %':'–';}
     var other=multi[n]?multi[n].replace('CDA '+t.roman,'').replace(/[+ ]/g,'').trim():'';
     var fields=FIELDS.filter(function(f){return pr[f[0]];});
-    var has=!!(pr.photo||fields.length||pr.motto);
+    var has=!!(fields.length||pr.motto);
     var front='<div class="pc-face pc-front"><div class="pc-photo">'+(pr.photo?'<img src="'+esc(pr.photo)+'" alt="Foto von '+esc(n)+'" loading="lazy">':'<span class="pc-mono" aria-hidden="true">'+ini+'</span>')+
       '<span class="pc-badge">CDA '+t.roman+'</span>'+(other?'<span class="pc-badge b2">auch CDA '+esc(other)+'</span>':'')+
       '<span class="pc-name"><small>'+esc(pr.nick?'„'+pr.nick+'“':first)+'</small><b>'+esc(pr.nick?n:last)+'</b></span></div>'+

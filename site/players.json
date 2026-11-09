@@ -16,5 +16,35 @@
     "hobby": "",
     "cda": "",
     "motto": ""
+  },
+  "Bastian Rauh": {
+    "photo": "spieler/bastian-rauh.webp"
+  },
+  "Florian Kaiser": {
+    "photo": "spieler/florian-kaiser.webp"
+  },
+  "Ivo Schubert": {
+    "photo": "spieler/ivo-schubert.webp"
+  },
+  "Leo Hörmann": {
+    "photo": "spieler/leo-hoermann.webp"
+  },
+  "Leon Crump": {
+    "photo": "spieler/leon-crump.webp"
+  },
+  "Leon Kesselring": {
+    "photo": "spieler/leon-kesselring.webp"
+  },
+  "Marco Geiger": {
+    "photo": "spieler/marco-geiger.webp"
+  },
+  "Marcus Kreiner": {
+    "photo": "spieler/marcus-kreiner.webp"
+  },
+  "Sancha Koal": {
+    "photo": "spieler/sancha-koal.webp"
+  },
+  "Simon Seifert": {
+    "photo": "spieler/simon-seifert.webp"
   }
 }
