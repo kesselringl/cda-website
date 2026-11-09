@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-09T12:20:29.837Z",
+ "updated": "2026-11-09T23:16:17.384Z",
  "season": "2026/27",
  "teams": {
   "1": {
@@ -7,7 +7,7 @@
    "league": "3K WINMAU 2. Bundesliga Süd",
    "source": "3k",
    "sourceUrl": "https://portal.3k-darts.com/frontend/events/10/event/1408/phase/2101/group/40479",
-   "fetched": "2026-11-09T12:20:29.837Z",
+   "fetched": "2026-11-09T23:16:17.384Z",
    "table": [
     {
      "pos": 1,
@@ -464,7 +464,7 @@
    "league": "1. Bezirksliga Schwaben",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211693",
-   "fetched": "2026-11-09T12:20:29.837Z",
+   "fetched": "2026-11-09T23:16:17.384Z",
    "table": [
     {
      "pos": 1,
@@ -481,25 +481,25 @@
     {
      "pos": 2,
      "name": "D´Augschburger",
-     "played": 5,
-     "w": 4,
+     "played": 6,
+     "w": 5,
      "d": 0,
      "l": 1,
-     "sets": "31:19",
+     "sets": "38:22",
      "legs": "112:83",
-     "points": "8:2",
+     "points": "10:2",
      "us": false
     },
     {
      "pos": 3,
      "name": "DJK Lechhausen II",
-     "played": 4,
-     "w": 3,
+     "played": 5,
+     "w": 4,
      "d": 1,
      "l": 0,
-     "sets": "27:13",
-     "legs": "98:63",
-     "points": "7:1",
+     "sets": "36:14",
+     "legs": "125:72",
+     "points": "9:1",
      "us": false
     },
     {
@@ -553,13 +553,13 @@
     {
      "pos": 8,
      "name": "Walter Frosch Darters",
-     "played": 5,
+     "played": 6,
      "w": 1,
      "d": 2,
-     "l": 2,
-     "sets": "23:27",
-     "legs": "92:101",
-     "points": "4:6",
+     "l": 3,
+     "sets": "24:36",
+     "legs": "101:128",
+     "points": "4:8",
      "us": false
     },
     {
@@ -577,13 +577,13 @@
     {
      "pos": 10,
      "name": "Dscheina Darter Donauwörth",
-     "played": 4,
+     "played": 5,
      "w": 1,
      "d": 0,
-     "l": 3,
-     "sets": "14:26",
+     "l": 4,
+     "sets": "17:33",
      "legs": "64:90",
-     "points": "2:6",
+     "points": "2:8",
      "us": false
     },
     {
@@ -913,10 +913,22 @@
    "league": "3. Bezirksliga Schwaben Süd",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211696",
-   "fetched": "2026-11-09T12:20:29.837Z",
+   "fetched": "2026-11-09T23:16:17.384Z",
    "table": [
     {
      "pos": 1,
+     "name": "Foxvalley DC",
+     "played": 5,
+     "w": 4,
+     "d": 1,
+     "l": 0,
+     "sets": "35:15",
+     "legs": "122:75",
+     "points": "9:1",
+     "us": false
+    },
+    {
+     "pos": 2,
      "name": "Pegasus Darter II",
      "played": 5,
      "w": 3,
@@ -928,7 +940,7 @@
      "us": false
     },
     {
-     "pos": 2,
+     "pos": 3,
      "name": "Rabbits Lechfeld",
      "played": 4,
      "w": 3,
@@ -940,27 +952,15 @@
      "us": false
     },
     {
-     "pos": 3,
-     "name": "Foxvalley DC",
-     "played": 4,
-     "w": 3,
-     "d": 1,
-     "l": 0,
-     "sets": "27:13",
-     "legs": "96:61",
-     "points": "7:1",
-     "us": false
-    },
-    {
      "pos": 4,
      "name": "DJK Lechhausen V",
-     "played": 5,
+     "played": 6,
      "w": 3,
      "d": 1,
-     "l": 1,
-     "sets": "32:18",
-     "legs": "114:78",
-     "points": "7:3",
+     "l": 2,
+     "sets": "34:26",
+     "legs": "128:104",
+     "points": "7:5",
      "us": false
     },
     {
@@ -1308,7 +1308,7 @@
    "league": "4. Bezirksliga Schwaben Süd 4",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211701",
-   "fetched": "2026-11-09T12:20:29.837Z",
+   "fetched": "2026-11-09T23:16:17.384Z",
    "table": [
     {
      "pos": 1,
