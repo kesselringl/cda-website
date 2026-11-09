@@ -372,6 +372,45 @@ input[type=text]:focus,select:focus,textarea:focus{outline:2px solid var(--green
 .join-new{font-size:.95rem;opacity:.92;margin:4px 0 0}
 .join-sim{align-self:flex-start}
 .mode-info{font-size:.88rem;color:var(--muted);margin:-6px 0 0;min-height:1.2em}
+/* CDA Masters (eigener Reiter) */
+#masters{display:none}
+body.v-masters #masters{display:block;min-height:70vh}
+body.v-masters main>section:not(#masters){display:none}
+.nav a.nav-ms[aria-current="page"]{background:var(--board-line);box-shadow:inset 0 -2px 0 var(--green-bright)}
+#masters .sec-head{margin-bottom:24px}
+.ms-lead{margin:0}
+.ms-tabs{margin-bottom:24px}
+a.tab{text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.ms-live i{width:8px;height:8px;border-radius:50%;background:var(--red)}
+.ms-sim{font-size:.9rem;color:var(--muted);border-left:3px solid var(--tbd);padding:2px 0 2px 12px;margin:0 0 20px;max-width:80ch}
+.ms-sim b{color:var(--tbd)}
+.ms-load{color:var(--muted)}
+#masters-app{min-height:400px}
+.ms-rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}
+.ms-rules article{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:grid;gap:6px;align-content:start}
+.ms-rules .ms-n{font-family:var(--f-display);font-weight:900;font-size:2.6rem;line-height:1;color:var(--green)}
+.ms-rules h3{margin:0;font-size:1.1rem}
+.ms-rules p{margin:0;color:var(--muted)}
+.ms-modes{margin-top:24px;background:var(--board);color:var(--board-ink);border-radius:var(--radius);padding:24px}
+.ms-modes h3{margin:0 0 12px}
+.ms-modes ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px}
+.ms-modes li{display:grid;gap:2px;color:var(--board-muted);font-size:.95rem}
+.ms-modes li b{color:var(--board-ink)}
+.ms-modes p{margin:16px 0 0;color:var(--board-muted);font-size:.9rem}
+.ms-legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-bottom:16px;font-size:.85rem;color:var(--muted)}
+.ms-legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;background:var(--line);vertical-align:-1px}
+.ms-legend .m::before{background:var(--green)}.ms-legend .f::before{background:var(--red)}.ms-legend .s::before{background:var(--tbd)}
+.ms-cal{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:16px}
+.ms-month{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px}
+.ms-month h4{margin:0 0 8px;font-family:var(--f-display);font-weight:800;font-size:1.3rem;text-transform:uppercase}
+.ms-month ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.ms-month li{display:grid;grid-template-columns:76px 1fr;gap:8px;font-size:.92rem;padding:4px 0 4px 8px;border-left:3px solid var(--line)}
+.ms-month li span{white-space:nowrap;color:var(--muted);font-variant-numeric:tabular-nums}
+.ms-month li.m{border-left-color:var(--green)}.ms-month li.m b{color:var(--green)}
+.ms-month li.f{border-left-color:var(--red)}.ms-month li.f b{color:var(--red)}
+.ms-month li.s{border-left-color:var(--tbd)}
+.ms-month li.past{opacity:.5}
+.ms-month li small{grid-column:2;color:var(--muted);font-size:.8rem}
 .signup .btn{justify-content:center;border:0;font:700 1rem var(--f-body);cursor:pointer}
 .draft-note{font-size:.78rem;color:var(--tbd)}
 .signup-done{align-items:flex-start;justify-content:center}
@@ -420,6 +459,7 @@ footer a:hover{text-decoration:underline}
     <nav class="nav" id="nav" data-open="false">
       <a href="#saison">Saison</a>
       <a href="#teams">Teams</a>
+      <a href="#masters" class="nav-ms">CDA Masters</a>
       <a href="#verein">Verein</a>
       <a href="#spielorte">Spielorte</a>
       <a href="#partner">Partner</a>
@@ -678,7 +718,7 @@ footer a:hover{text-decoration:underline}
             <div><small>Wo</small><b>Bismarck Bistro, Bismarckstr. 7, 86159 Augsburg</b></div>
           </div>
           <p class="join-new">Ab dem 7. Januar 2027 startet die neue Competition: alle drei Wochen CDA Masters mit eigener Rangliste und Finals, dazwischen 501, 301 Double-In und Sonderabende wie Cricket oder Bring a Friend.</p>
-          <a class="btn ghost join-sim" href="competition.html">So sieht das neue System aus (Simulation)</a>
+          <a class="btn ghost join-sim" href="#masters">Mehr zu den CDA Masters</a>
         </div>
         <form class="signup" id="signup" novalidate>
           <div class="signup-head">
@@ -756,6 +796,49 @@ footer a:hover{text-decoration:underline}
             <a href="https://cda-ev.eu/cda-masters-ranking.php" target="_blank" rel="noopener">CDA-Masters Ranking</a>
           </div>
           <p style="color:var(--muted);font-size:.9rem">Mitglied in DDV, BDV und BLSV · gemeinnützig seit 1988</p>
+      </div>
+    </div>
+  </section>
+  <section id="masters" aria-labelledby="masters-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="eyebrow">Donnerstags-Competition · Bismarck Bistro</p><h2 id="masters-title">CDA Masters</h2></div>
+        <p class="lead ms-lead">Alle drei Wochen zählt der Donnerstag für die Masters-Rangliste. Wer mindestens fünf Abende spielt, ist bei den Finals im Dezember dabei, wo der ganze Masters-Pott ausgespielt wird.</p>
+      </div>
+      <div class="tabs ms-tabs" role="tablist" aria-label="CDA Masters">
+        <button class="tab" role="tab" id="mst-stats" data-ms="stats" aria-selected="true" aria-controls="msp-stats">Rangliste &amp; Statistiken</button>
+        <button class="tab" role="tab" id="mst-regeln" data-ms="regeln" aria-selected="false" aria-controls="msp-regeln">So funktioniert's</button>
+        <button class="tab" role="tab" id="mst-termine" data-ms="termine" aria-selected="false" aria-controls="msp-termine">Termine</button>
+        <a class="tab ms-live" href="competition.html"><i></i>Spielbetrieb</a>
+      </div>
+      <div id="msp-stats" role="tabpanel" aria-labelledby="mst-stats">
+        <p class="ms-sim"><b>Simulation:</b> Die Saison 2026 ist komplett ausgedacht und zeigt, wie Rangliste und Statistiken nach dem neuen System aussehen. Die echte Saison startet am 07.01.2027.</p>
+        <div id="masters-app"><p class="ms-load">Statistiken werden geladen …</p></div>
+      </div>
+      <div id="msp-regeln" role="tabpanel" aria-labelledby="mst-regeln" hidden>
+        <div class="ms-rules">
+          <article><span class="ms-n">15 €</span><h3>Startgeld</h3><p>5 € gehen am Abend als Preisgeld an die Top 3 (50 / 30 / 20 %). 10 € wandern in den Masters-Pott für die Finals.</p></article>
+          <article><span class="ms-n">16</span><h3>Masters-Abende</h3><p>Jeder dritte Donnerstag ist ein Masters-Abend: 501 Double-out, erst Gruppen, dann K.-o. mit Spiel um Platz 3. Die Siegerehrung erscheint am Ende auf allen Boards.</p></article>
+          <article><span class="ms-n">Punkte</span><h3>Rangliste</h3><p>5 Punkte fürs Mitspielen, 2 für jeden Spieler, der hinter dir landet, 1 pro gewonnenem Match, dazu +10 / +6 / +3 für die Plätze 1 bis 3. Es zählen die besten 10 Abende.</p></article>
+          <article><span class="ms-n">5</span><h3>Qualifikation</h3><p>Wer mindestens fünf Masters-Abende gespielt hat, ist für die Finals qualifiziert. Gesetzt wird nach Masters-Punkten.</p></article>
+          <article><span class="ms-n">Finals</span><h3>Saisonfinale</h3><p>Beim TSV Dinkelscherben auf 6 Boards: Vorrunde in Vierergruppen, Zwischenrunde in Dreiergruppen, dann K.-o. Die Plätze 1 bis 6 werden alle ausgespielt.</p></article>
+          <article><span class="ms-n">40 %</span><h3>Pott-Verteilung</h3><p>Der Masters-Pott geht an die Top 5 der Finals: 40 / 25 / 17 / 12 / 6 %. Bei 15 Spielern im Schnitt kommen rund 2.400 € zusammen.</p></article>
+        </div>
+        <div class="ms-modes">
+          <h3>Die anderen Donnerstage</h3>
+          <ul>
+            <li><b>Competition 501</b>Ganz normal 501 Double-out, ohne Masters-Wertung.</li>
+            <li><b>301 Double-In</b>Punkte zählen erst nach dem ersten Doppel.</li>
+            <li><b>Cricket-Nacht</b>15 bis 20 und Bull, alle sieben Wochen.</li>
+            <li><b>Lucky Doubles</b>Zugeloste Doppel, stark und schwach zusammen.</li>
+            <li><b>Bring a Friend</b>Mitglied und Gast spielen zusammen im Doppel.</li>
+          </ul>
+          <p>Alle Ergebnisse und Statistiken werden am Board direkt erfasst, auch an den Nicht-Masters-Abenden.</p>
+        </div>
+      </div>
+      <div id="msp-termine" role="tabpanel" aria-labelledby="mst-termine" hidden>
+        <div class="ms-legend"><span class="m">CDA Masters</span><span class="f">Finals</span><span class="s">Sonderabend</span><span>Competition 501 / 301 Double-In</span></div>
+        <div class="ms-cal" id="ms-cal"></div>
       </div>
     </div>
   </section>
@@ -875,7 +958,7 @@ footer a:hover{text-decoration:underline}
     renderSeason(t);
     var sorted=t.p.slice().sort(function(a,b){var la=a.split(' ').pop(),lb=b.split(' ').pop();return la.localeCompare(lb,'de');});
     document.getElementById('roster').innerHTML=sorted.map(function(n){return cardHTML(n,t);}).join('');
-    document.querySelectorAll('.tab').forEach(function(b){b.setAttribute('aria-selected',String(b.id==='tab-'+id));});
+    document.querySelectorAll('#teams .tab').forEach(function(b){b.setAttribute('aria-selected',String(b.id==='tab-'+id));});
     document.getElementById('panel-team').setAttribute('aria-labelledby','tab-'+id);
   }
   var wd=new Intl.DateTimeFormat('de-DE',{weekday:'short'}),dm=new Intl.DateTimeFormat('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'});
@@ -927,7 +1010,7 @@ footer a:hover{text-decoration:underline}
     var f=c.classList.toggle('flipped');c.querySelector('.pc-back').setAttribute('aria-hidden',String(!f));c.querySelector('.pc-front').setAttribute('aria-hidden',String(f));
   });
   try{fetch('players.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(p){if(p&&typeof p==='object'){PROFILES=p;show(currentTeam);}}).catch(function(){});}catch(e){}
-  document.querySelectorAll('.tab').forEach(function(b){b.addEventListener('click',function(){show(b.id.split('-')[1]);});});
+  document.querySelectorAll('#teams .tab').forEach(function(b){b.addEventListener('click',function(){show(b.id.split('-')[1]);});});
   show('1');
 
 
@@ -1006,7 +1089,7 @@ footer a:hover{text-decoration:underline}
   // Live-Daten: data.json wird nachts und nach Spieltagen automatisch von 3K und nuLiga erzeugt.
   // Fehlt die Datei (z. B. in der Vorschau), bleiben die oben eingetragenen Werte stehen.
   var currentTeam='1',CLUB='Clochard Darter Augsburg';
-  document.querySelectorAll('.tab').forEach(function(b){b.addEventListener('click',function(){currentTeam=b.id.split('-')[1];});});
+  document.querySelectorAll('#teams .tab').forEach(function(b){b.addEventListener('click',function(){currentTeam=b.id.split('-')[1];});});
   function shortName(n,lab){return n===CLUB||n.indexOf(CLUB+' ')===0?lab:n;}
   function resOf(score,home){var p=score.split(':').map(Number),a=home?p[0]:p[1],b=home?p[1]:p[0];return a>b?'s':a<b?'n':'u';}
   function pick(table){var us=table.filter(function(r){return r.us;})[0];if(!us||us.pos<=5)return table.slice(0,5);
@@ -1070,7 +1153,7 @@ footer a:hover{text-decoration:underline}
     [y,y+1,y+2].forEach(function(yy){if(yy>=2027)cdaCalendar(yy).forEach(function(e){out.push(e);});});
     var h=new Date().getHours();return out.filter(function(e){return e.date>today||(e.date===today&&h<20);});
   }
-  window.CDA_CAL={upcoming:upcoming,MODE:MODE};
+  window.CDA_CAL={upcoming:upcoming,MODE:MODE,cal:cdaCalendar};
   if(typeof renderHero==='function'){try{renderHero();}catch(e){}}
   var sel=document.getElementById('su-date'),msel=document.getElementById('su-mode'),minfo=document.getElementById('su-mode-info');
   var fmt=new Intl.DateTimeFormat('de-DE',{weekday:'short',day:'2-digit',month:'2-digit',year:'numeric'});
@@ -1080,6 +1163,40 @@ footer a:hover{text-decoration:underline}
     minfo.textContent=want?MODE[want][1]+(list.length?' · nächster Termin am '+fmt.format(new Date(list[0].date+'T12:00:00')):''):'Wähle einen Spielmodus, um nur dessen Termine zu sehen.';
   }
   msel.addEventListener('change',fillDates);fillDates();
+
+  // Reiter "CDA Masters": eigene Ansicht per #masters, Statistik lädt erst beim ersten Öffnen
+  (function(){
+    var body=document.body,navMs=document.querySelector('.nav-ms'),loaded=false,calDone=false;
+    var nav=document.getElementById('nav'),mbtn=document.getElementById('menu-btn');
+    function sub(name){
+      ['stats','regeln','termine'].forEach(function(k){
+        document.getElementById('mst-'+k).setAttribute('aria-selected',k===name);
+        document.getElementById('msp-'+k).hidden=k!==name;});
+      if(name==='stats'&&!loaded){loaded=true;var sc=document.createElement('script');sc.src='masters.js';sc.onerror=function(){document.getElementById('masters-app').innerHTML='<p class="ms-load">Die Statistiken konnten nicht geladen werden.</p>';};document.body.appendChild(sc);}
+      if(name==='termine'&&!calDone){calDone=true;renderCal();}
+    }
+    function renderCal(){
+      var C=window.CDA_CAL,y=new Date().getFullYear()<2027?2027:new Date().getFullYear(),today=new Date().toISOString().slice(0,10),months={};
+      C.cal(y).forEach(function(e){var k=e.date.slice(0,7);(months[k]=months[k]||[]).push(e);});
+      var mn=new Intl.DateTimeFormat('de-DE',{month:'long',year:'numeric'});
+      document.getElementById('ms-cal').innerHTML=Object.keys(months).map(function(k){
+        return '<div class="ms-month"><h4>'+mn.format(new Date(k+'-15T12:00:00'))+'</h4><ul>'+months[k].map(function(e){
+          var cls=e.mode==='m501'?'m':e.mode==='finals'?'f':(e.mode==='c501'||e.mode==='di301')?'':'s';
+          return '<li class="'+cls+(e.date<today?' past':'')+'"><span>'+(e.mode==='finals'?'Sa ':'Do ')+e.date.slice(8)+'.'+e.date.slice(5,7)+'.</span><b>'+C.MODE[e.mode][0]+'</b>'+(e.note?'<small>'+e.note+'</small>':'')+(e.mode==='finals'?'<small>TSV Dinkelscherben</small>':'')+'</li>';}).join('')+'</ul></div>';}).join('');
+    }
+    function route(){
+      var h=location.hash,on=h.indexOf('#masters')===0;
+      var was=body.classList.contains('v-masters');
+      body.classList.toggle('v-masters',on);
+      if(navMs){if(on)navMs.setAttribute('aria-current','page');else navMs.removeAttribute('aria-current');}
+      if(on){sub(h.split('/')[1]||currentSub());if(!was)window.scrollTo(0,0);}
+      else if(was){var el=h&&h.length>1?document.getElementById(h.slice(1)):null;if(el)el.scrollIntoView();else window.scrollTo(0,0);}
+      if(nav&&mbtn&&nav.getAttribute('data-open')==='true'){nav.setAttribute('data-open','false');mbtn.setAttribute('aria-expanded','false');}
+    }
+    function currentSub(){var t=document.querySelector('.ms-tabs [aria-selected="true"]');return t?t.getAttribute('data-ms'):'stats';}
+    document.querySelector('.ms-tabs').addEventListener('click',function(e){var b=e.target.closest('[data-ms]');if(!b)return;history.replaceState(null,'','#masters'+(b.getAttribute('data-ms')==='stats'?'':'/'+b.getAttribute('data-ms')));sub(b.getAttribute('data-ms'));});
+    window.addEventListener('hashchange',route);route();
+  })();
   var form=document.getElementById('signup'),done=document.getElementById('signup-done'),err=document.getElementById('su-err');
   form.addEventListener('submit',function(e){
     e.preventDefault();
