@@ -1139,7 +1139,7 @@ function viewCheckin(){
 /* ===== Echte Anmeldung Turnierleitung / Boards (Supabase Auth) ===== */
 var LIVEAUTH=/github\.io$|cda-ev\.eu$/.test(location.hostname);
 var AUTH=null;try{AUTH=JSON.parse(localStorage.getItem('cda-auth')||'null');}catch(e){}
-function authEmail(role){return role==='lead'?'leitung@cda-ev.eu':'board'+(+role.slice(1)+1)+'@cda-ev.eu';}
+function authEmail(role){return role==='lead'?'leitung@cda-ev.de':'board'+(+role.slice(1)+1)+'@cda-ev.de';}
 function authSave(role,j){AUTH={role:role,access:j.access_token,refresh:j.refresh_token,exp:Date.now()+(j.expires_in||3600)*1000};try{localStorage.setItem('cda-auth',JSON.stringify(AUTH));}catch(e){}}
 function authLogin(role,pw){
   var SB_='https://qeevsqrmltewbtrnfrfm.supabase.co',K_='sb_publishable_pwnzx63cque5lKZEVCe4mA_5SvBP8Yd';
