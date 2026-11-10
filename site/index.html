@@ -471,6 +471,8 @@ input[type=text]:focus,select:focus,textarea:focus{outline:2px solid var(--green
 .su-guest summary{cursor:pointer;font-weight:600;color:var(--green)}
 .su-grow{display:flex;gap:8px;margin-top:10px}
 .su-grow input{flex:1;min-width:0;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg);color:var(--ink)}
+.su-consent{display:flex;gap:8px;align-items:flex-start;font-size:.85rem;margin-top:10px;cursor:pointer}
+.su-consent input{margin-top:3px;width:18px;height:18px;flex:none;accent-color:var(--green)}
 .su-fine{font-size:.78rem;color:var(--muted);margin:4px 0 0}
 .su-fine a{color:var(--green)}
 .su-hello{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:1.1rem}
@@ -867,8 +869,9 @@ footer a:hover{text-decoration:underline}
             <div class="su-names" id="su-names" aria-live="polite"><p class="su-load">Mitgliederliste wird geladen …</p></div>
             <details class="su-guest">
               <summary>Ich bin kein Mitglied / zum ersten Mal da</summary>
-              <div class="su-grow"><input id="su-gname" type="text" maxlength="30" autocomplete="given-name" placeholder="Dein Vorname"><button type="button" class="btn primary" id="su-gok">Weiter</button></div>
-              <p class="su-fine">Wir speichern nur deinen Vornamen für die Teilnehmerliste dieses Abends. Mehr in der <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a>.</p>
+              <div class="su-grow"><input id="su-gname" type="text" maxlength="30" autocomplete="name" placeholder="Vor- und Nachname"><button type="button" class="btn primary" id="su-gok">Weiter</button></div>
+              <label class="su-consent"><input type="checkbox" id="su-gconsent"> Ich bin einverstanden, dass mein Name in der Teilnehmerliste, in Tabellen und Ergebnissen des CDA angezeigt wird.</label>
+              <p class="su-fine">Wir speichern nur deinen Namen und deine Anmeldungen. Mehr in der <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a>.</p>
             </details>
           </div>
           <div id="su-me" hidden>
@@ -1404,11 +1407,11 @@ footer a:hover{text-decoration:underline}
   function renderMe(){
     var w=document.getElementById('su-who'),m=document.getElementById('su-me');
     w.hidden=!!ME;m.hidden=!ME;if(!ME)return renderNames();
-    document.getElementById('su-mename').textContent=ME.id?ME.name.split(' ')[0]:ME.name;
+    document.getElementById('su-mename').textContent=ME.name.split(' ')[0];
     var want=msel.value,list=dates();
     minfo.textContent=want?MODE[want][1]:'';minfo.hidden=!want;
     document.getElementById('su-list').innerHTML=list.map(function(e){
-      var ws=who(e),in_=mine(e),names=ws.map(function(x){return x.player_id?short(pname(x.player_id)):x.guest_name+' (Gast)';}),many=ws.length>16;
+      var ws=who(e),in_=mine(e),names=ws.map(function(x){return x.player_id?short(pname(x.player_id)):short(x.guest_name)+' (Gast)';}),many=ws.length>16;
       return '<li class="su-item'+(in_?' in':'')+(FOCUS===e.date?' focus':'')+(e.mode==='m501'?' ms':'')+'" id="su-'+e.date+'">'+
         '<div class="su-when"><b>'+fmt.format(new Date(e.date+'T12:00:00'))+'</b><span>'+MODE[e.mode][0]+(e.note?' · '+e.note:'')+'</span></div>'+
         '<button type="button" class="su-btn" data-date="'+e.date+'" data-act="'+(in_?'out':'in')+'">'+(in_?'✓ Dabei · absagen':'Ich bin dabei')+'</button>'+
@@ -1424,8 +1427,10 @@ footer a:hover{text-decoration:underline}
   }
   document.getElementById('su-search').addEventListener('input',renderNames);
   document.getElementById('su-names').addEventListener('click',function(e){var b=e.target.closest('[data-id]');if(!b)return;var id=+b.getAttribute('data-id');ME={id:id,name:pname(id)};store.set('cda-me',ME);showErr('');renderMe();});
-  document.getElementById('su-gok').addEventListener('click',function(){var n=document.getElementById('su-gname').value.trim();if(n.length<2){showErr('Bitte gib deinen Vornamen ein.');return;}
-    n=n.split(/\s+/)[0];n=n.charAt(0).toUpperCase()+n.slice(1);ME={id:null,name:n};store.set('cda-me',ME);showErr('');renderMe();});
+  document.getElementById('su-gok').addEventListener('click',function(){var n=document.getElementById('su-gname').value.trim().replace(/\s+/g,' ');
+    if(n.split(' ').length<2||n.length<4){showErr('Bitte gib deinen Vor- und Nachnamen ein.');return;}
+    if(!document.getElementById('su-gconsent').checked){showErr('Bitte bestätige noch, dass dein Name angezeigt werden darf.');return;}
+    n=n.split(' ').map(function(w){return w.charAt(0).toUpperCase()+w.slice(1);}).join(' ');ME={id:null,name:n};store.set('cda-me',ME);showErr('');renderMe();});
   document.getElementById('su-switch').addEventListener('click',function(){ME=null;store.set('cda-me',null);renderMe();});
   msel.addEventListener('change',renderMe);
   document.getElementById('su-list').addEventListener('click',function(e){

@@ -1150,7 +1150,7 @@ function viewCheckin(){
     sbPanel()+
     '<div class="grid g2"><section class="panel"><h2>Check-in</h2><p class="muted" style="margin:0 0 10px">Wer heute mitspielt, antippen.'+(md.finals?' Die Zahl zeigt die Masters-Abende, ab '+MIN_QUALI+' ist man qualifiziert.':' Gäste mit Vornamen anlegen.')+'</p>'+
       '<div class="selall"><button class="btn small" data-act="selq">'+(md.finals?'Alle Qualifizierten':'Alle')+'</button><button class="btn small" data-act="selnone">Keine</button></div><div class="players">'+chips+'</div>'+
-      '<form class="add" id="addform"><label for="guest" style="position:absolute;left:-9999px">Neuer Gast</label><input id="guest" placeholder="Neuer Gast, z. B. Nina" autocomplete="off"><label for="guestby" style="position:absolute;left:-9999px">Mitgebracht von</label><select id="guestby" class="bysel"><option value="">mitgebracht von …</option>'+PLAYERS.filter(function(x){return !x.guest;}).map(function(x){return '<option value="'+x.id+'">'+esc(x.name)+'</option>';}).join('')+'</select><button class="btn" type="submit">Hinzufügen</button></form></section>'+
+      '<form class="add" id="addform"><label for="guest" style="position:absolute;left:-9999px">Neuer Gast</label><input id="guest" placeholder="Neuer Gast: Vor- und Nachname" autocomplete="off"><label for="guestby" style="position:absolute;left:-9999px">Mitgebracht von</label><select id="guestby" class="bysel"><option value="">mitgebracht von …</option>'+ckPlayers().filter(function(x){return !x.guest;}).map(function(x){return '<option value="'+x.id+'">'+esc(x.name)+'</option>';}).join('')+'</select><button class="btn" type="submit">Hinzufügen</button></form><p class="cap">Gäste kurz fragen, ob ihr Name in Teilnehmerliste und Ergebnissen erscheinen darf. Wenn nicht, nur den Vornamen eintragen.</p></section>'+
     '<section class="panel plan"><h2>Vorschlag für heute</h2>'+plan+'</section></div></div>';
 }
 /* ===== Echtbetrieb: Abend in Supabase speichern und zwischen allen Geräten abgleichen ===== */
@@ -1164,7 +1164,9 @@ function ckPlayers(){return PLAYERS.filter(function(p){return S.live?!!p.real:!p
 function addReal(id,name,team,guest){if(pl(id))return;PLAYERS.push({id:id,name:name,team:team||'',guest:!!guest,skill:55,att:.5,by:null,real:true});
   var sp=PLAYERS.filter(function(q){return !q.real&&q.name===name;})[0];if(sp){if(PHOTO[sp.id])PHOTO[id]=PHOTO[sp.id];if(NICK[sp.id])NICK[id]=NICK[sp.id];}}
 function ensurePlayers(ev){var r=(ev&&ev.roster)||{};Object.keys(r).forEach(function(k){addReal(+k,r[k].name,r[k].team,r[k].guest);});}
-function liveGuest(name,by){var id=200000+Math.floor(Math.random()*799999);addReal(id,name.replace(/\s*\(Gast\)$/,'')+' (Gast)','',true);var p=pl(id);p.by=by||null;return p;}
+function guestName(n){return n.replace(/\s*\(Gast\)$/,'').trim().replace(/\s+/g,' ').split(' ').map(function(w){return w.charAt(0).toUpperCase()+w.slice(1);}).join(' ');}
+function liveGuest(name,by){var n=guestName(name),h=0;for(var i=0;i<n.length;i++)h=(h*31+n.toLowerCase().charCodeAt(i))>>>0;
+  var id=200000+h%799999;addReal(id,n+' (Gast)','',true);var p=pl(id);p.by=by||null;return p;}
 function realPlayersLoad(){var R=['','I','II','III','IV'];
   return fetch(SBU+'/rest/v1/players?select=id,name,team&active=eq.true&order=name',{headers:hdr(false)}).then(function(r){return r.json();})
     .then(function(L){(L||[]).forEach(function(p){addReal(1000+p.id,p.name,R[p.team]||'',false);});});}
