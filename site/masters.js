@@ -1167,6 +1167,7 @@ if(!SITE){try{var ss=JSON.parse(sessionStorage.getItem('cda-sb')||'null');if(ss&
     if(DOC.activeElement&&DOC.activeElement.tagName==='SELECT')return;render();
   },1800);
 }
+if(location.protocol==='file:')window.__CDA_TEST=function(){return {S:S,ARCHIVE:ARCHIVE,pl:pl};};
 loadRealSeasons();
 render();
 })();

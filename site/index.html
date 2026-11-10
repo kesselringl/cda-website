@@ -434,6 +434,7 @@ input[type=text]:focus,select:focus,textarea:focus{outline:2px solid var(--green
 .rh-m ol{margin:8px 0 4px;padding-left:20px;font-size:.88rem}
 .rh-m ol i{font-style:normal;color:var(--muted)}
 .rh-mf{font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padding-top:6px}
+.rh-new{border:2px solid #E6B43A;background:color-mix(in srgb,#E6B43A 12%,var(--surface))}
 .rh-next{border:2px dashed #E6B43A;background:color-mix(in srgb,#E6B43A 8%,var(--surface))}
 .rh-next a{font-weight:700;color:var(--green);margin-top:6px}
 .rh-tw{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
@@ -1462,9 +1463,44 @@ footer a:hover{text-decoration:underline}
     }
 
     // Ruhmeshalle: Rekorde, alte CDA-Masters, Ewige Rangliste, Titel (Daten: ruhmeshalle.json)
+
+    // Ewige Rangliste fortschreiben: alte Statistik (Stand 06.11.2025) + echte Abende aus dem neuen System
+    var EW_ALIAS={'Basti Rauh':'Bastian Rauh','Carola':'Carola Wüstner','Leon':'Leon Crump','Rudi':'Rudi Reinl','Gino':'Gino Draghinazzi',
+      'Manne T.':'Manfred Tochtermann','Steve':'Steve Crump','Martl Neu':'Martin Hungbaur','Basti Roeck':'Sebastian Röck','Robby Strehl':'Robert Strehl',
+      'Micha Voigt':'Michael Voigt','Aleks':'Aleks Spoljarevic'};
+    function mergeReal(D,evs){
+      D.ewig.forEach(function(e){e.n=EW_ALIAS[e.n]||e.n;});
+      if(!evs.length)return D;
+      var byName={};D.ewig.forEach(function(e){byName[e.n.toLowerCase()]=e;});
+      var row=function(name,club){var k=name.toLowerCase();if(!byName[k]){byName[k]={n:name,v:club,w:0,t:0,sl:[0,0,0,0,0,0,0,0,0,0,0,0],hf:0};D.ewig.push(byName[k]);}return byName[k];};
+      var neueSieger=[],last='';
+      evs.forEach(function(x){
+        var ev=x.state;if(!ev||!ev.matches)return;last=x.date;
+        var R=ev.roster||{},nm=function(id){var r=R[id];return r?r.name.replace(/\s*\(Gast\)$/,''):null;},club=function(id){var r=R[id];return r&&!r.guest?'CDA':'';};
+        var part=function(pid){return (ev.parts[pid]||{members:[]}).members;};
+        var cricket=ev.mode==='cricket',full=/^(m501|c501|finals)$/.test(ev.mode);
+        var fin=ev.matches.filter(function(m){return m.kind==='KO'&&m.stage==='Finale'&&m.status==='done';})[0];
+        if(fin){var wp=fin.winner===0?fin.a:fin.b;part(wp).forEach(function(id){var n=nm(id);if(n)row(n,club(id)).w++;});
+          if(ev.mode==='finals')neueSieger.unshift({season:ev.season||x.date.slice(0,4),name:part(wp).map(nm).filter(Boolean).join(' & '),date:x.date});}
+        if(cricket)return;
+        ev.matches.forEach(function(m){
+          var single=part(m.a).length===1&&part(m.b).length===1;
+          (m.legs||[]).forEach(function(l){var ld=[0,0];(l.visits||[]).forEach(function(v){
+            ld[v.p]+=v.darts||0;var n=nm(v.who);if(!n)return;var e=row(n,club(v.who));
+            if(!v.bust&&v.score===180)e.t++;
+            if(v.co){if(v.score>e.hf)e.hf=v.score;if(single&&full&&ld[v.p]>=9&&ld[v.p]<=20)e.sl[ld[v.p]-9]++;}
+          });});
+        });
+      });
+      D.neu=evs.length;D.neuBis=last;D.neueSieger=neueSieger;
+      return D;
+    }
     function loadRuhm(){
       var R=document.getElementById('ruhm');
-      fetch('ruhmeshalle.json',{cache:'no-store'}).then(function(r){return r.json();}).then(function(D){
+      // Echte Abende seit dem Neustart (Supabase, nur abgeschlossen und keine Testabende)
+      var realP=fetch(SB.url+'/rest/v1/events?select=date,mode,state&status=eq.done&test=eq.false&order=date',{headers:{apikey:SB.key}})
+        .then(function(r){return r.ok?r.json():[];}).catch(function(){return [];});
+      Promise.all([fetch('ruhmeshalle.json',{cache:'no-store'}).then(function(r){return r.json();}),realP]).then(function(X){var D=mergeReal(X[0],X[1]||[]);
         var E=D.ewig,nf=new Intl.NumberFormat('de-DE');
         var shortL=function(e){return e.sl.slice(0,7).reduce(function(a,b){return a+b;},0);}; // 9 bis 15 Darts
         var bestLeg=function(e){for(var i=0;i<e.sl.length;i++)if(e.sl[i])return 9+i;return null;};
@@ -1473,20 +1509,21 @@ footer a:hover{text-decoration:underline}
         var bl=Math.min.apply(null,E.map(bestLeg).filter(Boolean)),blw=E.filter(function(e){return bestLeg(e)===bl;}).map(function(e){return e.n+(e.sl[bl-9]>1?' ('+e.sl[bl-9]+'×)':'');});
         var total=E.reduce(function(a,e){return a+e.w;},0);
         var rec=function(n,l,who,sub){return '<article class="rh-rec"><span class="rh-n">'+n+'</span><b>'+l+'</b><span>'+who+'</span>'+(sub?'<small>'+sub+'</small>':'')+'</article>';};
-        var html='<div class="rh-intro"><p>Seit Beginn der Aufzeichnung wurden knapp <b>1.500 Competitions</b> gespielt. Hier stehen die Rekorde, die Sieger und die Titel des Vereins seit 1986.</p><p class="rh-src">Quelle: '+esc(D.quelle)+'. Ab 2027 rechnet das neue Competition-System automatisch weiter.</p></div>'+
+        var html='<div class="rh-intro"><p>Seit Beginn der Aufzeichnung wurden knapp <b>1.500 Competitions</b> gespielt. Hier stehen die Rekorde, die Sieger und die Titel des Vereins seit 1986.</p><p class="rh-src">Quelle: '+esc(D.quelle)+(D.neu?'. Dazu '+D.neu+' Abend'+(D.neu>1?'e':'')+' aus dem neuen Competition-System (bis '+D.neuBis.split('-').reverse().join('.')+').':'. Ab dem Neustart 2027 rechnet das neue Competition-System automatisch weiter.')+'</p></div>'+
           '<div class="rh-recs">'+rec(w.v,'Competition-Siege',esc(w.who.join(', ')),'Rekord der Ewigen Rangliste')+rec(t.v,'180er',esc(t.who.join(', ')),'meiste Maximum-Würfe')+
           rec(bl+' Darts','bestes Leg',esc(blw.join(', ')),'Ein 9-Darter steht noch aus')+rec(h.v,'höchstes Finish',esc(h.who.join(', ')),'Big Fish')+'</div>';
         // CDA Masters (alte Serie)
         html+='<h3 class="rh-h">CDA Masters 2019 bis 2025</h3><p class="rh-sub">Die bisherige Masters-Serie: jeweils rund 12 Competitions mit Final-Competition. Ab 2027 startet die neue Saison mit 16 Abenden und Finals beim TSV Dinkelscherben.</p><div class="rh-ms">'+
+          (D.neueSieger||[]).map(function(x){return '<article class="rh-m rh-new"><span class="rh-mno">CDA Masters '+x.season+'</span><span class="rh-tro">🏆</span><b>'+esc(x.name)+'</b><small>Sieger der Finals am '+x.date.split('-').reverse().join('.')+'</small></article>';}).join('')+
           D.masters.slice().reverse().map(function(m){var cnt={};m.wins.forEach(function(x){cnt[x[1]]=(cnt[x[1]]||0)+1;});var mx=Object.keys(cnt).sort(function(a,b){return cnt[b]-cnt[a];})[0];
             return '<article class="rh-m"><span class="rh-mno">Masters '+m.no+' · '+m.y+'</span>'+
               (m.fin?'<span class="rh-tro">🏆</span><b>'+esc(m.fin[1])+'</b><small>Sieger der Final-Competition am '+m.fin[0].split('-').reverse().join('.')+'</small>':'<b>'+esc(m.top[0][0])+'</b><small>Erster der Rangliste'+(m.no===11?' (Serie lief bis Nov. 2025)':'')+'</small>')+
               '<ol>'+m.top.map(function(x){return '<li>'+esc(x[0])+' <i>'+x[1]+' P.</i></li>';}).join('')+'</ol><span class="rh-mf">'+m.wins.length+' Abende · meiste Abendsiege: '+esc(mx)+' ('+cnt[mx]+')</span></article>';}).join('')+
-          '<article class="rh-m rh-next"><span class="rh-mno">CDA Masters 2027</span><b>Wer wird der Erste?</b><small>16 Masters-Abende, Finals am 04.12.2027 beim TSV Dinkelscherben</small><a href="#masters/regeln">So funktioniert\'s →</a></article></div>';
+          ((D.neueSieger||[]).length?'':'<article class="rh-m rh-next"><span class="rh-mno">CDA Masters 2027</span><b>Wer wird der Erste?</b><small>16 Masters-Abende, Finals am 04.12.2027 beim TSV Dinkelscherben</small><a href="#masters/regeln">So funktioniert\'s →</a></article>')+'</div>';
         // Ewige Rangliste
         html+='<h3 class="rh-h">Ewige Rangliste</h3><p class="rh-sub">Alle Competition-Siege, 180er, kurzen Legs und höchsten Finishes seit Beginn der Aufzeichnung. Spalten zum Sortieren antippen.</p>'+
           '<div class="rh-tw"><table class="rh-t"><thead><tr><th>#</th><th>Spieler</th><th>Verein</th><th data-k="w" class="srt on">Siege</th><th data-k="t" class="srt">180er</th><th data-k="s" class="srt">Short Legs</th><th data-k="b" class="srt">Bestes Leg</th><th data-k="h" class="srt">High Finish</th></tr></thead><tbody id="rh-tb"></tbody></table></div><button class="btn small rh-more" id="rh-more">Alle '+E.length+' anzeigen</button>'+
-          '<p class="rh-src">Short Legs: Legs mit 15 Darts oder weniger.</p>';
+          '<p class="rh-src">Short Legs: Legs mit 15 Darts oder weniger. Siege, 180er, Short Legs und High Finishes aus neuen Abenden werden automatisch dazugezählt.</p>';
         // Titel
         var tl=function(rows,cls){return '<ul class="rh-tl '+cls+'">'+rows.map(function(r){return '<li><span>'+esc(r[0])+'</span><div><b>'+esc(r[1])+'</b><small>'+esc(r[2])+(r[3]?' · '+esc(r[3]):'')+'</small></div></li>';}).join('')+'</ul>';};
         html+='<h3 class="rh-h">Titel und Erfolge</h3><div class="rh-ti"><div><h4>Mannschaften</h4>'+tl(D.teams,'')+'</div><div><h4>Spielerinnen und Spieler</h4>'+tl(D.spieler,'')+'</div></div>';
