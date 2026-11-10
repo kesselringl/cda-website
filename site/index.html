@@ -460,6 +460,8 @@ input[type=text]:focus,select:focus,textarea:focus{outline:2px solid var(--green
 
 /* Anmeldung */
 .signup{display:flex;flex-direction:column;gap:14px}
+#su-search,#su-mode{font:inherit;width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg);color:var(--ink);-webkit-appearance:none;appearance:none}
+#su-mode{background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 12px) 50%;background-size:6px 6px;background-repeat:no-repeat}
 .su-names{display:flex;flex-wrap:wrap;gap:6px;max-height:260px;overflow:auto;padding:2px}
 .su-name{font:600 .9rem var(--f-body);padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
 .su-name:hover,.su-name:focus-visible{border-color:var(--green);color:var(--green)}
