@@ -434,6 +434,7 @@ function simCricket(ev,b,m,leg,p,sk){
     if(m.over||curLeg(m)!==before||!ev.cin[b].length)return;
   }
 }
+function noSim(){return S.live&&!(S.ev&&S.ev.test);}
 function simMatch(ev,b){var g=0,m=byId(ev,ev.boards[b]);while(m&&!m.over&&g++<900)simVisit(ev,b);commit(ev,b);}
 function simAll(ev){var g=0;while(ev.phase==='running'&&g++<4000){var any=false;for(var b=0;b<ev.boards.length;b++)if(ev.boards[b]){simMatch(ev,b);any=true;}if(!any){fill(ev);if(!ev.boards.some(Boolean))break;}}}
 
@@ -787,7 +788,7 @@ function boardCard(ev,b,withBtn){
   var leg=curLeg(m),t=turn(leg),cr=MD(ev).kind==='cricket',st=cr?cState(m,leg,{p:t,dl:ev.cin[b]}):null;
   var row=function(p){var id=p?m.b:m.a;return '<span class="n'+(!m.over&&m.started&&t===p?' on':'')+'">'+partH(ev,id)+'</span><span class="av num">'+sideQ(ev,m,p)+'</span><span class="l num">'+legsWon(m,p)+'</span><span class="r num">'+(m.over?'':cr?st.pts[p]:restX(ev,m,leg,p))+'</span>';};
   return '<div class="panel bcard"><div class="bhead">'+head+'<span class="pill live">'+(m.over?'Ergebnis':m.started?'live':'aufgerufen')+'</span></div><span class="muted" style="font-size:.8rem">'+m.stage+' · Best of '+(m.ft*2-1)+' · Schreiber: '+(m.writer?pnh(m.writer):'offen')+'</span><div class="mini">'+row(0)+row(1)+'</div>'+
-    (withBtn?'<div class="row"><button class="btn small" data-act="view" data-v="b'+b+'">Zum Scorer</button>'+(S.live?'':'<button class="btn small" data-act="sim" data-b="'+b+'">Match simulieren</button>')+'</div>':'')+'</div>';
+    (withBtn?'<div class="row"><button class="btn small" data-act="view" data-v="b'+b+'">Zum Scorer</button>'+(noSim()?'':'<button class="btn small" data-act="sim" data-b="'+b+'">Match simulieren</button>')+'</div>':'')+'</div>';
 }
 function groupTables(ev){
   var cr=MD(ev).kind==='cricket',out='';
@@ -808,7 +809,7 @@ function viewLead(){
   var pd=ev.phase==='done'?podium(ev):null;
   return '<div class="grid" style="gap:20px">'+modeBar(ev)+
     '<section class="panel"><div class="row" style="justify-content:space-between"><div><h2 style="margin:0">'+(pd?'Sieger: '+partH(ev,pd[0].part):'Abend läuft')+'</h2><span class="muted num">'+done+' von '+total+' Matches gespielt · '+ev.plan.txt+' · '+legTxt(MD(ev),legsOf(ev))+'</span></div>'+
-    '<div class="row">'+(pd?'<button class="btn small primary" data-act="archive">Abend abschließen und in die Saison übernehmen</button>':(S.live?'':'<button class="btn small" data-act="simall">Rest simulieren</button>'))+'<button class="btn small" data-act="reset">Neuer Abend</button></div></div><div class="progress"><i style="width:'+Math.round(done/total*100)+'%"></i></div></section>'+
+    '<div class="row">'+(pd?'<button class="btn small primary" data-act="archive">Abend abschließen und in die Saison übernehmen</button>':(noSim()?'':'<button class="btn small" data-act="simall">Rest simulieren</button>'))+(S.live&&!(ev&&ev.test)?'':'<button class="btn small" data-act="reset">'+(S.live?'Testabend löschen':'Neuer Abend')+'</button>')+'</div></div><div class="progress"><i style="width:'+Math.round(done/total*100)+'%"></i></div></section>'+
     (pd?'<div class="grid g2"><section class="panel">'+recap(ev)+'</section><section class="panel"><h3>Siegerehrung</h3>'+ceremonyList(ev,pd)+'</section></div>':'')+
     '<div class="grid '+(ev.boards.length>2?'g3':'g2')+'">'+ev.boards.map(function(_,b){return boardCard(ev,b,true);}).join('')+'</div>'+
     '<div class="grid g2"><section class="panel"><h3>Als Nächstes</h3>'+queue(ev,5)+'<p class="muted" style="font-size:.82rem;margin:10px 0 0">Wird ein Board frei, kommt automatisch das nächste Match drauf. Schreiber ist der Verlierer des letzten Matches am Board.</p></section>'+
@@ -863,7 +864,7 @@ function x01Board(ev,b,m,leg,t){
     var qL=[26,41,45,60,81,85,100,140,180].map(function(q){return '<button data-act="quick" data-b="'+b+'" data-q="'+q+'"'+(q===180?' class="q180"':'')+'>'+q+'</button>';}).join('');
     input='<div class="entry2"><div class="quick2 ql">'+qL+'</div><div class="inbox2"><span class="who">Aufnahme von '+pnh(thrower(ev,m,leg,t))+'</span><div class="val num">'+esc(S.input[b]||'')+'<span class="cursor"></span></div><div class="msg'+(err?' err':'')+'">'+esc(err?msg.slice(4):msg)+'</div><div class="pad">'+pad+'</div></div></div>'+
       '<div class="legend"><span><kbd>0–9</kbd> Punkte</span><span><kbd>Enter</kbd> eintragen</span><span><kbd>R</kbd> Restscore</span><span><kbd>Strg+Z</kbd> zurück</span>'+(md.di?'<span>Double-In: nur die Punkte ab dem Doppel eintragen</span>':'')+'<button class="linkbtn" data-act="simv" data-b="'+b+'">Demo: Aufnahme simulieren</button></div>'+
-      (ev.btype[b]==='tablet'&&!S.live?'<div class="row" style="justify-content:center"><button class="linkbtn" data-act="simv" data-b="'+b+'">Demo: Aufnahme simulieren</button></div>':'');
+      (ev.btype[b]==='tablet'&&!noSim()?'<div class="row" style="justify-content:center"><button class="linkbtn" data-act="simv" data-b="'+b+'">Demo: Aufnahme simulieren</button></div>':'');
   }
   return '<div class="duel">'+side(0)+side(1)+'</div>'+input;
 }
@@ -882,7 +883,7 @@ function cricketBoard(ev,b,m,leg,t){
   return board+'<div class="entry"><div class="inbox"><span class="who">Aufnahme von '+pnh(thrower(ev,m,leg,t))+'</span><div class="cvis">'+vis+'</div><div class="msg'+(err?' err':'')+'">'+esc(err?msg.slice(4):msg)+'</div>'+
     '<div class="keys"><span><kbd>T</kbd>/<kbd>D</kbd> + Zahl + <kbd>Enter</kbd> = ein Dart</span><span><kbd>0</kbd> <kbd>Enter</kbd> daneben</span><span>leeres <kbd>Enter</kbd> = Aufnahme fertig</span></div>'+
     '<div class="row muted" style="font-size:.9rem">Eingabe: <b style="color:var(--ink);font-family:var(--f-display);font-size:1.4rem;min-width:3ch">'+(esc(S.input[b]||'')||'–')+'</b></div>'+
-    (S.live?'':'<div class="row"><button class="linkbtn" data-act="simv" data-b="'+b+'">Demo: Aufnahme simulieren</button></div>')+'</div>'+
+    (noSim()?'':'<div class="row"><button class="linkbtn" data-act="simv" data-b="'+b+'">Demo: Aufnahme simulieren</button></div>')+'</div>'+
     '<div><div class="cpad">'+pad+'</div><div class="quick" style="grid-template-columns:1fr 1fr 1fr"><button data-act="cd" data-b="'+b+'" data-n="0" data-m="0">Daneben</button><button data-act="undo" data-b="'+b+'">↶ Zurück</button><button data-act="cend" data-b="'+b+'">Aufnahme fertig</button></div></div></div>';
 }
 
@@ -1101,7 +1102,14 @@ LT.addEventListener('click',function(e){
 });
 function doAct(t,a,b){
   var ev=S.ev;
-  if(S.live&&(a==='reset'||a==='sim'||a==='simall'||a==='simv'))return;
+  if(S.live&&!(ev&&ev.test)&&(a==='reset'||a==='sim'||a==='simall'||a==='simv'))return;
+  if(S.live&&a==='reset'){ /* Testabend: komplett löschen und neu beginnen */
+    if(S.role!=='lead')return 'stop';
+    if(!confirm('Testabend vom '+ev.date.split('-').reverse().join('.')+' löschen? Alle Ergebnisse dieses Abends gehen verloren.'))return 'stop';
+    fetch(SBU+'/rest/v1/rpc/cda_delete_test_event',{method:'POST',headers:hdr(true),body:JSON.stringify({p_date:ev.date})})
+      .then(function(r){if(!r.ok)throw new Error('Löschen fehlgeschlagen ('+r.status+')');SV.pending=[];SV.rev=0;SV.gate=null;SV.gateLoaded=false;S.view='lead';return enterLive();})
+      .catch(function(x){SV.err=x.message;render();});
+    return 'stop';}
   if(a==='toggle'){var id=+t.getAttribute('data-id');S.checked[id]=!S.checked[id];}
   else if(a==='mode'){S.mode=t.getAttribute('data-m');S.legs.custom=null;ev.mode=S.mode;if(MODES[S.mode].finals){S.venue='tsv';S.boards=VENUES.tsv.boards.slice();}}
   else if(a==='venue'){S.venue=t.getAttribute('data-v');S.boards=VENUES[S.venue].boards.slice();}
