@@ -49,6 +49,9 @@ jobs:
             git push
           fi
 
+      - name: Kalender-Abos erzeugen (iCal)
+        run: node scripts/build-ics.mjs
+
       - name: Seiten fertig machen (Gerüst, eigene Schriften)
         run: node scripts/build.mjs
 

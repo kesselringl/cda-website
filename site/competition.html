@@ -987,12 +987,12 @@ function simSeason(season,limit){
   });
   PLAYERS.forEach(function(p){p.cur=null;});
 }
-var VENUES_TSV=['tablet','tablet','tablet','pc','pc','pc'];
+var VENUES_TSV=['tablet','tablet','tablet','tablet','tablet','tablet'];
 simSeason('2026',null);
 
 /* ================= Oberfläche ================= */
 RNG=Math.random;
-var VENUES={bistro:{name:'Bismarck Bistro',boards:['pc','pc'],note:'2 Boards · je ein PC'},tsv:{name:'TSV Dinkelscherben',boards:['tablet','tablet','tablet','pc','pc','pc'],note:'6 Boards · Tablets und PCs'}};
+var VENUES={bistro:{name:'Bismarck Bistro',boards:['pc','pc'],note:'Bismarckstr. 7, Augsburg · 2 Boards · je ein PC'},sergios:{name:'Sergio\'s',boards:['pc','pc','pc','pc','pc'],note:'Meisenweg 25, Augsburg · 5 Boards · je ein PC'},tsv:{name:'TSV Dinkelscherben',boards:['tablet','tablet','tablet','tablet','tablet','tablet'],note:'Burggasse 50, Dinkelscherben · 6 Boards · 6 Tablets'}};
 var S={legs:{lvl:0,auto:true,target:'23:00',fh:7,custom:null},view:SITE?'season':'gate',role:null,me:null,login:{},mode:'m501',season:'2026',showAll:false,venue:'bistro',boards:['pc','pc'],checked:{},ev:null,input:{},msg:{},sort:{k:'avg',d:-1},duel:[1,3],pid:1,back:'season'};
 [1,2,3,4,11,12,15,10,20,7,26].forEach(function(i){S.checked[i]=true;});
 var TONIGHT='2027-01-14';
@@ -1117,7 +1117,7 @@ function viewCheckin(){
     (p.warn&&!S.legs.auto&&LG.lvl===0?'<p class="warn">Für '+S.boards.length+' Boards sind das viele Teilnehmer. Legs kürzen oder mehr Boards einplanen. <button class="btn small" data-act="legauto">Legs automatisch kürzen</button></p>':'')+money+
     '<dl><dt>Modus</dt><dd>'+md.name+' · '+md.sub+'</dd><dt>Format</dt><dd>'+p.txt+'</dd><dt>'+(md.finals?'Vorrunde':'Gruppen')+'</dt><dd>'+p.sizes.length+' Gruppen ('+p.sizes.join(', ')+')</dd><dt>Legs</dt><dd>'+legTxt(md,LG.L)+'</dd><dt>Matches</dt><dd class="num">'+p.total+'</dd><dt>Ende ca.</dt><dd class="num">'+(md.finals?Math.floor(p.dur/60)+' h '+(p.dur%60)+' min Spielzeit':clock(p.dur)+' Uhr')+' <span class="muted">('+S.boards.length+' Boards)</span></dd></dl>'+
     (md.finals&&S.venue!=='tsv'?'<p class="warn">Die Finals sind beim TSV Dinkelscherben geplant. Spielort oben umstellen.</p>':'')+
-    legBox(md,LG,p)+'<button class="btn primary" data-act="start">Auslosen und starten</button>'):'<p class="muted">Mindestens '+(md.finals?8:md.doubles?6:3)+' Spieler einchecken.</p>';
+    legBox(md,LG,p)+venueTip(md,nParts,LG)+'<button class="btn primary" data-act="start">Auslosen und starten</button>'):'<p class="muted">Mindestens '+(md.finals?8:md.doubles?6:3)+' Spieler einchecken.</p>';
   return '<div class="grid" style="gap:16px">'+
     '<section class="panel setup"><h2>Spielort und Boards</h2><div class="vpre">'+vb+'</div>'+
       '<div class="row" style="gap:20px"><div class="bcount"><button data-act="bminus" aria-label="Ein Board weniger">−</button><b class="num">'+S.boards.length+'</b><button data-act="bplus" aria-label="Ein Board mehr">+</button><span class="muted">Boards</span></div><span class="muted" style="font-size:.85rem">Pro Board antippen: wird an einem PC (Tastatur) oder an einem Tablet (Touch) geschrieben?</span></div><div class="btypes">'+bt+'</div></section>'+
@@ -1132,6 +1132,14 @@ function chooseLegs(md,n){
   if(S.legs.custom)return {L:S.legs.custom,lvl:-1};
   if(S.legs.auto){for(var l=0;l<4;l++){var L=legPreset(md,l),p=makePlan(n,S.mode,S.boards.length,L);if(!p||fitTarget(md,p))return {L:L,lvl:l,fit:true};}return {L:legPreset(md,3),lvl:3,fit:false};}
   return {L:legPreset(md,S.legs.lvl),lvl:S.legs.lvl};
+}
+function venueTip(md,n,LG){
+  if(md.finals||S.boards.length>=5||LG.lvl<2&&LG.fit!==false)return '';
+  var best=null;
+  ['sergios','tsv'].forEach(function(k){if(best)return;var v=VENUES[k];
+    for(var l=0;l<4;l++){var p0=makePlan(n,S.mode,v.boards.length,legPreset(md,l));if(p0&&fitTarget(md,p0)){if(l<LG.lvl||LG.fit===false)best={k:k,v:v,p:p0,l:l};break;}}});
+  if(!best)return '';
+  return '<p class="warn">Viele Anmeldungen für '+S.boards.length+' Boards. Im '+best.v.name+' ('+best.v.boards.length+' Boards) wärt ihr '+(best.l===0?'ohne gekürzte Legs':'mit „'+LEG_LVL[best.l]+'“')+' um ca. '+clock(best.p.dur)+' Uhr fertig. <button class="btn small" data-act="venue" data-v="'+best.k+'">Spielort wechseln</button></p>';
 }
 function legBox(md,LG,p){
   var L=LG.L,btn=function(act,lab,on,extra){return '<button class="btn small'+(on?' on':'')+'" data-act="'+act+'"'+(extra||'')+' aria-pressed="'+!!on+'">'+lab+'</button>';};

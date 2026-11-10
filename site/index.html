@@ -395,6 +395,15 @@ input[type=text]:focus,select:focus,textarea:focus{outline:2px solid var(--green
 .ticket.masters .t-kind{color:#F2C75C}
 .ticket .t-flag{display:inline-block;font-size:.66rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;background:#E6B43A;color:#1a1300;border-radius:99px;padding:3px 8px;margin-bottom:8px}
 .hero .hero-badge{display:inline-flex;align-items:center;gap:8px;background:#E6B43A;color:#1a1300;font-weight:800;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;border-radius:99px;padding:6px 12px;margin-bottom:14px}
+.ms-abo{display:grid;grid-template-columns:1fr auto;gap:12px 24px;align-items:center;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:var(--radius);padding:18px 20px;margin-bottom:22px}
+.ms-abo h3{margin:0 0 4px;font-size:1.15rem}
+.ms-abo p{margin:0;color:var(--muted);font-size:.92rem}
+.ms-abo-btns{display:flex;flex-wrap:wrap;gap:8px}
+.ms-abo .btn.ghost{color:var(--ink);border-color:var(--ink);background:transparent}
+.ms-abo .ms-abo-help{grid-column:1/-1;font-size:.82rem}
+.ms-abo-help a{color:var(--green);font-weight:600}
+@media (max-width:700px){.ms-abo{grid-template-columns:1fr}}
+.join-abo{font-size:.9rem;font-weight:600;color:var(--green);align-self:flex-start}
 /* CDA Masters (eigener Reiter) */
 #masters{display:none}
 body.v-masters #masters{display:block;min-height:70vh}
@@ -754,6 +763,7 @@ footer a:hover{text-decoration:underline}
           </div>
           <p class="join-new">Ab dem 7. Januar 2027 startet die neue Competition: alle drei Wochen CDA Masters mit eigener Rangliste und Finals, dazwischen 501, 301 Double-In und Sonderabende wie Cricket oder Bring a Friend.</p>
           <a class="btn ghost join-sim" href="#masters">Mehr zu den CDA Masters</a>
+          <a class="join-abo" href="#masters/termine">📅 Alle Termine im Handy-Kalender abonnieren</a>
         </div>
         <form class="signup" id="signup" novalidate>
           <div class="signup-head">
@@ -872,6 +882,14 @@ footer a:hover{text-decoration:underline}
         </div>
       </div>
       <div id="msp-termine" role="tabpanel" aria-labelledby="mst-termine" hidden>
+        <div class="ms-abo">
+          <div><h3>Termine in deinen Kalender</h3><p>Einmal abonnieren, dann stehen alle Termine mit Spielmodus automatisch in deinem Handy-Kalender. Änderungen kommen von selbst nach.</p></div>
+          <div class="ms-abo-btns">
+            <a class="btn primary" data-ics="cda-competition" href="kalender/cda-competition.ics">Alle Termine abonnieren</a>
+            <a class="btn ghost" data-ics="cda-masters" href="kalender/cda-masters.ics">Nur CDA Masters</a>
+          </div>
+          <p class="ms-abo-help">iPhone: Link antippen und „Abonnieren“ wählen. Android / Google: <a data-gcal="cda-competition" href="#">alle Termine</a> oder <a data-gcal="cda-masters" href="#">nur Masters</a> in Google Kalender hinzufügen. Outlook: <a data-copy="cda-competition" href="#">Link kopieren</a> und unter „Kalender hinzufügen → Aus dem Internet“ einfügen.</p>
+        </div>
         <div class="ms-legend"><span class="m">CDA Masters</span><span class="f">Finals</span><span class="s">Sonderabend</span><span>Competition 501 / 301 Double-In</span></div>
         <div class="ms-cal" id="ms-cal"></div>
       </div>
@@ -1290,6 +1308,16 @@ footer a:hover{text-decoration:underline}
   }
   msel.addEventListener('change',fillDates);fillDates();
 
+
+  // Kalender-Abos: webcal-Link (iPhone/Mac), Google-Kalender, Link kopieren – Pfad passt sich der Domain an
+  (function(){
+    var base=location.origin+location.pathname.replace(/[^\/]*$/,'')+'kalender/';
+    var feed=function(n){return base+n+'.ics';},wc=function(n){return feed(n).replace(/^https?:/,'webcal:');};
+    document.querySelectorAll('[data-ics]').forEach(function(a){a.href=wc(a.getAttribute('data-ics'));});
+    document.querySelectorAll('[data-gcal]').forEach(function(a){a.href='https://calendar.google.com/calendar/r?cid='+encodeURIComponent(wc(a.getAttribute('data-gcal')));a.target='_blank';a.rel='noopener';});
+    document.querySelectorAll('[data-copy]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var u=feed(a.getAttribute('data-copy'));
+      try{navigator.clipboard.writeText(u).then(function(){a.textContent='Link kopiert ✓';},function(){prompt('Kalender-Link:',u);});}catch(x){prompt('Kalender-Link:',u);}});});
+  })();
   // Reiter "CDA Masters": eigene Ansicht per #masters, Statistik lädt erst beim ersten Öffnen
   (function(){
     var body=document.body,navMs=document.querySelector('.nav-ms'),loaded=false,calDone=false;
