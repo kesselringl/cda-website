@@ -1163,7 +1163,7 @@ footer a:hover{text-decoration:underline}
   }
   // Blickfang oben: nächster Heimspieltag (bis 3 Wochen vorher), sonst die nächste Donnerstags-Competition
   // ===== Startseite: Aufmacher + Aktuelles, automatisch aus data.json und Competition-Kalender =====
-  var LIVE=null;
+  var LIVE=null,MANUAL=[];
   var dShort=new Intl.DateTimeFormat('de-DE',{weekday:'short',day:'2-digit',month:'2-digit'});
   function pts(r){return typeof r.points==='number'?r.points:+String(r.points).split(':')[0];}
   function teamGames(t){
@@ -1173,7 +1173,7 @@ footer a:hover{text-decoration:underline}
   function res(g){var p=g.score.split(':').map(Number),a=g.home?p[0]:p[1],b=g.home?p[1]:p[0];return {a:a,b:b,r:a>b?'s':a<b?'n':'u'};}
   var DERBY=/augsburg|augschburger|lechhausen|göggingen|haunstetten|oberhausen|pfersee|hochzoll|kriegshaber/i;
   function relDay(iso){var d=Math.round((new Date(iso+'T12:00:00')-new Date(new Date().toISOString().slice(0,10)+'T12:00:00'))/864e5);
-    return d===0?'Heute':d===1?'Morgen':d===-1?'Gestern':dShort.format(new Date(iso+'T12:00:00'));}
+    return d===0?'Heute':d===1?'Morgen':d===-1?'Gestern':d<-60||d>300?new Date(iso+'T12:00:00').toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}):dShort.format(new Date(iso+'T12:00:00'));}
   function buildNews(){
     var out=[],today=new Date().toISOString().slice(0,10),D=LIVE;
     var addDays=function(n){var t=new Date();t.setDate(t.getDate()+n);return t.toISOString().slice(0,10);};
@@ -1235,11 +1235,16 @@ footer a:hover{text-decoration:underline}
           title:(nm.mode==='finals'?'CDA-Masters-Finals: ':'Nächster Masters-Abend: ')+relDay(nm.date),
           text:nm.mode==='finals'?'Die besten 32 der Saison spielen beim TSV Dinkelscherben um den Masters-Pott.':'501 Double-out, 15 € Startgeld, zählt für Rangliste und Finals. Ab 20 Uhr im Bismarck Bistro.'});}
     }
+    // Von Hand gepflegte Meldungen (news.json), z. B. Titel bei Meisterschaften
+    MANUAL.forEach(function(n){if(n.until&&n.until<today)return;var age=Math.round((new Date(today)-new Date(n.date))/864e5);
+      out.push({prio:age<=30?88:44,manual:true,kind:n.kind||'gold',tag:n.tag,team:n.team||'CDA',date:n.date,href:n.href||'#',title:n.title,text:n.text});});
     out.sort(function(a,b){return b.prio-a.prio||(a.date<b.date?1:-1);});
     return out;
   }
   function renderNews(skip){
-    var list=buildNews().filter(function(n){return n!==skip&&!(skip&&n.title===skip.title);}).slice(0,6),sec=document.getElementById('news');
+    var all=buildNews().filter(function(n){return n!==skip&&!(skip&&n.title===skip.title);}),list=all.slice(0,6),sec=document.getElementById('news');
+    // eine von Hand gepflegte Meldung bekommt immer einen Platz
+    var man=all.filter(function(n){return n.manual;})[0];if(man&&list.indexOf(man)<0&&list.length===6)list[5]=man;
     if(!list.length){sec.hidden=true;return;}
     sec.hidden=false;
     document.getElementById('news-grid').innerHTML=list.map(function(n){
@@ -1361,6 +1366,7 @@ footer a:hover{text-decoration:underline}
     var h=new Date().getHours();return out.filter(function(e){return e.date>today||(e.date===today&&h<20);});
   }
   window.CDA_CAL={upcoming:upcoming,MODE:MODE,cal:cdaCalendar};
+  fetch('news.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():[];}).then(function(n){MANUAL=n||[];if(typeof renderHero==='function')renderHero();}).catch(function(){});
   if(typeof renderHero==='function'){try{renderHero();}catch(e){}}
   var sel=document.getElementById('su-date'),msel=document.getElementById('su-mode'),minfo=document.getElementById('su-mode-info');
   var fmt=new Intl.DateTimeFormat('de-DE',{weekday:'short',day:'2-digit',month:'2-digit',year:'numeric'});
