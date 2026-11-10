@@ -1057,11 +1057,11 @@ function viewGate(){
       '<h3 style="margin-top:18px">Nächste Termine</h3><ul class="gnext">'+nx.map(function(x){var m=MODES[x.mode];return '<li class="'+(m.masters||m.finals?'ms':'')+'"><span>'+wdS(x.date)+' '+dshort(x.date)+'</span><b>'+m.name+'</b>'+(x.note?'<i>'+x.note+'</i>':'')+'</li>';}).join('')+'</ul></section>'+
     '<section class="panel gcard"><h3>Turnierleitung &amp; Boards</h3><form id="loginform" class="glog" autocomplete="off">'+
       '<label for="lg-role">Anmelden als</label><select id="lg-role">'+opts+'</select>'+
-      '<label for="lg-code">Zugangscode</label><input id="lg-code" type="password" inputmode="text" autocomplete="off" placeholder="Code eingeben">'+
+      '<label for="lg-code">Passwort</label><input id="lg-code" type="password" autocomplete="current-password" placeholder="Passwort eingeben">'+
       (S.login.err?'<p class="gerr">'+S.login.err+'</p>':'')+
       '<button class="btn primary" type="submit">Anmelden</button></form>'+
       '<p class="cap">Die Turnierleitung meldet Spieler an, startet den Abend und sieht alle Boards. Ein Board-PC sieht nur sein eigenes Board zum Schreiben.</p>'+
-      '<p class="cap demo">Simulation: Der Zugangscode ist <b>cda</b>. Im echten Betrieb bekommt jede Rolle einen eigenen Zugang.</p></section></div>';
+      (LIVEAUTH?'<p class="cap">Ein Board-PC bleibt angemeldet, bis jemand auf „Abmelden“ tippt. Passwort vergessen? Bei der Turnierleitung melden.</p>':'<p class="cap demo">Vorschau: Hier reicht der Code <b>cda</b>. Auf der Website gelten die echten Passwörter.</p>')+'</section></div>';
 }
 /* --- Zuschauer / Spieler --- */
 function hasMe(ev,partId){var p=ev.parts[partId];return !!(p&&S.me&&p.members.indexOf(S.me)>=0);}
@@ -1136,6 +1136,27 @@ function viewCheckin(){
       '<form class="add" id="addform"><label for="guest" style="position:absolute;left:-9999px">Neuer Gast</label><input id="guest" placeholder="Neuer Gast, z. B. Nina" autocomplete="off"><label for="guestby" style="position:absolute;left:-9999px">Mitgebracht von</label><select id="guestby" class="bysel"><option value="">mitgebracht von …</option>'+PLAYERS.filter(function(x){return !x.guest;}).map(function(x){return '<option value="'+x.id+'">'+esc(x.name)+'</option>';}).join('')+'</select><button class="btn" type="submit">Hinzufügen</button></form></section>'+
     '<section class="panel plan"><h2>Vorschlag für heute</h2>'+plan+'</section></div></div>';
 }
+/* ===== Echte Anmeldung Turnierleitung / Boards (Supabase Auth) ===== */
+var LIVEAUTH=/github\.io$|cda-ev\.eu$/.test(location.hostname);
+var AUTH=null;try{AUTH=JSON.parse(localStorage.getItem('cda-auth')||'null');}catch(e){}
+function authEmail(role){return role==='lead'?'leitung@cda-ev.eu':'board'+(+role.slice(1)+1)+'@cda-ev.eu';}
+function authSave(role,j){AUTH={role:role,access:j.access_token,refresh:j.refresh_token,exp:Date.now()+(j.expires_in||3600)*1000};try{localStorage.setItem('cda-auth',JSON.stringify(AUTH));}catch(e){}}
+function authLogin(role,pw){
+  var SB_='https://qeevsqrmltewbtrnfrfm.supabase.co',K_='sb_publishable_pwnzx63cque5lKZEVCe4mA_5SvBP8Yd';
+  return fetch(SB_+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:K_,'Content-Type':'application/json'},body:JSON.stringify({email:authEmail(role),password:pw})})
+    .then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(r.status===400?'Passwort stimmt nicht.':'Anmeldung gerade nicht möglich.');return j;});},function(){throw new Error('Keine Verbindung. Ist das Gerät online?');})
+    .then(function(j){return fetch(SB_+'/rest/v1/staff?select=role,board',{headers:{apikey:K_,Authorization:'Bearer '+j.access_token}}).then(function(r){return r.json();}).then(function(st){
+      var ok=st&&st[0]&&(role==='lead'?st[0].role==='lead':st[0].role==='board'&&st[0].board===+role.slice(1)+1);
+      if(!ok)throw new Error('Dieser Zugang ist noch nicht freigeschaltet.');authSave(role,j);});});
+}
+function authRefresh(){
+  if(!AUTH||!AUTH.refresh||AUTH.exp-Date.now()>5*60*1000)return;
+  fetch('https://qeevsqrmltewbtrnfrfm.supabase.co/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{apikey:'sb_publishable_pwnzx63cque5lKZEVCe4mA_5SvBP8Yd','Content-Type':'application/json'},body:JSON.stringify({refresh_token:AUTH.refresh})})
+    .then(function(r){return r.ok?r.json():null;}).then(function(j){if(j)authSave(AUTH.role,j);}).catch(function(){});
+}
+if(!SITE)setInterval(authRefresh,4*60*1000);
+function authLogout(){if(AUTH&&AUTH.access){fetch('https://qeevsqrmltewbtrnfrfm.supabase.co/auth/v1/logout',{method:'POST',headers:{apikey:'sb_publishable_pwnzx63cque5lKZEVCe4mA_5SvBP8Yd',Authorization:'Bearer '+AUTH.access}}).catch(function(){});}
+  AUTH=null;try{localStorage.removeItem('cda-auth');}catch(e){}}
 /* ===== Anmeldungen von der Homepage (Supabase) + WhatsApp-Nachricht ===== */
 var SBC={url:'https://qeevsqrmltewbtrnfrfm.supabase.co',key:'sb_publishable_pwnzx63cque5lKZEVCe4mA_5SvBP8Yd'};
 var HOME_URL=/github\.io$|cda-ev\.eu$/.test(location.hostname)?location.origin+location.pathname.replace(/[^\/]*$/,''):'https://kesselringl.github.io/cda-website/';
@@ -1516,7 +1537,7 @@ function key(b,k){
 function top(){if(SITE){var h=CFG.host;if(h&&h.getBoundingClientRect().top<0)h.scrollIntoView();}else window.scrollTo(0,0);}
 var LT=SITE?DOC:document;
 LT.addEventListener('click',function(e){
-  var tb=e.target.closest('[data-tab]');if(tb){var tv=tb.getAttribute('data-tab');if(tv==='logout'||tv==='gate'){S.role=null;S.login={};tv='gate';}S.view=tv;render();window.scrollTo(0,0);return;}
+  var tb=e.target.closest('[data-tab]');if(tb){var tv=tb.getAttribute('data-tab');if(tv==='logout')authLogout();if(tv==='logout'||tv==='gate'){S.role=null;S.login={};tv='gate';}S.view=tv;render();window.scrollTo(0,0);return;}
   var t=e.target.closest('[data-act]');if(!t||t.disabled)return;
   var ev=S.ev,a=t.getAttribute('data-act'),b=+t.getAttribute('data-b');
   if(a==='toggle'){var id=+t.getAttribute('data-id');S.checked[id]=!S.checked[id];}
@@ -1559,9 +1580,12 @@ LT.addEventListener('click',function(e){
 });
 LT.addEventListener('change',function(e){if(!e.target.getAttribute)return;if(e.target.getAttribute('data-season')){S.season=e.target.value;render();}else if(e.target.getAttribute('data-me')){S.me=+e.target.value||null;render();}else if(e.target.getAttribute('data-legtarget')){S.legs.target=e.target.value.replace(' Uhr','');render();}else if(e.target.getAttribute('data-legfh')){S.legs.fh=+e.target.value;render();}});
 LT.addEventListener('submit',function(e){
-  if(e.target.id==='loginform'){e.preventDefault();var code=DOC.getElementById('lg-code').value.trim().toLowerCase(),role=DOC.getElementById('lg-role').value;
-    if(code!=='cda'){S.login={err:'Zugangscode stimmt nicht.'};render();return;}
-    S.login={};S.role=role;S.view=role;render();top();return;}
+  if(e.target.id==='loginform'){e.preventDefault();var code=DOC.getElementById('lg-code').value,role=DOC.getElementById('lg-role').value;
+    if(!LIVEAUTH){if(code.trim().toLowerCase()!=='cda'){S.login={err:'Code stimmt nicht.'};render();return;}S.login={};S.role=role;S.view=role;render();top();return;}
+    var btn=e.target.querySelector('button[type=submit]');if(btn){btn.disabled=true;btn.textContent='Anmelden …';}
+    authLogin(role,code).then(function(){S.login={};S.role=role;S.view=role;render();top();})
+      .catch(function(x){S.login={err:x.message};render();});
+    return;}
   if(e.target.id!=='addform')return;e.preventDefault();
   var v=DOC.getElementById('guest').value.trim();if(!v)return;
   var by=+DOC.getElementById('guestby').value||null,p=P(v+' (Gast)',45,'',1,.3,by);S.checked[p.id]=true;if(by)S.checked[by]=true;render();
@@ -1575,7 +1599,8 @@ if(!SITE)document.addEventListener('keydown',function(e){
   if(cr&&/^[tdsTDS]$/.test(k)){e.preventDefault();key(b,k);render();return;}
   if(/^\d$/.test(k)||k==='Enter'||k==='Backspace'||k==='Escape'){e.preventDefault();key(b,k);render();}
 });
-if(!SITE){try{var ss=JSON.parse(sessionStorage.getItem('cda-sb')||'null');if(ss&&ss.role){S.role=ss.role;S.view=ss.view;S.me=ss.me||null;}}catch(e){}
+if(!SITE){try{var ss=JSON.parse(sessionStorage.getItem('cda-sb')||'null');if(ss&&ss.role&&(ss.role==='spec'||!LIVEAUTH)){S.role=ss.role;S.view=ss.view;S.me=ss.me||null;}}catch(e){}
+  if(LIVEAUTH&&AUTH&&AUTH.role){S.role=AUTH.role;S.view=(ss&&ss.role===AUTH.role&&ss.view)||AUTH.role;authRefresh();}
   if(/#live/.test(location.hash)){S.role=S.role||'spec';if(!/^s-/.test(S.view))S.view='s-live';}
   /* Simulation: im Zuschauermodus läuft der Abend von selbst weiter */
   setInterval(function(){
