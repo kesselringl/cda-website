@@ -226,8 +226,17 @@ function fill(ev){
     c.sort(function(x,y){var rx=Math.max(ev.last[x.a]||0,ev.last[x.b]||0),ry=Math.max(ev.last[y.a]||0,ev.last[y.b]||0);return rx-ry||x.order-y.order;});
     if(c[0]){var m=c[0];m.status='live';m.board=b;ev.boards[b]=m.id;newLeg(m);m.writer=pickWriter(ev,b,m);if(m.writer)ev.writes[m.writer]=(ev.writes[m.writer]||0)+1;}
   }
-  if(hasKO(ev)&&ev.matches.every(function(m){return m.status==='done';}))ev.phase='done';
+  if(hasKO(ev)&&ev.matches.every(function(m){return m.status==='done';})){ev.phase='done';ev.summary=evSummary(ev);}
 }
+// Kurzfassung eines fertigen Abends (für das Grafik-Studio / Instagram): Podium und Bestwerte
+function evSummary(ev){try{
+  var pd=podium(ev).slice(0,4).map(function(x){return{place:x.place,name:partN(ev,x.part),money:x.money||0,pts:x.pts||0};});
+  var st=stats([ev]),ids=Object.keys(st);
+  function top(f,low){var b=null;ids.forEach(function(id){var v=f(st[id]);if(v&&(!b||(low?v<b.v:v>b.v)))b={name:pn(+id),v:v};});return b;}
+  return{date:ev.date,mode:ev.mode,n:Object.keys(ev.parts).length,podium:pd,
+    avg:top(function(x){return Math.round(avgOf(x)*100)/100;}),t180:top(function(x){return x.t180;}),hf:top(function(x){return x.hf;}),best:top(function(x){return x.best;},true),
+    n180:ids.reduce(function(a,id){return a+(st[id].t180||0);},0)};
+}catch(e){return null;}}
 function newLeg(m){m.legs.push({starter:m.legs.length%2,visits:[],winner:null});}
 function thrower(ev,m,leg,side){var mem=ev.parts[side===0?m.a:m.b].members,k=leg.visits.filter(function(v){return v.p===side;}).length,li=m.legs.indexOf(leg);return mem[(k+li)%mem.length];}
 function restX(ev,m,leg,side){var r=ev.parts[side===0?m.a:m.b].start;leg.visits.forEach(function(v){if(v.p===side&&!v.bust)r-=v.score;});return r;}
