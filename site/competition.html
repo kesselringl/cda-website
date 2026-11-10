@@ -584,18 +584,20 @@ var SEASON_START='2026-09-17';
 function addDays(d,n){var t=new Date(d+'T12:00:00Z');t.setUTCDate(t.getUTCDate()+n);return t.toISOString().slice(0,10);}
 
 /* Terminkalender: Masters-Saison = Kalenderjahr, Start am ersten Donnerstag ab 7. Januar,
-   keine Termine vom 23.12. bis 6.1., 16 Masters-Abende, Finals am Samstag in der Woche des 17. Masters-Termins */
+   keine Termine vom 23.12. bis 6.1., 16 Masters-Abende, Finals am Samstag 9 Tage nach dem letzten Masters-Abend */
 function cdaCalendar(year){
   var out=[],d=new Date(Date.UTC(year,0,7,12)),i=0,ms=0,fin=false,lf=-99,lc=0,ll=2,alt=0;
   while(d.getUTCDay()!==4)d.setUTCDate(d.getUTCDate()+1);
   for(;d.getUTCFullYear()===year;d.setUTCDate(d.getUTCDate()+7)){
     var iso=d.toISOString().slice(0,10);if(iso.slice(5)>='12-23')continue;
     var m=null;
-    if(i%3===1&&!fin){if(ms<16){m='m501';ms++;}else{fin=true;out.push({date:iso,mode:'c501',note:'Finals am Samstag'});out.push({date:addDays(iso,2),mode:'finals'});i++;continue;}}
-    if(!m){var w=i;if(i===0||w-lf>=16){m='friend';lf=w;}else if(w-lc>=7){m='cricket';lc=w;}else if(w-ll>=11){m='lucky';ll=w;}else{m=(alt++%2)?'di301':'c501';}}
+    if(i%3===1&&ms<16){m='m501';ms++;}
+    if(!m){var w=i;if(i===0||w-lf>=17){m='friend';lf=w;}else if(w-lc>=7){m='cricket';lc=w;}else if(w-ll>=11){m='lucky';ll=w;}else{m=(alt++%2)?'di301':'c501';}}
     out.push({date:iso,mode:m});i++;
   }
-  return out;
+  var lm=null;out.forEach(function(e){if(e.mode==='m501')lm=e.date;});
+    if(lm&&ms>=16){out.forEach(function(e){if(e.date===addDays(lm,7))e.note='Finals am Samstag';});out.push({date:addDays(lm,9),mode:'finals'});out.sort(function(a,b){return a.date<b.date?-1:1;});}
+    return out;
 }
 var CALS={};function cal(y){return CALS[y]||(CALS[y]=cdaCalendar(+y));}
 function calMode(date){var e=cal(date.slice(0,4)).filter(function(x){return x.date===date;})[0];return e?e.mode:'c501';}

@@ -26,17 +26,20 @@ const plusDays = (iso, n) => { const t = new Date(iso + 'T12:00:00Z'); t.setUTCD
 
 export function cdaCalendar(year) {
   const out = []; const d = new Date(Date.UTC(year, 0, 7, 12));
-  let i = 0, ms = 0, fin = false, lf = -99, lc = 0, ll = 2, alt = 0;
+  let i = 0, ms = 0, lf = -99, lc = 0, ll = 2, alt = 0;
   while (d.getUTCDay() !== 4) d.setUTCDate(d.getUTCDate() + 1);
   for (; d.getUTCFullYear() === year; d.setUTCDate(d.getUTCDate() + 7)) {
     const iso = d.toISOString().slice(0, 10); if (iso.slice(5) >= '12-23') continue;
     let m = null;
-    if (i % 3 === 1 && !fin) {
-      if (ms < MASTERS_PER_SEASON) { m = 'm501'; ms++; }
-      else { fin = true; out.push({ date: iso, mode: 'c501', note: 'Finals am Samstag' }); out.push({ date: plusDays(iso, 2), mode: 'finals' }); i++; continue; }
-    }
-    if (!m) { const w = i; if (i === 0 || w - lf >= 16) { m = 'friend'; lf = w; } else if (w - lc >= 7) { m = 'cricket'; lc = w; } else if (w - ll >= 11) { m = 'lucky'; ll = w; } else { m = (alt++ % 2) ? 'di301' : 'c501'; } }
+    if (i % 3 === 1 && ms < MASTERS_PER_SEASON) { m = 'm501'; ms++; }
+    if (!m) { const w = i; if (i === 0 || w - lf >= 17) { m = 'friend'; lf = w; } else if (w - lc >= 7) { m = 'cricket'; lc = w; } else if (w - ll >= 11) { m = 'lucky'; ll = w; } else { m = (alt++ % 2) ? 'di301' : 'c501'; } }
     out.push({ date: iso, mode: m }); i++;
+  }
+  // Finals: Samstag, 9 Tage nach dem letzten Masters-Abend (Anfang Dezember, mit Abstand zu Weihnachten)
+  const lm = out.filter(e => e.mode === 'm501').map(e => e.date).pop();
+  if (lm && ms >= MASTERS_PER_SEASON) {
+    out.forEach(e => { if (e.date === plusDays(lm, 7)) e.note = 'Finals am Samstag'; });
+    out.push({ date: plusDays(lm, 9), mode: 'finals' }); out.sort((a, b) => a.date < b.date ? -1 : 1);
   }
   return out;
 }

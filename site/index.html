@@ -1330,7 +1330,7 @@ footer a:hover{text-decoration:underline}
 
   // Anmeldung Donnerstags-Competition
   // Terminkalender (wie im Competition-System): Saison = Kalenderjahr, Start am ersten Donnerstag ab 7.1.,
-  // Pause 23.12.–6.1., alle 3 Wochen CDA Masters (16 pro Saison), Finals am Samstag in der Woche des 17. Masters-Termins.
+  // Pause 23.12.–6.1., alle 3 Wochen CDA Masters (16 pro Saison), Finals am Samstag 9 Tage nach dem letzten Masters-Abend.
   var RELAUNCH='2027-01-07';
   var MODE={m501:['CDA Masters','501 Double-out · zählt für Rangliste und Finals · Startgeld 15 € (5 € Preisgeld am Abend, 10 € in den Masters-Pott)'],
     c501:['Competition 501','501 Double-out · ohne Masters-Wertung'],di301:['301 Double-In','301 Double-in / Double-out · Punkte zählen erst nach dem ersten Doppel'],
@@ -1344,10 +1344,12 @@ footer a:hover{text-decoration:underline}
     for(;d.getUTCFullYear()===year;d.setUTCDate(d.getUTCDate()+7)){
       var iso=d.toISOString().slice(0,10);if(iso.slice(5)>='12-23')continue;
       var m=null;
-      if(i%3===1&&!fin){if(ms<16){m='m501';ms++;}else{fin=true;out.push({date:iso,mode:'c501',note:'Finals am Samstag'});out.push({date:plusDays(iso,2),mode:'finals'});i++;continue;}}
-      if(!m){var w=i;if(i===0||w-lf>=16){m='friend';lf=w;}else if(w-lc>=7){m='cricket';lc=w;}else if(w-ll>=11){m='lucky';ll=w;}else{m=(alt++%2)?'di301':'c501';}}
+      if(i%3===1&&ms<16){m='m501';ms++;}
+      if(!m){var w=i;if(i===0||w-lf>=17){m='friend';lf=w;}else if(w-lc>=7){m='cricket';lc=w;}else if(w-ll>=11){m='lucky';ll=w;}else{m=(alt++%2)?'di301':'c501';}}
       out.push({date:iso,mode:m});i++;
     }
+    var lm=null;out.forEach(function(e){if(e.mode==='m501')lm=e.date;});
+    if(lm&&ms>=16){out.forEach(function(e){if(e.date===plusDays(lm,7))e.note='Finals am Samstag';});out.push({date:plusDays(lm,9),mode:'finals'});out.sort(function(a,b){return a.date<b.date?-1:1;});}
     return out;
   }
   function upcoming(){
@@ -1413,7 +1415,7 @@ footer a:hover{text-decoration:underline}
             return '<article class="rh-m"><span class="rh-mno">Masters '+m.no+' · '+m.y+'</span>'+
               (m.fin?'<span class="rh-tro">🏆</span><b>'+esc(m.fin[1])+'</b><small>Sieger der Final-Competition am '+m.fin[0].split('-').reverse().join('.')+'</small>':'<b>'+esc(m.top[0][0])+'</b><small>Erster der Rangliste'+(m.no===11?' (Serie lief bis Nov. 2025)':'')+'</small>')+
               '<ol>'+m.top.map(function(x){return '<li>'+esc(x[0])+' <i>'+x[1]+' P.</i></li>';}).join('')+'</ol><span class="rh-mf">'+m.wins.length+' Abende · meiste Abendsiege: '+esc(mx)+' ('+cnt[mx]+')</span></article>';}).join('')+
-          '<article class="rh-m rh-next"><span class="rh-mno">CDA Masters 2027</span><b>Wer wird der Erste?</b><small>16 Masters-Abende, Finals am 18.12.2027 beim TSV Dinkelscherben</small><a href="#masters/regeln">So funktioniert\'s →</a></article></div>';
+          '<article class="rh-m rh-next"><span class="rh-mno">CDA Masters 2027</span><b>Wer wird der Erste?</b><small>16 Masters-Abende, Finals am 04.12.2027 beim TSV Dinkelscherben</small><a href="#masters/regeln">So funktioniert\'s →</a></article></div>';
         // Ewige Rangliste
         html+='<h3 class="rh-h">Ewige Rangliste</h3><p class="rh-sub">Alle Competition-Siege, 180er, kurzen Legs und höchsten Finishes seit Beginn der Aufzeichnung. Spalten zum Sortieren antippen.</p>'+
           '<div class="rh-tw"><table class="rh-t"><thead><tr><th>#</th><th>Spieler</th><th>Verein</th><th data-k="w" class="srt on">Siege</th><th data-k="t" class="srt">180er</th><th data-k="s" class="srt">Short Legs</th><th data-k="b" class="srt">Bestes Leg</th><th data-k="h" class="srt">High Finish</th></tr></thead><tbody id="rh-tb"></tbody></table></div><button class="btn small rh-more" id="rh-more">Alle '+E.length+' anzeigen</button>'+
