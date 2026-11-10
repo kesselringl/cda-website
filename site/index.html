@@ -391,6 +391,8 @@ input[type=text]:focus,select:focus,textarea:focus{outline:2px solid var(--green
 .ticket .t-cta{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .ticket .t-cta a{font-size:.85rem;font-weight:700;text-decoration:none;padding:7px 12px;border-radius:var(--radius);background:var(--green-bright);color:#08130b}
 .ticket .t-cta a.alt{background:transparent;color:inherit;box-shadow:inset 0 0 0 1.5px currentColor}
+.ticket .t-abo{display:inline-block;margin-top:10px;font-size:.82rem;font-weight:700;color:inherit;opacity:.8}
+.ticket .t-abo:hover{opacity:1}
 .ticket.masters{box-shadow:0 0 0 2px #E6B43A,0 20px 50px rgba(0,0,0,.25)}
 .ticket.masters .t-kind{color:#F2C75C}
 .ticket .t-flag{display:inline-block;font-size:.66rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;background:#E6B43A;color:#1a1300;border-radius:99px;padding:3px 8px;margin-bottom:8px}
@@ -403,7 +405,57 @@ input[type=text]:focus,select:focus,textarea:focus{outline:2px solid var(--green
 .ms-abo .ms-abo-help{grid-column:1/-1;font-size:.82rem}
 .ms-abo-help a{color:var(--green);font-weight:600}
 @media (max-width:700px){.ms-abo{grid-template-columns:1fr}}
-.join-abo{font-size:.9rem;font-weight:600;color:var(--green);align-self:flex-start}
+.join-abo-box{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;align-items:center;background:#fff;color:#0d1a10;border-radius:var(--radius);padding:16px 18px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.join-abo-box .jab-ic{font-size:2rem;line-height:1;grid-row:span 2}
+.join-abo-box b{display:block;font-size:1.05rem}
+.join-abo-box span{font-size:.88rem;color:#4a5a4f}
+.jab-btns{grid-column:2;display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.jab-btns a{font-size:.85rem;font-weight:700;text-decoration:none;padding:7px 12px;border-radius:var(--radius);color:#0d1a10;box-shadow:inset 0 0 0 1.5px #0d1a10}
+.jab-btns a.jab-main{background:#0d1a10;color:#fff}
+@media (max-width:520px){.jab-btns{grid-column:1/-1}}
+/* Ruhmeshalle */
+.rh-intro p{margin:0 0 6px;max-width:75ch}
+.rh-src{font-size:.82rem;color:var(--muted)}
+.rh-recs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:14px;margin:18px 0 8px}
+.rh-rec{background:var(--board);color:var(--board-ink);border-radius:var(--radius);padding:18px 20px;display:grid;gap:2px;border-bottom:4px solid #E6B43A}
+.rh-rec .rh-n{font-family:var(--f-display);font-weight:900;font-size:3rem;line-height:1;color:#F2C75C}
+.rh-rec b{font-size:1rem;text-transform:uppercase;letter-spacing:.06em}
+.rh-rec span{color:var(--board-ink)}
+.rh-rec small{color:var(--board-muted);font-size:.8rem}
+.rh-h{margin:36px 0 4px;font-size:1.6rem}
+.rh-sub{margin:0 0 16px;color:var(--muted);max-width:75ch}
+.rh-ms{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:14px}
+.rh-m{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:grid;gap:4px;align-content:start}
+.rh-mno{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tbd)}
+.rh-tro{font-size:1.6rem;line-height:1}
+.rh-m b{font-family:var(--f-display);font-weight:800;font-size:1.45rem;line-height:1.1;text-transform:uppercase}
+.rh-m small{color:var(--muted);font-size:.8rem}
+.rh-m ol{margin:8px 0 4px;padding-left:20px;font-size:.88rem}
+.rh-m ol i{font-style:normal;color:var(--muted)}
+.rh-mf{font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padding-top:6px}
+.rh-next{border:2px dashed #E6B43A;background:color-mix(in srgb,#E6B43A 8%,var(--surface))}
+.rh-next a{font-weight:700;color:var(--green);margin-top:6px}
+.rh-tw{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
+.rh-t{width:100%;border-collapse:collapse;font-size:.92rem;font-variant-numeric:tabular-nums}
+.rh-t th,.rh-t td{padding:8px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+.rh-t th:nth-child(2),.rh-t td:nth-child(2),.rh-t th:nth-child(3),.rh-t td:nth-child(3){text-align:left}
+.rh-t th{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.rh-t th.srt{cursor:pointer;user-select:none}
+.rh-t th.srt::after{content:" ↕";opacity:.4}
+.rh-t th.srt.on{color:var(--green)}
+.rh-t th.srt.on::after{content:" ↓";opacity:1}
+.rh-t td:first-child{color:var(--muted)}
+.rh-t tr.t1 td:nth-child(2){font-weight:800;color:var(--tbd)}
+.rh-t tr.t2 td:nth-child(2),.rh-t tr.t3 td:nth-child(2){font-weight:700}
+.rh-v{color:var(--muted)}
+.rh-more{margin-top:10px}
+.rh-ti{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:24px}
+.rh-ti h4{margin:0 0 10px;font-size:1.1rem}
+.rh-tl{list-style:none;margin:0;padding:0;display:grid;gap:2px;max-height:520px;overflow:auto;padding-right:6px}
+.rh-tl li{display:grid;grid-template-columns:72px 1fr;gap:12px;padding:8px 0;border-bottom:1px solid var(--line)}
+.rh-tl li span{font-weight:700;color:var(--tbd);font-variant-numeric:tabular-nums}
+.rh-tl b{display:block}
+.rh-tl small{color:var(--muted)}
 /* CDA Masters (eigener Reiter) */
 #masters{display:none}
 body.v-masters #masters{display:block;min-height:70vh}
@@ -763,7 +815,11 @@ footer a:hover{text-decoration:underline}
           </div>
           <p class="join-new">Ab dem 7. Januar 2027 startet die neue Competition: alle drei Wochen CDA Masters mit eigener Rangliste und Finals, dazwischen 501, 301 Double-In und Sonderabende wie Cricket oder Bring a Friend.</p>
           <a class="btn ghost join-sim" href="#masters">Mehr zu den CDA Masters</a>
-          <a class="join-abo" href="#masters/termine">📅 Alle Termine im Handy-Kalender abonnieren</a>
+          <div class="join-abo-box">
+            <span class="jab-ic" aria-hidden="true">📅</span>
+            <div><b>Nie wieder einen Donnerstag verpassen</b><span>Alle Termine mit Spielmodus automatisch im Handy-Kalender.</span></div>
+            <div class="jab-btns"><a class="jab-main" data-ics="cda-competition" href="kalender/cda-competition.ics">Termine abonnieren</a><a data-ics="cda-masters" href="kalender/cda-masters.ics">Nur Masters</a><a href="#masters/termine">Hilfe</a></div>
+          </div>
         </div>
         <form class="signup" id="signup" novalidate>
           <div class="signup-head">
@@ -854,6 +910,7 @@ footer a:hover{text-decoration:underline}
         <button class="tab" role="tab" id="mst-stats" data-ms="stats" aria-selected="true" aria-controls="msp-stats">Rangliste &amp; Statistiken</button>
         <button class="tab" role="tab" id="mst-regeln" data-ms="regeln" aria-selected="false" aria-controls="msp-regeln">So funktioniert's</button>
         <button class="tab" role="tab" id="mst-termine" data-ms="termine" aria-selected="false" aria-controls="msp-termine">Termine</button>
+        <button class="tab" role="tab" id="mst-ruhm" data-ms="ruhm" aria-selected="false" aria-controls="msp-ruhm">Ruhmeshalle</button>
         <a class="tab ms-live" href="competition.html"><i></i>Spielbetrieb</a>
       </div>
       <div id="msp-stats" role="tabpanel" aria-labelledby="mst-stats">
@@ -880,6 +937,9 @@ footer a:hover{text-decoration:underline}
           </ul>
           <p>Jeder Abend ist spätestens um 23 Uhr fertig: Bei vielen Spielern kürzt das System automatisch die Legs, zuerst in der Gruppenphase. Alle Ergebnisse und Statistiken werden am Board direkt erfasst, auch an den Nicht-Masters-Abenden.</p>
         </div>
+      </div>
+      <div id="msp-ruhm" role="tabpanel" aria-labelledby="mst-ruhm" hidden>
+        <div id="ruhm"><p class="ms-load">Ruhmeshalle wird geladen …</p></div>
       </div>
       <div id="msp-termine" role="tabpanel" aria-labelledby="mst-termine" hidden>
         <div class="ms-abo">
@@ -1220,7 +1280,8 @@ footer a:hover{text-decoration:underline}
     var sub=mode==='alt'?'Offenes Turnier, jeder kann mitspielen.':C.MODE[mode][1].split(' · ').slice(0,2).join(' · ');
     var preRL=nx&&nx.date<'2027-01-07';
     set('t-body',(isM?'<span class="t-flag">Zählt für die Masters-Rangliste</span>':'')+'<span class="t-mode">'+esc(sub)+'</span><p class="t-place"><b>Bismarck Bistro</b><br>Bismarckstraße 7, 86159 Augsburg</p>'+
-      '<div class="t-cta"><a href="#kontakt">Anmelden</a><a class="alt" href="#masters">'+(preRL?'Neu ab 7.1.: CDA Masters':'CDA Masters')+'</a></div>');
+      '<div class="t-cta"><a href="#kontakt">Anmelden</a><a class="alt" href="#masters">'+(preRL?'Neu ab 7.1.: CDA Masters':'CDA Masters')+'</a></div>'+
+      '<a class="t-abo" href="'+(location.origin+location.pathname.replace(/[^\/]*$/,'')+'kalender/cda-competition.ics').replace(/^https?:/,'webcal:')+'">📅 Alle Termine in deinen Kalender</a>');
     function tick(){var ms=target-new Date(),c=document.getElementById('t-count');
       if(ms<=0){c.innerHTML=new Date()<end?'<div class="live">Heute live</div>':'';return;}
       var dd=Math.floor(ms/864e5),hh=Math.floor(ms%864e5/36e5),mm=Math.floor(ms%36e5/6e4);
@@ -1320,14 +1381,56 @@ footer a:hover{text-decoration:underline}
   })();
   // Reiter "CDA Masters": eigene Ansicht per #masters, Statistik lädt erst beim ersten Öffnen
   (function(){
-    var body=document.body,navMs=document.querySelector('.nav-ms'),loaded=false,calDone=false;
+    var body=document.body,navMs=document.querySelector('.nav-ms'),loaded=false,calDone=false,ruhmDone=false;
     var nav=document.getElementById('nav'),mbtn=document.getElementById('menu-btn');
     function sub(name){
-      ['stats','regeln','termine'].forEach(function(k){
+      ['stats','regeln','termine','ruhm'].forEach(function(k){
         document.getElementById('mst-'+k).setAttribute('aria-selected',k===name);
         document.getElementById('msp-'+k).hidden=k!==name;});
       if(name==='stats'&&!loaded){loaded=true;var sc=document.createElement('script');sc.src='masters.js';sc.onerror=function(){document.getElementById('masters-app').innerHTML='<p class="ms-load">Die Statistiken konnten nicht geladen werden.</p>';};document.body.appendChild(sc);}
       if(name==='termine'&&!calDone){calDone=true;renderCal();}
+      if(name==='ruhm'&&!ruhmDone){ruhmDone=true;loadRuhm();}
+    }
+
+    // Ruhmeshalle: Rekorde, alte CDA-Masters, Ewige Rangliste, Titel (Daten: ruhmeshalle.json)
+    function loadRuhm(){
+      var R=document.getElementById('ruhm');
+      fetch('ruhmeshalle.json',{cache:'no-store'}).then(function(r){return r.json();}).then(function(D){
+        var E=D.ewig,nf=new Intl.NumberFormat('de-DE');
+        var shortL=function(e){return e.sl.slice(0,7).reduce(function(a,b){return a+b;},0);}; // 9 bis 15 Darts
+        var bestLeg=function(e){for(var i=0;i<e.sl.length;i++)if(e.sl[i])return 9+i;return null;};
+        var maxBy=function(f){var m=Math.max.apply(null,E.map(f));return {v:m,who:E.filter(function(e){return f(e)===m;}).map(function(e){return e.n;})};};
+        var w=maxBy(function(e){return e.w;}),t=maxBy(function(e){return e.t;}),h=maxBy(function(e){return e.hf;});
+        var bl=Math.min.apply(null,E.map(bestLeg).filter(Boolean)),blw=E.filter(function(e){return bestLeg(e)===bl;}).map(function(e){return e.n+(e.sl[bl-9]>1?' ('+e.sl[bl-9]+'×)':'');});
+        var total=E.reduce(function(a,e){return a+e.w;},0);
+        var rec=function(n,l,who,sub){return '<article class="rh-rec"><span class="rh-n">'+n+'</span><b>'+l+'</b><span>'+who+'</span>'+(sub?'<small>'+sub+'</small>':'')+'</article>';};
+        var html='<div class="rh-intro"><p>Seit Beginn der Aufzeichnung wurden knapp <b>1.500 Competitions</b> gespielt. Hier stehen die Rekorde, die Sieger und die Titel des Vereins seit 1986.</p><p class="rh-src">Quelle: '+esc(D.quelle)+'. Ab 2027 rechnet das neue Competition-System automatisch weiter.</p></div>'+
+          '<div class="rh-recs">'+rec(w.v,'Competition-Siege',esc(w.who.join(', ')),'Rekord der Ewigen Rangliste')+rec(t.v,'180er',esc(t.who.join(', ')),'meiste Maximum-Würfe')+
+          rec(bl+' Darts','bestes Leg',esc(blw.join(', ')),'Ein 9-Darter steht noch aus')+rec(h.v,'höchstes Finish',esc(h.who.join(', ')),'Big Fish')+'</div>';
+        // CDA Masters (alte Serie)
+        html+='<h3 class="rh-h">CDA Masters 2019 bis 2025</h3><p class="rh-sub">Die bisherige Masters-Serie: jeweils rund 12 Competitions mit Final-Competition. Ab 2027 startet die neue Saison mit 16 Abenden und Finals beim TSV Dinkelscherben.</p><div class="rh-ms">'+
+          D.masters.slice().reverse().map(function(m){var cnt={};m.wins.forEach(function(x){cnt[x[1]]=(cnt[x[1]]||0)+1;});var mx=Object.keys(cnt).sort(function(a,b){return cnt[b]-cnt[a];})[0];
+            return '<article class="rh-m"><span class="rh-mno">Masters '+m.no+' · '+m.y+'</span>'+
+              (m.fin?'<span class="rh-tro">🏆</span><b>'+esc(m.fin[1])+'</b><small>Sieger der Final-Competition am '+m.fin[0].split('-').reverse().join('.')+'</small>':'<b>'+esc(m.top[0][0])+'</b><small>Erster der Rangliste'+(m.no===11?' (Serie lief bis Nov. 2025)':'')+'</small>')+
+              '<ol>'+m.top.map(function(x){return '<li>'+esc(x[0])+' <i>'+x[1]+' P.</i></li>';}).join('')+'</ol><span class="rh-mf">'+m.wins.length+' Abende · meiste Abendsiege: '+esc(mx)+' ('+cnt[mx]+')</span></article>';}).join('')+
+          '<article class="rh-m rh-next"><span class="rh-mno">CDA Masters 2027</span><b>Wer wird der Erste?</b><small>16 Masters-Abende, Finals am 18.12.2027 beim TSV Dinkelscherben</small><a href="#masters/regeln">So funktioniert\'s →</a></article></div>';
+        // Ewige Rangliste
+        html+='<h3 class="rh-h">Ewige Rangliste</h3><p class="rh-sub">Alle Competition-Siege, 180er, kurzen Legs und höchsten Finishes seit Beginn der Aufzeichnung. Spalten zum Sortieren antippen.</p>'+
+          '<div class="rh-tw"><table class="rh-t"><thead><tr><th>#</th><th>Spieler</th><th>Verein</th><th data-k="w" class="srt on">Siege</th><th data-k="t" class="srt">180er</th><th data-k="s" class="srt">Short Legs</th><th data-k="b" class="srt">Bestes Leg</th><th data-k="h" class="srt">High Finish</th></tr></thead><tbody id="rh-tb"></tbody></table></div><button class="btn small rh-more" id="rh-more">Alle '+E.length+' anzeigen</button>'+
+          '<p class="rh-src">Short Legs: Legs mit 15 Darts oder weniger.</p>';
+        // Titel
+        var tl=function(rows,cls){return '<ul class="rh-tl '+cls+'">'+rows.map(function(r){return '<li><span>'+esc(r[0])+'</span><div><b>'+esc(r[1])+'</b><small>'+esc(r[2])+(r[3]?' · '+esc(r[3]):'')+'</small></div></li>';}).join('')+'</ul>';};
+        html+='<h3 class="rh-h">Titel und Erfolge</h3><div class="rh-ti"><div><h4>Mannschaften</h4>'+tl(D.teams,'')+'</div><div><h4>Spielerinnen und Spieler</h4>'+tl(D.spieler,'')+'</div></div>';
+        R.innerHTML=html;
+        var key='w',all=false,tb=document.getElementById('rh-tb');
+        var val={w:function(e){return e.w;},t:function(e){return e.t;},s:shortL,b:function(e){var b=bestLeg(e);return b?-b:-99;},h:function(e){return e.hf;}};
+        function draw(){var L=E.slice().sort(function(a,b){return val[key](b)-val[key](a)||b.w-a.w||b.t-a.t;});var shown=all?L:L.slice(0,25);
+          tb.innerHTML=shown.map(function(e,i){var b=bestLeg(e);return '<tr'+(i<3?' class="t'+(i+1)+'"':'')+'><td>'+(i+1)+'</td><td>'+esc(e.n)+'</td><td class="rh-v">'+esc(e.v||'–')+'</td><td>'+(e.w||'–')+'</td><td>'+(e.t||'–')+'</td><td>'+(shortL(e)||'–')+'</td><td>'+(b?b+' Darts':'–')+'</td><td>'+(e.hf||'–')+'</td></tr>';}).join('');
+          document.getElementById('rh-more').textContent=all?'Nur Top 25 anzeigen':'Alle '+E.length+' anzeigen';}
+        R.querySelector('.rh-t thead').addEventListener('click',function(e){var th=e.target.closest('[data-k]');if(!th)return;key=th.getAttribute('data-k');R.querySelectorAll('.srt').forEach(function(x){x.classList.toggle('on',x===th);});draw();});
+        document.getElementById('rh-more').addEventListener('click',function(){all=!all;draw();});
+        draw();
+      }).catch(function(){R.innerHTML='<p class="ms-load">Die Ruhmeshalle konnte nicht geladen werden.</p>';});
     }
     function renderCal(){
       var C=window.CDA_CAL,y=new Date().getFullYear()<2027?2027:new Date().getFullYear(),today=new Date().toISOString().slice(0,10),months={};
