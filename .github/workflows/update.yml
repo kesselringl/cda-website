@@ -49,6 +49,13 @@ jobs:
             git push
           fi
 
+      - name: Supabase wach halten (kostenlose Projekte pausieren nach 7 Tagen ohne Abruf)
+        continue-on-error: true
+        run: |
+          curl -sS -m 20 -o /dev/null -w "Supabase: %{http_code}\n" \
+            "https://qeevsqrmltewbtrnfrfm.supabase.co/rest/v1/players?select=id&limit=1" \
+            -H "apikey: sb_publishable_pwnzx63cque5lKZEVCe4mA_5SvBP8Yd"
+
       - name: Kalender-Abos erzeugen (iCal)
         run: node scripts/build-ics.mjs
 

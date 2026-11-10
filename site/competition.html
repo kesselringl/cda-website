@@ -316,6 +316,12 @@ th.sorted{color:var(--green-ink)}
   .mk svg{width:24px;height:24px}
   .chead{padding:10px 12px}
 }
+.sbp .sbgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:20px}
+@media (max-width:760px){.sbp .sbgrid{grid-template-columns:1fr}}
+.sblist{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.sblist li{background:var(--panel-2);border-radius:99px;padding:4px 10px;font-size:.88rem}
+.wa h3{margin:0 0 8px}
+.watxt{white-space:pre-wrap;font:inherit;font-size:.9rem;background:var(--panel-2);border-left:3px solid #25D366;border-radius:var(--radius);padding:12px;margin:0 0 10px}
 .legbox{border-top:1px solid var(--line);margin-top:14px;padding-top:14px;display:grid;gap:10px;margin-bottom:14px}
 .legbox h3{margin:0}
 .legseg{display:flex;flex-wrap:wrap;gap:6px}
@@ -1124,10 +1130,47 @@ function viewCheckin(){
     '<section class="panel setup"><h2>Spielort und Boards</h2><div class="vpre">'+vb+'</div>'+
       '<div class="row" style="gap:20px"><div class="bcount"><button data-act="bminus" aria-label="Ein Board weniger">−</button><b class="num">'+S.boards.length+'</b><button data-act="bplus" aria-label="Ein Board mehr">+</button><span class="muted">Boards</span></div><span class="muted" style="font-size:.85rem">Pro Board antippen: wird an einem PC (Tastatur) oder an einem Tablet (Touch) geschrieben?</span></div><div class="btypes">'+bt+'</div></section>'+
     '<section class="panel"><h2>Was spielen wir heute?</h2><div class="modes">'+modes+'</div></section>'+
+    sbPanel()+
     '<div class="grid g2"><section class="panel"><h2>Check-in</h2><p class="muted" style="margin:0 0 10px">Wer heute mitspielt, antippen.'+(md.finals?' Die Zahl zeigt die Masters-Abende, ab '+MIN_QUALI+' ist man qualifiziert.':' Gäste mit Vornamen anlegen.')+'</p>'+
       '<div class="selall"><button class="btn small" data-act="selq">'+(md.finals?'Alle Qualifizierten':'Alle')+'</button><button class="btn small" data-act="selnone">Keine</button></div><div class="players">'+chips+'</div>'+
       '<form class="add" id="addform"><label for="guest" style="position:absolute;left:-9999px">Neuer Gast</label><input id="guest" placeholder="Neuer Gast, z. B. Nina" autocomplete="off"><label for="guestby" style="position:absolute;left:-9999px">Mitgebracht von</label><select id="guestby" class="bysel"><option value="">mitgebracht von …</option>'+PLAYERS.filter(function(x){return !x.guest;}).map(function(x){return '<option value="'+x.id+'">'+esc(x.name)+'</option>';}).join('')+'</select><button class="btn" type="submit">Hinzufügen</button></form></section>'+
     '<section class="panel plan"><h2>Vorschlag für heute</h2>'+plan+'</section></div></div>';
+}
+/* ===== Anmeldungen von der Homepage (Supabase) + WhatsApp-Nachricht ===== */
+var SBC={url:'https://qeevsqrmltewbtrnfrfm.supabase.co',key:'sb_publishable_pwnzx63cque5lKZEVCe4mA_5SvBP8Yd'};
+var HOME_URL=/github\.io$|cda-ev\.eu$/.test(location.hostname)?location.origin+location.pathname.replace(/[^\/]*$/,''):'https://kesselringl.github.io/cda-website/';
+S.sb={state:'idle',rows:[],players:[]};
+function realToday(){var d=new Date();return new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10);}
+function sbLoad(){
+  if(SITE)return;S.sb.state='loading';var h={apikey:SBC.key};
+  Promise.all([fetch(SBC.url+'/rest/v1/players?select=id,name&order=name',{headers:h}).then(function(r){if(!r.ok)throw 0;return r.json();}),
+    fetch(SBC.url+'/rest/v1/signups?select=event_date,player_id,guest_name,created_at&event_date=gte.'+realToday()+'&order=created_at',{headers:h}).then(function(r){if(!r.ok)throw 0;return r.json();})])
+  .then(function(x){S.sb={state:'ok',players:x[0],rows:x[1]};if(S.view==='lead')render();})
+  .catch(function(){S.sb={state:'err',rows:[],players:[]};if(S.view==='lead')render();});
+}
+function sbNext(){var ds={};S.sb.rows.forEach(function(r){ds[r.event_date]=1;});var t=realToday(),d=new Date(t+'T12:00:00Z');while(d.getUTCDay()!==4)d.setUTCDate(d.getUTCDate()+1);var thu=d.toISOString().slice(0,10);
+  var all=Object.keys(ds).concat([thu]).sort();return all[0];}
+function sbNames(date){var pn=function(id){var p=S.sb.players.filter(function(x){return x.id===id;})[0];return p?p.name:'?';};
+  return S.sb.rows.filter(function(r){return r.event_date===date;}).map(function(r){return r.player_id?{name:pn(r.player_id),guest:false}:{name:r.guest_name,guest:true};});}
+function realModeName(date){if(date<'2027-01-07')return 'Offene Competition';var m=calMode(date);return m&&MODES[m]?MODES[m].name:'Competition';}
+function waText(date){var L=sbNames(date),dt=new Date(date+'T12:00:00'),wd=dt.toLocaleDateString('de-DE',{weekday:'long'}),dd=dt.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'});
+  var diff=Math.round((dt-new Date(realToday()+'T12:00:00'))/864e5),when=diff===0?'Heute':diff===1?'Morgen':wd;
+  return '🎯 '+when+' ist Competition!\n'+wd+', '+dd+' · '+realModeName(date)+' · ab 20 Uhr im Bismarck Bistro\n\n'+
+    (L.length?'Schon '+L.length+' angemeldet: '+L.map(function(x){return x.name.split(' ')[0];}).join(', ')+'\n\n':'Noch ist niemand angemeldet, sei der Erste!\n\n')+
+    'Hier mit einem Tipp anmelden oder absagen:\n'+HOME_URL+'#kontakt/'+date;}
+function sbPanel(){
+  if(SITE)return '';
+  if(S.sb.state==='idle'){setTimeout(sbLoad,0);}
+  if(S.sb.state!=='ok')return '<section class="panel sbp"><h2>Anmeldungen von der Homepage</h2><p class="muted" style="margin:0">'+(S.sb.state==='err'?'Die Anmeldungen sind gerade nicht erreichbar (keine Verbindung zur Datenbank). <button class="btn small" data-act="sbreload">Nochmal versuchen</button>':'Wird geladen …')+'</p></section>';
+  var date=sbNext(),L=sbNames(date),txt=waText(date);
+  var known=L.filter(function(x){return !x.guest;}).map(function(x){return x.name;}),match=PLAYERS.filter(function(p){return known.indexOf(p.name)>=0;}).length;
+  return '<section class="panel sbp"><div class="row" style="justify-content:space-between;align-items:baseline"><h2 style="margin:0">Anmeldungen von der Homepage</h2><button class="btn small" data-act="sbreload">Aktualisieren</button></div>'+
+    '<p class="muted" style="margin:4px 0 12px">'+new Date(date+'T12:00:00').toLocaleDateString('de-DE',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'})+' · '+realModeName(date)+'</p>'+
+    '<div class="sbgrid"><div><div class="big-n num">'+L.length+'</div><p class="muted" style="margin:0 0 10px">angemeldet</p>'+
+      (L.length?'<ul class="sblist">'+L.map(function(x){return '<li>'+esc(x.name)+(x.guest?' <span class="muted">(Gast)</span>':'')+'</li>';}).join('')+'</ul>'+
+      '<button class="btn primary small" data-act="sbtake" data-date="'+date+'">Alle Angemeldeten einchecken</button><p class="cap">Danach kannst du unten jeden mit einem Tippen wieder abwählen, der spontan nicht kommt.</p>':'<p class="muted">Noch keine Anmeldungen.</p>')+
+      (L.length>16?'<p class="warn">'+L.length+' Anmeldungen für 2 Boards: Spielortwechsel (Sergio\'s, 5 Boards) überlegen.</p>':'')+'</div>'+
+    '<div class="wa"><h3>Nachricht für die WhatsApp-Gruppe</h3><pre class="watxt">'+esc(txt)+'</pre><div class="row" style="gap:8px"><a class="btn primary small" target="_blank" rel="noopener" href="https://wa.me/?text='+encodeURIComponent(txt)+'">In WhatsApp teilen</a><button class="btn small" data-act="sbcopy">Text kopieren</button></div><p class="cap">Am besten am Mittwoch posten. Der Link führt direkt zur Anmeldung für diesen Abend.</p></div></div></section>';
 }
 function fitTarget(md,p){if(md.finals)return p.dur<=S.legs.fh*60;var t=S.legs.target.split(':'),lim=(+t[0]===0?24:+t[0])*60+(+t[1])-20*60;return p.dur<=lim;}
 function chooseLegs(md,n){
@@ -1484,6 +1527,10 @@ LT.addEventListener('click',function(e){
   else if(a==='btype'){var i=+t.getAttribute('data-i');S.boards[i]=S.boards[i]==='pc'?'tablet':'pc';S.venue='custom';}
   else if(a==='selq'){var mt=mastersTable(ARCHIVE.filter(function(x){return x.season===CUR_SEASON;}));if(!Object.keys(mt).length)mt=mastersTable(ARCHIVE.filter(function(x){return x.season==='2026';}));PLAYERS.forEach(function(p){S.checked[p.id]=MODES[S.mode].finals?!!(mt[p.id]&&(mt[p.id].n>=MIN_QUALI||true)):true;});}
   else if(a==='selnone'){S.checked={};}
+  else if(a==='sbreload'){S.sb.state='idle';}
+  else if(a==='sbcopy'){var tx=waText(sbNext());try{navigator.clipboard.writeText(tx);t.textContent='Kopiert ✓';}catch(x){prompt('Text:',tx);}return;}
+  else if(a==='sbtake'){var dL=sbNames(t.getAttribute('data-date'));dL.forEach(function(x){var p=PLAYERS.filter(function(q){return q.name===x.name;})[0];
+      if(!p)p=P(x.guest?x.name+' (Gast)':x.name,45,'',1,.3,null);S.checked[p.id]=true;});}
   else if(a==='leglvl'){S.legs.lvl=+t.getAttribute('data-l');S.legs.auto=false;S.legs.custom=null;}
   else if(a==='legauto'){S.legs.auto=!S.legs.auto||t.closest('.warn')!==null;S.legs.custom=null;}
   else if(a==='legadj'){var mdl=MODES[S.mode],idsL=PLAYERS.filter(function(p){return S.checked[p.id];}).length,cur=chooseLegs(mdl,mdl.doubles?Math.floor(idsL/2):idsL).L,kk=t.getAttribute('data-k');

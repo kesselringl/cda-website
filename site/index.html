@@ -391,6 +391,7 @@ input[type=text]:focus,select:focus,textarea:focus{outline:2px solid var(--green
 .ticket .t-cta{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .ticket .t-cta a{font-size:.85rem;font-weight:700;text-decoration:none;padding:7px 12px;border-radius:var(--radius);background:var(--green-bright);color:#08130b}
 .ticket .t-cta a.alt{background:transparent;color:inherit;box-shadow:inset 0 0 0 1.5px currentColor}
+.ticket .t-cnt{display:block;font-weight:800;font-size:.95rem;margin:0 0 8px}
 .ticket .t-abo{display:inline-block;margin-top:10px;font-size:.82rem;font-weight:700;color:inherit;opacity:.8}
 .ticket .t-abo:hover{opacity:1}
 .ticket.masters{box-shadow:0 0 0 2px #E6B43A,0 20px 50px rgba(0,0,0,.25)}
@@ -456,6 +457,35 @@ input[type=text]:focus,select:focus,textarea:focus{outline:2px solid var(--green
 .rh-tl li span{font-weight:700;color:var(--tbd);font-variant-numeric:tabular-nums}
 .rh-tl b{display:block}
 .rh-tl small{color:var(--muted)}
+
+/* Anmeldung */
+.signup{display:flex;flex-direction:column;gap:14px}
+.su-names{display:flex;flex-wrap:wrap;gap:6px;max-height:260px;overflow:auto;padding:2px}
+.su-name{font:600 .9rem var(--f-body);padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.su-name:hover,.su-name:focus-visible{border-color:var(--green);color:var(--green)}
+.su-load{color:var(--muted);font-size:.9rem;margin:0}
+.su-guest{border-top:1px solid var(--line);padding-top:12px}
+.su-guest summary{cursor:pointer;font-weight:600;color:var(--green)}
+.su-grow{display:flex;gap:8px;margin-top:10px}
+.su-grow input{flex:1;min-width:0;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg);color:var(--ink)}
+.su-fine{font-size:.78rem;color:var(--muted);margin:4px 0 0}
+.su-fine a{color:var(--green)}
+.su-hello{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:1.1rem}
+.su-link{background:none;border:0;color:var(--green);font:600 .88rem var(--f-body);cursor:pointer;text-decoration:underline}
+.su-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.su-item{display:grid;grid-template-columns:1fr auto;gap:8px 12px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-left:4px solid var(--line);border-radius:var(--radius);background:var(--bg)}
+.su-item.ms{border-left-color:#E6B43A}
+.su-item.in{border-color:var(--green);border-left-color:var(--green);background:color-mix(in srgb,var(--green) 8%,var(--bg))}
+.su-item.focus{box-shadow:0 0 0 3px color-mix(in srgb,var(--green) 40%,transparent)}
+.su-when b{display:block;font-size:1.02rem}
+.su-when span{font-size:.85rem;color:var(--muted)}
+.su-btn{font:700 .92rem var(--f-body);padding:10px 14px;border-radius:var(--radius);border:0;cursor:pointer;background:var(--green-bright);color:#fff;white-space:nowrap;min-height:44px}
+.su-item.in .su-btn{background:transparent;color:var(--green);box-shadow:inset 0 0 0 1.5px var(--green)}
+.su-btn:disabled{opacity:.6;cursor:wait}
+.su-who{grid-column:1/-1;display:grid;gap:2px;font-size:.85rem}
+.su-cnt{font-weight:700}
+.su-ppl{color:var(--muted)}
+.su-many{color:var(--tbd);font-weight:600}
 /* CDA Masters (eigener Reiter) */
 #masters{display:none}
 body.v-masters #masters{display:block;min-height:70vh}
@@ -821,23 +851,28 @@ footer a:hover{text-decoration:underline}
             <div class="jab-btns"><a class="jab-main" data-ics="cda-competition" href="kalender/cda-competition.ics">Termine abonnieren</a><a data-ics="cda-masters" href="kalender/cda-masters.ics">Nur Masters</a><a href="#masters/termine">Hilfe</a></div>
           </div>
         </div>
-        <form class="signup" id="signup" novalidate>
+        <div class="signup" id="signup">
           <div class="signup-head">
-            <h3>Für Donnerstag anmelden</h3>
-            <p>Kein Mitglied? Kein Problem. Trag dich kurz ein, dann wissen wir, dass du kommst, und halten dir einen Platz frei.</p>
+            <h3>Anmelden</h3>
+            <p>Einmal deinen Namen antippen, danach bist du mit einem Tippen dabei. Dein Name wird auf diesem Gerät gemerkt.</p>
           </div>
-          <div class="field">
-            <label for="su-name">Name</label>
-            <input id="su-name" name="name" type="text" autocomplete="name" required placeholder="Vor- und Nachname">
+          <div id="su-who">
+            <div class="field">
+              <label for="su-search">Wer bist du?</label>
+              <input id="su-search" type="search" autocomplete="off" placeholder="Namen suchen …">
+            </div>
+            <div class="su-names" id="su-names" aria-live="polite"><p class="su-load">Mitgliederliste wird geladen …</p></div>
+            <details class="su-guest">
+              <summary>Ich bin kein Mitglied / zum ersten Mal da</summary>
+              <div class="su-grow"><input id="su-gname" type="text" maxlength="30" autocomplete="given-name" placeholder="Dein Vorname"><button type="button" class="btn primary" id="su-gok">Weiter</button></div>
+              <p class="su-fine">Wir speichern nur deinen Vornamen für die Teilnehmerliste dieses Abends. Mehr in der <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a>.</p>
+            </details>
           </div>
-          <div class="field">
-            <label for="su-contact">E-Mail oder Handynummer</label>
-            <input id="su-contact" name="kontakt" type="text" autocomplete="email" required placeholder="für eine kurze Rückmeldung">
-          </div>
-          <div class="row">
+          <div id="su-me" hidden>
+            <div class="su-hello"><span>Hallo <b id="su-mename"></b>!</span><button type="button" class="su-link" id="su-switch">Nicht du?</button></div>
             <div class="field">
               <label for="su-mode">Spielmodus</label>
-              <select id="su-mode" name="modus">
+              <select id="su-mode">
                 <option value="">Alle Termine</option>
                 <option value="m501">CDA Masters (501)</option>
                 <option value="c501">Competition 501</option>
@@ -847,41 +882,11 @@ footer a:hover{text-decoration:underline}
                 <option value="friend">Bring a Friend</option>
               </select>
             </div>
+            <p class="mode-info" id="su-mode-info"></p>
+            <ul class="su-list" id="su-list"></ul>
+            <p class="su-fine">Die Namen der Angemeldeten sind für alle sichtbar. Absagen geht mit dem Gerät, mit dem du dich angemeldet hast, sonst gib der Turnierleitung kurz Bescheid.</p>
           </div>
-          <p class="mode-info" id="su-mode-info"></p>
-          <div class="row">
-            <div class="field">
-              <label for="su-date">Welcher Termin?</label>
-              <select id="su-date" name="termin" required></select>
-            </div>
-            <div class="field">
-              <label for="su-count">Personen</label>
-              <select id="su-count" name="personen"><option>1</option><option>2</option><option>3</option><option>4</option></select>
-            </div>
-          </div>
-          <fieldset class="field">
-            <legend>Wie viel Erfahrung hast du?</legend>
-            <div class="chips">
-              <label><input type="radio" name="erfahrung" id="su-exp-1" value="Einsteiger" checked><span>Einsteiger</span></label>
-              <label><input type="radio" name="erfahrung" id="su-exp-2" value="Hobby"><span>Hobby</span></label>
-              <label><input type="radio" name="erfahrung" id="su-exp-3" value="Liga"><span>Liga</span></label>
-            </div>
-          </fieldset>
-          <div class="field">
-            <label for="su-msg">Nachricht <span class="opt">(optional)</span></label>
-            <textarea id="su-msg" name="nachricht" rows="2" placeholder="z. B. „Bringe einen Kollegen mit“"></textarea>
-          </div>
-          <input class="hp" id="su-hp" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <label class="consent" for="su-consent"><input id="su-consent" name="einwilligung" type="checkbox" required><span>Ich bin einverstanden, dass der Verein meine Angaben nur für diese Anmeldung verwendet. Mehr dazu in der <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a>.</span></label>
           <p class="err" id="su-err" role="alert" hidden></p>
-          <button type="submit" class="btn primary" id="su-btn">Anmelden</button>
-          <p class="draft-note">Entwurf: Hier wird noch nichts verschickt. Auf der fertigen Seite geht jede Anmeldung automatisch per E-Mail an den Verein.</p>
-        </form>
-        <div class="signup-done" id="signup-done" hidden>
-          <span class="tick" aria-hidden="true"></span>
-          <h3>Du bist angemeldet</h3>
-          <p id="done-text"></p>
-          <button type="button" class="btn ghost-dark" id="su-again">Weitere Anmeldung</button>
         </div>
       </div>
       <div class="contact">
@@ -1285,7 +1290,8 @@ footer a:hover{text-decoration:underline}
     var sub=mode==='alt'?'Offenes Turnier, jeder kann mitspielen.':C.MODE[mode][1].split(' · ').slice(0,2).join(' · ');
     var preRL=nx&&nx.date<'2027-01-07';
     set('t-body',(isM?'<span class="t-flag">Zählt für die Masters-Rangliste</span>':'')+'<span class="t-mode">'+esc(sub)+'</span><p class="t-place"><b>Bismarck Bistro</b><br>Bismarckstraße 7, 86159 Augsburg</p>'+
-      '<div class="t-cta"><a href="#kontakt">Anmelden</a><a class="alt" href="#masters">'+(preRL?'Neu ab 7.1.: CDA Masters':'CDA Masters')+'</a></div>'+
+      (typeof window.CDA_SIGNCOUNT==='function'&&nx&&window.CDA_SIGNCOUNT(nx.date)?'<span class="t-cnt">👥 '+window.CDA_SIGNCOUNT(nx.date)+' angemeldet</span>':'')+
+      '<div class="t-cta"><a href="#kontakt'+(nx?'/'+nx.date:'')+'">Anmelden</a><a class="alt" href="#masters">'+(preRL?'Neu ab 7.1.: CDA Masters':'CDA Masters')+'</a></div>'+
       '<a class="t-abo" href="'+(location.origin+location.pathname.replace(/[^\/]*$/,'')+'kalender/cda-competition.ics').replace(/^https?:/,'webcal:')+'">📅 Alle Termine in deinen Kalender</a>');
     function tick(){var ms=target-new Date(),c=document.getElementById('t-count');
       if(ms<=0){c.innerHTML=new Date()<end?'<div class="live">Heute live</div>':'';return;}
@@ -1368,14 +1374,67 @@ footer a:hover{text-decoration:underline}
   window.CDA_CAL={upcoming:upcoming,MODE:MODE,cal:cdaCalendar};
   fetch('news.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():[];}).then(function(n){MANUAL=n||[];if(typeof renderHero==='function')renderHero();}).catch(function(){});
   if(typeof renderHero==='function'){try{renderHero();}catch(e){}}
-  var sel=document.getElementById('su-date'),msel=document.getElementById('su-mode'),minfo=document.getElementById('su-mode-info');
-  var fmt=new Intl.DateTimeFormat('de-DE',{weekday:'short',day:'2-digit',month:'2-digit',year:'numeric'});
-  function fillDates(){
-    var want=msel.value,list=upcoming().filter(function(e){return e.mode!=='finals'&&(!want||e.mode===want);}).slice(0,want?8:6);
-    sel.innerHTML=list.map(function(e){var dt=new Date(e.date+'T12:00:00');return '<option value="'+e.date+'|'+e.mode+'">'+fmt.format(dt)+' · '+MODE[e.mode][0]+(e.note?' ('+e.note+')':'')+'</option>';}).join('')||'<option value="">Kein Termin in den nächsten Monaten</option>';
-    minfo.textContent=want?MODE[want][1]+(list.length?' · nächster Termin am '+fmt.format(new Date(list[0].date+'T12:00:00')):''):'Wähle einen Spielmodus, um nur dessen Termine zu sehen.';
+  // ===== Anmeldung (Supabase): Name einmal wählen, dann mit einem Tippen dabei =====
+  var SB={url:'https://qeevsqrmltewbtrnfrfm.supabase.co',key:'sb_publishable_pwnzx63cque5lKZEVCe4mA_5SvBP8Yd'};
+  function sb(path,opt){opt=opt||{};var h={apikey:SB.key,'Content-Type':'application/json'};
+    return fetch(SB.url+path,{method:opt.method||'GET',headers:h,body:opt.body?JSON.stringify(opt.body):undefined}).then(function(r){
+      if(!r.ok)return r.text().then(function(t){var m='';try{m=JSON.parse(t).message;}catch(e){}throw new Error(m||('Fehler '+r.status));});
+      return r.status===204?null:r.json();});}
+  var store={get:function(k){try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+  var TOKEN=store.get('cda-token');if(!TOKEN){TOKEN=Array.from(crypto.getRandomValues(new Uint8Array(16))).map(function(b){return ('0'+b.toString(16)).slice(-2);}).join('');store.set('cda-token',TOKEN);}
+  var ME=store.get('cda-me'),PLAYERS=[],SIGN=[],FOCUS=null;
+  var msel=document.getElementById('su-mode'),minfo=document.getElementById('su-mode-info'),serr=document.getElementById('su-err');
+  var fmt=new Intl.DateTimeFormat('de-DE',{weekday:'short',day:'2-digit',month:'2-digit'});
+  var pname=function(id){var p=PLAYERS.filter(function(x){return x.id===id;})[0];return p?p.name:'?';};
+  var short=function(n){var p=n.split(' ');return p.length>1?p[0]+' '+p[p.length-1][0]+'.':n;};
+  function showErr(m){serr.textContent=m;serr.hidden=!m;}
+  function dates(){var want=msel.value;return upcoming().filter(function(e){return e.mode!=='finals'&&(!want||e.mode===want);}).slice(0,want?8:6);}
+  function who(e){return SIGN.filter(function(x){return x.event_date===e.date;});}
+  function mine(e){return who(e).some(function(x){return ME&&(ME.id?x.player_id===ME.id:(x.guest_name||'').toLowerCase()===ME.name.toLowerCase());});}
+  window.CDA_SIGNCOUNT=function(date){return SIGN.filter(function(x){return x.event_date===date;}).length;};
+  function renderNames(){
+    var q=(document.getElementById('su-search').value||'').toLowerCase().trim(),box=document.getElementById('su-names');
+    if(!PLAYERS.length){box.innerHTML='<p class="su-load">Die Mitgliederliste ist gerade nicht erreichbar. Als Gast geht es unten trotzdem.</p>';return;}
+    var L=PLAYERS.filter(function(p){return !q||p.name.toLowerCase().indexOf(q)>=0;});
+    box.innerHTML=L.length?L.map(function(p){return '<button type="button" class="su-name" data-id="'+p.id+'">'+esc(p.name)+'</button>';}).join(''):'<p class="su-load">Kein Mitglied gefunden. Als Gast anmelden geht unten.</p>';
   }
-  msel.addEventListener('change',fillDates);fillDates();
+  function renderMe(){
+    var w=document.getElementById('su-who'),m=document.getElementById('su-me');
+    w.hidden=!!ME;m.hidden=!ME;if(!ME)return renderNames();
+    document.getElementById('su-mename').textContent=ME.id?ME.name.split(' ')[0]:ME.name;
+    var want=msel.value,list=dates();
+    minfo.textContent=want?MODE[want][1]:'';minfo.hidden=!want;
+    document.getElementById('su-list').innerHTML=list.map(function(e){
+      var ws=who(e),in_=mine(e),names=ws.map(function(x){return x.player_id?short(pname(x.player_id)):x.guest_name+' (Gast)';}),many=ws.length>16;
+      return '<li class="su-item'+(in_?' in':'')+(FOCUS===e.date?' focus':'')+(e.mode==='m501'?' ms':'')+'" id="su-'+e.date+'">'+
+        '<div class="su-when"><b>'+fmt.format(new Date(e.date+'T12:00:00'))+'</b><span>'+MODE[e.mode][0]+(e.note?' · '+e.note:'')+'</span></div>'+
+        '<button type="button" class="su-btn" data-date="'+e.date+'" data-act="'+(in_?'out':'in')+'">'+(in_?'✓ Dabei · absagen':'Ich bin dabei')+'</button>'+
+        '<div class="su-who"><span class="su-cnt">'+(ws.length?ws.length+' angemeldet':'Noch niemand angemeldet')+'</span>'+(names.length?'<span class="su-ppl">'+esc(names.join(', '))+'</span>':'')+
+        (many?'<span class="su-many">Viele Anmeldungen: Eventuell spielen wir an diesem Abend an mehr Boards (Sergio\'s). Infos kommen in der WhatsApp-Gruppe.</span>':'')+'</div></li>';}).join('')||'<li class="su-load">Keine Termine in diesem Modus in den nächsten Wochen.</li>';
+  }
+  function load(){
+    var today=new Date().toISOString().slice(0,10),to=new Date(Date.now()+120*864e5).toISOString().slice(0,10);
+    return Promise.all([
+      sb('/rest/v1/players?select=id,name,team&active=eq.true&order=name').then(function(p){PLAYERS=p;}).catch(function(){PLAYERS=[];}),
+      sb('/rest/v1/signups?select=event_date,player_id,guest_name&event_date=gte.'+today+'&event_date=lte.'+to+'&order=created_at').then(function(s){SIGN=s;}).catch(function(){})
+    ]).then(function(){renderMe();if(typeof renderHero==='function')renderHero();});
+  }
+  document.getElementById('su-search').addEventListener('input',renderNames);
+  document.getElementById('su-names').addEventListener('click',function(e){var b=e.target.closest('[data-id]');if(!b)return;var id=+b.getAttribute('data-id');ME={id:id,name:pname(id)};store.set('cda-me',ME);showErr('');renderMe();});
+  document.getElementById('su-gok').addEventListener('click',function(){var n=document.getElementById('su-gname').value.trim();if(n.length<2){showErr('Bitte gib deinen Vornamen ein.');return;}
+    n=n.split(/\s+/)[0];n=n.charAt(0).toUpperCase()+n.slice(1);ME={id:null,name:n};store.set('cda-me',ME);showErr('');renderMe();});
+  document.getElementById('su-switch').addEventListener('click',function(){ME=null;store.set('cda-me',null);renderMe();});
+  msel.addEventListener('change',renderMe);
+  document.getElementById('su-list').addEventListener('click',function(e){
+    var b=e.target.closest('.su-btn');if(!b||!ME)return;var d=b.getAttribute('data-date'),inn=b.getAttribute('data-act')==='in';
+    b.disabled=true;b.textContent=inn?'Wird gespeichert …':'Wird abgesagt …';showErr('');
+    sb('/rest/v1/rpc/'+(inn?'cda_signup':'cda_cancel'),{method:'POST',body:{p_date:d,p_player:ME.id,p_guest:ME.id?null:ME.name,p_token:TOKEN}})
+      .then(load).then(function(){if(!inn&&mine({date:d}))showErr('Absagen ging nicht: Du hast dich mit einem anderen Gerät angemeldet. Sag bitte der Turnierleitung kurz Bescheid.');})
+      .catch(function(x){showErr('Das hat nicht geklappt: '+x.message);renderMe();});
+  });
+  // Direktlink aus WhatsApp: …#kontakt/2027-01-14
+  (function(){var m=/^#(?:kontakt|anmelden)\/(\d{4}-\d{2}-\d{2})/.exec(location.hash);if(m){FOCUS=m[1];}})();
+  renderMe();load().then(function(){if(FOCUS){var el=document.getElementById('su-'+FOCUS)||document.getElementById('kontakt');if(el)el.scrollIntoView({block:'center'});}});
 
 
   // Kalender-Abos: webcal-Link (iPhone/Mac), Google-Kalender, Link kopieren – Pfad passt sich der Domain an
@@ -1462,22 +1521,5 @@ footer a:hover{text-decoration:underline}
     document.querySelector('.ms-tabs').addEventListener('click',function(e){var b=e.target.closest('[data-ms]');if(!b)return;history.replaceState(null,'','#masters'+(b.getAttribute('data-ms')==='stats'?'':'/'+b.getAttribute('data-ms')));sub(b.getAttribute('data-ms'));});
     window.addEventListener('hashchange',route);route();
   })();
-  var form=document.getElementById('signup'),done=document.getElementById('signup-done'),err=document.getElementById('su-err');
-  form.addEventListener('submit',function(e){
-    e.preventDefault();
-    var name=document.getElementById('su-name'),kon=document.getElementById('su-contact'),ok=true,msgs=[];
-    [name,kon].forEach(function(f){f.parentNode.classList.remove('invalid');});
-    if(document.getElementById('su-hp').value)return;
-    if(name.value.trim().length<2){ok=false;name.parentNode.classList.add('invalid');msgs.push('Bitte gib deinen Namen ein.');}
-    var k=kon.value.trim();
-    if(!(/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(k)||/^[+0-9][0-9 \/-]{6,}$/.test(k))){ok=false;kon.parentNode.classList.add('invalid');msgs.push('Bitte gib eine gültige E-Mail-Adresse oder Handynummer an.');}
-    if(!document.getElementById('su-consent').checked){ok=false;msgs.push('Bitte bestätige die Einwilligung zum Datenschutz.');}
-    if(!ok){err.textContent=msgs.join(' ');err.hidden=false;return;}
-    err.hidden=true;
-    var n=+document.getElementById('su-count').value;
-    document.getElementById('done-text').textContent='Danke, '+name.value.trim().split(' ')[0]+'! Wir sehen uns am '+(sel.selectedIndex>=0?sel.options[sel.selectedIndex].textContent:'nächsten Donnerstag')+' im Bismarck Bistro'+(n>1?' mit '+n+' Personen':'')+'. Im fertigen System bekommt der Verein jetzt automatisch eine E-Mail.';
-    form.hidden=true;done.hidden=false;
-  });
-  document.getElementById('su-again').addEventListener('click',function(){form.reset();fillDates();done.hidden=true;form.hidden=false;});
 })();
 </script>
