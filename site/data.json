@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-10T08:47:37.521Z",
+ "updated": "2026-11-10T23:13:14.704Z",
  "season": "2026/27",
  "teams": {
   "1": {
@@ -7,7 +7,7 @@
    "league": "3K WINMAU 2. Bundesliga Süd",
    "source": "3k",
    "sourceUrl": "https://portal.3k-darts.com/frontend/events/10/event/1408/phase/2101/group/40479",
-   "fetched": "2026-11-10T08:47:37.521Z",
+   "fetched": "2026-11-10T23:13:14.704Z",
    "table": [
     {
      "pos": 1,
@@ -464,18 +464,18 @@
    "league": "1. Bezirksliga Schwaben",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211693",
-   "fetched": "2026-11-10T08:47:37.521Z",
+   "fetched": "2026-11-10T23:13:14.704Z",
    "table": [
     {
      "pos": 1,
      "name": "Clochard Darter Augsburg II",
-     "played": 5,
-     "w": 5,
+     "played": 6,
+     "w": 6,
      "d": 0,
      "l": 0,
-     "sets": "34:16",
-     "legs": "115:84",
-     "points": "10:0",
+     "sets": "40:20",
+     "legs": "138:101",
+     "points": "12:0",
      "us": true
     },
     {
@@ -505,13 +505,13 @@
     {
      "pos": 4,
      "name": "D.C. Warriors Peterswörth",
-     "played": 5,
-     "w": 2,
+     "played": 6,
+     "w": 3,
      "d": 2,
      "l": 1,
-     "sets": "32:18",
-     "legs": "109:86",
-     "points": "6:4",
+     "sets": "38:22",
+     "legs": "130:103",
+     "points": "8:4",
      "us": false
     },
     {
@@ -529,25 +529,25 @@
     {
      "pos": 6,
      "name": "Steeldarter Kühlenthal",
-     "played": 5,
+     "played": 6,
      "w": 2,
      "d": 1,
-     "l": 2,
-     "sets": "21:29",
-     "legs": "86:111",
-     "points": "5:5",
+     "l": 3,
+     "sets": "25:35",
+     "legs": "103:132",
+     "points": "5:7",
      "us": false
     },
     {
      "pos": 7,
      "name": "Flying Hobby Darters Rennertshofen",
-     "played": 5,
+     "played": 6,
      "w": 2,
      "d": 0,
-     "l": 3,
-     "sets": "23:27",
-     "legs": "98:104",
-     "points": "4:6",
+     "l": 4,
+     "sets": "27:33",
+     "legs": "115:127",
+     "points": "4:8",
      "us": false
     },
     {
@@ -675,7 +675,7 @@
      "moved": false,
      "home": "Flying Hobby Darters Rennertshofen",
      "away": "Clochard Darter Augsburg II",
-     "score": null,
+     "score": "4:6",
      "venue": "Sportheim Rennertshofen"
     },
     {
@@ -873,8 +873,8 @@
     },
     {
      "name": "Claus Mader",
-     "games": 0,
-     "single": null
+     "games": 1,
+     "single": "2:0"
     },
     {
      "name": "Sancha Koal",
@@ -883,8 +883,8 @@
     },
     {
      "name": "Jonas Thoma",
-     "games": 5,
-     "single": "9:1"
+     "games": 6,
+     "single": "11:1"
     },
     {
      "name": "Leo Hörmann",
@@ -893,8 +893,8 @@
     },
     {
      "name": "Ewald Lautenschlager",
-     "games": 5,
-     "single": "5:5"
+     "games": 6,
+     "single": "5:7"
     },
     {
      "name": "Dominik Thoma",
@@ -903,8 +903,8 @@
     },
     {
      "name": "Martin Hungbaur",
-     "games": 2,
-     "single": "3:1"
+     "games": 3,
+     "single": "4:2"
     }
    ]
   },
@@ -913,10 +913,22 @@
    "league": "3. Bezirksliga Schwaben Süd",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211696",
-   "fetched": "2026-11-10T08:47:37.521Z",
+   "fetched": "2026-11-10T23:13:14.704Z",
    "table": [
     {
      "pos": 1,
+     "name": "Rabbits Lechfeld",
+     "played": 5,
+     "w": 4,
+     "d": 1,
+     "l": 0,
+     "sets": "38:12",
+     "legs": "128:58",
+     "points": "9:1",
+     "us": false
+    },
+    {
+     "pos": 2,
      "name": "Foxvalley DC",
      "played": 5,
      "w": 4,
@@ -928,7 +940,7 @@
      "us": false
     },
     {
-     "pos": 2,
+     "pos": 3,
      "name": "Pegasus Darter II",
      "played": 5,
      "w": 3,
@@ -937,18 +949,6 @@
      "sets": "29:21",
      "legs": "111:96",
      "points": "8:2",
-     "us": false
-    },
-    {
-     "pos": 3,
-     "name": "Rabbits Lechfeld",
-     "played": 4,
-     "w": 3,
-     "d": 1,
-     "l": 0,
-     "sets": "29:11",
-     "legs": "99:49",
-     "points": "7:1",
      "us": false
     },
     {
@@ -965,18 +965,6 @@
     },
     {
      "pos": 5,
-     "name": "DC Bavarian Knights Hurlach",
-     "played": 5,
-     "w": 2,
-     "d": 1,
-     "l": 2,
-     "sets": "29:21",
-     "legs": "110:81",
-     "points": "5:5",
-     "us": false
-    },
-    {
-     "pos": 6,
      "name": "SV Bergheim Darts",
      "played": 5,
      "w": 2,
@@ -988,7 +976,31 @@
      "us": false
     },
     {
+     "pos": 6,
+     "name": "Clochard Darter Augsburg III",
+     "played": 5,
+     "w": 2,
+     "d": 1,
+     "l": 2,
+     "sets": "27:23",
+     "legs": "106:92",
+     "points": "5:5",
+     "us": true
+    },
+    {
      "pos": 7,
+     "name": "DC Bavarian Knights Hurlach",
+     "played": 6,
+     "w": 2,
+     "d": 1,
+     "l": 3,
+     "sets": "33:27",
+     "legs": "127:104",
+     "points": "5:7",
+     "us": false
+    },
+    {
+     "pos": 8,
      "name": "FC Ebershausen Darts",
      "played": 4,
      "w": 1,
@@ -1000,7 +1012,7 @@
      "us": false
     },
     {
-     "pos": 8,
+     "pos": 9,
      "name": "DC River Darts II",
      "played": 4,
      "w": 2,
@@ -1012,31 +1024,7 @@
      "us": false
     },
     {
-     "pos": 9,
-     "name": "Clochard Darter Augsburg III",
-     "played": 4,
-     "w": 1,
-     "d": 1,
-     "l": 2,
-     "sets": "21:19",
-     "legs": "83:75",
-     "points": "3:5",
-     "us": true
-    },
-    {
      "pos": 10,
-     "name": "DC Bavarian Knights Hurlach II",
-     "played": 5,
-     "w": 0,
-     "d": 0,
-     "l": 5,
-     "sets": "12:38",
-     "legs": "63:127",
-     "points": "0:10",
-     "us": false
-    },
-    {
-     "pos": 11,
      "name": "DJK Lechhausen VI",
      "played": 5,
      "w": 0,
@@ -1045,6 +1033,18 @@
      "sets": "6:44",
      "legs": "35:136",
      "points": "0:10",
+     "us": false
+    },
+    {
+     "pos": 11,
+     "name": "DC Bavarian Knights Hurlach II",
+     "played": 6,
+     "w": 0,
+     "d": 0,
+     "l": 6,
+     "sets": "13:47",
+     "legs": "72:156",
+     "points": "0:12",
      "us": false
     }
    ],
@@ -1101,7 +1101,7 @@
      "moved": false,
      "home": "Clochard Darter Augsburg III",
      "away": "DC Bavarian Knights Hurlach",
-     "score": null,
+     "score": "6:4",
      "venue": "Bismarck Bistro"
     },
     {
@@ -1278,28 +1278,28 @@
     },
     {
      "name": "Carola Wüstner",
-     "games": 2,
+     "games": 3,
      "single": "2:2"
     },
     {
      "name": "Robert Strehl",
-     "games": 4,
-     "single": "6:2"
+     "games": 5,
+     "single": "7:3"
     },
     {
      "name": "Markus Ziegler",
+     "games": 4,
+     "single": "7:1"
+    },
+    {
+     "name": "Simon Schmidbaur",
      "games": 3,
      "single": "5:1"
     },
     {
-     "name": "Simon Schmidbaur",
-     "games": 2,
-     "single": "3:1"
-    },
-    {
      "name": "Dennis Mandl",
-     "games": 4,
-     "single": "2:6"
+     "games": 5,
+     "single": "3:7"
     }
    ]
   },
@@ -1308,7 +1308,7 @@
    "league": "4. Bezirksliga Schwaben Süd 4",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211701",
-   "fetched": "2026-11-10T08:47:37.521Z",
+   "fetched": "2026-11-10T23:13:14.704Z",
    "table": [
     {
      "pos": 1,
