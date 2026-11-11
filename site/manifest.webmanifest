@@ -1,0 +1,21 @@
+{
+  "name": "Clochard Darter Augsburg e.V.",
+  "short_name": "CDA",
+  "description": "Steeldart in Augsburg seit 1986: Ligamannschaften, Termine und die Donnerstags-Competition.",
+  "lang": "de",
+  "start_url": "./?s=app",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0E1510",
+  "theme_color": "#0E1510",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Für Donnerstag anmelden", "short_name": "Anmelden", "url": "./?s=app#kontakt", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
+    { "name": "CDA Masters", "short_name": "Masters", "url": "./?s=app#masters", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
+    { "name": "Spielbetrieb live", "short_name": "Live", "url": "./competition.html", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] }
+  ]
+}

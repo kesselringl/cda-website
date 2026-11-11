@@ -62,6 +62,34 @@ async function selfHostFonts() {
 }
 
 const fontsOk = await selfHostFonts();
+// Adresse der Seite kommt im Workflow von GitHub Pages (passt sich nach dem Domain-Umzug automatisch an)
+const BASE = (process.env.SITE_URL || 'https://kesselringl.github.io/cda-website').replace(/\/?$/, '/');
+const PRIVATE = new Set(['grafik-studio.html', 'studio.html', 'competition.html']);
+const PUBLIC = ['index.html', 'impressum.html', 'datenschutz.html'];
+const esc = t => String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+
+// Strukturierte Daten für Google: Verein + nächste Competition-Termine
+async function jsonLd() {
+  const org = { '@type': 'SportsOrganization', '@id': BASE + '#verein', name: 'Clochard Darter Augsburg e.V.', alternateName: 'CDA',
+    url: BASE, logo: BASE + 'icon-512.png', image: BASE + 'og.jpg', sport: 'Steeldart', foundingDate: '1986',
+    description: 'Steeldartverein aus Augsburg mit vier Ligamannschaften, darunter die 2. Bundesliga Süd, und offener Competition jeden Donnerstag.',
+    address: { '@type': 'PostalAddress', streetAddress: 'Bismarckstraße 7', postalCode: '86159', addressLocality: 'Augsburg', addressCountry: 'DE' },
+    sameAs: ['https://www.instagram.com/clocharddarteraugsburg/'] };
+  let ev = [];
+  try {
+    ev = JSON.parse(await readFile(new URL('kalender/naechste.json', SITE), 'utf8')).map(e => {
+      const [street, place] = e.venue.split(', ').slice(1).length ? [e.venue.split(', ')[1], e.venue.split(', ')[2]] : ['', ''];
+      return { '@type': 'SportsEvent', name: e.name + ' – Clochard Darter Augsburg', description: e.text,
+        startDate: e.finals ? e.date : `${e.date}T20:00:00${e.tz}`, ...(e.finals ? {} : { endDate: `${e.date}T23:00:00${e.tz}` }),
+        eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+        location: { '@type': 'Place', name: e.venue.split(', ')[0], address: { '@type': 'PostalAddress', streetAddress: street,
+          postalCode: (place || '').split(' ')[0], addressLocality: (place || '').split(' ').slice(1).join(' '), addressCountry: 'DE' } },
+        organizer: { '@id': BASE + '#verein' }, image: BASE + 'og.jpg', url: e.url };
+    });
+  } catch { /* ohne Kalender nur der Verein */ }
+  return '<script type="application/ld+json">' + JSON.stringify({ '@context': 'https://schema.org', '@graph': [org, ...ev] }).replace(/</g, '\\u003c') + '</script>';
+}
+const LD = await jsonLd();
 const GOOGLE = /\s*<link[^>]+fonts\.(googleapis|gstatic)\.com[^>]*>/g;
 const DESC = {
   'index.html': 'Clochard Darter Augsburg e.V. – Steeldart in Augsburg seit 1986. Vier Ligamannschaften, 2. Bundesliga Süd, offene Competition jeden Donnerstag im Bismarck Bistro.',
@@ -84,13 +112,28 @@ for (const f of (await readdir(SITE)).filter(n => n.endsWith('.html'))) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="${DESC[f] || DESC['index.html']}">
-<meta property="og:title" content="Clochard Darter Augsburg e.V.">
-<meta property="og:description" content="${DESC[f] || DESC['index.html']}">
-<meta property="og:image" content="logo.png">
+<meta name="description" content="${esc(DESC[f] || DESC['index.html'])}">
+${PRIVATE.has(f) ? '<meta name="robots" content="noindex, nofollow">' : `<link rel="canonical" href="${BASE}${f === 'index.html' ? '' : f}">`}
+<meta property="og:site_name" content="Clochard Darter Augsburg e.V.">
+<meta property="og:locale" content="de_DE">
 <meta property="og:type" content="website">
-<link rel="icon" type="image/png" href="logo.png">
-${fontsOk ? '<link rel="stylesheet" href="fonts/fonts.css">\n' : ''}${head.trim()}
+<meta property="og:title" content="${f === 'index.html' ? 'Clochard Darter Augsburg e.V. – Steeldart seit 1986' : esc((s.match(/<title>([^<]*)<\/title>/) || [, 'Clochard Darter Augsburg e.V.'])[1])}">
+<meta property="og:description" content="${esc(DESC[f] || DESC['index.html'])}">
+<meta property="og:url" content="${BASE}${f === 'index.html' ? '' : f}">
+<meta property="og:image" content="${BASE}og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Clochard Darter Augsburg – Steeldart in Augsburg seit 1986">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0E1510">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-title" content="CDA">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+${f === 'index.html' ? LD + '\n' : ''}${fontsOk ? '<link rel="stylesheet" href="fonts/fonts.css">\n' : ''}${head.trim()}
 <style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
 </head>
 <body>${body}
@@ -101,3 +144,17 @@ ${fontsOk ? '<link rel="stylesheet" href="fonts/fonts.css">\n' : ''}${head.trim(
   await writeFile(new URL(f, SITE), s);
   console.log('✓', f);
 }
+
+// Suchmaschinen: Sitemap + robots.txt mit der aktuellen Adresse
+const today = new Date().toISOString().slice(0, 10);
+await writeFile(new URL('sitemap.xml', SITE), `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${PUBLIC.map(f => `  <url><loc>${BASE}${f === 'index.html' ? '' : f}</loc><lastmod>${today}</lastmod><changefreq>${f === 'index.html' ? 'daily' : 'yearly'}</changefreq><priority>${f === 'index.html' ? '1.0' : '0.3'}</priority></url>`).join('\n')}
+</urlset>
+`);
+await writeFile(new URL('robots.txt', SITE), `User-agent: *
+Disallow: /grafik-studio.html
+Disallow: /studio.html
+Sitemap: ${BASE}sitemap.xml
+`);
+console.log('✓ sitemap.xml, robots.txt für', BASE);

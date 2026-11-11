@@ -69,8 +69,10 @@ jobs:
         env:
           SITE_URL: ${{ steps.pages.outputs.base_url }}
 
-      - name: Seiten fertig machen (Gerüst, eigene Schriften)
+      - name: Seiten fertig machen (Gerüst, eigene Schriften, Vorschau für WhatsApp, Google)
         run: node scripts/build.mjs
+        env:
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
 
       - uses: actions/upload-pages-artifact@v3
         with:

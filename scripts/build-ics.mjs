@@ -102,4 +102,11 @@ writeFileSync('site/kalender/cda-masters.ics', ics('CDA Masters', 'CDA-Masters-A
 // Einzeltermine zum Eintragen nach der Anmeldung (ein Klick → Kalender-App)
 mkdirSync('site/kalender/termin', { recursive: true });
 for (const e of all) writeFileSync(`site/kalender/termin/${e.date}.ics`, ics(MODE[e.mode][0] + ' – CDA', 'Termin des Clochard Darter Augsburg e.V.', [e]).replace(/REFRESH-INTERVAL[^\r]*\r\n|X-PUBLISHED-TTL[^\r]*\r\n/g, ''));
+// Nächste Termine für Google (strukturierte Daten auf der Startseite, siehe build.mjs)
+const off = iso => { const t = new Date(iso + 'T12:00:00Z'), y = t.getUTCFullYear();
+  const last = m => { const d = new Date(Date.UTC(y, m + 1, 0)); d.setUTCDate(d.getUTCDate() - d.getUTCDay()); return d.toISOString().slice(0, 10); };
+  return iso >= last(2) && iso < last(9) ? '+02:00' : '+01:00'; };
+writeFileSync('site/kalender/naechste.json', JSON.stringify(all.filter(e => e.date >= today).slice(0, 12).map(e => ({
+  date: e.date, name: MODE[e.mode][0], text: MODE[e.mode][1], finals: e.mode === 'finals', tz: off(e.date),
+  venue: e.mode === 'finals' ? TSV : BISTRO, url: SITE + (e.mode === 'finals' ? '#masters' : '#kontakt') }))));
 console.log(`Kalender: ${all.length} Termine, davon ${all.filter(e => e.mode === 'm501').length} Masters-Abende (bis ${toYear}).`);
