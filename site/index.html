@@ -576,6 +576,41 @@ footer a:hover{text-decoration:underline}
   .jubi .wrap{grid-template-columns:1fr}
   .reach{grid-template-columns:1fr 1fr}
 }
+
+/* Mitglied werden */
+#mitglied{background:var(--board);color:var(--board-ink);position:relative;overflow:hidden}
+#mitglied::before{content:"";position:absolute;right:-220px;top:-220px;width:560px;height:560px;border-radius:50%;background:repeating-conic-gradient(rgba(227,2,18,.16) 0 9deg,rgba(8,135,42,.16) 9deg 18deg);-webkit-mask:radial-gradient(circle,transparent 58%,#000 59%);mask:radial-gradient(circle,transparent 58%,#000 59%);pointer-events:none}
+#mitglied .eyebrow{color:var(--green-bright)}
+#mitglied .lead{color:var(--board-muted);max-width:56ch}
+.mg-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:32px;align-items:start;position:relative}
+.mg-fees{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:28px 0}
+.mg-fee{background:#151f18;border:1px solid var(--board-line);border-radius:var(--radius);padding:18px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.mg-fee b{font-family:var(--f-display);font-size:3rem;line-height:.9;font-weight:900}
+.mg-fee b small{font-size:1.1rem;font-weight:800;color:var(--board-muted);margin-left:4px}
+.mg-fee span{font-weight:700}
+.mg-fee em{font-style:normal;color:var(--board-muted);font-size:.85rem;line-height:1.35}
+.mg-fee.hl{border-color:var(--green-bright);box-shadow:inset 0 3px 0 var(--green-bright)}
+.mg-fee.free b{color:var(--green-bright)}
+.mg-steps{list-style:none;margin:0;padding:0;display:grid;gap:14px;counter-reset:mg}
+.mg-steps li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;align-items:start;counter-increment:mg}
+.mg-steps li::before{content:counter(mg);font-family:var(--f-display);font-weight:900;font-size:1.6rem;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--red);color:#fff}
+.mg-steps b{display:block;font-size:1.05rem}
+.mg-steps span{color:var(--board-muted);font-size:.95rem}
+.mg-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.btn.wa{background:#25D366;color:#0b2b16}
+.btn.wa:hover{background:#1fb457}
+.mg-faq{background:var(--surface);color:var(--ink);border-radius:var(--radius);padding:8px 24px 16px}
+.mg-faq h3{padding:16px 0 6px}
+.mg-faq details{border-top:1px solid var(--line)}
+.mg-faq details:first-of-type{border-top:0}
+.mg-faq summary{cursor:pointer;list-style:none;padding:14px 28px 14px 0;font-weight:700;position:relative}
+.mg-faq summary::-webkit-details-marker{display:none}
+.mg-faq summary::after{content:"+";position:absolute;right:2px;top:9px;font-size:1.5rem;font-weight:400;color:var(--green)}
+.mg-faq details[open] summary::after{content:"–"}
+.mg-faq details p{padding:0 0 16px;color:var(--muted)}
+@media (max-width:900px){.mg-grid{grid-template-columns:1fr}}
+@media (min-width:861px) and (max-width:1199px){.nav a.nav-mg{display:none}}
+@media (max-width:520px){.mg-fees{grid-template-columns:1fr}.mg-fee{flex-direction:row;flex-wrap:wrap;align-items:baseline;column-gap:12px}.mg-fee em{flex-basis:100%}}
 </style>
 
 <div class="draft"><div class="wrap"><span>Vorschau der neuen Vereinsseite</span><span>Die bisherige Seite bleibt bis zum Umzug unter cda-ev.eu erreichbar</span></div></div>
@@ -591,6 +626,7 @@ footer a:hover{text-decoration:underline}
       <a href="#verein">Verein</a>
       <a href="#spielorte">Spielorte</a>
       <a href="#partner">Partner</a>
+      <a href="#mitglied" class="nav-mg">Mitglied werden</a>
       <a href="#kontakt" class="cta">Mitspielen</a>
     </nav>
   </div>
@@ -912,6 +948,40 @@ footer a:hover{text-decoration:underline}
             <a href="https://cda-ev.eu/cda-masters-ranking.php" target="_blank" rel="noopener">CDA-Masters Ranking</a>
           </div>
           <p style="color:var(--muted);font-size:.9rem">Mitglied in DDV, BDV und BLSV · gemeinnützig seit 1988</p>
+      </div>
+    </div>
+  </section>
+  <section id="mitglied" aria-labelledby="mg-title">
+    <div class="wrap">
+      <div class="mg-grid">
+        <div>
+          <p class="eyebrow">Mitglied werden</p>
+          <h2 id="mg-title">Werd Teil vom CDA</h2>
+          <p class="lead" style="margin-top:16px">Kein Antrag, kein Papierkram: Bei uns wirst du Mitglied wie seit 1986 – per Handschlag. Als Mitglied spielst du in einer unserer vier Ligamannschaften, trainierst mit uns und bist bei allem dabei, was der Verein auf die Beine stellt.</p>
+          <div class="mg-fees">
+            <div class="mg-fee hl"><b>70 €<small>/ Jahr</small></b><span>Erwachsene</span><em>Ligaspiel inklusive, keine Extra-Gebühren</em></div>
+            <div class="mg-fee free"><b>0 €</b><span>Jugendliche</span><em>bis zum 18. Geburtstag beitragsfrei</em></div>
+            <div class="mg-fee"><b>25 €<small>/ Jahr</small></b><span>Passiv</span><em>den Verein unterstützen, ohne zu spielen</em></div>
+          </div>
+          <ol class="mg-steps">
+            <li><div><b>Vorbeikommen und mitwerfen</b><span>Donnerstags ab 20 Uhr im Bismarck Bistro. Einfach zur Competition kommen und die Leute kennenlernen.</span></div></li>
+            <li><div><b>Kurz bei Leon melden</b><span>Schreib Leon Kesselring per WhatsApp, er beantwortet alle Fragen und bringt dich mit dem Verein zusammen.</span></div></li>
+            <li><div><b>Handschlag – fertig</b><span>Kein Formular und keine Extra-Kosten fürs Ligaspiel. Ab dann bist du einer von uns.</span></div></li>
+          </ol>
+          <div class="mg-cta">
+            <a class="btn wa" id="mg-wa" href="mailto:kesselring.leon@gmail.com?subject=Mitglied%20werden%20beim%20CDA" target="_blank" rel="noopener">Leon per WhatsApp schreiben</a>
+            <a class="btn ghost" href="#kontakt">Für Donnerstag anmelden</a>
+          </div>
+        </div>
+        <div class="mg-faq">
+          <h3>Dein erstes Mal bei uns</h3>
+          <details><summary>Muss ich gut sein, um mitzumachen?</summary><p>Nein. Bei uns spielen Leute, die gerade erst angefangen haben, genauso wie Spieler aus der 2. Bundesliga. Die Competition ist offen für alle.</p></details>
+          <details><summary>Muss ich Mitglied sein, um donnerstags mitzuspielen?</summary><p>Nein. Die Donnerstags-Competition ist für alle offen. Melde dich einfach oben kurz an oder komm vorbei. Mitglied werden kannst du, wann immer du willst.</p></details>
+          <details><summary>Wann und wo treffen wir uns?</summary><p>Jeden Donnerstag von 20 bis 23 Uhr im Bismarck Bistro, Bismarckstraße 7, 86159 Augsburg. Die Heimspiele unserer Mannschaften findest du oben unter „Saison“.</p></details>
+          <details><summary>Kann ich als Mitglied Liga spielen?</summary><p>Ja. Wir haben vier Ligamannschaften, angefangen bei der 2. Bundesliga Süd, da findet sich für jede Spielstärke ein Platz. Für das Ligaspiel kommen keine zusätzlichen Kosten auf dich zu.</p></details>
+          <details><summary>Was kostet die Mitgliedschaft?</summary><p>70 € im Jahr für Erwachsene, 25 € für passive Mitglieder. Jugendliche bis zum 18. Geburtstag zahlen nichts.</p></details>
+          <details><summary>An wen kann ich mich wenden?</summary><p>An Leon Kesselring, am einfachsten per WhatsApp über den grünen Button. Oder sprich uns donnerstags im Bistro direkt an.</p></details>
+        </div>
       </div>
     </div>
   </section>
