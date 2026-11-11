@@ -1,0 +1,17 @@
+name: 3K-Suche (einmalig)
+on:
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: node scripts/probe-3k.mjs
+      - run: |
+          cd previews && git init -q -b probe && git add . && git -c user.name=bot -c user.email=a@b.c commit -q -m probe
+          git push -f -q "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" probe
