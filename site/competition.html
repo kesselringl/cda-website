@@ -1215,7 +1215,10 @@ function flush(){
       var ps=SV.pending;SV.pending=[];
       ps.forEach(function(p){var bf=JSON.stringify(S.ev);p.fn();if(JSON.stringify(S.ev)!==bf)SV.pending.push(p);});
       render();flush();});
-  }).catch(function(x){SV.busy=false;SV.err=/fetch/i.test(x.message)?'Keine Verbindung – wird gleich erneut gespeichert':x.message;syncBadge();setTimeout(flush,4000);});
+  }).catch(function(x){SV.busy=false;
+    if(/^Nicht erlaubt/.test(x.message)){ /* Datenbank lehnt ab (z. B. Board ändert fremdes Spiel): Änderung verwerfen, aktuellen Stand holen */
+      SV.pending=[];SV.err=x.message.replace(/ \(.*\)$/,'');liveFetch(true).then(function(){render();setTimeout(function(){if(/^Nicht erlaubt/.test(SV.err)){SV.err='';syncBadge();}},6000);});return;}
+    SV.err=/fetch/i.test(x.message)?'Keine Verbindung – wird gleich erneut gespeichert':x.message;syncBadge();setTimeout(flush,4000);});
 }
 function syncBadge(){var sy=DOC.getElementById('sync');if(!sy)return;sy.hidden=!S.live;if(!S.live)return;
   var st=SV.err?'err':(SV.busy||SV.pending.length)?'busy':'ok';sy.className='sync '+st;
@@ -1736,7 +1739,7 @@ if(!SITE){try{var ss=JSON.parse(sessionStorage.getItem('cda-sb')||'null');if(ss&
     if(DOC.activeElement&&DOC.activeElement.tagName==='SELECT')return;render();
   },1800);
 }
-if(location.protocol==='file:')window.__CDA_TEST=function(){return {S:S,ARCHIVE:ARCHIVE,pl:pl};};
+if(location.protocol==='file:')window.__CDA_TEST=function(){return {S:S,ARCHIVE:ARCHIVE,pl:pl,simVisit:simVisit,simMatch:simMatch,undo:undo,fill:fill,newEv:newEv};};
 loadRealSeasons();
 render();
 })();
