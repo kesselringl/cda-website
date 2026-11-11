@@ -438,9 +438,9 @@ function badge(cx,cy,r,top,mid,bot){ // Auszeichnung wie eine Medaille
   shadow('rgba(0,0,0,.6)',40,0,16);ctx.beginPath();ctx.arc(cx,cy,r,0,7);ctx.fillStyle=vgrad(cy-r,cy+r,['#fff3c4','#e2b84d','#8f6416','#e8c35f']);ctx.fill();shadow();
   for(var i=0;i<40;i++){var a=i*Math.PI*2/40;ctx.beginPath();ctx.arc(cx+Math.cos(a)*r*.93,cy+Math.sin(a)*r*.93,r*.025,0,7);ctx.fillStyle='rgba(90,60,10,.45)';ctx.fill();}
   ctx.beginPath();ctx.arc(cx,cy,r*.84,0,7);ctx.fillStyle=vgrad(cy-r,cy+r,['#1c1a16','#0b0a08']);ctx.fill();ctx.lineWidth=3;ctx.strokeStyle='rgba(241,207,107,.8)';ctx.stroke();
-  setF(800,r*.15,AR);ctx.fillStyle='#f1cf6b';tracked(top,cx,cy-r*.34,r*.03,'center');
+  fitT(top,r*1.25,r*.13,800,AR,r*.02);ctx.fillStyle='#f1cf6b';tracked(top,cx,cy-r*.36,r*.02,'center');
   var s=fit(mid,r*1.35,r*.62,400,AN);ctx.fillStyle=vgrad(cy-s*.4,cy+s*.4,['#fff6d2','#f1cf6b','#b98a22']);ctx.textAlign='center';ctx.fillText(mid,cx,cy+s*.36);
-  setF(800,r*.15,AR);ctx.fillStyle='#f1cf6b';tracked(bot,cx,cy+r*.56,r*.03,'center');
+  fitT(bot,r*1.25,r*.13,800,AR,r*.02);ctx.fillStyle='#f1cf6b';tracked(bot,cx,cy+r*.58,r*.02,'center');
   star(cx,cy-r*.6,r*.09,'#f1cf6b');star(cx-r*.24,cy-r*.56,r*.06,'#c9a24a');star(cx+r*.24,cy-r*.56,r*.06,'#c9a24a');}
 function star(cx,cy,r,col){ctx.beginPath();for(var i=0;i<10;i++){var a=-Math.PI/2+i*Math.PI/5,rr2=i%2?r*.45:r;ctx.lineTo(cx+Math.cos(a)*rr2,cy+Math.sin(a)*rr2);}ctx.closePath();ctx.fillStyle=col;ctx.fill();}
 function nameBlock(name,x,y,maxW,max,align){ // Vorname gesperrt, Nachname riesig mit Verlauf
