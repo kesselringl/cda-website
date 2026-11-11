@@ -1,0 +1,27 @@
+name: Grafik-Studio Vorschau
+
+# Nur von Hand: rendert Beispielbilder aller Designs mit den echten Schriften (zur Kontrolle).
+on:
+  workflow_dispatch: {}
+
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Schriften und Seiten bauen
+        run: node scripts/build.mjs
+      - name: Playwright
+        run: |
+          npm i --no-save playwright@1.49.1
+          npx playwright install --with-deps chromium
+      - name: Bilder rendern
+        run: node scripts/studio-preview.mjs previews
+      - uses: actions/upload-artifact@v4
+        with:
+          name: studio-previews
+          path: previews
+          retention-days: 3

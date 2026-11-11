@@ -14,7 +14,13 @@ const TMP = new URL('../.fonts-tmp/', import.meta.url);
 
 const WANT = [
   ['big-shoulders-display', 'Big Shoulders Display', [600, 800, 900]],
-  ['archivo', 'Archivo', [400, 500, 600, 700]]
+  ['archivo', 'Archivo', [400, 500, 600, 700, 800, 900]],
+  // nur für das Grafik-Studio (werden erst geladen, wenn eine Grafik sie braucht)
+  ['anton', 'Anton', [400]],
+  ['permanent-marker', 'Permanent Marker', [400]],
+  ['rubik-mono-one', 'Rubik Mono One', [400]],
+  ['alfa-slab-one', 'Alfa Slab One', [400]],
+  ['playfair-display', 'Playfair Display', [700, 900]]
 ];
 
 async function selfHostFonts() {
@@ -23,7 +29,9 @@ async function selfHostFonts() {
     await mkdir(TMP, { recursive: true });
     await mkdir(FONTS, { recursive: true });
     let css = '';
-    for (const [pkg, family, weights] of WANT) {
+    for (const [idx, [pkg, family, weights]] of WANT.entries()) {
+      let part = '';
+      try {
       const tgz = execFileSync('npm', ['pack', `@fontsource/${pkg}@5`, '--silent'], { cwd: TMP, encoding: 'utf8' }).trim().split('\n').pop();
       execFileSync('tar', ['-xzf', tgz], { cwd: TMP });
       for (const w of weights) {
@@ -35,9 +43,11 @@ async function selfHostFonts() {
           const range = subset === 'latin'
             ? 'U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD'
             : 'U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF';
-          css += `@font-face{font-family:"${family}";font-style:normal;font-weight:${w};font-display:swap;src:url(${name}) format("woff2");unicode-range:${range}}\n`;
+          part += `@font-face{font-family:"${family}";font-style:normal;font-weight:${w};font-display:swap;src:url(${name}) format("woff2");unicode-range:${range}}\n`;
         }
       }
+      css += part;
+      } catch (e) { if (idx < 2) throw e; console.warn(`Schrift ${family} übersprungen: ${e.message}`); }
       await rm(new URL('package/', TMP), { recursive: true, force: true });
     }
     await writeFile(new URL('fonts.css', FONTS), css);

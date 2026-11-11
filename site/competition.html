@@ -782,7 +782,8 @@ function evSummary(ev){try{
   var pd=podium(ev).slice(0,4).map(function(x){return{place:x.place,name:partN(ev,x.part),money:x.money||0,pts:x.pts||0};});
   var st=stats([ev]),ids=Object.keys(st);
   function top(f,low){var b=null;ids.forEach(function(id){var v=f(st[id]);if(v&&(!b||(low?v<b.v:v>b.v)))b={name:pn(+id),v:v};});return b;}
-  return{date:ev.date,mode:ev.mode,n:Object.keys(ev.parts).length,podium:pd,
+  var all=podium(ev).map(function(x){return{name:partN(ev,x.part),place:x.place,pts:x.pts||0};});
+  return{date:ev.date,mode:ev.mode,n:Object.keys(ev.parts).length,np:(ev.pids||[]).length,podium:pd,all:all,
     avg:top(function(x){return Math.round(avgOf(x)*100)/100;}),t180:top(function(x){return x.t180;}),hf:top(function(x){return x.hf;}),best:top(function(x){return x.best;},true),
     n180:ids.reduce(function(a,id){return a+(st[id].t180||0);},0)};
 }catch(e){return null;}}
