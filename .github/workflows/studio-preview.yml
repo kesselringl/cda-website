@@ -4,6 +4,9 @@ name: Grafik-Studio Vorschau
 on:
   workflow_dispatch: {}
 
+permissions:
+  contents: write
+
 jobs:
   render:
     runs-on: ubuntu-24.04
@@ -20,8 +23,11 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Bilder rendern
         run: node scripts/studio-preview.mjs previews
-      - uses: actions/upload-artifact@v4
-        with:
-          name: studio-previews
-          path: previews
-          retention-days: 3
+      - name: Bilder in den Zweig studio-previews legen (wird jedes Mal überschrieben)
+        run: |
+          grep -c font-face site/fonts/fonts.css > previews/_fonts.txt || true
+          cd previews
+          git init -q -b studio-previews
+          git add .
+          git -c user.name="CDA Bot" -c user.email=actions@users.noreply.github.com commit -q -m "Vorschau"
+          git push -f -q "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" studio-previews
