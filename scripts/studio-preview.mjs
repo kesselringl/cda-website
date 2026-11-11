@@ -22,15 +22,15 @@ await page.waitForFunction(() => window.__studio && document.querySelector('#typ
 await page.waitForTimeout(1500);
 let combos = process.argv.slice(3);
 if (!combos.length) {
-  const { types, themes } = await page.evaluate(() => ({ types: window.__studio.types, themes: window.__studio.themes }));
+  const { types, looks } = await page.evaluate(() => ({ types: window.__studio.types, looks: window.__studio.looks }));
   combos = [];
-  types.forEach((t, i) => { combos.push(`${t},default,feed`); combos.push(`${t},${themes[(i * 5 + 3) % themes.length]},${i % 3 ? 'feed' : 'story'}`); });
-  themes.forEach((th, i) => combos.push(`ergebnis,${th},feed`));
+  types.forEach((t, i) => { combos.push(`${t},default,feed,1`); combos.push(`${t},default,feed,2`); combos.push(`${t},${looks[(i * 3 + 1) % looks.length]},${i % 3 ? 'feed' : 'story'},${1 + i % 3}`); });
+  looks.forEach(lk => combos.push(`ergebnis,${lk},feed,1`));
 }
 for (const c of combos) {
   const [type, theme, format, seed] = c.split(',');
   await page.evaluate(async ([type, theme, format, seed]) => {
-    await window.__studio.set({ type, pick: null, format: format || 'feed', seed: +(seed || 1), theme: theme || 'default' });
+    await window.__studio.set({ type, pick: null, format: format || 'feed', seed: +(seed || 1), look: theme || 'default' });
   }, [type, theme, format, seed]);
   await page.waitForTimeout(400);
   const d = await page.evaluate(() => document.getElementById('cv').toDataURL('image/png'));
