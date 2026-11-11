@@ -969,6 +969,7 @@ footer a:hover{text-decoration:underline}
           <div class="mg-cta">
             <a class="btn wa" id="mg-wa" href="https://wa.me/491754487070?text=Hallo%20Leon%2C%20ich%20interessiere%20mich%20f%C3%BCr%20eine%20Mitgliedschaft%20beim%20CDA." target="_blank" rel="noopener">Leon per WhatsApp schreiben</a>
             <a class="btn primary" id="mg-antrag" href="downloads/CDA-Aufnahmeantrag.pdf" download>Aufnahmeantrag (PDF)</a>
+            <a class="btn ghost" id="mg-satzung" href="downloads/CDA-Satzung.pdf" target="_blank" rel="noopener">Satzung (PDF)</a>
             <a class="btn ghost" href="#kontakt">Für Donnerstag anmelden</a>
           </div>
         </div>
@@ -979,7 +980,7 @@ footer a:hover{text-decoration:underline}
           <details><summary>Wann und wo treffen wir uns?</summary><p>Jeden Donnerstag von 20 bis 23 Uhr im Bismarck Bistro, Bismarckstraße 7, 86159 Augsburg. Die Heimspiele unserer Mannschaften findest du oben unter „Saison“.</p></details>
           <details><summary>Kann ich als Mitglied Liga spielen?</summary><p>Ja. Wir haben vier Ligamannschaften, angefangen bei der 2. Bundesliga Süd, da findet sich für jede Spielstärke ein Platz. Für das Ligaspiel kommen keine zusätzlichen Kosten auf dich zu.</p></details>
           <details><summary>Was kostet die Mitgliedschaft?</summary><p>70 € im Jahr für Erwachsene, 25 € für passive Mitglieder. Jugendliche bis zum 18. Geburtstag zahlen nichts. Das Geschäftsjahr läuft vom 1. August bis 31. Juli.</p></details>
-          <details><summary>Wie werde ich Mitglied, und wie trete ich wieder aus?</summary><p>Du füllst den Aufnahmeantrag aus (oben als PDF, auch am Bildschirm ausfüllbar), unterschreibst ihn und gibst ihn bei Adi Seidl oder donnerstags im Bistro ab. Bei Minderjährigen unterschreiben alle Erziehungsberechtigten. Austreten kannst du zum Ende des Geschäftsjahres am 31. Juli, die schriftliche Kündigung muss spätestens bis 30. Juni beim Vorstand sein.</p></details>
+          <details><summary>Wie werde ich Mitglied, und wie trete ich wieder aus?</summary><p>Du füllst den Aufnahmeantrag aus (oben als PDF, auch am Bildschirm ausfüllbar), unterschreibst ihn und gibst ihn bei Adi Seidl oder donnerstags im Bistro ab. Bei Minderjährigen unterschreiben alle Erziehungsberechtigten. Mit dem Antrag erkennst du unsere <a href="downloads/CDA-Satzung.pdf" target="_blank" rel="noopener">Satzung</a> an. Austreten kannst du zum Ende des Geschäftsjahres am 31. Juli, die schriftliche Kündigung muss spätestens bis 30. Juni beim Vorstand sein.</p></details>
           <details><summary>An wen kann ich mich wenden?</summary><p>An Leon Kesselring, am einfachsten per WhatsApp über den grünen Button. Oder sprich uns donnerstags im Bistro direkt an.</p></details>
         </div>
       </div>
@@ -1670,6 +1671,6 @@ footer a:hover{text-decoration:underline}
     var a=t.closest('a');if(!a)return;var h=a.getAttribute('href')||'';
     if(a.closest('.su-cal'))hit(/google/.test(h)?'kal-google':'kal-ics');
     else if(/kalender\/cda-|webcal:|calendar\.google\.com\/calendar\/r\?cid/.test(h))hit('abo-klick');
-    else if(/Aufnahmeantrag/.test(h))hit('antrag-download');else if(/instagram\.com/.test(h))hit('insta-klick');else if(/wa\.me|whatsapp/.test(h))hit('wa-klick');else if(/^(mailto|tel):/.test(h))hit('kontakt-klick');},true);
+    else if(/Aufnahmeantrag/.test(h))hit('antrag-download');else if(/CDA-Satzung/.test(h))hit('satzung-download');else if(/instagram\.com/.test(h))hit('insta-klick');else if(/wa\.me|whatsapp/.test(h))hit('wa-klick');else if(/^(mailto|tel):/.test(h))hit('kontakt-klick');},true);
 })();
 </script>
