@@ -3,7 +3,7 @@
 // aus dem 3K-Portal (2. Bundesliga) und nuLiga (Bezirksligen) und schreibt site/data.json.
 //
 // Absicherung: Scheitert eine Quelle, bleibt der letzte gute Stand dieser Mannschaft erhalten.
-// Fehler werden in .fetch-errors.txt gesammelt; der Workflow schlägt danach fehl,
+// Fällt eine Quelle länger als 24 Stunden aus, landet sie in .fetch-errors.txt; der Workflow schlägt dann fehl,
 // damit GitHub eine Benachrichtigung per E-Mail schickt.
 
 import { readFile, writeFile } from 'node:fs/promises';
@@ -21,17 +21,17 @@ let previous = { teams: {} };
 try { previous = JSON.parse(await readFile(OUT, 'utf8')); } catch { /* erster Lauf */ }
 
 async function get(url, as = 'json') {
-  for (let attempt = 1; attempt <= 3; attempt++) {
+  for (let attempt = 1; attempt <= 4; attempt++) {
     try {
-      const res = await fetch(url, { headers: { 'User-Agent': UA, Accept: as === 'json' ? 'application/json' : 'text/html' }, signal: AbortSignal.timeout(20000) });
+      const res = await fetch(url, { headers: { 'User-Agent': UA, Accept: as === 'json' ? 'application/json' : 'text/html' }, signal: AbortSignal.timeout(45000) });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       if (as === 'json') return await res.json();
       // nuLiga liefert je nach Server UTF-8 oder ISO-8859-1 – Zeichensatz aus dem Header übernehmen
       const cs = ((res.headers.get('content-type') || '').match(/charset=([\w-]+)/i) || [, 'utf-8'])[1];
       return new TextDecoder(/8859-1|latin/i.test(cs) ? 'windows-1252' : cs).decode(await res.arrayBuffer());
     } catch (e) {
-      if (attempt === 3) throw new Error(`${url}: ${e.message}`);
-      await new Promise(r => setTimeout(r, 2000 * attempt));
+      if (attempt === 4) throw new Error(`${url}: ${e.message}`);
+      await new Promise(r => setTimeout(r, 5000 * attempt));
     }
   }
 }
@@ -59,7 +59,10 @@ async function loadNuLiga(cfg) {
 }
 
 const out = { updated: new Date().toISOString(), season: sources.season, teams: {} };
-const errors = [];
+const errors = [], warnings = [];
+// Kurze Aussetzer der Ligaportale (z. B. nuLiga-Zeitüberschreitung) sind normal: Dann bleibt der letzte Stand stehen.
+// Eine Fehlermeldung (und damit eine Mail von GitHub) gibt es erst, wenn eine Quelle länger als 24 Stunden ausfällt.
+const ALARM_MS = 24 * 3600e3;
 
 for (const [id, cfg] of Object.entries(sources.teams)) {
   try {
@@ -67,11 +70,14 @@ for (const [id, cfg] of Object.entries(sources.teams)) {
     out.teams[id] = { label: cfg.label, league: cfg.league, source: cfg.type, sourceUrl: cfg.sourceUrl || cfg.groupUrl, fetched: out.updated, ...data };
     console.log(`✓ ${cfg.label}: ${data.table.length} Teams in der Tabelle`);
   } catch (e) {
-    errors.push(`${cfg.label}: ${e.message}`);
+    const prev = previous.teams && previous.teams[id];
+    const failSince = (prev && prev.failSince) || out.updated;
+    const longFail = Date.now() - Date.parse(failSince) > ALARM_MS;
+    (longFail ? errors : warnings).push(`${cfg.label}: ${e.message}${longFail ? ` (seit ${failSince})` : ''}`);
     console.error(`✗ ${cfg.label}: ${e.message}`);
-    if (previous.teams && previous.teams[id]) {
-      out.teams[id] = { ...previous.teams[id], stale: true };
-      console.error(`  → letzter Stand vom ${previous.teams[id].fetched} bleibt erhalten`);
+    if (prev) {
+      out.teams[id] = { ...prev, stale: true, failSince };
+      console.error(`  → letzter Stand vom ${prev.fetched} bleibt erhalten`);
     }
   }
 }
@@ -89,4 +95,5 @@ if (!errors.length || Object.keys(out.teams).length) {
   else console.log('Keine inhaltlichen Änderungen');
 }
 await writeFile(ERR, errors.join('\n'));
-console.log(errors.length ? `${errors.length} Quelle(n) mit Fehler` : 'Alle Quellen aktuell');
+for (const w of warnings) console.log(`::warning::Vorübergehend nicht erreichbar, letzter Stand bleibt: ${w}`);
+console.log(errors.length ? `${errors.length} Quelle(n) seit über 24 Stunden mit Fehler` : warnings.length ? `${warnings.length} Quelle(n) kurz nicht erreichbar, wird beim nächsten Lauf erneut versucht` : 'Alle Quellen aktuell');
