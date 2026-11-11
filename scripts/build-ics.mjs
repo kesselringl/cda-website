@@ -98,4 +98,7 @@ const all = events(from, toYear);
 mkdirSync('site/kalender', { recursive: true });
 writeFileSync('site/kalender/cda-competition.ics', ics('CDA Competition', 'Alle Donnerstags-Termine des Clochard Darter Augsburg e.V. mit Spielmodus', all));
 writeFileSync('site/kalender/cda-masters.ics', ics('CDA Masters', 'CDA-Masters-Abende und Masters-Finals des Clochard Darter Augsburg e.V.', all.filter(e => e.mode === 'm501' || e.mode === 'finals')));
+// Einzeltermine zum Eintragen nach der Anmeldung (ein Klick → Kalender-App)
+mkdirSync('site/kalender/termin', { recursive: true });
+for (const e of all) writeFileSync(`site/kalender/termin/${e.date}.ics`, ics(MODE[e.mode][0] + ' – CDA', 'Termin des Clochard Darter Augsburg e.V.', [e]).replace(/REFRESH-INTERVAL[^\r]*\r\n|X-PUBLISHED-TTL[^\r]*\r\n/g, ''));
 console.log(`Kalender: ${all.length} Termine, davon ${all.filter(e => e.mode === 'm501').length} Masters-Abende (bis ${toYear}).`);

@@ -468,7 +468,10 @@ th.sorted{color:var(--green-ink)}
 
 /* Saison */
 .sbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.sbar select{background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:var(--radius);padding:8px 10px;font:inherit;font-weight:600}
+.sbar select{background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:var(--radius);padding:12px 40px 12px 16px;font:inherit;font-size:1.1rem;font-weight:700;min-height:48px;min-width:180px;cursor:pointer}
+/* Aufgeklappte Auswahllisten: dunkles Systemmenü, gut lesbare Schrift (vorher weiße Schrift auf weißem Menü) */
+select{color-scheme:dark}
+select option{background:#151a17;color:#f2f2ee;font-size:1.05rem;font-weight:600;padding:8px}
 .pot{display:grid;grid-template-columns:auto 1fr;gap:6px 24px;align-items:center}
 .pot .pv{font-family:var(--f-display);font-weight:900;font-size:clamp(3rem,7vw,4.6rem);line-height:.9;color:var(--gold)}
 .pot .pd{font-size:.9rem;color:var(--muted)}
@@ -1047,8 +1050,10 @@ function renderTabs(){
   DOC.getElementById('tabs').innerHTML=t.map(function(x){return '<button role="tab" data-tab="'+x[0]+'" aria-selected="'+(cur===x[0])+'">'+x[1]+'</button>';}).join('');
   DOC.getElementById('venue-label').textContent=!S.role?'Competition auswählen oder anmelden':(S.role==='spec'?'Zuschauer · ':S.role==='lead'?'Turnierleitung · ':'Board-PC · ')+(S.ev.phase==='checkin'?VENUES[S.venue]?VENUES[S.venue].name:'Eigener Spielort':S.ev.venueName||'Bismarck Bistro');
 }
+// Besucherzahlen ohne Cookies (nur Seite + Tag), nur auf der echten Spielbetrieb-Seite
+var HITS={};function hit(p){if(SITE||HITS[p]||location.protocol==='file:'||navigator.webdriver)return;HITS[p]=1;try{fetch(SBU+'/rest/v1/rpc/cda_hit',{method:'POST',keepalive:true,headers:{apikey:SBK,'Content-Type':'application/json'},body:JSON.stringify({p_page:p})}).catch(function(){});}catch(e){}}
 function render(){
-  var v0=S.view;
+  var v0=S.view;hit('spielbetrieb');if(S.view==='live'||S.view==='s-live')hit('live');if(S.view==='lead')hit('leitung');if(/^b\d$/.test(S.view))hit('board');
   if(!canSee(S.view))S.view=SITE?'season':'gate';
   renderTabs();if(!SITE)syncBadge();if(S.view==='gate')gateLoad();var ev=S.ev,v=S.view;
   if(v==='gate')V.innerHTML=viewGate();
@@ -1515,6 +1520,7 @@ function viewSeason(){
   up.forEach(function(x){var md=MODES[x.mode];sched+='<div class="'+(md.masters||md.finals?'ms':x.mode==='c501'||x.mode==='di301'?'':'sp')+(x.date===TONIGHT?' today':'')+'"><span>'+(md.finals?'Sa ':'Do ')+dshort(x.date)+(x.date===TONIGHT?' · heute':'')+'</span><b>'+md.name+'</b>'+(x.note?'<span>'+x.note+'</span>':'')+'</div>';});
   /* Bestenlisten */
   var D=deep(evs),RT=ratings(evs),sa=stats(evs);
+  var TW={};evs.forEach(function(ev){var p0=podium(ev)[0];if(p0&&ev.parts[p0.part])ev.parts[p0.part].members.forEach(function(pid){TW[pid]=(TW[pid]||0)+1;});});
   var withLegs=Object.keys(D).map(Number).filter(function(id){return D[id].hs+D[id].bs>=8;});
   var rIds=Object.keys(RT.R).map(Number).sort(function(a,b){return RT.R[b]-RT.R[a];});
   var by=function(f){return withLegs.slice().filter(function(id){return f(id)!=null;}).sort(function(a,b){return f(b)-f(a);});};
@@ -1523,17 +1529,18 @@ function viewSeason(){
     lbCard('Hold-Quote',by(function(id){return D[id].hold;}),function(id){return D[id].hold;},pct)+
     lbCard('Break-Quote',by(function(id){return D[id].brk;}),function(id){return D[id].brk;},pct)+
     lbCard('Clutch: Decider gewonnen',withLegs.filter(function(id){return D[id].dec>=3;}).sort(function(a,b){return D[b].decq-D[a].decq||D[b].dec-D[a].dec;}),function(id){return D[id];},function(x){return pct(x.decq)+' <i>('+x.decw+'/'+x.dec+')</i>';})+
+    lbCard('Turniersiege (alle Modi)',Object.keys(TW).map(Number).sort(function(a,b){return TW[b]-TW[a];}),function(id){return TW[id];},String)+
     lbCard('180er',Object.keys(sa).map(Number).filter(function(id){return sa[id].t180;}).sort(function(a,b){return sa[b].t180-sa[a].t180;}),function(id){return sa[id].t180;},String);
   /* Rekorde, Archiv, Duell, Statistik (wie bisher) */
   var evAll=evs.slice().reverse(),evShown=S.showAll?evAll:evAll.slice(0,12);
   var evc=evShown.map(function(ev){var pd=podium(ev),md=MODES[ev.mode];
     return '<div class="evc '+(md.masters?'ms':'sp')+'"><span class="ed">'+wdS(ev.date)+' '+dshort(ev.date)+' · '+ev.pids.length+' Spieler'+(md.masters?' · '+eur(ev.pids.length*DAY_FEE)+' Preisgeld':'')+'</span><span class="en">'+md.name+'</span><span class="ew">Sieg: <b>'+partH(ev,pd[0].part)+'</b></span><span class="ed">2. '+esc(partN(ev,pd[1].part))+(pd[2]?' · 3. '+esc(partN(ev,pd[2].part)):'')+'</span></div>';}).join('');
   var ids=Object.keys(sa).map(Number),k=S.sort.k,d=S.sort.d;
-  var val={name:function(x,id){return pn(id);},ev:function(x){return x.ev;},sp:function(x){return x.sp;},q:function(x){return x.sp?x.w/x.sp:0;},avg:function(x){return avgOf(x);},t180:function(x){return x.t180;},t171:function(x){return x.t171;},sl:function(x){return x.sl;},hf:function(x){return x.hf;},best:function(x){return x.best||999;},mpr:function(x){return mprOf(x);}};
+  var val={name:function(x,id){return pn(id);},ev:function(x){return x.ev;},sp:function(x){return x.sp;},q:function(x){return x.sp?x.w/x.sp:0;},tw:function(x,id){return TW[id]||0;},avg:function(x){return avgOf(x);},t180:function(x){return x.t180;},t171:function(x){return x.t171;},sl:function(x){return x.sl;},hf:function(x){return x.hf;},best:function(x){return x.best||999;},mpr:function(x){return mprOf(x);}};
   ids.sort(function(a,b){var va=val[k](sa[a],a),vb=val[k](sa[b],b);return (va>vb?1:va<vb?-1:0)*d;});
-  var cl=[['name','Spieler'],['ev','Abende'],['sp','Matches'],['q','Siege'],['avg','Avg'],['t180','180'],['t171','171+'],['sl','Short Legs'],['hf','High Finish'],['best','Bestes Leg'],['mpr','MPR']];
+  var cl=[['name','Spieler'],['ev','Abende'],['sp','Matches'],['q','Match-Siege'],['tw','Turniersiege'],['avg','Avg'],['t180','180'],['t171','171+'],['sl','Short Legs'],['hf','High Finish'],['best','Bestes Leg'],['mpr','MPR']];
   var thead='<tr><th>#</th>'+cl.map(function(c){return '<th class="sort'+(c[0]===k?' sorted':'')+'" data-act="sort" data-k="'+c[0]+'">'+c[1]+(c[0]===k?(d<0?' ↓':' ↑'):'')+'</th>';}).join('')+'</tr>';
-  var tbody=ids.map(function(id,i){var x=sa[id];return '<tr><td>'+(i+1)+'</td><td>'+plink(id)+'</td><td>'+x.ev+'</td><td>'+x.sp+'</td><td>'+(x.sp?Math.round(x.w/x.sp*100)+' %':'–')+'</td><td>'+fmt2(avgOf(x))+'</td><td>'+(x.t180||'–')+'</td><td>'+(x.t171||'–')+'</td><td>'+(x.sl||'–')+'</td><td>'+(x.hf||'–')+'</td><td>'+(x.best?x.best:'–')+'</td><td>'+fmt2(mprOf(x))+'</td></tr>';}).join('');
+  var tbody=ids.map(function(id,i){var x=sa[id];return '<tr><td>'+(i+1)+'</td><td>'+plink(id)+'</td><td>'+x.ev+'</td><td>'+x.sp+'</td><td>'+(x.sp?Math.round(x.w/x.sp*100)+' %':'–')+'</td><td>'+(TW[id]?'<b>'+TW[id]+'</b> 🏆':'–')+'</td><td>'+fmt2(avgOf(x))+'</td><td>'+(x.t180||'–')+'</td><td>'+(x.t171||'–')+'</td><td>'+(x.sl||'–')+'</td><td>'+(x.hf||'–')+'</td><td>'+(x.best?x.best:'–')+'</td><td>'+fmt2(mprOf(x))+'</td></tr>';}).join('');
   return '<div class="grid" style="gap:20px">'+seasonSelect()+
     (fev?'<div class="grid g2"><section class="panel"><h3>Masters-Finals · '+dshort(fev.date)+fev.date.slice(0,4)+' · TSV Dinkelscherben</h3>'+recap(fev)+'</section><section class="panel"><h3>Ausgezahlt aus dem Pott: '+eur(potFor(fev.season))+'</h3>'+ceremonyList(fev,podium(fev))+'<p class="cap">'+fev.pids.length+' qualifizierte Spieler (mindestens '+MIN_QUALI+' Masters-Abende) · '+fev.plan.txt+'. Der Pott kam aus '+ms.length+' Masters-Abenden mit im Schnitt '+fmt1(sum(ms.map(function(e){return e.pids.length;}))/ms.length)+' Spielern.</p></section></div>':'')+
     (fev?'':'<div class="grid g2"><section class="panel"><h3>Masters-Pott</h3>'+potH+'</section>')+(fev?'':'<section class="panel"><h3>Spielplan nach Rotation</h3><div class="sched">'+sched+'</div><p class="cap">Saison = Kalenderjahr ab 07.01. Alle 3 Wochen Masters (16 pro Saison), dazwischen 501 und 301 Double-In. Cricket etwa alle 7 Wochen, Lucky Doubles alle 12, Bring a Friend zum Saisonstart und alle 4 Monate. In der Finals-Woche kein Masters, Finals am Samstag beim TSV. Pause vom 23.12. bis 6.1.</p></section></div>')+

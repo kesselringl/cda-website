@@ -42,6 +42,12 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 .cap textarea{min-height:320px}
 .hint{font-size:12px;color:var(--mute);margin:6px 0 0}
 .note{font-size:12px;color:#ffd27a;margin:4px 0 6px}
+.vtabs{display:flex;gap:6px;margin-left:16px}.vtabs button{background:#202623;color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font:700 13px Archivo,Arial,sans-serif;cursor:pointer}.vtabs button[aria-pressed=true]{background:var(--green);border-color:var(--green)}
+@media(max-width:620px){header.top{flex-wrap:wrap}.vtabs{order:3;width:100%;margin:6px 0 0}}
+.statsv{max-width:1100px;margin:0 auto;padding:16px;display:grid;gap:16px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}.kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}.kpi b{display:block;font:900 40px/1 "Big Shoulders Display",Impact,sans-serif;color:#fff}.kpi span{color:var(--mute);font-size:13px}
+.bars{display:flex;align-items:flex-end;gap:3px;height:180px;padding-top:10px}.bars i{flex:1;background:linear-gradient(#22d150,#0CA12D);border-radius:3px 3px 0 0;min-height:2px;position:relative}.bars i:hover::after{content:attr(data-t);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);white-space:nowrap;background:#000;padding:3px 6px;border-radius:4px;font:600 11px Archivo,sans-serif;font-style:normal}
+.stbl{width:100%;border-collapse:collapse;font-size:14px}.stbl th,.stbl td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:right}.stbl th:first-child,.stbl td:first-child{text-align:left}.stbl th{color:var(--mute);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
 .gate{min-height:80vh;display:grid;place-items:center;padding:16px}.gbox{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:28px 24px;max-width:380px;width:100%;text-align:center}.gbox img{height:80px}.gbox h2{font:900 30px/1 "Big Shoulders Display",Impact,sans-serif;text-transform:uppercase;margin:12px 0 8px}.gbox p{color:var(--mute);font-size:14px}.gbox form{display:grid;gap:10px;margin-top:14px}.gerr{color:#ff7a7a!important;min-height:1em}
 .sugg{margin-top:10px;background:#0f1311;border:1px solid #2f6b3c;border-radius:10px;padding:10px 12px;font-size:13px}.sugg b{color:#7dffa0}.sugg ol{margin:6px 0 0;padding-left:18px}.sugg li{margin:3px 0}.sugg li span{color:var(--mute);font-size:12px}
 </style>
@@ -49,6 +55,7 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 <header class="top">
   <img src="logo.png" alt="">
   <h1>CDA <span>Grafik-Studio</span></h1>
+  <nav class="vtabs" id="vtabs" hidden><button type="button" data-view="g" aria-pressed="true">Grafiken</button><button type="button" data-view="s" aria-pressed="false">Besucherzahlen</button></nav>
   <a href="./">zur Homepage</a><a href="#" id="logout" hidden style="margin-left:14px">Abmelden</a>
 </header>
 
@@ -62,6 +69,8 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
     <p class="hint">Wer im Spielbetrieb als Turnierleitung angemeldet ist, ist hier automatisch drin.</p>
   </div>
 </div>
+
+<section class="statsv" id="statsv" hidden></section>
 
 <div class="app" id="app" hidden>
   <div class="ctl">
@@ -105,8 +114,8 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 // ---------- Anmeldung (gleicher Zugang wie im Spielbetrieb, wird geteilt) ----------
 (function(){var U='https://qeevsqrmltewbtrnfrfm.supabase.co',K='sb_publishable_pwnzx63cque5lKZEVCe4mA_5SvBP8Yd',A=null;try{A=JSON.parse(localStorage.getItem('cda-auth')||'null');}catch(e){}
   function save(j){A={role:'lead',access:j.access_token,refresh:j.refresh_token,exp:Date.now()+(j.expires_in||3600)*1000};try{localStorage.setItem('cda-auth',JSON.stringify(A));}catch(e){}}
-  function open(){document.getElementById('gate').hidden=true;document.getElementById('app').hidden=false;document.getElementById('logout').hidden=false;window.dispatchEvent(new Event('resize'));}
-  function gate(){document.getElementById('gate').hidden=false;document.getElementById('app').hidden=true;setTimeout(function(){var p=document.getElementById('gpw');if(p)p.focus();},50);}
+  function open(){document.getElementById('gate').hidden=true;document.getElementById('app').hidden=false;document.getElementById('logout').hidden=false;document.getElementById('vtabs').hidden=false;window.dispatchEvent(new Event('resize'));}
+  function gate(){document.getElementById('gate').hidden=false;document.getElementById('app').hidden=true;document.getElementById('statsv').hidden=true;document.getElementById('vtabs').hidden=true;setTimeout(function(){var p=document.getElementById('gpw');if(p)p.focus();},50);}
   function refresh(){return fetch(U+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{apikey:K,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:A.refresh})}).then(function(r){return r.ok?r.json():null;}).then(function(j){if(j){save(j);return true;}return false;}).catch(function(){return false;});}
   if(A&&A.role==='lead'&&A.refresh){if(A.exp>Date.now()+60000)open();else refresh().then(function(ok){ok?open():gate();});}else gate();
   document.getElementById('gform').onsubmit=function(e){e.preventDefault();var err=document.getElementById('gerr');err.textContent='Anmelden …';
@@ -116,6 +125,24 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
       .catch(function(x){err.textContent=x.message;});};
   document.getElementById('logout').onclick=function(e){e.preventDefault();if(A&&A.access)fetch(U+'/auth/v1/logout',{method:'POST',headers:{apikey:K,Authorization:'Bearer '+A.access}}).catch(function(){});A=null;try{localStorage.removeItem('cda-auth');}catch(x){}document.getElementById('logout').hidden=true;gate();};
   setInterval(function(){if(A&&A.refresh&&A.exp-Date.now()<5*60000)refresh();},4*60000);
+  // ---------- Besucherzahlen ----------
+  var NAMES={home:'Startseite','masters':'Reiter CDA Masters','masters-stats':'Masters: Rangliste & Statistiken','masters-regeln':"Masters: So funktioniert's",'masters-termine':'Masters: Termine','masters-ruhm':'Masters: Ruhmeshalle',mitspielen:'Mitspielen (Anmeldebereich)','anmeldung-klick':'Klick auf „Ich bin dabei“',spielbetrieb:'Spielbetrieb-Seite',live:'Live-Ansicht Spielbetrieb',leitung:'Turnierleitung geöffnet',board:'Board-Ansicht geöffnet'};
+  function day(n){var d=new Date();d.setDate(d.getDate()-n);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+  function stats(){var el=document.getElementById('statsv');el.innerHTML='<p class="hint">Lade Besucherzahlen …</p>';
+    (A&&A.exp<Date.now()+60000?refresh():Promise.resolve(true)).then(function(){
+    return fetch(U+'/rest/v1/rpc/cda_stats',{method:'POST',headers:{apikey:K,Authorization:'Bearer '+(A&&A.access),'Content-Type':'application/json'},body:JSON.stringify({p_days:90})});})
+    .then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j&&j.message&&/cda_stats/.test(j.message)?'Die Besucherzählung ist noch nicht eingerichtet (SQL-Skript 06_besucher.sql in Supabase ausführen).':(j&&j.message)||'Fehler '+r.status);return j;});})
+    .then(function(rows){var by={},pages={},t0=day(0),t7=day(6),t30=day(29);rows.forEach(function(r){var p=pages[r.page]||(pages[r.page]={d:0,w:0,m:0,q:0});p.q+=r.views;if(r.day>=t30)p.m+=r.views;if(r.day>=t7)p.w+=r.views;if(r.day===t0)p.d+=r.views;if(r.page==='home')by[r.day]=(by[r.day]||0)+r.views;});
+      var h=pages.home||{d:0,w:0,m:0,q:0},sp=pages.spielbetrieb||{d:0,w:0,m:0},ms=pages.masters||{m:0};
+      var bars='',mx=1;for(var i=29;i>=0;i--)mx=Math.max(mx,by[day(i)]||0);for(i=29;i>=0;i--){var v=by[day(i)]||0;bars+='<i style="height:'+Math.max(1,Math.round(v/mx*100))+'%" data-t="'+day(i).split('-').reverse().slice(0,2).join('.')+'.: '+v+'"></i>';}
+      var keys=Object.keys(pages).sort(function(a,b){return pages[b].m-pages[a].m||pages[b].q-pages[a].q;});
+      el.innerHTML='<div class="kpis"><div class="kpi"><b>'+h.d+'</b><span>Aufrufe Startseite heute</span></div><div class="kpi"><b>'+h.w+'</b><span>… letzte 7 Tage</span></div><div class="kpi"><b>'+h.m+'</b><span>… letzte 30 Tage</span></div><div class="kpi"><b>'+ms.m+'</b><span>CDA-Masters-Reiter (30 Tage)</span></div><div class="kpi"><b>'+sp.m+'</b><span>Spielbetrieb-Seite (30 Tage)</span></div></div>'+
+        '<div class="box"><h2>Startseite – Aufrufe pro Tag (30 Tage)</h2><div class="bars">'+bars+'</div></div>'+
+        '<div class="box"><h2>Alle Bereiche</h2><table class="stbl"><thead><tr><th>Bereich</th><th>Heute</th><th>7 Tage</th><th>30 Tage</th><th>90 Tage</th></tr></thead><tbody>'+(keys.length?keys.map(function(k){var p=pages[k];return '<tr><td>'+(NAMES[k]||k)+'</td><td>'+p.d+'</td><td>'+p.w+'</td><td>'+p.m+'</td><td>'+p.q+'</td></tr>';}).join(''):'<tr><td colspan="5">Noch keine Aufrufe gezählt.</td></tr>')+'</tbody></table>'+
+        '<p class="hint">Gezählt werden Seitenaufrufe, nicht Personen: Wer die Seite dreimal öffnet, zählt dreimal. Ohne Cookies und ohne IP-Adressen, deshalb ist kein Cookie-Banner nötig. Suchmaschinen-Roboter werden weitgehend herausgefiltert.</p></div>';})
+    .catch(function(x){el.innerHTML='<p class="note">'+x.message+'</p>';});}
+  document.getElementById('vtabs').onclick=function(e){var b=e.target.closest('[data-view]');if(!b)return;var s=b.getAttribute('data-view')==='s';this.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed',x===b);});
+    document.getElementById('statsv').hidden=!s;document.getElementById('app').hidden=s;if(s)stats();};
 })();
 var SBU='https://qeevsqrmltewbtrnfrfm.supabase.co',SBK='sb_publishable_pwnzx63cque5lKZEVCe4mA_5SvBP8Yd';
 var RED='#E30212',GREEN='#0CA12D',INK='#111312',GOLD='#d9b04a';

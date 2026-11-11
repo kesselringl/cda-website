@@ -487,6 +487,10 @@ input[type=text]:focus,select:focus,textarea:focus{outline:2px solid var(--green
 .su-btn{font:700 .92rem var(--f-body);padding:10px 14px;border-radius:var(--radius);border:0;cursor:pointer;background:var(--green-bright);color:#fff;white-space:nowrap;min-height:44px}
 .su-item.in .su-btn{background:transparent;color:var(--green);box-shadow:inset 0 0 0 1.5px var(--green)}
 .su-btn:disabled{opacity:.6;cursor:wait}
+.su-cal{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:.88rem}
+.su-cal span{color:var(--muted)}
+.su-cal a{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:var(--radius);background:var(--bg);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink);text-decoration:none;font-weight:700;min-height:40px}
+.su-cal a:hover{box-shadow:inset 0 0 0 1.5px var(--green)}
 .su-who{grid-column:1/-1;display:grid;gap:2px;font-size:.85rem}
 .su-cnt{font-weight:700}
 .su-ppl{color:var(--muted)}
@@ -1416,8 +1420,10 @@ footer a:hover{text-decoration:underline}
         '<div class="su-when"><b>'+fmt.format(new Date(e.date+'T12:00:00'))+'</b><span>'+MODE[e.mode][0]+(e.note?' · '+e.note:'')+'</span></div>'+
         '<button type="button" class="su-btn" data-date="'+e.date+'" data-act="'+(in_?'out':'in')+'">'+(in_?'✓ Dabei · absagen':'Ich bin dabei')+'</button>'+
         '<div class="su-who"><span class="su-cnt">'+(ws.length?ws.length+' angemeldet':'Noch niemand angemeldet')+'</span>'+(names.length?'<span class="su-ppl">'+esc(names.join(', '))+'</span>':'')+
-        (many?'<span class="su-many">Viele Anmeldungen: Eventuell spielen wir an diesem Abend an mehr Boards (Sergio\'s). Infos kommen in der WhatsApp-Gruppe.</span>':'')+'</div></li>';}).join('')||'<li class="su-load">Keine Termine in diesem Modus in den nächsten Wochen.</li>';
+        (in_?'<div class="su-cal"><span>📅 In den Kalender eintragen:</span><a href="kalender/termin/'+e.date+'.ics">iPhone / Outlook</a><a href="'+gcal(e)+'" target="_blank" rel="noopener">Google Kalender</a></div>':'')+(many?'<span class="su-many">Viele Anmeldungen: Eventuell spielen wir an diesem Abend an mehr Boards (Sergio\'s). Infos kommen in der WhatsApp-Gruppe.</span>':'')+'</div></li>';}).join('')||'<li class="su-load">Keine Termine in diesem Modus in den nächsten Wochen.</li>';
   }
+  function gcal(e){var d=e.date.replace(/-/g,''),t=MODE[e.mode]?MODE[e.mode][0]:'CDA Competition';
+    return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('🎯 '+t+' – Clochard Darter Augsburg')+'&dates='+d+'T200000/'+d+'T230000&ctz=Europe/Berlin&location='+encodeURIComponent('Bismarck Bistro, Bismarckstraße 7, 86159 Augsburg')+'&details='+encodeURIComponent('Beginn 20:00 Uhr. Anmeldung und Infos: '+location.origin+location.pathname+'#kontakt');}
   function load(){
     var today=new Date().toISOString().slice(0,10),to=new Date(Date.now()+120*864e5).toISOString().slice(0,10);
     return Promise.all([
@@ -1565,5 +1571,15 @@ footer a:hover{text-decoration:underline}
     document.querySelector('.ms-tabs').addEventListener('click',function(e){var b=e.target.closest('[data-ms]');if(!b)return;history.replaceState(null,'','#masters'+(b.getAttribute('data-ms')==='stats'?'':'/'+b.getAttribute('data-ms')));sub(b.getAttribute('data-ms'));});
     window.addEventListener('hashchange',route);route();
   })();
+})();
+</script>
+<script>
+// Besucherzahlen ohne Cookies: gezählt wird nur Seite + Tag (keine Kennung, keine IP-Adresse)
+(function(){if(navigator.webdriver||/bot|crawl|spider|preview|lighthouse/i.test(navigator.userAgent)||location.protocol==='file:')return;
+  var U='https://qeevsqrmltewbtrnfrfm.supabase.co/rest/v1/rpc/cda_hit',K='sb_publishable_pwnzx63cque5lKZEVCe4mA_5SvBP8Yd',seen={};
+  function hit(p){if(seen[p])return;seen[p]=1;try{fetch(U,{method:'POST',keepalive:true,headers:{apikey:K,'Content-Type':'application/json'},body:JSON.stringify({p_page:p})}).catch(function(){});}catch(e){}}
+  function route(){var h=location.hash;if(h.indexOf('#masters')===0){hit('masters');var s=h.split('/')[1];if(s)hit('masters-'+s);}else if(/^#(kontakt|anmelden)/.test(h))hit('mitspielen');}
+  hit('home');route();window.addEventListener('hashchange',route);
+  document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-ms]');if(b)hit('masters-'+b.getAttribute('data-ms'));var a=e.target.closest&&e.target.closest('.su-btn[data-act="in"]');if(a)hit('anmeldung-klick');},true);
 })();
 </script>
