@@ -61,13 +61,17 @@ jobs:
       - name: Monatswerte für den Spieler des Monats
         run: node scripts/build-month-stats.mjs
 
+      - id: pages
+        uses: actions/configure-pages@v5
+
       - name: Kalender-Abos erzeugen (iCal)
         run: node scripts/build-ics.mjs
+        env:
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
 
       - name: Seiten fertig machen (Gerüst, eigene Schriften)
         run: node scripts/build.mjs
 
-      - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site

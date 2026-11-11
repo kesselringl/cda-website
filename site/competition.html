@@ -1334,7 +1334,7 @@ function waText(date){var L=sbNames(date),dt=new Date(date+'T12:00:00'),wd=dt.to
   var diff=Math.round((dt-new Date(realToday()+'T12:00:00'))/864e5),when=diff===0?'Heute':diff===1?'Morgen':wd;
   return '🎯 '+when+' ist Competition!\n'+wd+', '+dd+' · '+realModeName(date)+' · ab 20 Uhr im Bismarck Bistro\n\n'+
     (L.length?'Schon '+L.length+' angemeldet: '+L.map(function(x){return x.name.split(' ')[0];}).join(', ')+'\n\n':'Noch ist niemand angemeldet, sei der Erste!\n\n')+
-    'Hier mit einem Tipp anmelden oder absagen:\n'+HOME_URL+'#kontakt/'+date;}
+    'Hier mit einem Tipp anmelden oder absagen:\n'+HOME_URL+'?s=wa#kontakt/'+date;}
 function sbPanel(){
   if(SITE)return '';
   if(S.sb.state==='idle'){setTimeout(sbLoad,0);}

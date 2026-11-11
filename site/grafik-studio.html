@@ -131,7 +131,7 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
   setInterval(function(){if(A&&A.refresh&&A.exp-Date.now()<5*60000)refresh();},4*60000);
   // ---------- Besucherzahlen ----------
   var NAMES={home:'Startseite','masters':'Reiter CDA Masters','masters-stats':'Masters: Rangliste & Statistiken','masters-regeln':"Masters: So funktioniert's",'masters-termine':'Masters: Termine','masters-ruhm':'Masters: Ruhmeshalle','masters-spielbetrieb':'Masters: Spielbetrieb',mitspielen:'Mitspielen-Bereich angesehen','anmeldung-klick':'„Ich bin dabei“ geklickt','absage-klick':'„Absagen“ geklickt','kal-ics':'Termin in Kalender (iPhone/Outlook)','kal-google':'Termin in Google Kalender','abo-klick':'Kalender-Abo geöffnet','insta-klick':'Klick auf Instagram','wa-klick':'Klick auf WhatsApp','kontakt-klick':'Klick auf E-Mail/Telefon',spielbetrieb:'Spielbetrieb-Seite',live:'Live-Ansicht Spielbetrieb',leitung:'Turnierleitung geöffnet',board:'Board-Ansicht geöffnet'};
-  var SRC={instagram:'Instagram',whatsapp:'WhatsApp',facebook:'Facebook',suche:'Suchmaschine (Google …)',direkt:'Direkt / Lesezeichen / App',andere:'Andere Webseiten'},DEV={handy:'Handy',tablet:'Tablet',computer:'Computer'},WDN={mo:'Mo',di:'Di',mi:'Mi',do:'Do',fr:'Fr',sa:'Sa',so:'So'};
+  var SRC={instagram:'Instagram',whatsapp:'WhatsApp',kalender:'Kalender-Eintrag',facebook:'Facebook',suche:'Suchmaschine (Google …)',direkt:'Direkt / Lesezeichen / App',andere:'Andere Webseiten'},DEV={handy:'Handy',tablet:'Tablet',computer:'Computer'},WDN={mo:'Mo',di:'Di',mi:'Mi',do:'Do',fr:'Fr',sa:'Sa',so:'So'};
   function day(n){var d=new Date();d.setDate(d.getDate()-n);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
   function e(x){return String(x==null?'':x).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   function pct(a,b){return b?Math.round(a/b*100)+' %':'–';}
@@ -929,7 +929,9 @@ function draw(){
   caption();
 }
 function fitGhost(t){setF(400,100,AN);var w=ctx.measureText(String(t).toUpperCase()).width;return 100*W*1.1/Math.max(1,w);}
-function caption(){var c=CAP[S.type];if(S.f._none||!c){$('caption').value='';return;}var r=c(S.f,CR()),Lx=r[0];Lx.push('',r[1].slice(0,5).join(' '));$('caption').value=Lx.join('\n').replace(/\n{3,}/g,'\n\n');}
+// Link zur Homepage: Adresse wird aus der Studio-Seite selbst abgeleitet (gilt automatisch auch nach dem Domain-Umzug), ?s=ig zählt den Besuch als Instagram
+function siteLink(){var a={comp:'#kontakt',masters:'#kontakt',sieger:'#masters',rangliste:'#masters'}[S.type]||(/^ms_/.test(S.type)?'#masters':'');return location.origin+location.pathname.replace(/[^\/]*$/,'')+'?s=ig'+a;}
+function caption(){var c=CAP[S.type];if(S.f._none||!c){$('caption').value='';return;}var r=c(S.f,CR()),Lx=r[0];Lx.push('','🔗 '+siteLink().replace(/^https?:\/\//,''));Lx.push('',r[1].slice(0,5).join(' '));$('caption').value=Lx.join('\n').replace(/\n{3,}/g,'\n\n');}
 
 // ---------- Speichern / Teilen ----------
 function fname(){return 'CDA_'+S.type+'_'+S.look+'_'+(S.f._md?S.f._md.date:S.f._date||today())+'_'+S.format+'.png';}

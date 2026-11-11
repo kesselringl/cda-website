@@ -5,7 +5,8 @@
 // Die Termin-Logik ist dieselbe wie auf der Homepage (cdaCalendar) und im Competition-System.
 import { mkdirSync, writeFileSync } from 'node:fs';
 
-const SITE = process.env.SITE_URL || 'https://kesselringl.github.io/cda-website/';
+// Adresse der Seite kommt im Workflow von GitHub Pages (passt sich nach dem Domain-Umzug automatisch an)
+const SITE = (process.env.SITE_URL || 'https://kesselringl.github.io/cda-website').replace(/\/?$/, '/');
 const RELAUNCH = '2027-01-07';
 const MASTERS_PER_SEASON = 16;
 const BISTRO = 'Bismarck Bistro, Bismarckstraße 7, 86159 Augsburg';
@@ -84,8 +85,8 @@ function ics(name, desc, list) {
     else L.push(`DTSTART;TZID=Europe/Berlin:${ymd(e.date)}T200000`, `DTEND;TZID=Europe/Berlin:${ymd(e.date)}T230000`);
     L.push('SUMMARY:' + esc((finals ? '🏆 ' : e.mode === 'm501' ? '★ ' : '🎯 ') + title + (e.note ? ' (' + e.note + ')' : '')),
       'LOCATION:' + esc(finals ? TSV : BISTRO),
-      'DESCRIPTION:' + esc(text + (finals ? '' : '\nAnmeldung: ' + SITE + '#kontakt') + '\nAlle Infos: ' + SITE + '#masters'),
-      'URL:' + SITE + (finals ? '#masters' : '#kontakt'),
+      'DESCRIPTION:' + esc(text + (finals ? '' : '\nAnmeldung: ' + SITE + '?s=kal#kontakt') + '\nAlle Infos: ' + SITE + '?s=kal#masters'),
+      'URL:' + SITE + '?s=kal' + (finals ? '#masters' : '#kontakt'),
       'TRANSP:' + (finals ? 'TRANSPARENT' : 'OPAQUE'), 'END:VEVENT');
   }
   L.push('END:VCALENDAR');
