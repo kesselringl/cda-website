@@ -1,57 +1,60 @@
 {
-  "_hinweis": "Nur Spieler mit schriftlicher Einwilligung eintragen. Name genau wie auf der Homepage (Vorname Nachname). Leere Felder einfach weglassen. Fotos nach site/spieler/ hochladen (Hochformat 4:5, z. B. leon-kesselring.webp).",
-  "_vorlage": {
-    "photo": "spieler/vorname-nachname.webp",
-    "nick": "",
-    "since": "",
-    "hand": "",
-    "checkout": "",
-    "darts": "",
-    "walkon": "",
-    "typ": "",
-    "erfolg": "",
-    "highlight": "",
-    "profi": "",
-    "beruf": "",
-    "hobby": "",
-    "cda": "",
-    "motto": ""
-  },
-  "Bastian Rauh": {
-    "photo": "spieler/bastian-rauh.webp"
-  },
-  "Florian Kaiser": {
-    "photo": "spieler/florian-kaiser.webp"
-  },
-  "Ivo Schubert": {
-    "photo": "spieler/ivo-schubert.webp"
-  },
-  "Leo Hörmann": {
-    "photo": "spieler/leo-hoermann.webp"
-  },
-  "Leon Crump": {
-    "photo": "spieler/leon-crump.webp"
-  },
-  "Leon Kesselring": {
-    "photo": "spieler/leon-kesselring.webp",
-    "nick": "The Lion",
-    "since": "2018",
-    "hand": "Rechts",
-    "typ": "Ruhig, ehrgeizig, zielstrebig",
-    "checkout": "96",
-    "darts": "Target, 22 g",
-    "cda": "Das Team steht immer über den einzelnen Spielern, der Zusammenhalt ist unfassbar."
-  },
-  "Marco Geiger": {
-    "photo": "spieler/marco-geiger.webp"
-  },
-  "Marcus Kreiner": {
-    "photo": "spieler/marcus-kreiner.webp"
-  },
-  "Sancha Koal": {
-    "photo": "spieler/sancha-koal.webp"
-  },
-  "Simon Seifert": {
-    "photo": "spieler/simon-seifert.webp"
-  }
+ "_hinweis": "Nur Spieler mit schriftlicher Einwilligung eintragen. Name genau wie auf der Homepage (Vorname Nachname). Leere Felder einfach weglassen. Fotos nach site/spieler/ hochladen (Hochformat 4:5, z. B. leon-kesselring.webp).",
+ "_vorlage": {
+  "photo": "spieler/vorname-nachname.webp",
+  "nick": "",
+  "since": "",
+  "hand": "",
+  "checkout": "",
+  "darts": "",
+  "walkon": "",
+  "typ": "",
+  "erfolg": "",
+  "highlight": "",
+  "profi": "",
+  "beruf": "",
+  "hobby": "",
+  "cda": "",
+  "motto": ""
+ },
+ "Bastian Rauh": {
+  "photo": "spieler/bastian-rauh.webp"
+ },
+ "Florian Kaiser": {
+  "photo": "spieler/florian-kaiser.webp"
+ },
+ "Ivo Schubert": {
+  "photo": "spieler/ivo-schubert.webp"
+ },
+ "Leo Hörmann": {
+  "photo": "spieler/leo-hoermann.webp"
+ },
+ "Leon Crump": {
+  "photo": "spieler/leon-crump.webp"
+ },
+ "Leon Kesselring": {
+  "photo": "spieler/leon-kesselring.webp",
+  "nick": "The Lion",
+  "since": "2018",
+  "hand": "Rechts",
+  "typ": "Ruhig, ehrgeizig, zielstrebig",
+  "checkout": "96",
+  "darts": "Target, 22 g",
+  "cda": "Das Team steht immer über den einzelnen Spielern, der Zusammenhalt ist unfassbar."
+ },
+ "Marco Geiger": {
+  "photo": "spieler/marco-geiger.webp"
+ },
+ "Marcus Kreiner": {
+  "photo": "spieler/marcus-kreiner.webp"
+ },
+ "Sancha Koal": {
+  "photo": "spieler/sancha-koal.webp"
+ },
+ "Simon Seifert": {
+  "photo": "spieler/simon-seifert.webp"
+ },
+ "Markus Görg": {
+  "photo": "spieler/markus-goerg.webp"
+ }
 }
