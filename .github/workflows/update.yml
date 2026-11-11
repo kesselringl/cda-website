@@ -28,6 +28,8 @@ jobs:
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v5
         with:
@@ -55,6 +57,9 @@ jobs:
           curl -sS -m 20 -o /dev/null -w "Supabase: %{http_code}\n" \
             "https://qeevsqrmltewbtrnfrfm.supabase.co/rest/v1/players?select=id&limit=1" \
             -H "apikey: sb_publishable_pwnzx63cque5lKZEVCe4mA_5SvBP8Yd"
+
+      - name: Monatswerte für den Spieler des Monats
+        run: node scripts/build-month-stats.mjs
 
       - name: Kalender-Abos erzeugen (iCal)
         run: node scripts/build-ics.mjs
