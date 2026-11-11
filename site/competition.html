@@ -468,7 +468,7 @@ th.sorted{color:var(--green-ink)}
 
 /* Saison */
 .sbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.fmtsel{margin:0 0 14px}.fmtrow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}.fmtb{text-align:left;padding:10px 12px;border-radius:var(--radius);border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;display:grid;gap:2px;font:inherit}.fmtb b{font-size:1rem}.fmtb span{font-size:.8rem;color:var(--muted)}.fmtb.on{border-color:var(--green);box-shadow:inset 0 0 0 1.5px var(--green)}
+.fmtsel{margin:0 0 14px}.fmtrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:6px}.fmtb{text-align:left;padding:10px 12px;border-radius:var(--radius);border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;display:grid;gap:2px;font:inherit}.fmtb b{font-size:1rem}.fmtb span{font-size:.8rem;color:var(--muted)}.fmtb.on{border-color:var(--green);box-shadow:inset 0 0 0 1.5px var(--green)}
 .dkoh{margin:14px 0 6px;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .sbar select{background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:var(--radius);padding:12px 40px 12px 16px;font:inherit;font-size:1.1rem;font-weight:700;min-height:48px;min-width:180px;cursor:pointer}
 /* Aufgeklappte Auswahllisten: dunkles Systemmenü, gut lesbare Schrift (vorher weiße Schrift auf weißem Menü) */
@@ -666,7 +666,7 @@ function pairsIn(s){return sum(s.map(function(k){return k*(k-1)/2;}));}
 function finalsShape(n){var target=Math.ceil(n*.75),K=4;while(K*2*1.5<=target)K*=2;return{g1:Math.ceil(n/4),A:K*1.5,K:K};}
 /* Legs: ft = first to (1 = Best of 1, 2 = Best of 3, 3 = Best of 5, 4 = Best of 7) */
 var LEG_LVL=['Standard','Kürzer','Kurz','Sehr kurz'];
-var LEG_PRE={x:[{g:2,g2:2,ko:2,fin:3,wb:2,lb:1,late:2,side:2},{g:1,g2:1,ko:2,fin:3,wb:1,lb:1,late:2,side:2},{g:1,g2:1,ko:2,fin:2,wb:1,lb:1,late:1,side:2},{g:1,g2:1,ko:1,fin:2,wb:1,lb:1,late:1,side:1}],
+var LEG_PRE={x:[{g:2,g2:2,ko:2,fin:3,wb:2,lb:1,late:2,side:2,sk:2},{g:1,g2:1,ko:2,fin:3,wb:1,lb:1,late:2,side:2,sk:1},{g:1,g2:1,ko:2,fin:2,wb:1,lb:1,late:1,side:2,sk:1},{g:1,g2:1,ko:1,fin:2,wb:1,lb:1,late:1,side:1,sk:1}],
   f:[{g:2,g2:2,ko:3,fin:3},{g:1,g2:2,ko:3,fin:3},{g:1,g2:1,ko:2,fin:3},{g:1,g2:1,ko:2,fin:2}]};
 var DKO_KEYS=['wb','lb','late','side','fin'];
 function legPreset(md,lvl){var L=LEG_PRE[md.finals?'f':'x'][lvl],o={};for(var k in L)o[k]=L[k];return o;}
@@ -676,10 +676,11 @@ function legsOf(ev){return ev.legs||legPreset(MD(ev),0);}
 function bo(ft){return 'Best of '+(ft*2-1);}
 var LEXP={1:1,2:2.5,3:4.1,4:5.6};
 function mMin(md,ft){return md.min*(.25+.75*LEXP[ft]/2.5);}
-function legTxt(md,L,p){if(p&&p.dko)return 'Gewinnerseite '+bo(L.wb||L.g)+' · Verliererseite '+bo(L.lb||L.g)+' · Halbfinals '+bo(L.late||L.ko)+' · Seitenfinals '+bo(L.side||L.ko)+' · Finale '+bo(L.fin);return (md.finals?'Vorrunde '+bo(L.g)+' · Zwischenrunde '+bo(L.g2)+' · K.-o. '+bo(L.ko):'Gruppe '+bo(L.g)+' · K.-o. '+bo(L.ko))+' · Finale '+bo(L.fin);}
+function legTxt(md,L,p){if(p&&p.sko)return 'Erste Runden '+bo(L.sk||L.ko)+' · Halbfinale '+bo(L.late||L.ko)+' · Spiel um Platz 3 '+bo(L.side||L.ko)+' · Finale '+bo(L.fin);if(p&&p.dko)return 'Gewinnerseite '+bo(L.wb||L.g)+' · Verliererseite '+bo(L.lb||L.g)+' · Halbfinals '+bo(L.late||L.ko)+' · Seitenfinals '+bo(L.side||L.ko)+' · Finale '+bo(L.fin);return (md.finals?'Vorrunde '+bo(L.g)+' · Zwischenrunde '+bo(L.g2)+' · K.-o. '+bo(L.ko):'Gruppe '+bo(L.g)+' · K.-o. '+bo(L.ko))+' · Finale '+bo(L.fin);}
 function makePlan(n,mode,nb,L,fmt){
   var md=MODES[mode];if(n<3)return null;nb=nb||2;L=L||legPreset(md,0);
-  if(!md.finals&&(fmt||(S&&S.fmt))==='dko'&&n>=4)return dkoPlan(n,md,nb,L);
+  var fm=fmt||(S&&S.fmt);if(!md.finals&&fm==='dko'&&n>=4)return dkoPlan(n,md,nb,L);
+  if(!md.finals&&fm==='sko'&&n>=4)return skoPlan(n,md,nb,L);
   if(md.finals){
     if(n<8)return null;var f=finalsShape(n),s1=sizesFor(n,f.g1),gm1=pairsIn(s1),gm2=f.K/2*3,ko=f.K-1+1+(f.K>=8?3:0),total=gm1+gm2+ko;
     var dur=Math.round((gm1*mMin(md,L.g)+gm2*mMin(md,L.g2)+(ko-1)*mMin(md,L.ko)+mMin(md,L.fin))/nb*1.1);
@@ -722,6 +723,32 @@ function buildDKO(ev,ids){var D=dkoNodes(ids.length),LL=legsOf(ev);
   D.real.forEach(function(x){var o={kind:'KO',dk:x.br,dr:x.r,stage:dkoName(x,D.k),ft:dkoFt(x,LL)};
     [['A','a','fromA','fromAL'],['B','b','fromB','fromBL']].forEach(function(q){var src=x[q[0]];if(src.s!=null)o[q[1]]=ids[src.s];else{var nd=src.w||src.l;o[q[2]]=nd.mid;if(src.l)o[q[3]]=1;}});
     var m=newMatch(ev,o);x.mid=m.id;ev.matches.push(m);});}
+/* ===== Single-K.-o.: wer verliert, ist raus; Spiel um Platz 3 für die Halbfinal-Verlierer =====
+   Freilose werden wie beim Doppel-K.-o. schon beim Auslosen herausgerechnet. */
+function skoNodes(n){
+  var K=2;while(K<n)K*=2;var k=Math.log2(K),order=bracketOrder(K),nodes=[],i,r,rounds=[];
+  function node(o){o.i=nodes.length;nodes.push(o);return o;}
+  function seed(pos){var sd=order[pos];return sd<=n?{s:sd-1}:{e:1};}
+  var cur=[];for(i=0;i<K;i+=2)cur.push(node({br:'W',r:1,A:seed(i),B:seed(i+1)}));rounds.push(cur);
+  for(r=2;r<=k;r++){var nx=[];for(i=0;i<cur.length;i+=2)nx.push(node({br:'W',r:r,A:{w:cur[i]},B:{w:cur[i+1]}}));rounds.push(nx);cur=nx;}
+  var p3=k>=2?node({br:'P',r:k,A:{l:rounds[k-2][0]},B:{l:rounds[k-2][1]}}):null;
+  function canon(x){if(x.e)return x;if(x.s!=null)return x;var nd=x.w||x.l;if(nd.empty)return{e:1};if(nd.bye)return x.w?nd.pass:{e:1};return x;}
+  nodes.forEach(function(nd){nd.A=canon(nd.A);nd.B=canon(nd.B);if(nd.A.e&&nd.B.e)nd.empty=true;else if(nd.A.e||nd.B.e){nd.bye=true;nd.pass=nd.A.e?nd.B:nd.A;}});
+  var real=nodes.filter(function(x){return !x.empty&&!x.bye;});
+  real.forEach(function(x){var size=K/Math.pow(2,x.r-1);x.size=size;x.lvl=x.br==='P'?2*x.r-1:2*x.r-(x.r===k?0:2);});
+  real.sort(function(a,b){return a.lvl-b.lvl||a.i-b.i;});return{real:real,k:k,K:K};
+}
+var RN_SK={2:'Finale',4:'Halbfinale',8:'Viertelfinale',16:'Achtelfinale',32:'Sechzehntelfinale',64:'Runde der letzten 64'};
+function skoName(x){return x.br==='P'?'Spiel um Platz 3':RN_SK[x.size];}
+function skoFt(x,L){var g=function(k,f){return L[k]||L[f]||1;};if(x.br==='P')return g('side','ko');if(x.size===2)return g('fin','fin');if(x.size===4)return g('late','ko');return g('sk','ko');}
+function skoPlan(n,md,nb,L){var D=skoNodes(n),sumMin=0;D.real.forEach(function(x){sumMin+=mMin(md,skoFt(x,L));});
+  var dur=Math.round(sumMin/nb*1.1+(1-1/nb)*(mMin(md,L.late||L.ko)+mMin(md,L.fin)));
+  return{n:n,sko:true,g:0,q:0,sizes:[],gm:0,total:D.real.length,dur:dur,warn:n>12*nb,
+    txt:'Single-K.-o.: Wer ein Match verliert, ist raus. Die Verlierer der Halbfinals spielen um Platz 3, die Sieger um den Turniersieg.'};}
+function buildSKO(ev,ids){var D=skoNodes(ids.length),LL=legsOf(ev);
+  D.real.forEach(function(x){var o={kind:'KO',sk:1,dr:x.r,stage:skoName(x),ft:skoFt(x,LL)};
+    [['A','a','fromA','fromAL'],['B','b','fromB','fromBL']].forEach(function(q){var src=x[q[0]];if(src.s!=null)o[q[1]]=ids[src.s];else{var nd=src.w||src.l;o[q[2]]=nd.mid;if(src.l)o[q[3]]=1;}});
+    var m=newMatch(ev,o);x.mid=m.id;ev.matches.push(m);});}
 function clock(min){var t=20*60+min;return Math.floor(t/60)%24+':'+String(t%60).padStart(2,'0');}
 function rr(ids){var a=ids.slice(),out=[],r,i;if(a.length%2)a.push(null);var n=a.length;
   for(r=0;r<n-1;r++){var round=[];for(i=0;i<n/2;i++){var x=a[i],y=a[n-1-i];if(x&&y)round.push(r%2?[y,x]:[x,y]);}out.push(round);a.splice(1,0,a.pop());}return out;}
@@ -740,6 +767,7 @@ function start(ev,pids){
   else shuffle(ids);
   var plan=makePlan(ids.length,ev.mode,ev.boards.length,legsOf(ev));if(!plan)return false;ev.plan=plan;
   if(plan.dko){ev.groups=[];ev.groups2=null;ev.matches=[];buildDKO(ev,ids);ev.phase='running';fill(ev);return true;}
+  if(plan.sko){ev.groups=[];ev.groups2=null;ev.matches=[];buildSKO(ev,ids);ev.phase='running';fill(ev);return true;}
   ev.groups=snake(ids,plan.g);ev.groups2=null;ev.matches=[];
   addRR(ev,ev.groups,1,md.finals?'Vorrunde':'Gruppe');
   ev.phase='running';fill(ev);return true;
@@ -911,7 +939,7 @@ function placements(ev){
   var p5=st('Spiel um Platz 5')[0];if(p5){set(winnerPart(p5),5);set(loserPart(p5),6);}
   st('Platz 5–8').forEach(function(m){set(loserPart(m),7);});
   var place=Object.keys(out).length+1;
-  ['Viertelfinale','Achtelfinale','Sechzehntelfinale'].forEach(function(s){var l=st(s).map(loserPart).filter(function(p){return !out[p];});l.forEach(function(p){set(p,place);});place+=l.length;});
+  ['Viertelfinale','Achtelfinale','Sechzehntelfinale','Runde der letzten 64'].forEach(function(s){var l=st(s).map(loserPart).filter(function(p){return !out[p];});l.forEach(function(p){set(p,place);});place+=l.length;});
   [2,1].forEach(function(ph){if(ph===2&&!ev.groups2)return;var r=rankAcross(ev,ph).filter(function(x){return !out[x.id];});r.forEach(function(x,i){set(x.id,place+i);});place+=r.length;});
   }
   var prize=md.masters?payout(n*DAY_FEE,DAY_SPLIT):md.finals?payout(potFor(ev.season),FIN_SPLIT):[];
@@ -1197,7 +1225,7 @@ function viewCheckin(){
   if(md.finals){var pot=potFor(CUR_SEASON),fp=payout(pot,FIN_SPLIT);money='<div class="money"><div><b>'+eur(pot)+'</b><span>Masters-Pott</span></div><div><b>'+eur(fp[0])+'</b><span>Sieger</span></div><div><b>'+fp.length+'</b><span>Plätze mit Geld</span></div></div><p class="muted" style="margin:-6px 0 14px;font-size:.85rem">'+fp.map(function(x,i){return (i+1)+'. '+eur(x);}).join(' · ')+'</p>';}
   var plan=p?('<div class="big-n num">'+ids.length+'</div><p class="muted" style="margin:2px 0 14px">Spieler eingecheckt'+(md.doubles?' · ergibt '+nParts+' Doppel':'')+'</p>'+
     (p.warn&&!S.legs.auto&&LG.lvl===0?'<p class="warn">Für '+S.boards.length+' Boards sind das viele Teilnehmer. Legs kürzen oder mehr Boards einplanen. <button class="btn small" data-act="legauto">Legs automatisch kürzen</button></p>':'')+money+
-    fmtBox(md,nParts,LG)+'<dl><dt>Modus</dt><dd>'+md.name+' · '+md.sub+'</dd><dt>Format</dt><dd>'+p.txt+'</dd>'+(p.dko?'':'<dt>'+(md.finals?'Vorrunde':'Gruppen')+'</dt><dd>'+p.sizes.length+' Gruppen ('+p.sizes.join(', ')+')</dd>')+'<dt>Legs</dt><dd>'+legTxt(md,LG.L,p)+'</dd><dt>Matches</dt><dd class="num">'+p.total+'</dd><dt>Ende ca.</dt><dd class="num">'+(md.finals?Math.floor(p.dur/60)+' h '+(p.dur%60)+' min Spielzeit':clock(p.dur)+' Uhr')+' <span class="muted">('+S.boards.length+' Boards)</span></dd></dl>'+
+    fmtBox(md,nParts,LG)+'<dl><dt>Modus</dt><dd>'+md.name+' · '+md.sub+'</dd><dt>Format</dt><dd>'+p.txt+'</dd>'+(p.dko||p.sko?'':'<dt>'+(md.finals?'Vorrunde':'Gruppen')+'</dt><dd>'+p.sizes.length+' Gruppen ('+p.sizes.join(', ')+')</dd>')+'<dt>Legs</dt><dd>'+legTxt(md,LG.L,p)+'</dd><dt>Matches</dt><dd class="num">'+p.total+'</dd><dt>Ende ca.</dt><dd class="num">'+(md.finals?Math.floor(p.dur/60)+' h '+(p.dur%60)+' min Spielzeit':clock(p.dur)+' Uhr')+' <span class="muted">('+S.boards.length+' Boards)</span></dd></dl>'+
     (md.finals&&S.venue!=='tsv'?'<p class="warn">Die Finals sind beim TSV Dinkelscherben geplant. Spielort oben umstellen.</p>':'')+
     legBox(md,LG,p)+venueTip(md,nParts,LG)+testBox()+'<button class="btn primary" data-act="start">Auslosen und starten</button>'):'<p class="muted">Mindestens '+(md.finals?8:md.doubles?6:3)+' Spieler einchecken.</p>';
   return '<div class="grid" style="gap:16px">'+
@@ -1364,18 +1392,22 @@ function venueTip(md,n,LG){
   return '<p class="warn">Viele Anmeldungen für '+S.boards.length+' Boards. Im '+best.v.name+' ('+best.v.boards.length+' Boards) wärt ihr '+(best.l===0?'ohne gekürzte Legs':'mit „'+LEG_LVL[best.l]+'“')+' um ca. '+clock(best.p.dur)+' Uhr fertig. <button class="btn small" data-act="venue" data-v="'+best.k+'">Spielort wechseln</button></p>';
 }
 function fmtBox(md,n,LG){if(md.finals||n<4)return '';
-  var pg=makePlan(n,S.mode,S.boards.length,LG.L,'groups'),pd=makePlan(n,S.mode,S.boards.length,LG.L,'dko');if(!pg||!pd)return '';
+  var pg=makePlan(n,S.mode,S.boards.length,LG.L,'groups'),pd=makePlan(n,S.mode,S.boards.length,LG.L,'dko'),ps=makePlan(n,S.mode,S.boards.length,LG.L,'sko');if(!pg||!pd||!ps)return '';
   var b=function(f,lab,p){return '<button class="fmtb'+(S.fmt===f?' on':'')+'" data-act="fmt" data-f="'+f+'" aria-pressed="'+(S.fmt===f)+'"><b>'+lab+'</b><span>'+p.total+' Matches · Ende ca. '+clock(p.dur)+' Uhr</span></button>';};
-  var tip=S.fmt==='groups'&&!fitTarget(md,pg)&&pd.dur<pg.dur?'<p class="warn" style="margin:8px 0 0">Mit so vielen Teilnehmern wird es mit Gruppen eng. Im Doppel-K.-o. wärt ihr ca. '+Math.max(0,pg.dur-pd.dur)+' Minuten früher fertig.</p>':'';
-  return '<div class="fmtsel"><span class="muted" style="font-size:.85rem">Turnierform</span><div class="fmtrow">'+b('groups','Gruppen + K.-o.',pg)+b('dko','Doppel-K.-o.',pd)+'</div>'+tip+'</div>';}
+  var cur=S.fmt==='dko'?pd:S.fmt==='sko'?ps:pg,alt=[[pd,'Doppel-K.-o.'],[pg,'Gruppen + K.-o.'],[ps,'Single-K.-o.']].filter(function(x){return x[0]!==cur&&fitTarget(md,x[0]);}).sort(function(a,b){return b[0].total-a[0].total;})[0];
+  var tip=!fitTarget(md,cur)&&alt?'<p class="warn" style="margin:8px 0 0">Mit so vielen Teilnehmern wird es eng. Mit '+alt[1]+' wärt ihr ca. '+Math.max(0,cur.dur-alt[0].dur)+' Minuten früher fertig.</p>':'';
+  return '<div class="fmtsel"><span class="muted" style="font-size:.85rem">Turnierform</span><div class="fmtrow">'+b('groups','Gruppen + K.-o.',pg)+b('dko','Doppel-K.-o.',pd)+b('sko','Single-K.-o.',ps)+'</div>'+tip+'<p class="cap" style="margin:6px 0 0">'+(S.fmt==='sko'?'Single-K.-o.: am schnellsten, aber nach einer Niederlage ist Schluss. Gut bei vielen Teilnehmern oder wenig Zeit.':S.fmt==='dko'?'Doppel-K.-o.: Jeder hat eine zweite Chance, erst die zweite Niederlage scheidet aus.':'Gruppen + K.-o.: Die meisten Spiele für alle, danach K.-o. der Gruppenbesten.')+'</p></div>';}
 function legBox(md,LG,p){
   var L=LG.L,btn=function(act,lab,on,extra){return '<button class="btn small'+(on?' on':'')+'" data-act="'+act+'"'+(extra||'')+' aria-pressed="'+!!on+'">'+lab+'</button>';};
   var seg=LEG_LVL.map(function(n,i){return btn('leglvl',n,!S.legs.auto&&!S.legs.custom&&S.legs.lvl===i,' data-l="'+i+'"');}).join('')+btn('legauto','Automatisch',S.legs.auto);
   var tgt='';
   if(S.legs.auto)tgt=md.finals?'<label class="legt">Maximale Spielzeit <select data-legfh="1">'+[5,6,7,8,9].map(function(h){return '<option value="'+h+'"'+(S.legs.fh===h?' selected':'')+'>'+h+' Stunden</option>';}).join('')+'</select></label>'
     :'<label class="legt">Fertig bis <select data-legtarget="1">'+['22:30','23:00','23:30'].map(function(t){return '<option'+(S.legs.target===t?' selected':'')+'>'+t+' Uhr</option>';}).join('')+'</select></label>';
-  var dko=p&&p.dko,rows=(dko?[['wb','Gewinnerseite (Anfang)'],['lb','Verliererseite (Anfang)'],['late','Halbfinals beider Seiten'],['side','Finale Gewinner- und Verliererseite'],['fin','Großes Finale']]:md.finals?[['g','Vorrunde'],['g2','Zwischenrunde'],['ko','K.-o.-Runde'],['fin','Finale']]:[['g','Gruppenphase'],['ko','K.-o.-Runde'],['fin','Finale']]).map(function(r){var ft=L[r[0]]||1,def=legPreset(md,0)[r[0]];
+  var dko=p&&p.dko,sko=p&&p.sko,rows=(sko?[['sk','Erste Runden'],['late','Halbfinale'],['side','Spiel um Platz 3'],['fin','Finale']]:dko?[['wb','Gewinnerseite (Anfang)'],['lb','Verliererseite (Anfang)'],['late','Halbfinals beider Seiten'],['side','Finale Gewinner- und Verliererseite'],['fin','Großes Finale']]:md.finals?[['g','Vorrunde'],['g2','Zwischenrunde'],['ko','K.-o.-Runde'],['fin','Finale']]:[['g','Gruppenphase'],['ko','K.-o.-Runde'],['fin','Finale']]).map(function(r){var ft=L[r[0]]||1,def=legPreset(md,0)[r[0]];
     return '<li class="'+(ft<def?'cut':'')+'"><span>'+r[1]+'</span><span class="lsw"><button data-act="legadj" data-k="'+r[0]+'" data-d="-1" aria-label="'+r[1]+' kürzer"'+(ft<=1?' disabled':'')+'>−</button><b>'+bo(ft)+'</b><button data-act="legadj" data-k="'+r[0]+'" data-d="1" aria-label="'+r[1]+' länger"'+(ft>=4?' disabled':'')+'>+</button></span></li>';}).join('');
+  if(sko){var noteS=(S.legs.auto&&S.legs.target==='23:00'?'Vorgabe: Der Abend ist immer bis 23 Uhr fertig. ':'')+(S.legs.auto?(LG.fit?'Der Computer hat <b>„'+LEG_LVL[LG.lvl]+'“</b> gewählt. ':'<span class="warn-t">Auch mit den kürzesten Legs wird es knapp. Mehr Boards einplanen.</span> '):S.legs.custom?'Eigene Einstellung. ':'')+
+    'Im Single-K.-o. hat jeder nur ein Match sicher, deshalb starten die ersten Runden mit Best of 3. Kürzer: erste Runden Best of 1 · Kurz: zusätzlich Halbfinale Best of 1, Finale Best of 3 · Sehr kurz: auch das Spiel um Platz 3 Best of 1.';
+    return '<div class="legbox"><h3>Legs im Single-K.-o.</h3><div class="legseg">'+seg+'</div>'+tgt+'<ul class="legrows">'+rows+'</ul><p class="cap">'+noteS+'</p></div>';}
   if(dko){var noteD=(S.legs.auto&&S.legs.target==='23:00'?'Vorgabe: Der Abend ist immer bis 23 Uhr fertig. ':'')+(S.legs.auto?(LG.fit?'Der Computer hat <b>„'+LEG_LVL[LG.lvl]+'“</b> gewählt. ':'<span class="warn-t">Auch mit den kürzesten Legs wird es knapp. Mehr Boards einplanen.</span> '):S.legs.custom?'Eigene Einstellung. ':'')+
     'Die Verliererseite startet mit Best of 1, damit es zügig geht. Je weiter das Turnier läuft, desto länger werden die Matches: Halbfinals, Seitenfinals und großes Finale. Kürzer: Gewinnerseite Best of 1 · Kurz: Halbfinals Best of 1, Finale Best of 3 · Sehr kurz: auch die Seitenfinals Best of 1.';
     return '<div class="legbox"><h3>Legs im Doppel-K.-o.</h3><div class="legseg">'+seg+'</div>'+tgt+'<ul class="legrows">'+rows+'</ul><p class="cap">'+noteD+'</p></div>';}
@@ -1411,6 +1443,8 @@ function queue(ev,n){var w=ev.matches.filter(function(m){return m.status==='wait
 function koList(ev){var ko=ev.matches.filter(function(m){return m.kind==='KO';});
   if(ev.plan&&ev.plan.dko){var sec=function(t,f){var l=ko.filter(f);return l.length?'<h4 class="dkoh">'+t+'</h4><ul class="mlist">'+l.map(function(m){return mItem(ev,m);}).join('')+'</ul>':'';};
     return sec('Gewinnerseite',function(m){return m.dk==='W';})+sec('Verliererseite',function(m){return m.dk==='L';})+sec('Finale',function(m){return m.dk==='F';});}
+  if(ev.plan&&ev.plan.sko){var st=[];ko.forEach(function(m){if(st.indexOf(m.stage)<0)st.push(m.stage);});
+    return st.map(function(t){return '<h4 class="dkoh">'+t+'</h4><ul class="mlist">'+ko.filter(function(m){return m.stage===t;}).map(function(m){return mItem(ev,m);}).join('')+'</ul>';}).join('');}
   if(!ko.length)return '<p class="muted" style="margin:0">Startet automatisch nach der '+(MD(ev).finals?'Zwischenrunde':'Gruppenphase')+'. Es kommen '+ev.plan.q+' weiter.</p>';
   return '<ul class="mlist">'+ko.map(function(m){return mItem(ev,m);}).join('')+'</ul>';}
 function viewLead(){
@@ -1735,7 +1769,7 @@ function doAct(t,a,b){
       if(!p)p=S.live?liveGuest(x.name):P(x.guest?x.name+' (Gast)':x.name,45,'',1,.3,null);S.checked[p.id]=true;});}
   else if(a==='testtoggle'){S.testMode=!S.testMode;}
   else if(a==='watchsim'){S.live=false;S.ev=SIM_EV;S.role='spec';S.view='s-live';render();top();return 'stop';}
-  else if(a==='fmt'){S.fmt=t.getAttribute('data-f')==='dko'?'dko':'groups';}
+  else if(a==='fmt'){var ff=t.getAttribute('data-f');S.fmt=ff==='dko'||ff==='sko'?ff:'groups';}
   else if(a==='leglvl'){S.legs.lvl=+t.getAttribute('data-l');S.legs.auto=false;S.legs.custom=null;}
   else if(a==='legauto'){S.legs.auto=!S.legs.auto||t.closest('.warn')!==null;S.legs.custom=null;}
   else if(a==='legadj'){var mdl=MODES[S.mode],idsL=ckPlayers().filter(function(p){return S.checked[p.id];}).length,cur=chooseLegs(mdl,mdl.doubles?Math.floor(idsL/2):idsL).L,kk=t.getAttribute('data-k');
