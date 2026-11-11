@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11T04:14:31.186Z",
+ "updated": "2026-11-11T23:28:09.364Z",
  "season": "2026/27",
  "teams": {
   "1": {
@@ -7,7 +7,7 @@
    "league": "3K WINMAU 2. Bundesliga Süd",
    "source": "3k",
    "sourceUrl": "https://portal.3k-darts.com/frontend/events/10/event/1408/phase/2101/group/40479",
-   "fetched": "2026-11-11T04:14:31.186Z",
+   "fetched": "2026-11-11T23:28:09.364Z",
    "table": [
     {
      "pos": 1,
@@ -464,7 +464,7 @@
    "league": "1. Bezirksliga Schwaben",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211693",
-   "fetched": "2026-11-11T04:14:31.186Z",
+   "fetched": "2026-11-11T23:28:09.364Z",
    "table": [
     {
      "pos": 1,
@@ -913,7 +913,7 @@
    "league": "3. Bezirksliga Schwaben Süd",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211696",
-   "fetched": "2026-11-11T04:14:31.186Z",
+   "fetched": "2026-11-11T23:28:09.364Z",
    "table": [
     {
      "pos": 1,
@@ -1308,18 +1308,18 @@
    "league": "4. Bezirksliga Schwaben Süd 4",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211701",
-   "fetched": "2026-11-11T04:14:31.186Z",
+   "fetched": "2026-11-11T23:28:09.364Z",
    "table": [
     {
      "pos": 1,
      "name": "Clochard Darter Augsburg IV",
-     "played": 5,
-     "w": 4,
+     "played": 6,
+     "w": 5,
      "d": 1,
      "l": 0,
-     "sets": "32:18",
-     "legs": "113:79",
-     "points": "9:1",
+     "sets": "39:21",
+     "legs": "139:91",
+     "points": "11:1",
      "us": true
     },
     {
@@ -1336,18 +1336,6 @@
     },
     {
      "pos": 3,
-     "name": "SC Oberbernbach II",
-     "played": 4,
-     "w": 4,
-     "d": 0,
-     "l": 0,
-     "sets": "27:13",
-     "legs": "93:60",
-     "points": "8:0",
-     "us": false
-    },
-    {
-     "pos": 4,
      "name": "Steeldarter Kühlenthal VI",
      "played": 5,
      "w": 4,
@@ -1355,6 +1343,18 @@
      "l": 1,
      "sets": "36:14",
      "legs": "119:71",
+     "points": "8:2",
+     "us": false
+    },
+    {
+     "pos": 4,
+     "name": "SC Oberbernbach II",
+     "played": 5,
+     "w": 4,
+     "d": 0,
+     "l": 1,
+     "sets": "30:20",
+     "legs": "105:86",
      "points": "8:2",
      "us": false
     },
@@ -1372,26 +1372,26 @@
     },
     {
      "pos": 6,
-     "name": "SV Gablingen Schmutter Darter VI",
-     "played": 4,
+     "name": "TSV Göggingen",
+     "played": 6,
      "w": 2,
-     "d": 0,
-     "l": 2,
-     "sets": "17:23",
-     "legs": "72:86",
-     "points": "4:4",
+     "d": 1,
+     "l": 3,
+     "sets": "33:27",
+     "legs": "123:110",
+     "points": "5:7",
      "us": false
     },
     {
      "pos": 7,
-     "name": "TSV Göggingen",
+     "name": "SV Gablingen Schmutter Darter VI",
      "played": 5,
-     "w": 1,
-     "d": 1,
+     "w": 2,
+     "d": 0,
      "l": 3,
-     "sets": "24:26",
-     "legs": "96:100",
-     "points": "3:7",
+     "sets": "18:32",
+     "legs": "82:113",
+     "points": "4:6",
      "us": false
     },
     {
@@ -1507,7 +1507,7 @@
      "moved": false,
      "home": "Clochard Darter Augsburg IV",
      "away": "SC Oberbernbach II",
-     "score": null,
+     "score": "7:3",
      "venue": "Bismarck Bistro"
     },
     {
@@ -1673,8 +1673,8 @@
     },
     {
      "name": "Andreas Wengenmayr",
-     "games": 3,
-     "single": "6:0"
+     "games": 4,
+     "single": "8:0"
     },
     {
      "name": "Adrian Pirner",
@@ -1688,13 +1688,13 @@
     },
     {
      "name": "Clemens Fleischmann",
-     "games": 4,
-     "single": "6:2"
+     "games": 5,
+     "single": "8:2"
     },
     {
      "name": "Maximilian Urban",
-     "games": 5,
-     "single": "9:1"
+     "games": 6,
+     "single": "10:2"
     },
     {
      "name": "Gerald Nitzer",
@@ -1708,8 +1708,8 @@
     },
     {
      "name": "Fabian Schreyer",
-     "games": 2,
-     "single": "1:1"
+     "games": 3,
+     "single": "1:3"
     }
    ]
   }
