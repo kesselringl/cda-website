@@ -64,7 +64,7 @@ async function selfHostFonts() {
 const fontsOk = await selfHostFonts();
 // Adresse der Seite kommt im Workflow von GitHub Pages (passt sich nach dem Domain-Umzug automatisch an)
 const BASE = (process.env.SITE_URL || 'https://kesselringl.github.io/cda-website').replace(/\/?$/, '/');
-const PRIVATE = new Set(['grafik-studio.html', 'studio.html', 'competition.html']);
+const PRIVATE = new Set(['grafik-studio.html', 'studio.html', 'competition.html', 'steckbrief.html']);
 const PUBLIC = ['index.html', 'impressum.html', 'datenschutz.html'];
 const esc = t => String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 
@@ -95,6 +95,7 @@ const DESC = {
   'index.html': 'Clochard Darter Augsburg e.V. – Steeldart in Augsburg seit 1986. Vier Ligamannschaften, 2. Bundesliga Süd, offene Competition jeden Donnerstag im Bismarck Bistro.',
   'impressum.html': 'Impressum des Clochard Darter Augsburg e.V.',
   'datenschutz.html': 'Datenschutzerklärung des Clochard Darter Augsburg e.V.',
+  'steckbrief.html': 'Steckbrief-Formular für die Spielerinnen und Spieler des Clochard Darter Augsburg e.V.',
   'grafik-studio.html': 'Grafik-Studio des Clochard Darter Augsburg e.V. (intern, mit Anmeldung).',
   'studio.html': 'Weiterleitung zum Grafik-Studio.',
   'competition.html': 'Spielbetrieb der CDA-Donnerstags-Competition: Abend live verfolgen, Turnierleitung und Boards.'
@@ -155,6 +156,7 @@ ${PUBLIC.map(f => `  <url><loc>${BASE}${f === 'index.html' ? '' : f}</loc><lastm
 await writeFile(new URL('robots.txt', SITE), `User-agent: *
 Disallow: /grafik-studio.html
 Disallow: /studio.html
+Disallow: /steckbrief.html
 Sitemap: ${BASE}sitemap.xml
 `);
 console.log('✓ sitemap.xml, robots.txt für', BASE);

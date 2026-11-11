@@ -1,0 +1,260 @@
+<title>Dein Steckbrief · Clochard Darter Augsburg</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Archivo:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: Rechtstexte – ruhige Lesespalte, Kopf und Fuß wie auf der Startseite */
+:root{
+  --bg:#F3F5F1; --surface:#FFFFFF; --ink:#111913; --muted:#56635A; --line:#D9E0D7;
+  --green:#08872A; --green-bright:#0CA12D; --red:#E30212; --bone:#ECE6D3; --wire:#B9C2BB;
+  --board:#0E1510; --board-ink:#EEF2EC; --board-muted:#9FB0A3; --board-line:#26332A;
+  --chip:#E7EEE6; --tbd:#A35E00; --plate:#FFFFFF;
+  --f-display:"Big Shoulders Display","Arial Narrow","Roboto Condensed",Impact,sans-serif;
+  --f-body:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --radius:6px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0A0F0B; --surface:#121A14; --ink:#E6ECE5; --muted:#98A79B; --line:#243028;
+  --green:#2BC653; --green-bright:#2BC653; --red:#FF3A45; --bone:#D9D2BE; --wire:#56635A;
+  --board:#060907; --board-ink:#EEF2EC; --board-muted:#93A497; --board-line:#1F2A22;
+  --chip:#18231B; --tbd:#F0A54A; --plate:#F2F4F0; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0A0F0B; --surface:#121A14; --ink:#E6ECE5; --muted:#98A79B; --line:#243028;
+  --green:#2BC653; --green-bright:#2BC653; --red:#FF3A45; --bone:#D9D2BE; --wire:#56635A;
+  --board:#060907; --board-ink:#EEF2EC; --board-muted:#93A497; --board-line:#1F2A22;
+  --chip:#18231B; --tbd:#F0A54A; --plate:#F2F4F0; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--board)}
+a{color:var(--green)}
+:focus-visible{outline:3px solid var(--green-bright);outline-offset:3px;border-radius:2px}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--board);color:var(--board-ink);border-bottom:1px solid var(--board-line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:10px;max-width:1180px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--board-ink)}
+.brand img{width:40px;height:auto}
+.brand b{font-family:var(--f-display);font-weight:800;font-size:1.25rem;text-transform:uppercase;line-height:1;letter-spacing:.02em}
+.brand small{display:block;font-size:.72rem;color:var(--board-muted);letter-spacing:.08em;text-transform:uppercase;margin-top:3px}
+.back{white-space:nowrap;flex:none;color:var(--board-ink);text-decoration:none;font-weight:600;font-size:.92rem;padding:8px 12px;border:1px solid var(--board-line);border-radius:var(--radius)}
+.back:hover{border-color:var(--board-muted)}
+main{padding-block:56px 72px}
+.eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin:0}
+h1,h2{font-family:var(--f-display);text-transform:uppercase;line-height:.95;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.6rem,7vw,4rem);font-weight:900;margin-top:10px}
+h2{font-size:1.6rem;font-weight:800;margin-top:44px;padding-top:20px;border-top:1px solid var(--line)}
+h3{font-size:1.05rem;margin:24px 0 4px}
+p,ul,address{margin:10px 0 0;max-width:68ch}
+address{font-style:normal}
+ul{padding-left:1.2em}
+li+li{margin-top:4px}
+.lead{color:var(--muted);font-size:1.05rem;margin-top:14px}
+.facts{display:grid;grid-template-columns:200px 1fr;gap:10px 24px;margin-top:20px;max-width:none}
+.facts dt{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;padding-top:3px}
+.facts dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.todo{background:color-mix(in srgb,var(--tbd) 14%,transparent);color:var(--ink);border-left:3px solid var(--tbd);padding:2px 8px;border-radius:3px;font-style:normal}
+.stand{margin-top:48px;font-size:.88rem;color:var(--muted)}
+footer{background:var(--board);color:var(--board-muted);font-size:.88rem}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;padding-block:28px;max-width:1180px}
+footer nav{display:flex;gap:18px;flex-wrap:wrap}
+footer a{color:var(--board-ink);text-decoration:none}
+footer a:hover{text-decoration:underline}
+footer a[aria-current]{text-decoration:underline}
+@media (max-width:560px){.facts{grid-template-columns:1fr;gap:2px}.facts dd{margin-bottom:10px}main{padding-block:40px 56px}}
+
+/* Steckbrief-Formular */
+.form{margin-top:28px;display:grid;gap:22px}
+fieldset{border:1px solid var(--line);border-radius:10px;padding:18px 18px 20px;margin:0;background:var(--surface);min-width:0}
+legend{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:1.15rem;padding:0 8px;letter-spacing:.02em}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
+.full{grid-column:1/-1}
+label{display:block;font-weight:700;font-size:.92rem}
+label small{display:block;font-weight:400;color:var(--muted);font-size:.8rem;line-height:1.35;margin-top:1px}
+input[type=text],input[type=number],select,textarea{display:block;width:100%;margin-top:6px;font:inherit;font-size:16px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:10px 12px;min-width:0}
+textarea{min-height:76px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px color-mix(in srgb,var(--green) 22%,transparent)}
+.seg{display:flex;gap:8px;margin-top:6px}
+.seg label{flex:1;font-weight:600;text-align:center;border:1px solid var(--line);border-radius:var(--radius);padding:9px;cursor:pointer;background:var(--bg)}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg input:checked+span{color:var(--green)}
+.seg label:has(input:checked){border-color:var(--green);box-shadow:inset 0 0 0 1px var(--green)}
+.photo{display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:start}
+.ph-box{aspect-ratio:4/5;border-radius:8px;border:2px dashed var(--line);display:grid;place-items:center;text-align:center;color:var(--muted);font-size:.85rem;overflow:hidden;background:var(--bg);cursor:pointer;padding:8px}
+.ph-box img{width:100%;height:100%;object-fit:cover}
+.ph-box.has{border-style:solid;padding:0}
+.tips{margin:0;padding-left:1.1em;color:var(--muted);font-size:.9rem}
+.consent{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;font-weight:400;font-size:.93rem}
+.consent input{width:20px;height:20px;margin-top:2px;accent-color:var(--green)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-weight:700;font-size:1rem;border:0;border-radius:var(--radius);padding:14px 22px;cursor:pointer;text-decoration:none}
+.btn.primary{background:var(--green);color:#fff}
+.btn.primary:hover{background:var(--green-bright)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn[disabled]{opacity:.6;cursor:wait}
+.msg{border-radius:8px;padding:14px 16px;font-weight:600}
+.msg.err{background:color-mix(in srgb,var(--red) 12%,transparent);border-left:4px solid var(--red)}
+.done{text-align:center;padding:40px 16px}
+.done h2{border:0;margin:14px 0 0;padding:0;font-size:2rem}
+.done .ic{font-size:3rem}
+.hidden{display:none!important}
+.req{color:var(--red)}
+@media (max-width:640px){.grid{grid-template-columns:1fr}.photo{grid-template-columns:110px 1fr}fieldset{padding:14px}}
+</style>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="logo.png" alt="Vereinslogo Clochard Darter Augsburg"><span><b>Clochard Darter</b><small>Augsburg e.V. · seit 1986</small></span></a>
+    <a class="back" href="index.html">Zur Startseite</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="formWrap">
+  <p class="eyebrow">Für unsere Spielerinnen und Spieler</p>
+  <h1>Dein Steckbrief</h1>
+  <p class="lead">Auf der Homepage bekommt jeder Spieler eine eigene Karte: vorne Foto und Bilanz, hinten dein Steckbrief. Die Angaben nutzen wir auch für Instagram, zum Beispiel beim „Spieler des Monats“. Alles ist freiwillig – füll einfach aus, was du magst. Dauert keine 3 Minuten.</p>
+
+  <form class="form" id="f" novalidate>
+    <fieldset>
+      <legend>Wer bist du?</legend>
+      <div class="grid">
+        <div class="full"><label for="who">Name <span class="req">*</span><small>Such dich in der Liste. Nicht dabei? Dann „Mein Name fehlt“ wählen.</small></label>
+          <select id="who" required><option value="">Bitte auswählen …</option></select></div>
+        <div class="full hidden" id="otherWrap"><label for="other">Vor- und Nachname <span class="req">*</span></label><input type="text" id="other" maxlength="60" autocomplete="name"></div>
+        <div><label for="nick">Spitzname<small>so, wie dich alle am Board nennen</small></label><input type="text" id="nick" data-k="nick" maxlength="40" placeholder="z. B. The Lion"></div>
+        <div><label for="since">Im Verein seit<small>Jahr</small></label><input type="number" id="since" data-k="since" min="1986" max="2030" inputmode="numeric" placeholder="z. B. 2018"></div>
+        <div><span style="display:block;font-weight:700;font-size:.92rem">Wurfhand</span>
+          <div class="seg"><label><input type="radio" name="hand" value="Rechts"><span>Rechts</span></label><label><input type="radio" name="hand" value="Links"><span>Links</span></label></div></div>
+        <div><label for="darts">Deine Darts<small>Marke/Modell und Gewicht</small></label><input type="text" id="darts" data-k="darts" maxlength="80" placeholder="z. B. Target, 22 g"></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Am Board</legend>
+      <div class="grid">
+        <div><label for="checkout">Lieblings-Checkout</label><input type="text" id="checkout" data-k="checkout" maxlength="40" placeholder="z. B. 96 oder D16"></div>
+        <div><label for="highlight">Bestes Highlight<small>höchstes Finish, 180er, 9-Darter …</small></label><input type="text" id="highlight" data-k="highlight" maxlength="100" placeholder="z. B. 161er Finish im Ligaspiel"></div>
+        <div><label for="walkon">Walk-on-Song</label><input type="text" id="walkon" data-k="walkon" maxlength="100" placeholder="Interpret – Titel"></div>
+        <div><label for="profi">Lieblings-Profi</label><input type="text" id="profi" data-k="profi" maxlength="60" placeholder="z. B. Luke Littler"></div>
+        <div class="full"><label for="typ">Spielertyp<small>2–3 Worte, die dich am Board beschreiben</small></label><input type="text" id="typ" data-k="typ" maxlength="80" placeholder="z. B. ruhig, ehrgeizig, zielstrebig"></div>
+        <div class="full"><label for="erfolg">Größter Erfolg</label><input type="text" id="erfolg" data-k="erfolg" maxlength="200" placeholder="z. B. Bayerischer Meister im Doppel 2024"></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Abseits vom Board</legend>
+      <div class="grid">
+        <div><label for="beruf">Beruf</label><input type="text" id="beruf" data-k="beruf" maxlength="60"></div>
+        <div><label for="hobby">Hobby</label><input type="text" id="hobby" data-k="hobby" maxlength="80"></div>
+        <div class="full"><label for="cda">Was magst du am CDA?</label><textarea id="cda" data-k="cda" maxlength="300" placeholder="Ein, zwei Sätze reichen"></textarea></div>
+        <div class="full"><label for="motto">Dein Motto</label><input type="text" id="motto" data-k="motto" maxlength="160" placeholder="z. B. Treble 20 oder gar nicht"></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Dein Foto</legend>
+      <div class="photo">
+        <div class="ph-box" id="phBox" role="button" tabindex="0" aria-label="Foto auswählen">Foto<br>auswählen</div>
+        <div>
+          <input type="file" id="ph" accept="image/*" class="hidden">
+          <ul class="tips">
+            <li>Hochformat, Oberkörper bis Hüfte, gern im Vereinstrikot</li>
+            <li>Vor einer ruhigen Wand, gutes Licht, Blick in die Kamera</li>
+            <li>Den Hintergrund ersetzen wir, damit alle Karten gleich aussehen</li>
+          </ul>
+          <button type="button" class="btn ghost hidden" id="phDel" style="margin-top:10px;padding:8px 14px;font-size:.9rem">Foto entfernen</button>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Einverständnis</legend>
+      <label class="consent"><input type="checkbox" id="ok"><span>Ich bin einverstanden, dass der Clochard Darter Augsburg e.V. meine Angaben und mein Foto auf seiner Homepage und auf Instagram veröffentlicht. Ich kann das jederzeit widerrufen, eine kurze Nachricht an Adrian Seidl genügt. Mehr in der <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a>. <span class="req">*</span></span></label>
+    </fieldset>
+
+    <div class="msg err hidden" id="err" role="alert"></div>
+    <div><button class="btn primary" id="send" type="submit">Steckbrief abschicken</button></div>
+  </form>
+  </div>
+
+  <div class="done hidden" id="done">
+    <div class="ic" aria-hidden="true">🎯</div>
+    <h2>Danke, ist angekommen!</h2>
+    <p class="lead" style="margin-inline:auto" id="doneTxt">Wir schauen kurz drüber und schalten deinen Steckbrief dann auf der Homepage frei.</p>
+    <p style="margin-top:24px"><a class="btn primary" href="index.html#teams">Zu den Teams</a></p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Clochard Darter Augsburg e.V. · Steeldart seit 1986</span>
+    <nav aria-label="Rechtliches"><a href="index.html">Startseite</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></nav>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var U='https://qeevsqrmltewbtrnfrfm.supabase.co',K='sb_publishable_pwnzx63cque5lKZEVCe4mA_5SvBP8Yd';
+  var TEAMS=[['CDA I',["Markus Stiegeler","Markus Görg","Simon Schreier","Leon Crump","Franz Rötzsch","Ivo Schubert","Florian Kaiser","Marco Geiger","Leon Kesselring","Marcus Kreiner","Florian Zitzler","Bastian Rauh","Jürgen Pistl","Leo Hörmann","Tobias Jäckle","Sancha Koal","Daniel Müller","Simon Seifert"]],
+    ['CDA II',["Andreas Mors","Robert Strehl","Michael Voigt","Claus Mader","Leo Hörmann","Jonas Thoma","Ewald Lautenschlager","Dominik Thoma","Martin Hungbaur"]],
+    ['CDA III',["Manfred Tochtermann","Robert Strehl","Carola Wüstner","Dennis Mandl","Markus Ziegler","Simon Schmidbaur"]],
+    ['CDA IV',["Sebastian Röck","Andreas Wengenmayr","Adrian Pirner","Adrian Seidl","Clemens Fleischmann","Maximilian Urban","Gerald Nitzer","Dennis Meissner","Fabian Schreyer"]]];
+  var team={};TEAMS.forEach(function(t){t[1].forEach(function(n){team[n]=team[n]?team[n]+' + '+t[0].replace('CDA ',''):t[0];});});
+  var sel=document.getElementById('who');
+  Object.keys(team).sort(function(a,b){var la=a.split(' ').pop(),lb=b.split(' ').pop();return la.localeCompare(lb,'de')||a.localeCompare(b,'de');}).forEach(function(n){
+    var o=document.createElement('option');o.value=n;o.textContent=n.split(' ').pop()+', '+n.split(' ').slice(0,-1).join(' ')+'  ·  '+team[n];sel.appendChild(o);});
+  var o=document.createElement('option');o.value='__other';o.textContent='Mein Name fehlt';sel.appendChild(o);
+  // Direktlink: steckbrief.html?n=Vorname%20Nachname
+  try{var pn=new URLSearchParams(location.search).get('n');if(pn&&team[pn])sel.value=pn;}catch(e){}
+  sel.addEventListener('change',function(){document.getElementById('otherWrap').classList.toggle('hidden',sel.value!=='__other');});
+
+  // Foto: verkleinern (max. 2000 px), als JPG neu speichern – dabei fallen auch Standortdaten aus dem Handyfoto weg
+  var blob=null,box=document.getElementById('phBox'),inp=document.getElementById('ph'),del=document.getElementById('phDel');
+  box.addEventListener('click',function(){inp.click();});
+  box.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();inp.click();}});
+  del.addEventListener('click',function(){blob=null;inp.value='';box.classList.remove('has');box.innerHTML='Foto<br>auswählen';del.classList.add('hidden');});
+  function load(file){
+    if(window.createImageBitmap)return createImageBitmap(file,{imageOrientation:'from-image'}).catch(function(){return createImageBitmap(file);});
+    return new Promise(function(res,rej){var i=new Image();i.onload=function(){res(i);};i.onerror=rej;i.src=URL.createObjectURL(file);});
+  }
+  inp.addEventListener('change',function(){
+    var f=inp.files&&inp.files[0];if(!f)return;box.innerHTML='Wird geladen …';
+    load(f).then(function(img){
+      var w=img.width,h=img.height,s=Math.min(1,2000/Math.max(w,h)),c=document.createElement('canvas');
+      c.width=Math.round(w*s);c.height=Math.round(h*s);c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+      c.toBlob(function(b){blob=b;box.classList.add('has');box.innerHTML='';var im=new Image();im.alt='Dein Foto';im.src=URL.createObjectURL(b);box.appendChild(im);del.classList.remove('hidden');},'image/jpeg',.88);
+    }).catch(function(){box.innerHTML='Foto<br>auswählen';showErr('Das Foto konnte nicht gelesen werden. Versuch es bitte mit einem anderen Bild (JPG oder PNG).');});
+  });
+
+  var err=document.getElementById('err');
+  function showErr(t){err.textContent=t;err.classList.remove('hidden');err.scrollIntoView({behavior:'smooth',block:'center'});}
+  function uuid(){if(crypto.randomUUID)return crypto.randomUUID();var b=crypto.getRandomValues(new Uint8Array(16));b[6]=b[6]&15|64;b[8]=b[8]&63|128;var h=[].map.call(b,function(x){return(x+256).toString(16).slice(1);}).join('');return h.slice(0,8)+'-'+h.slice(8,12)+'-'+h.slice(12,16)+'-'+h.slice(16,20)+'-'+h.slice(20);}
+  function hit(p){if(navigator.webdriver)return;try{fetch(U+'/rest/v1/rpc/cda_hit',{method:'POST',keepalive:true,headers:{apikey:K,'Content-Type':'application/json'},body:JSON.stringify({p_page:p})}).catch(function(){});}catch(e){}}
+  hit('steckbrief');
+
+  document.getElementById('f').addEventListener('submit',function(e){
+    e.preventDefault();err.classList.add('hidden');
+    var name=sel.value==='__other'?document.getElementById('other').value.trim():sel.value;
+    if(!name||name.indexOf(' ')<0)return showErr('Bitte wähle deinen Namen aus der Liste oder gib Vor- und Nachnamen ein.');
+    if(!document.getElementById('ok').checked)return showErr('Ohne dein Einverständnis dürfen wir nichts veröffentlichen. Bitte setz den Haken unten.');
+    var data={};document.querySelectorAll('[data-k]').forEach(function(x){var v=x.value.trim();if(v)data[x.getAttribute('data-k')]=v;});
+    var hand=document.querySelector('input[name=hand]:checked');if(hand)data.hand=hand.value;
+    if(!Object.keys(data).length&&!blob)return showErr('Füll bitte mindestens ein Feld aus oder lade ein Foto hoch.');
+    var btn=document.getElementById('send');btn.disabled=true;btn.textContent='Wird gesendet …';
+    var photoName=null,photoFail=false;
+    var up=blob?(function(){var fn=uuid()+'.jpg';
+      return fetch(U+'/storage/v1/object/steckbrief/'+fn,{method:'POST',headers:{apikey:K,'Content-Type':'image/jpeg','x-upsert':'false'},body:blob})
+        .then(function(r){if(r.ok)photoName=fn;else photoFail=true;}).catch(function(){photoFail=true;});})():Promise.resolve();
+    up.then(function(){
+      return fetch(U+'/rest/v1/rpc/cda_steckbrief_send',{method:'POST',headers:{apikey:K,'Content-Type':'application/json'},body:JSON.stringify({p_name:name,p_data:data,p_photo:photoName,p_consent:true})});
+    }).then(function(r){
+      if(!r.ok)return r.json().catch(function(){return{};}).then(function(j){throw new Error(j.message||'Fehler '+r.status);});
+      hit('steckbrief-gesendet');
+      document.getElementById('formWrap').classList.add('hidden');document.getElementById('done').classList.remove('hidden');
+      if(photoFail)document.getElementById('doneTxt').textContent='Deine Angaben sind angekommen, nur das Foto hat nicht geklappt. Schick es bitte einfach per WhatsApp an Leon (0175 4487070).';
+      window.scrollTo(0,0);
+    }).catch(function(x){btn.disabled=false;btn.textContent='Steckbrief abschicken';showErr('Das hat leider nicht geklappt: '+x.message+'. Versuch es bitte gleich noch einmal oder melde dich bei Leon.');});
+  });
+})();
+</script>
