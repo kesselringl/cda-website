@@ -1,0 +1,53 @@
+## event?mandantKey=2120 [200]
+[{"id":257,"dbId":10,"mandantKey":2120,"saison":{"id":20,"name":"2025 / 2026"},"datetime":"2025-09-05T22:00:00.000+0000","eventTypeCd":"LEAGUE","statusCd":"FINISH","dartTypeCd":"steeldart","name":"1.B
+
+## event?mandantKey=2120 bundesliga
+257 | 1.Bundesliga Nord | 2025 / 2026
+552 | 1.Bundesliga Süd | 2025 / 2026
+1407 | WINMAU 1. Bundesliga Nord | 2026 / 2027
+1409 | WINMAU 1. Bundesliga Süd | 2026 / 2027
+553 | 2.Bundesliga Nord | 2025 / 2026
+297 | 2.Bundesliga Süd | 2025 / 2026
+1410 | WINMAU 2. Bundesliga Nord | 2026 / 2027
+1408 | WINMAU 2. Bundesliga Süd | 2026 / 2027
+
+## event?mandantKey=2120&saisonId=41 [200]
+[{"id":257,"dbId":10,"mandantKey":2120,"saison":{"id":20,"name":"2025 / 2026"},"datetime":"2025-09-05T22:00:00.000+0000","eventTypeCd":"LEAGUE","statusCd":"FINISH","dartTypeCd":"steeldart","name":"1.B
+
+## event?mandantKey=2120&saisonId=41 bundesliga
+257 | 1.Bundesliga Nord | 2025 / 2026
+552 | 1.Bundesliga Süd | 2025 / 2026
+1407 | WINMAU 1. Bundesliga Nord | 2026 / 2027
+1409 | WINMAU 1. Bundesliga Süd | 2026 / 2027
+553 | 2.Bundesliga Nord | 2025 / 2026
+297 | 2.Bundesliga Süd | 2025 / 2026
+1410 | WINMAU 2. Bundesliga Nord | 2026 / 2027
+1408 | WINMAU 2. Bundesliga Süd | 2026 / 2027
+
+## event?mandantKey=2120&saison=41 [200]
+[{"id":257,"dbId":10,"mandantKey":2120,"saison":{"id":20,"name":"2025 / 2026"},"datetime":"2025-09-05T22:00:00.000+0000","eventTypeCd":"LEAGUE","statusCd":"FINISH","dartTypeCd":"steeldart","name":"1.B
+
+## event?mandantKey=2120&saison=41 bundesliga
+257 | 1.Bundesliga Nord | 2025 / 2026
+552 | 1.Bundesliga Süd | 2025 / 2026
+1407 | WINMAU 1. Bundesliga Nord | 2026 / 2027
+1409 | WINMAU 1. Bundesliga Süd | 2026 / 2027
+553 | 2.Bundesliga Nord | 2025 / 2026
+297 | 2.Bundesliga Süd | 2025 / 2026
+1410 | WINMAU 2. Bundesliga Nord | 2026 / 2027
+1408 | WINMAU 2. Bundesliga Süd | 2026 / 2027
+
+## event?mandantKey=2120&dbId=10 [200]
+[{"id":257,"dbId":10,"mandantKey":2120,"saison":{"id":20,"name":"2025 / 2026"},"datetime":"2025-09-05T22:00:00.000+0000","eventTypeCd":"LEAGUE","statusCd":"FINISH","dartTypeCd":"steeldart","name":"1.B
+
+## event?mandantKey=2120&dbId=10 bundesliga
+257 | 1.Bundesliga Nord | 2025 / 2026
+552 | 1.Bundesliga Süd | 2025 / 2026
+1407 | WINMAU 1. Bundesliga Nord | 2026 / 2027
+1409 | WINMAU 1. Bundesliga Süd | 2026 / 2027
+553 | 2.Bundesliga Nord | 2025 / 2026
+297 | 2.Bundesliga Süd | 2025 / 2026
+1410 | WINMAU 2. Bundesliga Nord | 2026 / 2027
+1408 | WINMAU 2. Bundesliga Süd | 2026 / 2027
+
+## hits
