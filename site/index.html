@@ -612,6 +612,7 @@ footer a:hover{text-decoration:underline}
 
 @media (max-width:520px){.mg-fees{grid-template-columns:1fr}.mg-fee{flex-direction:row;flex-wrap:wrap;align-items:baseline;column-gap:12px}.mg-fee em{flex-basis:100%}}
 .sub-nav{display:flex;flex-wrap:wrap;gap:8px;flex-basis:100%}.sub-nav a{font-weight:700;font-size:.9rem;text-decoration:none;padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:var(--bg)}.sub-nav a:hover{border-color:var(--green);color:var(--green)}
+.join-links{display:flex;flex-wrap:wrap;gap:10px}
 </style>
 
 <div class="draft"><div class="wrap"><span>Vorschau der neuen Vereinsseite</span><span>Die bisherige Seite bleibt bis zum Umzug unter cda-ev.eu erreichbar</span></div></div>
@@ -763,13 +764,14 @@ footer a:hover{text-decoration:underline}
         <a class="tab ms-live" href="competition.html"><i></i>Spielbetrieb</a>
       </div>
       <div id="msp-stats" role="tabpanel" aria-labelledby="mst-stats">
-        <p class="ms-sim"><b>Simulation:</b> Die Saison 2026 ist komplett ausgedacht und zeigt, wie Rangliste und Statistiken nach dem neuen System aussehen. Die echte Saison startet am 07.01.2027.</p>
+        <p class="ms-sim" id="ms-sim"><b>Simulation:</b> Die Saison 2026 ist komplett ausgedacht und zeigt, wie Rangliste und Statistiken nach dem neuen System aussehen. Die echte Saison startet am 07.01.2027.</p><script>(function(){if(new Date()>=new Date('2027-01-07T00:00:00+01:00')){var e=document.getElementById('ms-sim');if(e)e.hidden=true;}})();</script>
+
         <div id="masters-app"><p class="ms-load">Statistiken werden geladen …</p></div>
       </div>
       <div id="msp-regeln" role="tabpanel" aria-labelledby="mst-regeln" hidden>
         <div class="ms-rules">
           <article><span class="ms-n">15 €</span><h3>Startgeld</h3><p>5 € gehen am Abend als Preisgeld an die Top 3 (50 / 30 / 20 %). 10 € wandern in den Masters-Pott für die Finals.</p></article>
-          <article><span class="ms-n">16</span><h3>Masters-Abende</h3><p>Jeder dritte Donnerstag ist ein Masters-Abend: 501 Double-out, erst Gruppen, dann K.-o. mit Spiel um Platz 3. Die Siegerehrung erscheint am Ende auf allen Boards.</p></article>
+          <article><span class="ms-n">16</span><h3>Masters-Abende</h3><p>Jeder dritte Donnerstag ist ein Masters-Abend: 501 Double-out, je nach Teilnehmerzahl Gruppen mit anschließendem K.-o. oder Doppel-K.-o., bei dem jeder erst nach zwei Niederlagen ausscheidet. Die Siegerehrung erscheint am Ende auf allen Boards.</p></article>
           <article><span class="ms-n">Punkte</span><h3>Rangliste</h3><p>5 Punkte fürs Mitspielen, 2 für jeden Spieler, der hinter dir landet, 1 pro gewonnenem Match, dazu +10 / +6 / +3 für die Plätze 1 bis 3. Es zählen die besten 10 Abende.</p></article>
           <article><span class="ms-n">Top 32</span><h3>Qualifikation</h3><p>Wer mindestens fünf Masters-Abende gespielt hat, ist qualifiziert. Bei den Finals dabei sind die besten 32 davon nach Masters-Punkten, gesetzt wird ebenfalls nach Punkten.</p></article>
           <article><span class="ms-n">Finals</span><h3>Saisonfinale</h3><p>Beim TSV Dinkelscherben auf 6 Boards: Vorrunde in Vierergruppen, Zwischenrunde in Dreiergruppen, dann K.-o. Die Plätze 1 bis 6 werden alle ausgespielt.</p></article>
@@ -780,7 +782,7 @@ footer a:hover{text-decoration:underline}
           <ul>
             <li><b>Competition 501</b>Ganz normal 501 Double-out, ohne Masters-Wertung.</li>
             <li><b>301 Double-In</b>Punkte zählen erst nach dem ersten Doppel.</li>
-            <li><b>Cricket-Nacht</b>15 bis 20 und Bull, alle sieben Wochen.</li>
+            <li><b>Cricket-Nacht</b>15 bis 20 und Bull, etwa alle sieben Wochen.</li>
             <li><b>Lucky Doubles</b>Zugeloste Doppel, stark und schwach zusammen.</li>
             <li><b>Bring a Friend</b>Mitglied und Gast spielen zusammen im Doppel.</li>
           </ul>
@@ -808,15 +810,15 @@ footer a:hover{text-decoration:underline}
     <div class="wrap">
       <div class="join">
         <div class="join-card">
-          <p class="eyebrow">Mitspielen</p>
-          <h2 id="join-title">Komm zum Probewerfen</h2>
-          <p>Ob du gerade erst anfängst oder schon Liga gespielt hast: Bei der offenen Competition im Bismarck Bistro sind alle Dartspielerinnen und Dartspieler willkommen. Melde dich nebenan kurz an, dann sind wir auf dich vorbereitet.</p>
+          <p class="eyebrow">Mitspielen · Donnerstags-Competition</p>
+          <h2 id="join-title">Dein Donnerstag am Board</h2>
+          <p>Jeden Donnerstag spielen Mitglieder und Gäste im Bismarck Bistro eine offene Competition, Einsteiger genauso wie Ligaspieler. Melde dich vorher kurz an, dann kann die Turnierleitung den Abend planen. Gespielt wird mit unserem eigenen System: Jedes Board trägt die Würfe direkt ein, und Ergebnisse, Rangliste und Statistiken stehen sofort hier auf der Seite.</p>
           <div class="slot">
             <div><small>Wann</small><b>Jeden Donnerstag, 20 bis 23 Uhr</b></div>
             <div><small>Wo</small><b>Bismarck Bistro, Bismarckstr. 7, 86159 Augsburg</b></div>
           </div>
-          <p class="join-new">Ab dem 7. Januar 2027 startet die neue Competition: alle drei Wochen CDA Masters mit eigener Rangliste und Finals, dazwischen 501, 301 Double-In und Sonderabende wie Cricket oder Bring a Friend.</p>
-          <a class="btn ghost join-sim" href="#masters">Mehr zu den CDA Masters</a>
+          <p class="join-new">Ab dem 7. Januar 2027 läuft die neue Competition: jeder dritte Donnerstag ist ein CDA-Masters-Abend mit Rangliste, Preisgeld und Finals, dazwischen 501, 301 Double-In und Sonderabende wie Cricket, Lucky Doubles oder Bring a Friend. Welcher Modus wann gespielt wird, siehst du bei der Anmeldung.</p>
+          <div class="join-links"><a class="btn ghost join-sim" href="#masters">Mehr zu den CDA Masters</a><a class="btn ghost join-sim" href="competition.html">Abend live verfolgen</a></div>
           <div class="join-abo-box">
             <span class="jab-ic" aria-hidden="true">📅</span>
             <div><b>Nie wieder einen Donnerstag verpassen</b><span>Alle Termine mit Spielmodus automatisch im Handy-Kalender.</span></div>
@@ -867,12 +869,12 @@ footer a:hover{text-decoration:underline}
           <div class="board-members">
             <div><small>1. Vorstand</small><b>Adrian Seidl</b><span>Lincolnstraße 2b, 86156 Augsburg</span><span>Adi.Seidl@t-online.de</span></div>
             <div><small>2. Vorstand</small><b>Carola Wüstner</b><span>Carola.Juergen.Wuestner@t-online.de</span></div>
-            <div><small>Sponsoring</small><b>Leon Kesselring</b><span>kesselring.leon@gmail.com</span></div>
+            <div><small>Sponsoring &amp; neue Mitglieder</small><b>Leon Kesselring</b><span>0175 4487070 (auch WhatsApp)</span><span>kesselring.leon@gmail.com</span></div>
           </div>
           <div class="social">
             <a href="https://www.instagram.com/clocharddarteraugsburg/" target="_blank" rel="noopener">Instagram</a>
             <a href="https://www.facebook.com/groups/118387848213072/" target="_blank" rel="noopener">Facebook-Gruppe</a>
-            <a href="https://cda-ev.eu/cda-masters-ranking.php" target="_blank" rel="noopener">CDA-Masters Ranking</a>
+            <a href="#masters">CDA-Masters-Rangliste</a>
           </div>
           <p style="color:var(--muted);font-size:.9rem">Mitglied in DDV, BDV und BLSV · gemeinnützig seit 1988</p>
       </div>
@@ -882,7 +884,7 @@ footer a:hover{text-decoration:underline}
     <div class="wrap">
       <div class="sec-head">
         <div><p class="eyebrow">Chronik und Erfolge</p><h2 id="verein-title">40 Jahre Steeldart</h2></div>
-        <p class="lead">Einer der ältesten Dartvereine Bayerns. Hier die wichtigsten Stationen, die komplette Chronik und alle Titel bekommen eine eigene Seite.</p>
+        <p class="lead">Einer der ältesten Dartvereine Bayerns. Die wichtigsten Stationen aus 40 Jahren Vereinsgeschichte.</p>
         <nav class="sub-nav" aria-label="Mehr zum Verein"><a href="#spielorte">Spielorte</a><a href="#mitglied">Mitglied werden</a><a href="#partner">Partner</a></nav>
       </div>
       <div class="tally">
@@ -964,7 +966,7 @@ footer a:hover{text-decoration:underline}
             <li><div><b>Handschlag – fertig</b><span>Kein Formular und keine Extra-Kosten fürs Ligaspiel. Ab dann bist du einer von uns.</span></div></li>
           </ol>
           <div class="mg-cta">
-            <a class="btn wa" id="mg-wa" href="mailto:kesselring.leon@gmail.com?subject=Mitglied%20werden%20beim%20CDA" target="_blank" rel="noopener">Leon per WhatsApp schreiben</a>
+            <a class="btn wa" id="mg-wa" href="https://wa.me/491754487070?text=Hallo%20Leon%2C%20ich%20interessiere%20mich%20f%C3%BCr%20eine%20Mitgliedschaft%20beim%20CDA." target="_blank" rel="noopener">Leon per WhatsApp schreiben</a>
             <a class="btn ghost" href="#kontakt">Für Donnerstag anmelden</a>
           </div>
         </div>

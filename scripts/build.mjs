@@ -97,7 +97,7 @@ const DESC = {
   'datenschutz.html': 'Datenschutzerklärung des Clochard Darter Augsburg e.V.',
   'grafik-studio.html': 'Grafik-Studio des Clochard Darter Augsburg e.V. (intern, mit Anmeldung).',
   'studio.html': 'Weiterleitung zum Grafik-Studio.',
-  'competition.html': 'Simulation der neuen CDA-Donnerstags-Competition mit CDA Masters, Rangliste, Statistiken und Finals – keine echten Ergebnisse.'
+  'competition.html': 'Spielbetrieb der CDA-Donnerstags-Competition: Abend live verfolgen, Turnierleitung und Boards.'
 };
 
 for (const f of (await readdir(SITE)).filter(n => n.endsWith('.html'))) {
