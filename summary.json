@@ -1,0 +1,2523 @@
+{
+ "base": "https://kesselringl.github.io/cda-website/",
+ "at": "2026-11-12T07:45:43.407Z",
+ "lighthouse": [
+  {
+   "page": "start-mobile",
+   "scores": {
+    "performance": 99,
+    "accessibility": 97,
+    "best-practices": 100,
+    "seo": 100
+   },
+   "lcp": "1.7 s",
+   "cls": "0.049",
+   "tbt": "60 ms",
+   "fcp": "1.7 s",
+   "weight": "Total size was 184 KiB",
+   "fails": [
+    {
+     "id": "max-potential-fid",
+     "score": 0.22,
+     "title": "Max Potential First Input Delay",
+     "value": "370 ms",
+     "items": []
+    },
+    {
+     "id": "color-contrast",
+     "score": 0,
+     "title": "Background and foreground colors do not have a sufficient contrast ratio.",
+     "value": "",
+     "items": [
+      {
+       "node": "<p>",
+       "label": "1984 hängt Wirt Wolfgang „Hebbe“ Herbst zwei Dartscheiben im Stammlokal Clochar…"
+      }
+     ]
+    },
+    {
+     "id": "uses-long-cache-ttl",
+     "score": 0.5,
+     "title": "Serve static assets with an efficient cache policy",
+     "value": "8 resources found",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-400-normal.woff2",
+       "wasted": 13607.916666666666,
+       "total": 14845
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-800-normal.woff2",
+       "wasted": 13550.166666666666,
+       "total": 14782
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-700-normal.woff2",
+       "wasted": 13504.333333333332,
+       "total": 14732
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-800-normal.woff2",
+       "wasted": 13476.833333333332,
+       "total": 14702
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-900-normal.woff2",
+       "wasted": 12988.25,
+       "total": 14169
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-600-normal.woff2",
+       "wasted": 12823.25,
+       "total": 13989
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "wasted": 10536.166666666666,
+       "total": 11494
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "wasted": 756.25,
+       "total": 825
+      }
+     ]
+    },
+    {
+     "id": "uses-responsive-images",
+     "score": 0.5,
+     "title": "Properly size images",
+     "value": "Est savings of 6 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "node": "<img src=\"logo-sm.webp\" alt=\"\" width=\"125\" height=\"160\">",
+       "label": "article#ticket > div.t-top > span.t-logo > img",
+       "wasted": 6627,
+       "total": 11340
+      }
+     ]
+    },
+    {
+     "id": "dom-size",
+     "score": 0.5,
+     "title": "Avoid an excessive DOM size",
+     "value": "1,295 elements",
+     "items": [
+      {},
+      {
+       "node": "<small>",
+       "label": "Leon"
+      },
+      {
+       "node": "<div class=\"su-names\" id=\"su-names\" aria-live=\"polite\">",
+       "label": "Adrian Pirner\nAdrian Seidl\nAndreas Mors\nAndreas Wengenmayr\nBastian Rauh\nCarola …"
+      }
+     ]
+    },
+    {
+     "id": "cache-insight",
+     "score": 0.5,
+     "title": "Use efficient cache lifetimes",
+     "value": "Est savings of 89 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-400-normal.woff2",
+       "wasted": 13607.916666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-800-normal.woff2",
+       "wasted": 13550.166666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-700-normal.woff2",
+       "wasted": 13504.333333333332
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-800-normal.woff2",
+       "wasted": 13476.833333333332
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-900-normal.woff2",
+       "wasted": 12988.25
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-600-normal.woff2",
+       "wasted": 12823.25
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "wasted": 10536.166666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "wasted": 756.25
+      }
+     ]
+    },
+    {
+     "id": "image-delivery-insight",
+     "score": 0.5,
+     "title": "Improve image delivery",
+     "value": "Est savings of 11 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "wasted": 10889,
+       "total": 11340
+      }
+     ]
+    },
+    {
+     "id": "network-dependency-tree-insight",
+     "score": 0,
+     "title": "Network dependency tree",
+     "value": "",
+     "items": []
+    },
+    {
+     "id": "render-blocking-insight",
+     "score": 0.5,
+     "title": "Render blocking requests",
+     "value": "",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "total": 825
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "page": "start-desktop",
+   "scores": {
+    "performance": 85,
+    "accessibility": 97,
+    "best-practices": 100,
+    "seo": 100
+   },
+   "lcp": "0.8 s",
+   "cls": "0.292",
+   "tbt": "0 ms",
+   "fcp": "0.4 s",
+   "weight": "Total size was 787 KiB",
+   "fails": [
+    {
+     "id": "cumulative-layout-shift",
+     "score": 0.41,
+     "title": "Cumulative Layout Shift",
+     "value": "0.292",
+     "items": [
+      {}
+     ]
+    },
+    {
+     "id": "uses-rel-preconnect",
+     "score": 0,
+     "title": "Preconnect to required origins",
+     "value": "Est savings of 90 ms",
+     "items": [
+      {
+       "url": "https://qeevsqrmltewbtrnfrfm.supabase.co",
+       "wasted": 92.16564
+      }
+     ]
+    },
+    {
+     "id": "layout-shifts",
+     "score": 0,
+     "title": "Avoid large layout shifts",
+     "value": "4 layout shifts found",
+     "items": [
+      {
+       "node": "<article class=\"ticket\" id=\"ticket\" aria-label=\"Nächste Donnerstags-Competition\">",
+       "label": "OFFENE COMPETITION\nDONNERSTAG\n12.11.\n20 BIS 23 UHR\n0\nTAGE\n12\nSTD.\n17\nMIN.\nOffen…"
+      },
+      {
+       "node": "<div class=\"hero-copy\">",
+       "label": "3K WINMAU 2. BUNDESLIGA SÜD · HINRUNDE BEENDET\n\n★ HERBSTMEISTER\nHERBST­MEISTER.…"
+      },
+      {
+       "node": "<div class=\"hero-copy\">",
+       "label": "3K WINMAU 2. BUNDESLIGA SÜD · HINRUNDE BEENDET\n\n★ HERBSTMEISTER\nHERBST­MEISTER.…"
+      },
+      {}
+     ]
+    },
+    {
+     "id": "color-contrast",
+     "score": 0,
+     "title": "Background and foreground colors do not have a sufficient contrast ratio.",
+     "value": "",
+     "items": [
+      {
+       "node": "<p>",
+       "label": "1984 hängt Wirt Wolfgang „Hebbe“ Herbst zwei Dartscheiben im Stammlokal Clochar…"
+      }
+     ]
+    },
+    {
+     "id": "uses-long-cache-ttl",
+     "score": 0.5,
+     "title": "Serve static assets with an efficient cache policy",
+     "value": "17 resources found",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leon-kesselring.webp",
+       "wasted": 71826.33333333333,
+       "total": 78356
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leo-hoermann.webp",
+       "wasted": 70695.16666666666,
+       "total": 77122
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/markus-goerg.webp",
+       "wasted": 66440.91666666666,
+       "total": 72481
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/florian-kaiser.webp",
+       "wasted": 65493.08333333333,
+       "total": 71447
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/marcus-kreiner.webp",
+       "wasted": 65030.166666666664,
+       "total": 70942
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leon-crump.webp",
+       "wasted": 63071.25,
+       "total": 68805
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/bastian-rauh.webp",
+       "wasted": 61327.75,
+       "total": 66903
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/sancha-koal.webp",
+       "wasted": 52031.83333333333,
+       "total": 56762
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/marco-geiger.webp",
+       "wasted": 49662.25,
+       "total": 54177
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-400-normal.woff2",
+       "wasted": 13701.416666666666,
+       "total": 14947
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-800-normal.woff2",
+       "wasted": 13606.083333333332,
+       "total": 14843
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-800-normal.woff2",
+       "wasted": 13442,
+       "total": 14664
+      }
+     ]
+    },
+    {
+     "id": "uses-responsive-images",
+     "score": 0.5,
+     "title": "Properly size images",
+     "value": "Est savings of 575 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leon-kesselring.webp",
+       "node": "<img src=\"spieler/leon-kesselring.webp\" alt=\"Foto von Leon Kesselring\" loading=\"lazy\">",
+       "label": "Foto von Leon Kesselring",
+       "wasted": 73588,
+       "total": 78176
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leo-hoermann.webp",
+       "node": "<img src=\"spieler/leo-hoermann.webp\" alt=\"Foto von Leo Hörmann\" loading=\"lazy\">",
+       "label": "Foto von Leo Hörmann",
+       "wasted": 72359,
+       "total": 76870
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/markus-goerg.webp",
+       "node": "<img src=\"spieler/markus-goerg.webp\" alt=\"Foto von Markus Görg\" loading=\"lazy\">",
+       "label": "Foto von Markus Görg",
+       "wasted": 68050,
+       "total": 72292
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/florian-kaiser.webp",
+       "node": "<img src=\"spieler/florian-kaiser.webp\" alt=\"Foto von Florian Kaiser\" loading=\"lazy\">",
+       "label": "Foto von Florian Kaiser",
+       "wasted": 67074,
+       "total": 71256
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/marcus-kreiner.webp",
+       "node": "<img src=\"spieler/marcus-kreiner.webp\" alt=\"Foto von Marcus Kreiner\" loading=\"lazy\">",
+       "label": "Foto von Marcus Kreiner",
+       "wasted": 66453,
+       "total": 70596
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leon-crump.webp",
+       "node": "<img src=\"spieler/leon-crump.webp\" alt=\"Foto von Leon Crump\" loading=\"lazy\">",
+       "label": "Foto von Leon Crump",
+       "wasted": 64597,
+       "total": 68624
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/bastian-rauh.webp",
+       "node": "<img src=\"spieler/bastian-rauh.webp\" alt=\"Foto von Bastian Rauh\" loading=\"lazy\">",
+       "label": "Foto von Bastian Rauh",
+       "wasted": 62741,
+       "total": 66652
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/sancha-koal.webp",
+       "node": "<img src=\"spieler/sancha-koal.webp\" alt=\"Foto von Sancha Koal\" loading=\"lazy\">",
+       "label": "Foto von Sancha Koal",
+       "wasted": 53115,
+       "total": 56426
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/marco-geiger.webp",
+       "node": "<img src=\"spieler/marco-geiger.webp\" alt=\"Foto von Marco Geiger\" loading=\"lazy\">",
+       "label": "Foto von Marco Geiger",
+       "wasted": 50827,
+       "total": 53996
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "node": "<img src=\"logo-sm.webp\" alt=\"\" width=\"125\" height=\"160\">",
+       "label": "article#ticket > div.t-top > span.t-logo > img",
+       "wasted": 9801,
+       "total": 11340
+      }
+     ]
+    },
+    {
+     "id": "dom-size",
+     "score": 0.5,
+     "title": "Avoid an excessive DOM size",
+     "value": "1,295 elements",
+     "items": [
+      {},
+      {
+       "node": "<small>",
+       "label": "Leon"
+      },
+      {
+       "node": "<div class=\"su-names\" id=\"su-names\" aria-live=\"polite\">",
+       "label": "Adrian Pirner\nAdrian Seidl\nAndreas Mors\nAndreas Wengenmayr\nBastian Rauh\nCarola …"
+      }
+     ]
+    },
+    {
+     "id": "cache-insight",
+     "score": 0,
+     "title": "Use efficient cache lifetimes",
+     "value": "Est savings of 641 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leon-kesselring.webp",
+       "wasted": 71826.33333333333
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leo-hoermann.webp",
+       "wasted": 70695.16666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/markus-goerg.webp",
+       "wasted": 66440.91666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/florian-kaiser.webp",
+       "wasted": 65493.08333333333
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/marcus-kreiner.webp",
+       "wasted": 65030.166666666664
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leon-crump.webp",
+       "wasted": 63071.25
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/bastian-rauh.webp",
+       "wasted": 61327.75
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/sancha-koal.webp",
+       "wasted": 52031.83333333333
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/marco-geiger.webp",
+       "wasted": 49662.25
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-400-normal.woff2",
+       "wasted": 13701.416666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-800-normal.woff2",
+       "wasted": 13606.083333333332
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-800-normal.woff2",
+       "wasted": 13442
+      }
+     ]
+    },
+    {
+     "id": "cls-culprits-insight",
+     "score": 0,
+     "title": "Layout shift culprits",
+     "value": "",
+     "items": [
+      {}
+     ]
+    },
+    {
+     "id": "image-delivery-insight",
+     "score": 0,
+     "title": "Improve image delivery",
+     "value": "Est savings of 576 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leon-kesselring.webp",
+       "wasted": 73602,
+       "total": 78176
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leo-hoermann.webp",
+       "wasted": 72373,
+       "total": 76870
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/markus-goerg.webp",
+       "wasted": 68063,
+       "total": 72292
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/florian-kaiser.webp",
+       "wasted": 67087,
+       "total": 71256
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/marcus-kreiner.webp",
+       "wasted": 66466,
+       "total": 70596
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leon-crump.webp",
+       "wasted": 64609,
+       "total": 68624
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/bastian-rauh.webp",
+       "wasted": 62753,
+       "total": 66652
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/sancha-koal.webp",
+       "wasted": 53125,
+       "total": 56426
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/marco-geiger.webp",
+       "wasted": 50837,
+       "total": 53996
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "wasted": 10889,
+       "total": 11340
+      }
+     ]
+    },
+    {
+     "id": "network-dependency-tree-insight",
+     "score": 0,
+     "title": "Network dependency tree",
+     "value": "",
+     "items": []
+    },
+    {
+     "id": "render-blocking-insight",
+     "score": 0.5,
+     "title": "Render blocking requests",
+     "value": "",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "total": 801
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "page": "impressum-mobile",
+   "scores": {
+    "performance": 100,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 66
+   },
+   "lcp": "0.9 s",
+   "cls": "0.052",
+   "tbt": "0 ms",
+   "fcp": "0.8 s",
+   "weight": "Total size was 120 KiB",
+   "fails": [
+    {
+     "id": "uses-long-cache-ttl",
+     "score": 0.5,
+     "title": "Serve static assets with an efficient cache policy",
+     "value": "7 resources found",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-400-normal.woff2",
+       "wasted": 13776.583333333332,
+       "total": 15029
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-700-normal.woff2",
+       "wasted": 13599.666666666666,
+       "total": 14836
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-800-normal.woff2",
+       "wasted": 13518.083333333332,
+       "total": 14747
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-900-normal.woff2",
+       "wasted": 12979.083333333332,
+       "total": 14159
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-600-normal.woff2",
+       "wasted": 12811.333333333332,
+       "total": 13976
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "wasted": 10534.333333333332,
+       "total": 11492
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "wasted": 770,
+       "total": 840
+      }
+     ]
+    },
+    {
+     "id": "uses-responsive-images",
+     "score": 0,
+     "title": "Properly size images",
+     "value": "Est savings of 8 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "node": "<img src=\"logo-sm.webp\" alt=\"Vereinslogo Clochard Darter Augsburg\" width=\"125\" height=\"160\">",
+       "label": "Vereinslogo Clochard Darter Augsburg",
+       "wasted": 7798,
+       "total": 11340
+      }
+     ]
+    },
+    {
+     "id": "is-crawlable",
+     "score": 0,
+     "title": "Page is blocked from indexing",
+     "value": "",
+     "items": [
+      {}
+     ]
+    },
+    {
+     "id": "cache-insight",
+     "score": 0,
+     "title": "Use efficient cache lifetimes",
+     "value": "Est savings of 76 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-400-normal.woff2",
+       "wasted": 13776.583333333332
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-700-normal.woff2",
+       "wasted": 13599.666666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-800-normal.woff2",
+       "wasted": 13518.083333333332
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-900-normal.woff2",
+       "wasted": 12979.083333333332
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-600-normal.woff2",
+       "wasted": 12811.333333333332
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "wasted": 10534.333333333332
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "wasted": 770
+      }
+     ]
+    },
+    {
+     "id": "image-delivery-insight",
+     "score": 0,
+     "title": "Improve image delivery",
+     "value": "Est savings of 11 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "wasted": 10999,
+       "total": 11340
+      }
+     ]
+    },
+    {
+     "id": "network-dependency-tree-insight",
+     "score": 0,
+     "title": "Network dependency tree",
+     "value": "",
+     "items": []
+    },
+    {
+     "id": "render-blocking-insight",
+     "score": 0.5,
+     "title": "Render blocking requests",
+     "value": "",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "total": 840
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "page": "impressum-desktop",
+   "scores": {
+    "performance": 100,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 66
+   },
+   "lcp": "0.3 s",
+   "cls": "0.016",
+   "tbt": "0 ms",
+   "fcp": "0.3 s",
+   "weight": "Total size was 120 KiB",
+   "fails": [
+    {
+     "id": "uses-long-cache-ttl",
+     "score": 0.5,
+     "title": "Serve static assets with an efficient cache policy",
+     "value": "7 resources found",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-400-normal.woff2",
+       "wasted": 13607,
+       "total": 14844
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-800-normal.woff2",
+       "wasted": 13536.416666666666,
+       "total": 14767
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-700-normal.woff2",
+       "wasted": 13512.583333333332,
+       "total": 14741
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-900-normal.woff2",
+       "wasted": 13060.666666666666,
+       "total": 14248
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-600-normal.woff2",
+       "wasted": 12882.833333333332,
+       "total": 14054
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "wasted": 10534.333333333332,
+       "total": 11492
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "wasted": 773.6666666666666,
+       "total": 844
+      }
+     ]
+    },
+    {
+     "id": "uses-responsive-images",
+     "score": 0,
+     "title": "Properly size images",
+     "value": "Est savings of 10 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "node": "<img src=\"logo-sm.webp\" alt=\"Vereinslogo Clochard Darter Augsburg\" width=\"125\" height=\"160\">",
+       "label": "Vereinslogo Clochard Darter Augsburg",
+       "wasted": 10183,
+       "total": 11340
+      }
+     ]
+    },
+    {
+     "id": "is-crawlable",
+     "score": 0,
+     "title": "Page is blocked from indexing",
+     "value": "",
+     "items": [
+      {}
+     ]
+    },
+    {
+     "id": "cache-insight",
+     "score": 0,
+     "title": "Use efficient cache lifetimes",
+     "value": "Est savings of 76 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-400-normal.woff2",
+       "wasted": 13607
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-800-normal.woff2",
+       "wasted": 13536.416666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-700-normal.woff2",
+       "wasted": 13512.583333333332
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-900-normal.woff2",
+       "wasted": 13060.666666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-600-normal.woff2",
+       "wasted": 12882.833333333332
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "wasted": 10534.333333333332
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "wasted": 773.6666666666666
+      }
+     ]
+    },
+    {
+     "id": "image-delivery-insight",
+     "score": 0,
+     "title": "Improve image delivery",
+     "value": "Est savings of 11 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "wasted": 10999,
+       "total": 11340
+      }
+     ]
+    },
+    {
+     "id": "network-dependency-tree-insight",
+     "score": 0,
+     "title": "Network dependency tree",
+     "value": "",
+     "items": []
+    },
+    {
+     "id": "render-blocking-insight",
+     "score": 0.5,
+     "title": "Render blocking requests",
+     "value": "",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "total": 844
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "page": "datenschutz-mobile",
+   "scores": {
+    "performance": 99,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 66
+   },
+   "lcp": "1.0 s",
+   "cls": "0.069",
+   "tbt": "0 ms",
+   "fcp": "0.8 s",
+   "weight": "Total size was 122 KiB",
+   "fails": [
+    {
+     "id": "uses-long-cache-ttl",
+     "score": 0.5,
+     "title": "Serve static assets with an efficient cache policy",
+     "value": "7 resources found",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-400-normal.woff2",
+       "wasted": 13763.75,
+       "total": 15015
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-800-normal.woff2",
+       "wasted": 13632.666666666666,
+       "total": 14872
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-700-normal.woff2",
+       "wasted": 13442,
+       "total": 14664
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-900-normal.woff2",
+       "wasted": 12980,
+       "total": 14160
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-600-normal.woff2",
+       "wasted": 12856.25,
+       "total": 14025
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "wasted": 10535.25,
+       "total": 11493
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "wasted": 781,
+       "total": 852
+      }
+     ]
+    },
+    {
+     "id": "uses-responsive-images",
+     "score": 0,
+     "title": "Properly size images",
+     "value": "Est savings of 8 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "node": "<img src=\"logo-sm.webp\" alt=\"Vereinslogo Clochard Darter Augsburg\" width=\"125\" height=\"160\">",
+       "label": "Vereinslogo Clochard Darter Augsburg",
+       "wasted": 7798,
+       "total": 11340
+      }
+     ]
+    },
+    {
+     "id": "is-crawlable",
+     "score": 0,
+     "title": "Page is blocked from indexing",
+     "value": "",
+     "items": [
+      {}
+     ]
+    },
+    {
+     "id": "cache-insight",
+     "score": 0,
+     "title": "Use efficient cache lifetimes",
+     "value": "Est savings of 76 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-400-normal.woff2",
+       "wasted": 13763.75
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-800-normal.woff2",
+       "wasted": 13632.666666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-700-normal.woff2",
+       "wasted": 13442
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-900-normal.woff2",
+       "wasted": 12980
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-600-normal.woff2",
+       "wasted": 12856.25
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "wasted": 10535.25
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "wasted": 781
+      }
+     ]
+    },
+    {
+     "id": "image-delivery-insight",
+     "score": 0,
+     "title": "Improve image delivery",
+     "value": "Est savings of 11 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "wasted": 10999,
+       "total": 11340
+      }
+     ]
+    },
+    {
+     "id": "network-dependency-tree-insight",
+     "score": 0,
+     "title": "Network dependency tree",
+     "value": "",
+     "items": []
+    },
+    {
+     "id": "render-blocking-insight",
+     "score": 0.5,
+     "title": "Render blocking requests",
+     "value": "",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "total": 852
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "page": "datenschutz-desktop",
+   "scores": {
+    "performance": 100,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 66
+   },
+   "lcp": "0.3 s",
+   "cls": "0.021",
+   "tbt": "0 ms",
+   "fcp": "0.3 s",
+   "weight": "Total size was 122 KiB",
+   "fails": [
+    {
+     "id": "uses-long-cache-ttl",
+     "score": 0.5,
+     "title": "Serve static assets with an efficient cache policy",
+     "value": "7 resources found",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-400-normal.woff2",
+       "wasted": 13665.666666666666,
+       "total": 14908
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-700-normal.woff2",
+       "wasted": 13560.25,
+       "total": 14793
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-800-normal.woff2",
+       "wasted": 13533.666666666666,
+       "total": 14764
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-900-normal.woff2",
+       "wasted": 12979.083333333332,
+       "total": 14159
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-600-normal.woff2",
+       "wasted": 12834.25,
+       "total": 14001
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "wasted": 10534.333333333332,
+       "total": 11492
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "wasted": 769.0833333333333,
+       "total": 839
+      }
+     ]
+    },
+    {
+     "id": "uses-responsive-images",
+     "score": 0.5,
+     "title": "Properly size images",
+     "value": "Est savings of 10 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "node": "<img src=\"logo-sm.webp\" alt=\"Vereinslogo Clochard Darter Augsburg\" width=\"125\" height=\"160\">",
+       "label": "Vereinslogo Clochard Darter Augsburg",
+       "wasted": 10183,
+       "total": 11340
+      }
+     ]
+    },
+    {
+     "id": "is-crawlable",
+     "score": 0,
+     "title": "Page is blocked from indexing",
+     "value": "",
+     "items": [
+      {}
+     ]
+    },
+    {
+     "id": "cache-insight",
+     "score": 0,
+     "title": "Use efficient cache lifetimes",
+     "value": "Est savings of 76 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-400-normal.woff2",
+       "wasted": 13665.666666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-700-normal.woff2",
+       "wasted": 13560.25
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-800-normal.woff2",
+       "wasted": 13533.666666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-900-normal.woff2",
+       "wasted": 12979.083333333332
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-600-normal.woff2",
+       "wasted": 12834.25
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "wasted": 10534.333333333332
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "wasted": 769.0833333333333
+      }
+     ]
+    },
+    {
+     "id": "image-delivery-insight",
+     "score": 0.5,
+     "title": "Improve image delivery",
+     "value": "Est savings of 11 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "wasted": 10999,
+       "total": 11340
+      }
+     ]
+    },
+    {
+     "id": "network-dependency-tree-insight",
+     "score": 0,
+     "title": "Network dependency tree",
+     "value": "",
+     "items": []
+    },
+    {
+     "id": "render-blocking-insight",
+     "score": 0.5,
+     "title": "Render blocking requests",
+     "value": "",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "total": 839
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "page": "steckbrief-mobile",
+   "scores": {
+    "performance": 99,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 63
+   },
+   "lcp": "1.1 s",
+   "cls": "0.068",
+   "tbt": "0 ms",
+   "fcp": "1.1 s",
+   "weight": "Total size was 124 KiB",
+   "fails": [
+    {
+     "id": "uses-long-cache-ttl",
+     "score": 0.5,
+     "title": "Serve static assets with an efficient cache policy",
+     "value": "7 resources found",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-400-normal.woff2",
+       "wasted": 13616.166666666666,
+       "total": 14854
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-700-normal.woff2",
+       "wasted": 13571.25,
+       "total": 14805
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-800-normal.woff2",
+       "wasted": 13538.25,
+       "total": 14769
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-900-normal.woff2",
+       "wasted": 12986.416666666666,
+       "total": 14167
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-600-normal.woff2",
+       "wasted": 12941.5,
+       "total": 14118
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "wasted": 10575.583333333332,
+       "total": 11537
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "wasted": 741.5833333333333,
+       "total": 809
+      }
+     ]
+    },
+    {
+     "id": "uses-responsive-images",
+     "score": 0.5,
+     "title": "Properly size images",
+     "value": "Est savings of 8 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "node": "<img src=\"logo-sm.webp\" alt=\"Vereinslogo Clochard Darter Augsburg\" width=\"125\" height=\"160\">",
+       "label": "Vereinslogo Clochard Darter Augsburg",
+       "wasted": 7798,
+       "total": 11340
+      }
+     ]
+    },
+    {
+     "id": "is-crawlable",
+     "score": 0,
+     "title": "Page is blocked from indexing",
+     "value": "",
+     "items": [
+      {}
+     ]
+    },
+    {
+     "id": "cache-insight",
+     "score": 0,
+     "title": "Use efficient cache lifetimes",
+     "value": "Est savings of 76 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-400-normal.woff2",
+       "wasted": 13616.166666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-700-normal.woff2",
+       "wasted": 13571.25
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-800-normal.woff2",
+       "wasted": 13538.25
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-900-normal.woff2",
+       "wasted": 12986.416666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-600-normal.woff2",
+       "wasted": 12941.5
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "wasted": 10575.583333333332
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "wasted": 741.5833333333333
+      }
+     ]
+    },
+    {
+     "id": "image-delivery-insight",
+     "score": 0.5,
+     "title": "Improve image delivery",
+     "value": "Est savings of 11 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "wasted": 10999,
+       "total": 11340
+      }
+     ]
+    },
+    {
+     "id": "network-dependency-tree-insight",
+     "score": 0,
+     "title": "Network dependency tree",
+     "value": "",
+     "items": []
+    },
+    {
+     "id": "render-blocking-insight",
+     "score": 0.5,
+     "title": "Render blocking requests",
+     "value": "",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "total": 809
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "page": "steckbrief-desktop",
+   "scores": {
+    "performance": 100,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 63
+   },
+   "lcp": "0.3 s",
+   "cls": "0.001",
+   "tbt": "0 ms",
+   "fcp": "0.3 s",
+   "weight": "Total size was 124 KiB",
+   "fails": [
+    {
+     "id": "uses-long-cache-ttl",
+     "score": 0.5,
+     "title": "Serve static assets with an efficient cache policy",
+     "value": "7 resources found",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-400-normal.woff2",
+       "wasted": 13662.916666666666,
+       "total": 14905
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-800-normal.woff2",
+       "wasted": 13485.083333333332,
+       "total": 14711
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-700-normal.woff2",
+       "wasted": 13430.083333333332,
+       "total": 14651
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-900-normal.woff2",
+       "wasted": 13134.916666666666,
+       "total": 14329
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-600-normal.woff2",
+       "wasted": 12956.166666666666,
+       "total": 14134
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "wasted": 10514.166666666666,
+       "total": 11470
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "wasted": 782.8333333333333,
+       "total": 854
+      }
+     ]
+    },
+    {
+     "id": "uses-responsive-images",
+     "score": 0,
+     "title": "Properly size images",
+     "value": "Est savings of 10 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "node": "<img src=\"logo-sm.webp\" alt=\"Vereinslogo Clochard Darter Augsburg\" width=\"125\" height=\"160\">",
+       "label": "Vereinslogo Clochard Darter Augsburg",
+       "wasted": 10183,
+       "total": 11340
+      }
+     ]
+    },
+    {
+     "id": "is-crawlable",
+     "score": 0,
+     "title": "Page is blocked from indexing",
+     "value": "",
+     "items": [
+      {}
+     ]
+    },
+    {
+     "id": "cache-insight",
+     "score": 0,
+     "title": "Use efficient cache lifetimes",
+     "value": "Est savings of 76 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-400-normal.woff2",
+       "wasted": 13662.916666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-800-normal.woff2",
+       "wasted": 13485.083333333332
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-700-normal.woff2",
+       "wasted": 13430.083333333332
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-900-normal.woff2",
+       "wasted": 13134.916666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-600-normal.woff2",
+       "wasted": 12956.166666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "wasted": 10514.166666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "wasted": 782.8333333333333
+      }
+     ]
+    },
+    {
+     "id": "image-delivery-insight",
+     "score": 0.5,
+     "title": "Improve image delivery",
+     "value": "Est savings of 11 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo-sm.webp",
+       "wasted": 10999,
+       "total": 11340
+      }
+     ]
+    },
+    {
+     "id": "network-dependency-tree-insight",
+     "score": 0,
+     "title": "Network dependency tree",
+     "value": "",
+     "items": []
+    },
+    {
+     "id": "render-blocking-insight",
+     "score": 0.5,
+     "title": "Render blocking requests",
+     "value": "",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "total": 854
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "page": "competition-mobile",
+   "scores": {
+    "performance": 94,
+    "accessibility": 98,
+    "best-practices": 96,
+    "seo": 60
+   },
+   "lcp": "1.6 s",
+   "cls": "0.137",
+   "tbt": "0 ms",
+   "fcp": "1.6 s",
+   "weight": "Total size was 147 KiB",
+   "fails": [
+    {
+     "id": "max-potential-fid",
+     "score": 0.11,
+     "title": "Max Potential First Input Delay",
+     "value": "460 ms",
+     "items": []
+    },
+    {
+     "id": "cumulative-layout-shift",
+     "score": 0.79,
+     "title": "Cumulative Layout Shift",
+     "value": "0.137",
+     "items": [
+      {}
+     ]
+    },
+    {
+     "id": "layout-shifts",
+     "score": 0,
+     "title": "Avoid large layout shifts",
+     "value": "2 layout shifts found",
+     "items": [
+      {
+       "node": "<ul class=\"gnext\">",
+       "label": "Do 19.11.CompetitionDo 26.11.CompetitionDo 03.12.CompetitionDo 10.12.Competition"
+      },
+      {
+       "node": "<main class=\"wrap\" id=\"view\" aria-live=\"polite\">",
+       "label": "LAUFENDE COMPETITION\nHEUTE KEINE COMPETITION\nSobald die Turnierleitung einen Ab…"
+      }
+     ]
+    },
+    {
+     "id": "heading-order",
+     "score": 0,
+     "title": "Heading elements are not in a sequentially-descending order",
+     "value": "",
+     "items": [
+      {
+       "node": "<h3>",
+       "label": "LAUFENDE COMPETITION"
+      }
+     ]
+    },
+    {
+     "id": "uses-long-cache-ttl",
+     "score": 0.5,
+     "title": "Serve static assets with an efficient cache policy",
+     "value": "5 resources found",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-400-normal.woff2",
+       "wasted": 13722.5,
+       "total": 14970
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-700-normal.woff2",
+       "wasted": 13473.166666666666,
+       "total": 14698
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-900-normal.woff2",
+       "wasted": 12988.25,
+       "total": 14169
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-600-normal.woff2",
+       "wasted": 12842.5,
+       "total": 14010
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "wasted": 777.3333333333333,
+       "total": 848
+      }
+     ]
+    },
+    {
+     "id": "unused-css-rules",
+     "score": 0.5,
+     "title": "Reduce unused CSS",
+     "value": "Est savings of 12 KiB",
+     "items": [
+      {
+       "url": "/* Layout: Kopfleiste mit fünf Ansichten (Turnierleitung, Board 1, Board 2, Live, Saison). Board-An…",
+       "wasted": 12413,
+       "total": 13487
+      }
+     ]
+    },
+    {
+     "id": "unused-javascript",
+     "score": 0,
+     "title": "Reduce unused JavaScript",
+     "value": "Est savings of 28 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/competition.html",
+       "wasted": 28645,
+       "total": 42332
+      }
+     ]
+    },
+    {
+     "id": "font-size",
+     "score": 0,
+     "title": "Document doesn't use legible font sizes",
+     "value": "47.43% legible text",
+     "items": [
+      {},
+      {},
+      {}
+     ]
+    },
+    {
+     "id": "is-crawlable",
+     "score": 0,
+     "title": "Page is blocked from indexing",
+     "value": "",
+     "items": [
+      {}
+     ]
+    },
+    {
+     "id": "cache-insight",
+     "score": 0.5,
+     "title": "Use efficient cache lifetimes",
+     "value": "Est savings of 53 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-400-normal.woff2",
+       "wasted": 13722.5
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-700-normal.woff2",
+       "wasted": 13473.166666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-900-normal.woff2",
+       "wasted": 12988.25
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-600-normal.woff2",
+       "wasted": 12842.5
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "wasted": 777.3333333333333
+      }
+     ]
+    },
+    {
+     "id": "cls-culprits-insight",
+     "score": 0,
+     "title": "Layout shift culprits",
+     "value": "",
+     "items": [
+      {}
+     ]
+    },
+    {
+     "id": "network-dependency-tree-insight",
+     "score": 0,
+     "title": "Network dependency tree",
+     "value": "",
+     "items": []
+    },
+    {
+     "id": "render-blocking-insight",
+     "score": 0.5,
+     "title": "Render blocking requests",
+     "value": "",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "total": 848
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "page": "competition-desktop",
+   "scores": {
+    "performance": 100,
+    "accessibility": 98,
+    "best-practices": 100,
+    "seo": 60
+   },
+   "lcp": "0.5 s",
+   "cls": "0.001",
+   "tbt": "0 ms",
+   "fcp": "0.5 s",
+   "weight": "Total size was 147 KiB",
+   "fails": [
+    {
+     "id": "heading-order",
+     "score": 0,
+     "title": "Heading elements are not in a sequentially-descending order",
+     "value": "",
+     "items": [
+      {
+       "node": "<h3>",
+       "label": "LAUFENDE COMPETITION"
+      }
+     ]
+    },
+    {
+     "id": "uses-long-cache-ttl",
+     "score": 0.5,
+     "title": "Serve static assets with an efficient cache policy",
+     "value": "5 resources found",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-400-normal.woff2",
+       "wasted": 13657.416666666666,
+       "total": 14899
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-700-normal.woff2",
+       "wasted": 13430.083333333332,
+       "total": 14651
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-900-normal.woff2",
+       "wasted": 13088.166666666666,
+       "total": 14278
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-600-normal.woff2",
+       "wasted": 12850.75,
+       "total": 14019
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "wasted": 748,
+       "total": 816
+      }
+     ]
+    },
+    {
+     "id": "unused-css-rules",
+     "score": 0.5,
+     "title": "Reduce unused CSS",
+     "value": "Est savings of 12 KiB",
+     "items": [
+      {
+       "url": "/* Layout: Kopfleiste mit fünf Ansichten (Turnierleitung, Board 1, Board 2, Live, Saison). Board-An…",
+       "wasted": 12415,
+       "total": 13489
+      }
+     ]
+    },
+    {
+     "id": "unused-javascript",
+     "score": 0,
+     "title": "Reduce unused JavaScript",
+     "value": "Est savings of 28 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/competition.html",
+       "wasted": 28650,
+       "total": 42339
+      }
+     ]
+    },
+    {
+     "id": "is-crawlable",
+     "score": 0,
+     "title": "Page is blocked from indexing",
+     "value": "",
+     "items": [
+      {}
+     ]
+    },
+    {
+     "id": "cache-insight",
+     "score": 0.5,
+     "title": "Use efficient cache lifetimes",
+     "value": "Est savings of 53 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-400-normal.woff2",
+       "wasted": 13657.416666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-700-normal.woff2",
+       "wasted": 13430.083333333332
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/big-shoulders-display-latin-900-normal.woff2",
+       "wasted": 13088.166666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/archivo-latin-600-normal.woff2",
+       "wasted": 12850.75
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "wasted": 748
+      }
+     ]
+    },
+    {
+     "id": "network-dependency-tree-insight",
+     "score": 0,
+     "title": "Network dependency tree",
+     "value": "",
+     "items": []
+    },
+    {
+     "id": "render-blocking-insight",
+     "score": 0.5,
+     "title": "Render blocking requests",
+     "value": "",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "total": 816
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "page": "grafik-studio-mobile",
+   "scores": {
+    "performance": 96,
+    "accessibility": 92,
+    "best-practices": 100,
+    "seo": 63
+   },
+   "lcp": "1.6 s",
+   "cls": "0.044",
+   "tbt": "210 ms",
+   "fcp": "1.3 s",
+   "weight": "Total size was 1,078 KiB",
+   "fails": [
+    {
+     "id": "total-blocking-time",
+     "score": 0.89,
+     "title": "Total Blocking Time",
+     "value": "210 ms",
+     "items": []
+    },
+    {
+     "id": "max-potential-fid",
+     "score": 0.48,
+     "title": "Max Potential First Input Delay",
+     "value": "260 ms",
+     "items": []
+    },
+    {
+     "id": "color-contrast",
+     "score": 0,
+     "title": "Background and foreground colors do not have a sufficient contrast ratio.",
+     "value": "",
+     "items": [
+      {
+       "node": "<button class=\"btn\" type=\"submit\">",
+       "label": "Anmelden"
+      }
+     ]
+    },
+    {
+     "id": "uses-long-cache-ttl",
+     "score": 0.5,
+     "title": "Serve static assets with an efficient cache policy",
+     "value": "29 resources found",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leon-kesselring.webp",
+       "wasted": 71866.66666666666,
+       "total": 78400
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leo-hoermann.webp",
+       "wasted": 70652.08333333333,
+       "total": 77075
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/markus-goerg.webp",
+       "wasted": 66473.91666666666,
+       "total": 72517
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/florian-kaiser.webp",
+       "wasted": 65555.41666666666,
+       "total": 71515
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/marcus-kreiner.webp",
+       "wasted": 64974.25,
+       "total": 70881
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leon-crump.webp",
+       "wasted": 63145.5,
+       "total": 68886
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/simon-seifert.webp",
+       "wasted": 62973.166666666664,
+       "total": 68698
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/ivo-schubert.webp",
+       "wasted": 62283.83333333333,
+       "total": 67946
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/bastian-rauh.webp",
+       "wasted": 61358.916666666664,
+       "total": 66937
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/sancha-koal.webp",
+       "wasted": 51903.5,
+       "total": 56622
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/marco-geiger.webp",
+       "wasted": 49725.5,
+       "total": 54246
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo.png",
+       "wasted": 22437.25,
+       "total": 24477
+      }
+     ]
+    },
+    {
+     "id": "unused-javascript",
+     "score": 0,
+     "title": "Reduce unused JavaScript",
+     "value": "Est savings of 31 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/grafik-studio.html",
+       "wasted": 31797,
+       "total": 44744
+      }
+     ]
+    },
+    {
+     "id": "uses-responsive-images",
+     "score": 0.5,
+     "title": "Properly size images",
+     "value": "Est savings of 20 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo.png",
+       "node": "<img src=\"logo.png\" alt=\"\" width=\"296\" height=\"378\">",
+       "label": "body > div#gate > div.gbox > img",
+       "wasted": 20900,
+       "total": 24245
+      }
+     ]
+    },
+    {
+     "id": "is-crawlable",
+     "score": 0,
+     "title": "Page is blocked from indexing",
+     "value": "",
+     "items": [
+      {}
+     ]
+    },
+    {
+     "id": "cache-insight",
+     "score": 0,
+     "title": "Use efficient cache lifetimes",
+     "value": "Est savings of 903 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leon-kesselring.webp",
+       "wasted": 71866.66666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leo-hoermann.webp",
+       "wasted": 70652.08333333333
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/markus-goerg.webp",
+       "wasted": 66473.91666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/florian-kaiser.webp",
+       "wasted": 65555.41666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/marcus-kreiner.webp",
+       "wasted": 64974.25
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leon-crump.webp",
+       "wasted": 63145.5
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/simon-seifert.webp",
+       "wasted": 62973.166666666664
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/ivo-schubert.webp",
+       "wasted": 62283.83333333333
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/bastian-rauh.webp",
+       "wasted": 61358.916666666664
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/sancha-koal.webp",
+       "wasted": 51903.5
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/marco-geiger.webp",
+       "wasted": 49725.5
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo.png",
+       "wasted": 22437.25
+      }
+     ]
+    },
+    {
+     "id": "image-delivery-insight",
+     "score": 0.5,
+     "title": "Improve image delivery",
+     "value": "Est savings of 23 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo.png",
+       "wasted": 23410,
+       "total": 24245
+      }
+     ]
+    },
+    {
+     "id": "network-dependency-tree-insight",
+     "score": 0,
+     "title": "Network dependency tree",
+     "value": "",
+     "items": []
+    },
+    {
+     "id": "render-blocking-insight",
+     "score": 0.5,
+     "title": "Render blocking requests",
+     "value": "",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "total": 847
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "page": "grafik-studio-desktop",
+   "scores": {
+    "performance": 100,
+    "accessibility": 92,
+    "best-practices": 100,
+    "seo": 63
+   },
+   "lcp": "0.4 s",
+   "cls": "0.001",
+   "tbt": "0 ms",
+   "fcp": "0.4 s",
+   "weight": "Total size was 1,078 KiB",
+   "fails": [
+    {
+     "id": "color-contrast",
+     "score": 0,
+     "title": "Background and foreground colors do not have a sufficient contrast ratio.",
+     "value": "",
+     "items": [
+      {
+       "node": "<button class=\"btn\" type=\"submit\">",
+       "label": "Anmelden"
+      }
+     ]
+    },
+    {
+     "id": "uses-long-cache-ttl",
+     "score": 0.5,
+     "title": "Serve static assets with an efficient cache policy",
+     "value": "29 resources found",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leon-kesselring.webp",
+       "wasted": 71918.91666666666,
+       "total": 78457
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leo-hoermann.webp",
+       "wasted": 70720.83333333333,
+       "total": 77150
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/markus-goerg.webp",
+       "wasted": 66539,
+       "total": 72588
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/florian-kaiser.webp",
+       "wasted": 65505,
+       "total": 71460
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/marcus-kreiner.webp",
+       "wasted": 64953.166666666664,
+       "total": 70858
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leon-crump.webp",
+       "wasted": 63109.75,
+       "total": 68847
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/simon-seifert.webp",
+       "wasted": 63026.33333333333,
+       "total": 68756
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/ivo-schubert.webp",
+       "wasted": 62220.58333333333,
+       "total": 67877
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/bastian-rauh.webp",
+       "wasted": 61330.5,
+       "total": 66906
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/sancha-koal.webp",
+       "wasted": 51920,
+       "total": 56640
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/marco-geiger.webp",
+       "wasted": 49675.08333333333,
+       "total": 54191
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo.png",
+       "wasted": 22423.5,
+       "total": 24462
+      }
+     ]
+    },
+    {
+     "id": "unused-javascript",
+     "score": 0,
+     "title": "Reduce unused JavaScript",
+     "value": "Est savings of 31 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/grafik-studio.html",
+       "wasted": 31797,
+       "total": 44744
+      }
+     ]
+    },
+    {
+     "id": "uses-responsive-images",
+     "score": 0.5,
+     "title": "Properly size images",
+     "value": "Est savings of 23 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo.png",
+       "node": "<img src=\"logo.png\" alt=\"\" width=\"296\" height=\"378\">",
+       "label": "body > div#gate > div.gbox > img",
+       "wasted": 23153,
+       "total": 24245
+      }
+     ]
+    },
+    {
+     "id": "is-crawlable",
+     "score": 0,
+     "title": "Page is blocked from indexing",
+     "value": "",
+     "items": [
+      {}
+     ]
+    },
+    {
+     "id": "cache-insight",
+     "score": 0,
+     "title": "Use efficient cache lifetimes",
+     "value": "Est savings of 903 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leon-kesselring.webp",
+       "wasted": 71918.91666666666
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leo-hoermann.webp",
+       "wasted": 70720.83333333333
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/markus-goerg.webp",
+       "wasted": 66539
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/florian-kaiser.webp",
+       "wasted": 65505
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/marcus-kreiner.webp",
+       "wasted": 64953.166666666664
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/leon-crump.webp",
+       "wasted": 63109.75
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/simon-seifert.webp",
+       "wasted": 63026.33333333333
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/ivo-schubert.webp",
+       "wasted": 62220.58333333333
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/bastian-rauh.webp",
+       "wasted": 61330.5
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/sancha-koal.webp",
+       "wasted": 51920
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/spieler/marco-geiger.webp",
+       "wasted": 49675.08333333333
+      },
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo.png",
+       "wasted": 22423.5
+      }
+     ]
+    },
+    {
+     "id": "image-delivery-insight",
+     "score": 0.5,
+     "title": "Improve image delivery",
+     "value": "Est savings of 23 KiB",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/logo.png",
+       "wasted": 23410,
+       "total": 24245
+      }
+     ]
+    },
+    {
+     "id": "network-dependency-tree-insight",
+     "score": 0,
+     "title": "Network dependency tree",
+     "value": "",
+     "items": []
+    },
+    {
+     "id": "render-blocking-insight",
+     "score": 0.5,
+     "title": "Render blocking requests",
+     "value": "",
+     "items": [
+      {
+       "url": "https://kesselringl.github.io/cda-website/fonts/fonts.css",
+       "total": 840
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "browser": [
+  {
+   "page": "start",
+   "device": "iphone",
+   "overflow": {
+    "scrollW": 390,
+    "W": 390,
+    "bad": []
+   },
+   "smallTargets": [
+    "Du spielst bei uns? Hier deine 323×15",
+    "INPUT 18×18",
+    "Datenschutzerklärung 122×14",
+    "TSV Dinkelscherben 06 e.V. 202×17",
+    "Satzung 60×17"
+   ],
+   "axe": [
+    {
+     "id": "color-contrast",
+     "impact": "serious",
+     "help": "Elements must meet minimum color contrast ratio thresholds",
+     "nodes": [
+      ".jubi > .wrap > div > p | Fix any of the following: Element has insufficient color contrast of 4.26 (foreground color: #fdebec, background color: #e30212, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio"
+     ]
+    },
+    {
+     "id": "region",
+     "impact": "moderate",
+     "help": "All page content should be contained by landmarks",
+     "nodes": [
+      ".draft | Fix any of the following: Some page content is not contained by landmarks"
+     ]
+    }
+   ],
+   "console": []
+  },
+  {
+   "page": "start",
+   "device": "tablet",
+   "overflow": {
+    "scrollW": 768,
+    "W": 768,
+    "bad": []
+   },
+   "smallTargets": [
+    "Du spielst bei uns? Hier deine 323×15",
+    "INPUT 18×18",
+    "Datenschutzerklärung 122×14",
+    "Satzung 60×17"
+   ],
+   "axe": null,
+   "console": []
+  },
+  {
+   "page": "start",
+   "device": "laptop",
+   "overflow": {
+    "scrollW": 1366,
+    "W": 1366,
+    "bad": []
+   },
+   "smallTargets": [
+    "Du spielst bei uns? Hier deine 323×15",
+    "INPUT 18×18",
+    "Datenschutzerklärung 122×14",
+    "TSV Dinkelscherben 06 e.V. 202×17",
+    "Satzung 60×17"
+   ],
+   "axe": null,
+   "console": []
+  },
+  {
+   "page": "impressum.html",
+   "device": "iphone",
+   "overflow": {
+    "scrollW": 390,
+    "W": 390,
+    "bad": []
+   },
+   "smallTargets": [],
+   "axe": [],
+   "console": []
+  },
+  {
+   "page": "impressum.html",
+   "device": "tablet",
+   "overflow": {
+    "scrollW": 768,
+    "W": 768,
+    "bad": []
+   },
+   "smallTargets": [],
+   "axe": null,
+   "console": []
+  },
+  {
+   "page": "impressum.html",
+   "device": "laptop",
+   "overflow": {
+    "scrollW": 1366,
+    "W": 1366,
+    "bad": []
+   },
+   "smallTargets": [],
+   "axe": null,
+   "console": []
+  },
+  {
+   "page": "datenschutz.html",
+   "device": "iphone",
+   "overflow": {
+    "scrollW": 390,
+    "W": 390,
+    "bad": []
+   },
+   "smallTargets": [
+    "Datenschutzerklärung von GitHu 242×17",
+    "www.lda.bayern.de 135×17"
+   ],
+   "axe": [],
+   "console": []
+  },
+  {
+   "page": "datenschutz.html",
+   "device": "tablet",
+   "overflow": {
+    "scrollW": 768,
+    "W": 768,
+    "bad": []
+   },
+   "smallTargets": [
+    "Datenschutzerklärung von GitHu 242×17",
+    "www.lda.bayern.de 135×17"
+   ],
+   "axe": null,
+   "console": []
+  },
+  {
+   "page": "datenschutz.html",
+   "device": "laptop",
+   "overflow": {
+    "scrollW": 1366,
+    "W": 1366,
+    "bad": []
+   },
+   "smallTargets": [
+    "Datenschutzerklärung von GitHu 242×17",
+    "www.lda.bayern.de 135×17"
+   ],
+   "axe": null,
+   "console": []
+  },
+  {
+   "page": "steckbrief.html",
+   "device": "iphone",
+   "overflow": {
+    "scrollW": 390,
+    "W": 390,
+    "bad": []
+   },
+   "smallTargets": [
+    "INPUT 13×13",
+    "INPUT 13×13",
+    "INPUT 20×20",
+    "Datenschutzerklärung 143×16"
+   ],
+   "axe": [],
+   "console": []
+  },
+  {
+   "page": "steckbrief.html",
+   "device": "tablet",
+   "overflow": {
+    "scrollW": 768,
+    "W": 768,
+    "bad": []
+   },
+   "smallTargets": [
+    "INPUT 13×13",
+    "INPUT 13×13",
+    "INPUT 20×20",
+    "Datenschutzerklärung 143×16"
+   ],
+   "axe": null,
+   "console": []
+  },
+  {
+   "page": "steckbrief.html",
+   "device": "laptop",
+   "overflow": {
+    "scrollW": 1366,
+    "W": 1366,
+    "bad": []
+   },
+   "smallTargets": [
+    "INPUT 13×13",
+    "INPUT 13×13",
+    "INPUT 20×20",
+    "Datenschutzerklärung 143×16"
+   ],
+   "axe": null,
+   "console": []
+  },
+  {
+   "page": "competition.html",
+   "device": "iphone",
+   "overflow": {
+    "scrollW": 390,
+    "W": 390,
+    "bad": []
+   },
+   "smallTargets": [
+    "Zur Homepage: CDA Masters 170×19"
+   ],
+   "axe": [
+    {
+     "id": "heading-order",
+     "impact": "moderate",
+     "help": "Heading levels should only increase by one",
+     "nodes": [
+      "section:nth-child(1) > h3:nth-child(1) | Fix any of the following: Heading order invalid"
+     ]
+    }
+   ],
+   "console": []
+  },
+  {
+   "page": "competition.html",
+   "device": "tablet",
+   "overflow": {
+    "scrollW": 768,
+    "W": 768,
+    "bad": []
+   },
+   "smallTargets": [
+    "Zur Homepage: CDA Masters 170×19"
+   ],
+   "axe": null,
+   "console": []
+  },
+  {
+   "page": "competition.html",
+   "device": "laptop",
+   "overflow": {
+    "scrollW": 1366,
+    "W": 1366,
+    "bad": []
+   },
+   "smallTargets": [
+    "Zur Homepage: CDA Masters 170×19"
+   ],
+   "axe": null,
+   "console": []
+  }
+ ]
+}
