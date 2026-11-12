@@ -548,24 +548,78 @@ var LOOKS={
     bg:function(R){ctx.fillStyle='#050606';ctx.fillRect(0,0,W,H);var p=pick(R,[[W*.95,H*.2,620],[W*1.05,H*.55,760],[W*.02,H*.18,560]]);glow(p[0],p[1],p[2]*1.6,'#ffffff',.08);dartboard(p[0],p[1],p[2],R()*Math.PI,R);
       ctx.fillStyle=p[0]<W/2?hgrad(W,0,['rgba(4,5,5,.93)','rgba(4,5,5,.72)','rgba(4,5,5,.35)']):hgrad(0,W,['rgba(4,5,5,.93)','rgba(4,5,5,.72)','rgba(4,5,5,.35)']);ctx.fillRect(0,0,W,H);
       glow(W*.3,H*.9,500,GREEN,.18);grain(R,.03);vignette(.7);}},
-  rot:{label:'Vereinsrot',sw:'radial-gradient(circle at 50% 30%,#ff3b47,#7a0009 75%)',dark:true,fg:'#fff',mute:'rgba(255,255,255,.82)',acc:'#ffffff',num:['#ffffff','#ffe9ea','#ffc7cb'],glow:'#ff8088',head:AN,hw:400,slant:.08,accInk:RED,
-    bg:function(R){var g=ctx.createRadialGradient(W/2,H*.3,50,W/2,H*.4,H*.95);g.addColorStop(0,'#ff2a36');g.addColorStop(.45,'#c0000f');g.addColorStop(1,'#4a0006');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-      rays(W/2,H*(.25+R()*.1),'#ffffff',24,.09,H*1.1);for(var y=0;y<H;y+=22)for(var x=(y/22%2)*11;x<W;x+=22){var d=Math.hypot(x-W*.85,y-H*.85)/700,r=Math.max(0,5-d*5);if(r>.6){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle='rgba(0,0,0,.22)';ctx.fill();}}
-      var lg=IMG['logo.png'];if(lg){ctx.save();ctx.globalAlpha=.07;contain(lg,W*.3,H*.28,W*.95,H*.7,'center');ctx.restore();}grain(R,.03);vignette(.45);}},
-  gruen:{label:'Vereinsgrün',sw:'radial-gradient(circle at 50% 30%,#3ee06a,#04451a 75%)',dark:true,fg:'#fff',mute:'rgba(255,255,255,.82)',acc:'#ffffff',num:['#ffffff','#eafff0','#bdf3cc'],glow:'#7dffa0',head:BS,hw:900,slant:.12,accInk:GREEN,
-    bg:function(R){var g=ctx.createRadialGradient(W*.5,H*.28,50,W/2,H*.4,H*.95);g.addColorStop(0,'#22d150');g.addColorStop(.45,'#0a8a2a');g.addColorStop(1,'#022b10');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-      for(var i=0;i<7;i++){ctx.beginPath();var x=-W*.2+i*W*.25;ctx.moveTo(x,H);ctx.lineTo(x+W*.5,0);ctx.lineTo(x+W*.5+60,0);ctx.lineTo(x+60,H);ctx.closePath();ctx.fillStyle='rgba(255,255,255,'+(.03+R()*.03)+')';ctx.fill();}
-      streak(W*.5,H*(.3+R()*.3),W*2,-.5,RED,120,.5);glow(W*.15,H*.15,400,'#ffffff',.12);grain(R,.03);vignette(.5);}},
   print:{label:'Print',sw:'linear-gradient(180deg,#efeae0 70%,#E30212 70%)',dark:false,fg:INK,mute:'#5b5a55',acc:RED,num:[INK,'#2a2c2b','#444'],glow:'#000000',head:AN,hw:400,slant:0,
     bg:function(R){ctx.fillStyle='#efeae0';ctx.fillRect(0,0,W,H);grain(R,.045);var w=pick(R,['CDA','DARTS','180']);ghost(w,W*.5,H*.62,H*.42,INK,.06,AN,'center',-.08);
       ctx.fillStyle=RED;var y=H*(.04+R()*.02);ctx.fillRect(0,0,W,10);ctx.fillRect(W-28,y,28,H*.5);ctx.fillStyle=GREEN;ctx.fillRect(W-28,y+H*.5,28,H*.12);}},
-  neon:{label:'Neon',sw:'radial-gradient(circle,transparent 38%,#3dff6e 40% 44%,transparent 46%),#0b0912',dark:true,fg:'#fff',mute:'#c4bdd6',acc:'#3dff6e',num:['#ffffff','#f3fff6','#c9ffd9'],glow:'#3dff6e',head:BS,hw:800,slant:0,neon:true,
-    bg:function(R){ctx.fillStyle='#0b0912';ctx.fillRect(0,0,W,H);ctx.strokeStyle='rgba(255,255,255,.03)';ctx.lineWidth=2;for(var j=0;j<H;j+=48)for(var i=(j/48%2)*65;i<W;i+=130)ctx.strokeRect(i,j,130,48);
-      haze(R,'#6a2cff',3,0,H,.18);var bx=pick(R,[W*.86,W*.14]),by=pick(R,[H*.2,H*.72]);shadow('#3dff6e',40);ctx.strokeStyle='#3dff6e';ctx.lineWidth=5;[230,160,70].forEach(function(r){ctx.beginPath();ctx.arc(bx,by,r,0,7);ctx.stroke();});
-      shadow('#ff3b5c',40);ctx.strokeStyle='#ff3b5c';ctx.beginPath();ctx.arc(bx,by,16,0,7);ctx.stroke();shadow();grain(R,.025);vignette(.6);}},
-  gold:{label:'Masters Gold',sw:'radial-gradient(circle at 50% 35%,#7a5a14,#0a0806 70%)',dark:true,fg:'#fff',mute:'#cbbf9f',acc:GOLD,num:['#fff6d2','#f1cf6b','#b98a22','#f6dc8a'],glow:'#f1c552',head:PF,hw:900,slant:0,gold:true,
-    bg:function(R){ctx.fillStyle='#070605';ctx.fillRect(0,0,W,H);glow(W/2,H*.32,H*.7,'#8a6516',.5);rays(W/2,H*.32,'#f1c552',30,.07,H);bokeh(R,'#f1c552',26,.22);
-      ctx.strokeStyle=rgba(GOLD,.35);ctx.lineWidth=2;rr(28,28,W-56,H-56,6);ctx.stroke();ctx.strokeStyle=rgba(GOLD,.15);rr(40,40,W-80,H-80,4);ctx.stroke();grain(R,.03);vignette(.6);}}
+  broadcast:{label:'Broadcast',sw:'linear-gradient(120deg,#0a8a2a 0 34%,#E30212 34% 37%,#0c0f0d 37%)',dark:true,fg:'#fff',mute:'#b3bdb7',acc:GREEN,num:['#ffffff','#e6ece8','#a9b6af'],glow:GREEN,head:BS,hw:900,slant:.12,
+    bg:function(R){ctx.fillStyle='#0a0c0b';ctx.fillRect(0,0,W,H);
+      // feines Raster wie in einer TV-Grafik
+      ctx.strokeStyle='rgba(255,255,255,.035)';ctx.lineWidth=1;for(var x=0;x<W;x+=54){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}for(var y=0;y<H;y+=54){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+      var top=R()<.5,k=W*.42+R()*W*.12;ctx.save();
+      // große schräge Fläche in Vereinsgrün
+      ctx.beginPath();if(top){ctx.moveTo(0,0);ctx.lineTo(k,0);ctx.lineTo(k-H*.34,H*.62);ctx.lineTo(0,H*.62);}else{ctx.moveTo(W,H);ctx.lineTo(W-k,H);ctx.lineTo(W-k+H*.34,H*.38);ctx.lineTo(W,H*.38);}ctx.closePath();
+      ctx.fillStyle=top?hgrad(0,k,['#0b6f24','#0a8a2a']):hgrad(W-k,W,['#0a8a2a','#0b6f24']);ctx.globalAlpha=.9;ctx.fill();ctx.globalAlpha=1;ctx.clip();
+      for(var i=0;i<26;i++){ctx.fillStyle='rgba(0,0,0,.12)';ctx.fillRect(0,i*52,W,2);}ctx.restore();
+      // roter Kantenstreifen und weiße Linie
+      ctx.save();ctx.beginPath();if(top){ctx.moveTo(k,0);ctx.lineTo(k+26,0);ctx.lineTo(k+26-H*.34,H*.62);ctx.lineTo(k-H*.34,H*.62);}else{ctx.moveTo(W-k,H);ctx.lineTo(W-k-26,H);ctx.lineTo(W-k-26+H*.34,H*.38);ctx.lineTo(W-k+H*.34,H*.38);}ctx.closePath();ctx.fillStyle=RED;ctx.fill();ctx.restore();
+      ctx.fillStyle='rgba(255,255,255,.9)';ctx.fillRect(0,top?H*.62:H*.38-3,W,3);ctx.fillStyle='rgba(255,255,255,.1)';ctx.fillRect(0,top?H*.62+10:H*.38-13,W,1);
+      glow(top?W*.15:W*.85,top?H*.12:H*.88,560,GREEN,.25);chevrons(top?W-250:40,top?H*.9:H*.06,5,40,'#ffffff',.12);
+      // Lesbarkeit: Verlauf über die Textfläche
+      ctx.fillStyle=vgrad(0,H,['rgba(5,7,6,.1)','rgba(5,7,6,.42)','rgba(5,7,6,.5)','rgba(5,7,6,.15)']);ctx.fillRect(0,0,W,H);grain(R,.022);vignette(.5);}},
+  sisal:{label:'Sisal',sw:'radial-gradient(circle at 80% 30%,#d8c9a3 0 12%,#2a2219 13% 16%,#c9b88f 17% 30%,#0d0c0a 60%)',dark:true,fg:'#fff',mute:'#cfc6b4',acc:GREEN,num:['#ffffff','#f1ece2','#c9bfa9'],glow:'#ffffff',head:AN,hw:400,slant:.06,
+    bg:function(R){ctx.fillStyle='#0c0b09';ctx.fillRect(0,0,W,H);var cx=pick(R,[W*1.02,W*-.02]),cy=H*(.12+R()*.2),r=H*1.05;ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,7);ctx.clip();
+      // Segmente des Boards, extrem nah – helle und dunkle Felder
+      var seg=Math.PI*2/20,rot=R()*seg;for(var i=0;i<20;i++){var an=rot+i*seg;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,an,an+seg);ctx.closePath();ctx.fillStyle=i%2?'#cdbd93':'#1d1a16';ctx.fill();}
+      [[.6,.64,RED,'#0e7a35'],[.95,1,'#0e7a35',RED]].forEach(function(q){for(var i=0;i<20;i++){var an=rot+i*seg;ctx.beginPath();ctx.arc(cx,cy,r*q[1],an,an+seg);ctx.arc(cx,cy,r*q[0],an+seg,an,true);ctx.closePath();ctx.fillStyle=i%2?q[2]:q[3];ctx.fill();}});
+      // Sisalfasern: viele feine Striche in Richtung Mitte
+      for(var k=0;k<14000;k++){var a=R()*7,d=Math.sqrt(R())*r,x=cx+Math.cos(a)*d,y=cy+Math.sin(a)*d;if(x<-10||x>W+10||y<-10||y>H+10)continue;var l=4+R()*9;ctx.strokeStyle=R()<.5?'rgba(255,248,230,.10)':'rgba(0,0,0,.20)';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-Math.cos(a)*l,y-Math.sin(a)*l);ctx.stroke();}
+      // Drahtspinne
+      ctx.strokeStyle='rgba(225,225,225,.8)';ctx.lineWidth=3;for(i=0;i<20;i++){var a2=rot+i*seg;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(a2)*r,cy+Math.sin(a2)*r);ctx.stroke();}
+      [.6,.64,.95].forEach(function(q){ctx.beginPath();ctx.arc(cx,cy,r*q,0,7);ctx.stroke();});ctx.restore();
+      // dunkle Abdeckung für Text: nur der Rand des Boards bleibt sichtbar
+      var g=ctx.createRadialGradient(W*(cx>W/2?.25:.75),H*.55,H*.1,W*(cx>W/2?.25:.75),H*.55,H*.95);g.addColorStop(0,'rgba(8,7,6,.94)');g.addColorStop(.55,'rgba(8,7,6,.82)');g.addColorStop(1,'rgba(8,7,6,.35)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+      glow(cx,cy,H*.5,'#ffe6b0',.08);grain(R,.03);vignette(.6);}},
+  buehne:{label:'Bühne',sw:'radial-gradient(ellipse at 50% 0,#f6f1e4 0 6%,#6b6250 20%,#050505 55%)',dark:true,fg:'#fff',mute:'#c2c2bd',acc:RED,num:['#ffffff','#f4f1ea','#bdb8ad'],glow:'#fff3d6',head:AN,hw:400,slant:.05,
+    bg:function(R){ctx.fillStyle='#040404';ctx.fillRect(0,0,W,H);var fy=H*.74;
+      // Boden mit Fluchtlinien
+      ctx.fillStyle=vgrad(fy,H,['#141311','#070707']);ctx.fillRect(0,fy,W,H-fy);ctx.strokeStyle='rgba(255,255,255,.05)';ctx.lineWidth=2;for(var i=-12;i<=12;i++){ctx.beginPath();ctx.moveTo(W/2+i*20,fy);ctx.lineTo(W/2+i*160,H);ctx.stroke();}
+      for(var j=0;j<6;j++){var yy=fy+(H-fy)*Math.pow(j/6,1.6);ctx.beginPath();ctx.moveTo(0,yy);ctx.lineTo(W,yy);ctx.stroke();}
+      // Spotlight-Kegel
+      var sx=W*(.35+R()*.3);ctx.save();ctx.beginPath();ctx.moveTo(sx-30,-10);ctx.lineTo(sx+30,-10);ctx.lineTo(W/2+W*.45,fy+40);ctx.lineTo(W/2-W*.45,fy+40);ctx.closePath();ctx.fillStyle=vgrad(0,fy,['rgba(255,244,214,.34)','rgba(255,244,214,.12)','rgba(255,244,214,.04)']);ctx.fill();ctx.restore();
+      ctx.save();ctx.translate(W/2,fy+20);ctx.scale(1,.16);glow(0,0,W*.5,'#fff3d6',.42);ctx.restore();
+      // Oche: die Abwurflinie
+      ctx.save();ctx.translate(W/2,fy+(H-fy)*.42);ctx.scale(1,.22);ctx.fillStyle=RED;ctx.fillRect(-W*.3,-14,W*.6,28);ctx.restore();
+      // Dunst in der Luft
+      haze(R,'#fff3d6',4,H*.1,H*.6,.06);bokeh(R,'#ffffff',16,.05);
+      ctx.fillStyle=vgrad(0,H,['rgba(0,0,0,.15)','rgba(0,0,0,.45)','rgba(0,0,0,.2)','rgba(0,0,0,.35)']);ctx.fillRect(0,0,W,H);grain(R,.03);vignette(.75,.38);}},
+  clean:{label:'Clean',sw:'linear-gradient(135deg,#f6f7f6 60%,#0CA12D 60% 66%,#f6f7f6 66% 88%,#E30212 88%)',dark:false,fg:INK,mute:'#5c625e',acc:'#0a8a2a',num:[INK,'#1d201e','#3a3f3c'],glow:'#000000',head:BS,hw:900,slant:0,
+    bg:function(R){ctx.fillStyle='#f6f7f6';ctx.fillRect(0,0,W,H);
+      // feine Hilfslinien wie im Layout-Raster
+      ctx.strokeStyle='rgba(17,19,18,.06)';ctx.lineWidth=1;[W*.08,W*.92].forEach(function(x){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();});
+      // große Kreise wie Dartboard-Ringe, angeschnitten
+      var cx=pick(R,[W*.98,W*.02]),cy=H*(.2+R()*.55);ctx.lineWidth=2;[180,300,330,520,560].forEach(function(r,i){ctx.strokeStyle=i===1||i===3?'rgba(10,138,42,.22)':'rgba(17,19,18,.07)';ctx.beginPath();ctx.arc(cx,cy,r,0,7);ctx.stroke();});
+      ctx.beginPath();ctx.arc(cx,cy,22,0,7);ctx.fillStyle=RED;ctx.fill();
+      // Akzentbalken oben, Farbcode unten
+      ctx.fillStyle='#0a8a2a';ctx.fillRect(0,0,W*.34,12);ctx.fillStyle=RED;ctx.fillRect(W*.34,0,W*.06,12);
+      ghost(pick(R,['180','CDA','DARTS']),cx>W/2?W*.04:W*.96,H*.97,H*.3,INK,.05,AN,cx>W/2?'left':'right',0);grain(R,.02);}},
+  duoton:{label:'Duoton',sw:'linear-gradient(135deg,#064018 0 40%,#000 100%)',dark:true,fg:'#fff',mute:'#b7cbbd',acc:'#ffffff',accInk:'#06401a',num:['#ffffff','#e9f5ec','#b8d6c1'],glow:'#7dffa0',head:BS,hw:900,slant:.12,
+    bg:function(R){var g=ctx.createLinearGradient(0,0,W,H);g.addColorStop(0,'#0a5a22');g.addColorStop(.5,'#06381a');g.addColorStop(1,'#020a05');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+      // Rasterpunkte, von einer Ecke aus größer werdend
+      var ox=pick(R,[0,W]),oy=pick(R,[0,H]);for(var y=0;y<H+20;y+=20)for(var x=(y/20%2)*10;x<W+20;x+=20){var d=Math.hypot(x-ox,y-oy)/Math.hypot(W,H),rd=Math.max(0,(1-d*1.35))*8.5;if(rd>.5){ctx.beginPath();ctx.arc(x,y,rd,0,7);ctx.fillStyle='rgba(0,0,0,.28)';ctx.fill();}}
+      // diagonaler Lichtstreifen + roter Akzent
+      streak(W*.5,H*(.25+R()*.4),W*2.4,-.62,'#ffffff',220,.07);streak(W*.6,H*(.1+R()*.2),W*2.2,-.62,RED,18,.85);
+      var lg=IMG['logo.png'];if(lg){ctx.save();ctx.globalAlpha=.05;contain(lg,ox?W*.45:-W*.1,oy?H*.45:-H*.05,W*.65,H*.6,'center');ctx.restore();}
+      ctx.fillStyle=vgrad(0,H,['rgba(0,0,0,0)','rgba(0,0,0,.35)','rgba(0,0,0,.25)']);ctx.fillRect(0,0,W,H);grain(R,.03);vignette(.5);}},
+  led:{label:'Anzeigetafel',sw:'radial-gradient(circle,#2bc653 1.5px,transparent 2px) 0 0/6px 6px,#050806',dark:true,fg:'#fff',mute:'#a6b9ad',acc:GREEN,num:['#ffffff','#e2f7e8','#9fe0b2'],glow:'#2BC653',head:BS,hw:900,slant:0,
+    bg:function(R){ctx.fillStyle='#040605';ctx.fillRect(0,0,W,H);
+      // LED-Matrix: Punkte, die zur Mitte hin leicht leuchten
+      var s=14;for(var y=s/2;y<H;y+=s)for(var x=s/2;x<W;x+=s){var on=R()<.012;ctx.fillStyle=on?'rgba(43,198,83,.55)':'rgba(255,255,255,.055)';ctx.fillRect(x-2,y-2,4,4);}
+      // große Leucht-Zahl im Hintergrund aus LED-Punkten
+      var t=pick(R,['180','501','CDA']);var o=document.createElement('canvas');o.width=Math.round(W/s);o.height=Math.round(H/s);var c=o.getContext('2d');c.fillStyle='#000';c.font='400 '+Math.round(o.height*.42)+'px Anton';c.textAlign='center';c.textBaseline='middle';c.fillText(t,o.width/2,o.height*(.3+R()*.45));
+      var px=c.getImageData(0,0,o.width,o.height).data;for(var yy=0;yy<o.height;yy++)for(var xx=0;xx<o.width;xx++){if(px[(yy*o.width+xx)*4+3]>128){ctx.fillStyle='rgba(43,198,83,.16)';ctx.fillRect(xx*s+s/2-3,yy*s+s/2-3,6,6);}}
+      // Rahmen der Tafel
+      ctx.strokeStyle='rgba(255,255,255,.08)';ctx.lineWidth=2;rr(24,24,W-48,H-48,14);ctx.stroke();glow(W/2,H*.4,H*.6,'#2BC653',.08);
+      ctx.fillStyle=vgrad(0,H,['rgba(0,0,0,.1)','rgba(0,0,0,.4)','rgba(0,0,0,.2)']);ctx.fillRect(0,0,W,H);vignette(.6);}}
 };
 
 // ================= Bausteine =================
@@ -669,9 +723,9 @@ function scoreRow(g,y,h,sep){
   if(sep){ctx.fillStyle=hgrad(CB.x,CB.x+CB.w,[sepCol(0),sepCol(.18),sepCol(0)]);ctx.fillRect(CB.x,y+h-4,CB.w,2);}
 }
 function listRow(r,x,y,w,rh,o){
-  if(r.hl){ctx.fillStyle=hgrad(x,x+w,[rgba(acc(),L.accInk?.95:.9),rgba(acc(),.2)]);rr(x,y+4,w,rh-8,8);ctx.fill();}
+  if(r.hl){var solid=L.accInk||!L.dark;ctx.fillStyle=hgrad(x,x+w,[rgba(acc(),solid?.97:.9),rgba(acc(),solid?.8:.2)]);rr(x,y+4,w,rh-8,8);ctx.fill();}
   var ink=r.hl?(L.accInk?L.accInk:(L.gold?'#1a1407':'#fff')):L.fg,nx=x+24;
-  var rs=rh*.62;setF(400,rs,AN);ctx.textAlign='center';ctx.fillStyle=r.hl?ink:(o.gold&&r.rank<=3?['#f1cf6b','#d6dde0','#d79a62'][r.rank-1]:numFill(y+rh*.2,y+rh*.8));if(!r.hl)shadow(rgba(L.glow,.35),18);ctx.fillText(String(r.rank),nx+30,y+rh*.5+rs*.36);shadow();nx+=82;
+  var rs=rh*.62;setF(400,rs,AN);ctx.textAlign='center';ctx.fillStyle=r.hl?ink:(o.gold&&r.rank<=3?(L.dark?['#f1cf6b','#d6dde0','#d79a62']:['#b8890f','#7d858c','#a8642b'])[r.rank-1]:numFill(y+rh*.2,y+rh*.8));if(!r.hl)shadow(rgba(L.glow,.35),18);ctx.fillText(String(r.rank),nx+30,y+rh*.5+rs*.36);shadow();nx+=82;
   var img=r.img&&IMG[r.img];if(img){var d=rh*.78;ctx.save();ctx.beginPath();ctx.arc(nx+d/2,y+rh/2,d/2,0,7);ctx.clip();ctx.fillStyle='#111';ctx.fill();var sc=Math.max(d/img.width,d/img.height);ctx.drawImage(img,nx+(d-img.width*sc)/2,y+rh*.11,img.width*sc,img.height*sc);ctx.restore();ctx.lineWidth=3;ctx.strokeStyle=r.hl?'#fff':sepCol(.4);ctx.beginPath();ctx.arc(nx+d/2,y+rh/2,d/2,0,7);ctx.stroke();nx+=d+20;}
   var vw=0;if(r.value!=null&&r.value!==''){var v=String(r.value),vs=fit(v,240,rh*.6,400,AN);setF(400,vs,AN);vw=ctx.measureText(v).width;ctx.fillStyle=r.hl?ink:numFill(y+rh*.2,y+rh*.8);ctx.textAlign='right';ctx.fillText(v,x+w-20,y+rh*.5+vs*.36);}
   var nm=String(r.name).toUpperCase(),hs=r.sub?rh*.38:rh*.44;fit(nm,x+w-20-vw-30-nx,hs,800,BS,14);ctx.fillStyle=ink;ctx.textAlign='left';ctx.fillText(nm,nx,y+(r.sub?rh*.5:rh*.5+hs*.36));
@@ -868,7 +922,7 @@ var TYPES={
       if(V===1&&img)return{hero:[img,'right'],cb:'left',b:[C.label(f.kicker2),C.head(f.title,170),C.sub(f.sub,28),C.scores(g,{rh:170}),C.tag(f.table),C.label(f.slogan,{size:20})]};
       if(V===2||V===1){var p=0;g.forEach(function(x){var r=res(x);p+=r==='S'?2:r==='U'?1:0;});return{ghost:g.map(usScore).join('  '),b:[C.label(f.kicker2),C.head(f.title,230),C.scores(g),C.stats([['Punkte',p+'/'+2*g.length],['Legs',sumLegs(g)],['Tabelle',usRow()?usRow().pos+'.':'']]),C.label(f.slogan,{size:20})]};}
       return{b:[C.label(f.kicker2),C.head(f.title,230),C.sub(f.sub,30),C.scores(g),C.tag(f.table),C.label(f.slogan,{size:20})]};}},
-  vorschau:{g:'Liga',label:'Spieltag-Vorschau',look:'rot',src:'next',n:2,fields:function(){
+  vorschau:{g:'Liga',label:'Spieltag-Vorschau',look:'broadcast',src:'next',n:2,fields:function(){
       var up=matchdays().filter(function(m){return !played(m)&&m.date>=today();}),md=up.filter(function(m){return m.key===S.pick;})[0]||up[0];if(!md)return{_none:'Kein kommender Spieltag eingetragen.'};S.pick=md.key;
       return{kicker:league(),kicker2:team().matchdays?md.round+'. Spieltag':'Ligaspiel',title:md.home?'Heimspieltag':'Game Day',venue:md.venue,street:md.street,note:md.home?'Eintritt frei – kommt vorbei und feuert uns an!':'Drückt uns die Daumen!',slogan:"Auf geht's, CDA!",foto:fotoDefault(),_md:md};},
     poster:function(f,V){var g=f._md.games,img=IMG[photoSrc(f.foto)],ph=V===1&&img;
@@ -884,11 +938,11 @@ var TYPES={
   tabelle:{g:'Liga',label:'Tabelle',look:'print',src:'team',n:2,fields:function(){var tb=team().table||[],u=usRow();
       return{kicker:league(),kicker2:'Saison '+DATA.season,title:'Tabelle',sub:u?'Nach '+u.played+' Spielen':'',list:tb.map(function(r){return r.pos+'|'+short(r.name)+'|'+pts(r)+'|'+r.played+' Spiele · '+r.w+'-'+r.d+'-'+r.l+' · Sets '+r.sets;}).join('\n')};},
     poster:function(f,V){var Lr=lines(f.list),rh=Lr.length>9?60:Lr.length>7?70:80;return{b:[C.label(f.sub),C.head(f.title,V?150:200),C.list(Lr.map(function(a){return{rank:a[0],name:a[1],value:a[2],sub:a[3],hl:/^CDA/.test(a[1])};}),{rh:rh})]};}},
-  formkurve:{g:'Liga',label:'Formkurve',look:'gruen',src:'team',n:2,fields:function(){var gs=allGames().filter(function(g){return g.score;}).slice(-8),w=0,d=0,l=0;gs.forEach(function(g){var r=res(g);if(r==='S')w++;else if(r==='U')d++;else l++;});
+  formkurve:{g:'Liga',label:'Formkurve',look:'duoton',src:'team',n:2,fields:function(){var gs=allGames().filter(function(g){return g.score;}).slice(-8),w=0,d=0,l=0;gs.forEach(function(g){var r=res(g);if(r==='S')w++;else if(r==='U')d++;else l++;});
       return{kicker:league(),kicker2:'Die letzten '+gs.length+' Spiele',title:'Formkurve',sub:w+' Siege · '+d+' Remis · '+l+' Niederlagen',slogan:l===0&&gs.length>=4?'Ungeschlagen.':'Weiter geht\'s.',_gs:gs};},
     poster:function(f,V){var gs=f._gs;return V===1?{b:[C.label(f.kicker2),C.head(f.title,230),C.form(gs.map(res)),C.tag(f.sub),C.stats([['Punkte',gs.reduce(function(a,g){var r=res(g);return a+(r==='S'?2:r==='U'?1:0);},0)],['Spiele',gs.length],['Legs',sumLegs(gs)]]),C.label(f.slogan)]}
       :{b:[C.label(f.kicker2),C.head(f.title,220),C.chart(gs),C.form(gs.map(res)),C.tag(f.sub),C.label(f.slogan)]};}},
-  meilenstein:{g:'Liga',label:'Meilenstein (Herbstmeister …)',look:'gold',src:'team',n:2,fields:function(){var tb=team().table||[],u=usRow(),n=tb.length;
+  meilenstein:{g:'Liga',label:'Meilenstein (Herbstmeister …)',look:'buehne',src:'team',n:2,fields:function(){var tb=team().table||[],u=usRow(),n=tb.length;
       var word=u&&u.pos===1&&u.played===n-1?'Herbstmeister':u&&u.pos===1?'Tabellenführer':u?'Platz '+u.pos:'';
       return{kicker:league(),kicker2:'Saison '+DATA.season,title:word,sub:u?(u.l===0?'Ungeschlagen · ':'')+u.w+' Siege · '+u.d+' Remis · '+u.l+' Niederlagen':'',s1:'Punkte|'+(u?pts(u):''),s2:'Sets|'+(u?u.sets:''),s3:'Legs|'+(u?u.legs:''),slogan:'Danke für eure Unterstützung!'};},
     poster:function(f,V){var tb=(team().table||[]).slice(0,4),u=usRow();if(u&&tb.indexOf(u)<0)tb.push(u);
@@ -911,7 +965,7 @@ var TYPES={
       if(V===1&&img)return{hero:[img,'right'],cb:'left',b:[C.label(f.kicker2),C.head(f.title,220),C.list(rows,{rh:100,gold:true}),C.label(f.slogan)]};
       return{b:[C.label(f.kicker2),C.head(f.title,250),C.list(rows,{rh:112,gold:true}),C.label(f.slogan)]};}},
   // ---------- Competition ----------
-  comp:{g:'Competition',label:'Competition-Ankündigung',look:'rot',src:'compdate',n:2,fields:function(){var d=compDates(false),e=d.filter(function(x){return x.date===S.pick;})[0]||d[0];if(!e)return{_none:'Kein Termin gefunden.'};S.pick=e.date;
+  comp:{g:'Competition',label:'Competition-Ankündigung',look:'broadcast',src:'compdate',n:2,fields:function(){var d=compDates(false),e=d.filter(function(x){return x.date===S.pick;})[0]||d[0];if(!e)return{_none:'Kein Termin gefunden.'};S.pick=e.date;
       var m=MODE[e.mode]||MODE.alt,sg=SIGN[e.date]||[];
       return{kicker:'CDA Competition',kicker2:dow(e.date)+' · '+dmy(e.date),title:e.mode==='alt'?'Darts-Abend':m[0],modus:m[1],list:'Spielort|Bismarck Bistro, Bismarckstraße 7\nSpielmodus|'+(e.mode==='alt'?'Competition':m[0])+(e.note?'\nHinweis|'+e.note:''),
         count:String(sg.length),names:sg.join('\n'),slogan:'Jeder kann mitspielen',foto:'',_date:e.date,_mode:e.mode};},
@@ -919,14 +973,14 @@ var TYPES={
       var b=V===1?[C.label(f.kicker),C.head(f.title,200),C.sub(f.modus,28,{max:2}),C.date(f._date,{time:'20:00 UHR'}),big,C.names(n,{max:12}),C.tag(f.slogan)]
         :[C.label(f.kicker),C.date(f._date,{time:'20:00 UHR'}),C.head(f.title,160),C.sub(f.modus,28,{max:2}),C.kv(lines(f.list)),big,C.names(n,{max:12}),C.tag(f.slogan)];
       return img?{hero:[img,'right'],cb:'left',b:b}:{b:b};}},
-  masters:{g:'Competition',label:'Masters-Ankündigung (mit Pott)',look:'gold',src:'mastersdate',n:2,fields:function(){var d=compDates(true),e=d.filter(function(x){return x.date===S.pick;})[0]||d[0];if(!e)return{_none:'Kein Masters-Termin gefunden.'};S.pick=e.date;
+  masters:{g:'Competition',label:'Masters-Ankündigung (mit Pott)',look:'buehne',src:'mastersdate',n:2,fields:function(){var d=compDates(true),e=d.filter(function(x){return x.date===S.pick;})[0]||d[0];if(!e)return{_none:'Kein Masters-Termin gefunden.'};S.pick=e.date;
       var y=+e.date.slice(0,4),pot=potFor(y),rk=mastersRanking(y),sg=SIGN[e.date]||[],fd=finalsDate(y),lead=rk[0];
       return{kicker:'CDA Masters #'+(e.no||''),kicker2:dow(e.date)+' · '+dmy(e.date)+' · 20:00 Uhr',title:'Masters #'+(e.no||''),pot:euro(pot),potlabel:pot?'im Masters-Pott':'Der Pott startet an diesem Abend',s1:'Anmeldungen|'+sg.length,s2:'Startgeld|15 €',s3:'Finals|'+(fd?dm(fd):''),
         list:(lead?'Spitzenreiter|'+lead.name+' · '+lead.pts+' Pkt\n':'')+'Spielmodus|501 Double-out\nSpielort|Bismarck Bistro, Bismarckstraße 7\nPott|+'+POT_FEE+' € pro Teilnehmer',names:sg.join('\n'),slogan:'Die besten 32 spielen um den Pott',_date:e.date};},
     poster:function(f,V){var n=lines(f.names).map(function(a){return a[0];});
       if(V===1)return{rays:true,b:[C.label(f.kicker2),C.head(f.title,170),C.big(f.pot,f.potlabel,{h:280,rays:true}),C.stats(kp(f),{h:150}),C.names(n,{max:9}),C.tag(f.slogan)]};
       return{rays:true,b:[C.label(f.kicker2),C.big(f.pot,f.potlabel,{h:300}),C.head(f.title,150),C.stats(kp(f),{h:150}),C.kv(lines(f.list).slice(0,3)),C.tag(f.slogan)]};}},
-  sieger:{g:'Competition',label:'Siegerehrung eines Abends',look:'gold',src:'event',n:2,fields:function(){var ev=EVENTS.filter(function(e){return e.date===S.pick;})[0]||EVENTS[0];
+  sieger:{g:'Competition',label:'Siegerehrung eines Abends',look:'buehne',src:'event',n:2,fields:function(){var ev=EVENTS.filter(function(e){return e.date===S.pick;})[0]||EVENTS[0];
       if(ev){S.pick=ev.date;var sm=ev.summary||{},pd=sm.podium||[],nm=function(i){return pd[i]?pd[i].name:'';},no=EVENTS.filter(function(e){return e.mode===ev.mode&&e.date.slice(0,4)===ev.date.slice(0,4)&&e.date<=ev.date;}).length;
         return{kicker:(MODE[ev.mode]||MODE.alt)[0]+(ev.mode==='m501'?' #'+no:''),kicker2:dmy(ev.date),title:'Sieger',p1:nm(0),p2:nm(1),p3:nm(2),
           list:(sm.avg?'Bester Average|'+sm.avg.name+' · '+de(sm.avg.v)+'\n':'')+(sm.hf?'High Finish|'+sm.hf.name+' · '+sm.hf.v+'\n':'')+(sm.n180?'180er|'+sm.n180+'× am Abend\n':'')+(sm.best?'Bestes Leg|'+sm.best.name+' · '+sm.best.v+' Darts':''),
@@ -938,7 +992,7 @@ var TYPES={
         list:rk.slice(0,10).map(function(r,i){return (i+1)+'|'+r.name+'|'+r.pts+'|'+r.n+' Abende'+(r.wins?' · '+r.wins+'× Sieg':'');}).join('\n'),pot:euro(potFor(y)),slogan:'Die besten 32 mit mind. 5 Abenden spielen die Finals'};},
     poster:function(f){var Lr=lines(f.list);return{b:[C.label(f.kicker2),C.head(f.title,200),C.tag('Pott: '+(f.pot||'0 €')),C.list(Lr.map(function(a){return{rank:+a[0],name:a[1],value:a[2],sub:a[3],hl:a[0]==='1'};}),{rh:Lr.length>8?70:84,gold:true}),C.sub(f.slogan,24)]};}},
   // ---------- Masters-Werbung (am besten als Story) ----------
-  ms_aus:{g:'Masters-Werbung',label:'Ausschreibung CDA Masters',look:'gold',src:'msyear',n:2,story:true,fields:function(){var y=+(S.pick||msYear());S.pick=String(y);var d=msDates(y),m=d.filter(function(e){return e.mode==='m501';}),fd=finalsDate(y);
+  ms_aus:{g:'Masters-Werbung',label:'Ausschreibung CDA Masters',look:'buehne',src:'msyear',n:2,story:true,fields:function(){var y=+(S.pick||msYear());S.pick=String(y);var d=msDates(y),m=d.filter(function(e){return e.mode==='m501';}),fd=finalsDate(y);
       return{kicker:'Turnierausschreibung',kicker2:'Saison '+y,title:'CDA Masters '+y,sub:'Die offene Darts-Turnierserie in Augsburg – jeder kann mitspielen.',
         list:'Veranstalter|Clochard Darter Augsburg e.V.\nTermine|'+m.length+' Donnerstage, ab '+(m[0]?dmy(m[0].date):'')+'\nRhythmus|alle drei Wochen\nSpielort|Bismarck Bistro, Bismarckstraße 7, Augsburg\nBeginn|20:00 Uhr · Anmeldung bis 19:45 Uhr\nModus|501 Double-out, Gruppen + K.-o.\nStartgeld|'+MS_FEE+' € pro Abend\nPreisgeld|5 € pro Spieler an die Top 3 des Abends\nMasters-Pott|'+POT_FEE+' € pro Spieler für die Finals\nFinals|'+(fd?'Samstag, '+dmy(fd)+' · TSV Dinkelscherben':'')+'\nAnmeldung|Homepage → Mitspielen (Link in der Bio)',slogan:'Good Darts. Good People.'};},
     poster:function(f,V){var rows=lines(f.list),n=S.format==='story'?rows.length:Math.min(rows.length,8);return{rays:V===0,b:[C.label(f.kicker),C.head(f.title,S.format==='story'?170:170),C.sub(f.sub,28,{max:2}),C.kv(rows.slice(0,n),{rh:S.format==='story'?58:58}),C.tag(f.slogan)]};}},
@@ -946,14 +1000,14 @@ var TYPES={
       return{kicker:'CDA Masters '+y,kicker2:"So funktioniert's",title:'Dein Weg ins Finale',
         list:'Mitspielen|Jeden dritten Donnerstag ist Masters – '+MASTERS_PER_SEASON+' Abende pro Saison, jeder darf mitmachen.\nPunkte sammeln|5 fürs Dabeisein, 2 pro Spieler hinter dir, 1 pro Matchsieg, Bonus 10/6/3 für die Top 3.\nQualifizieren|Mindestens '+MIN_QUALI+' Abende spielen. Es zählen deine besten '+BEST_OF+' Ergebnisse.\nFinals|Die besten '+MAX_FINALS+' spielen '+(fd?'am '+dmy(fd)+' ':'')+'um den kompletten Masters-Pott.',slogan:'Jetzt anmelden – Link in der Bio'};},
     poster:function(f){return{b:[C.label(f.kicker2),C.head(f.title,S.format==='story'?200:160),C.steps(lines(f.list)),C.tag(f.slogan)]};}},
-  ms_pot:{g:'Masters-Werbung',label:'Pott-Update',look:'gold',src:'msyear',n:2,story:true,fields:function(){var y=+(S.pick||msYear());S.pick=String(y);var pot=potFor(y),n=seasonEvents(y,'m501').length,proj=MASTERS_PER_SEASON*15*POT_FEE;
+  ms_pot:{g:'Masters-Werbung',label:'Pott-Update',look:'sisal',src:'msyear',n:2,story:true,fields:function(){var y=+(S.pick||msYear());S.pick=String(y);var pot=potFor(y),n=seasonEvents(y,'m501').length,proj=MASTERS_PER_SEASON*15*POT_FEE;
       return{_note:n?'':'Noch kein Masters-Abend gespielt – Betrag zeigt 0 €. Für die Werbung vor dem Start kannst du stattdessen die Hochrechnung eintragen.',kicker:'CDA Masters '+y,kicker2:'Nach '+n+' von '+MASTERS_PER_SEASON+' Abenden',title:'Der Pott wächst',pot:euro(pot),potlabel:n?'im Masters-Pott':'Hochrechnung: rund '+euro(proj)+' zum Saisonende',_pot:pot,slogan:'Jeder Abend legt '+POT_FEE+' € pro Spieler drauf'};},
     poster:function(f,V){var pv=+(String(f.pot||'0').replace(/[^\d]/g,''))||0;return{rays:true,b:[C.label(f.kicker2),V?null:C.head(f.title,140),C.big(f.pot,f.potlabel,{h:S.format==='story'?330:260,rays:V===1}),C.label('So wird ausgezahlt',{size:20}),C.payout(pv),C.tag(f.slogan)]};}},
   ms_count:{g:'Masters-Werbung',label:'Countdown',look:'arena',src:'cdtarget',n:2,story:true,fields:function(){var y=msYear(),d=msDates(y),nxt=d.filter(function(e){return e.mode==='m501'&&e.date>=today();})[0],fd=finalsDate(y),first=d.filter(function(e){return e.mode==='m501';})[0];
       var t=S.pick||'next',e=t==='finals'?{date:fd,mode:'finals'}:t==='first'?first:nxt||first;S.pick=t;if(!e)return{_none:'Kein Termin gefunden.'};var n=daysTo(e.date);
       return{kicker:'CDA Masters '+y,kicker2:dow(e.date)+' · '+dmy(e.date),title:t==='finals'?'Bis zu den Finals':e===first&&today()<first.date?'Bis zum Saisonstart':'Bis Masters #'+e.no,days:String(n),label:t==='finals'?'BIS ZU DEN FINALS':'',sub:t==='finals'?'TSV Dinkelscherben · die besten '+MAX_FINALS+' der Saison':'20:00 Uhr · Bismarck Bistro · Startgeld '+MS_FEE+' €',slogan:'Jetzt anmelden – Link in der Bio',_date:e.date};},
     poster:function(f,V){var n=+f.days||0;return{ghost:V?String(n):null,b:[C.label(f.kicker),C.head(f.title,S.format==='story'?170:140),C.countdown(n),C.date(f._date),C.sub(f.sub,26,{max:2}),C.tag(f.slogan)]};}},
-  ms_fin:{g:'Masters-Werbung',label:'Finals-Ausschreibung',look:'gold',src:'msyear',n:2,story:true,fields:function(){var y=+(S.pick||msYear());S.pick=String(y);var fd=finalsDate(y),pot=potFor(y);
+  ms_fin:{g:'Masters-Werbung',label:'Finals-Ausschreibung',look:'buehne',src:'msyear',n:2,story:true,fields:function(){var y=+(S.pick||msYear());S.pick=String(y);var fd=finalsDate(y),pot=potFor(y);
       return{kicker:'CDA Masters '+y,kicker2:'Das Saisonfinale',title:'Masters-Finals',sub:fd?'Samstag, '+dmy(fd)+' · TSV Dinkelscherben':'',
         list:'Teilnehmer|die besten '+MAX_FINALS+' der Rangliste\nQualifikation|mindestens '+MIN_QUALI+' Masters-Abende\nSpielort|Sportheim TSV Dinkelscherben, 6 Boards\nModus|Vierergruppen → Dreiergruppen → K.-o. der letzten 16\nPreisgeld|der komplette Masters-Pott'+(pot?' (aktuell '+euro(pot)+')':'')+'\nAuszahlung|40 / 25 / 17 / 12 / 6 % an die Plätze 1–5',slogan:'Wer holt sich den Pott?',_date:fd};},
     poster:function(f,V){var b=[C.label(f.kicker2),C.head(f.title,S.format==='story'?220:180),C.sub(f.sub,30,{color:L.fg,w:700}),f._date&&V===1?C.date(f._date):null,C.kv(lines(f.list),{rh:S.format==='story'?72:56}),C.tag(f.slogan)];return{rays:true,b:b};}},
@@ -968,13 +1022,13 @@ var TYPES={
       if(p.avg)st.push('Average Saison|'+de(p.avg));if(p.single)st.push('Einzel Saison|'+p.single);if(p.double)st.push('Doppel Saison|'+p.double);
       return{kicker:'Spieler des Monats',kicker2:key?monthLabel(key):MONTHS[new Date().getMonth()]+' '+new Date().getFullYear(),name:pn||'',s1:st[0]||'',s2:st[1]||'',s3:st[2]||'',quote:info.motto||'',_mr:mr,_mon:mon};},
     poster:function(f,V){return{custom:function(top,y1){playerOfMonth(f,V,top,y1);}};}},
-  steckbrief:{g:'Spieler',label:'Spieler-Steckbrief',look:'neon',src:'player',n:2,fields:function(){var ps=allPlayers(),pn=S.pick&&ps.some(function(p){return p.name===S.pick;})?S.pick:(ps.filter(function(p){var i=PLAYERS[p.name];return i&&Object.keys(i).length>1;})[0]||ps[0]||{}).name;S.pick=pn;
+  steckbrief:{g:'Spieler',label:'Spieler-Steckbrief',look:'clean',src:'player',n:2,fields:function(){var ps=allPlayers(),pn=S.pick&&ps.some(function(p){return p.name===S.pick;})?S.pick:(ps.filter(function(p){var i=PLAYERS[p.name];return i&&Object.keys(i).length>1;})[0]||ps[0]||{}).name;S.pick=pn;
       var p=ps.filter(function(x){return x.name===pn;})[0]||{},i=PLAYERS[pn]||{},rows=[['Spitzname',i.nick],['Im Verein seit',i.since],['Wurfhand',i.hand],['Lieblings-Checkout',i.checkout],['Darts',i.darts],['Walk-on',i.walkon],['Spielertyp',i.typ],['Beruf',i.beruf],['Hobby',i.hobby]].filter(function(r){return r[1];});
       return{_note:rows.length?'':'Für diesen Spieler sind noch keine Steckbrief-Angaben hinterlegt (players.json, nur mit Einwilligung).',kicker:'Steckbrief',kicker2:p.team?['','1. Mannschaft','2. Mannschaft','3. Mannschaft','4. Mannschaft'][p.team]:'',name:pn||'',list:rows.map(function(r){return r.join('|');}).join('\n'),
         s1:p.avg?'Average|'+de(p.avg):'',s2:p.single?'Einzel|'+p.single:'',s3:p.double?'Doppel|'+p.double:'',quote:i.motto||i.cda||''};},
     poster:function(f,V){return{custom:function(top,y1){playerProfile(f,V,top,y1);}};}},
   // ---------- Jahresrückblick ----------
-  wrapped:{g:'Jahresrückblick',label:'CDA Wrapped (Karussell)',look:'neon',src:'wslide',n:2,fields:function(){var s=S.pick&&WSL.some(function(x){return x[0]===S.pick;})?S.pick:'intro';S.pick=s;var r=WF[s]();r._s=s;
+  wrapped:{g:'Jahresrückblick',label:'CDA Wrapped (Karussell)',look:'duoton',src:'wslide',n:2,fields:function(){var s=S.pick&&WSL.some(function(x){return x[0]===S.pick;})?S.pick:'intro';S.pick=s;var r=WF[s]();r._s=s;
       r._note=(r._note?r._note+' ':'')+'Folie '+(WSL.map(function(x){return x[0];}).indexOf(s)+1)+' von '+WSL.length+' – alle Folien nacheinander speichern und als Karussell posten.';return r;},
     poster:function(f,V){return WP[f._s]?WP[f._s](f,V):{b:[C.head(f.title,200)]};}}
 };
@@ -1183,7 +1237,7 @@ var qd=0;function queueDraw(){cancelAnimationFrame(qd);qd=requestAnimationFrame(
 function draw(){
   if(!DATA)return;H=S.format==='story'?1920:1350;if(cv.height!==H){cv.width=W;cv.height=H;}
   ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,W,H);ctx.textBaseline='alphabetic';shadow();ctx.setLineDash([]);ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';
-  var R=rng(S.seed*7919+S.look.length*131+S.type.length*17);L=LOOKS[S.look];
+  if(!LOOKS[S.look])S.look=TYPES[S.type].look;var R=rng(S.seed*7919+S.look.length*131+S.type.length*17);L=LOOKS[S.look];
   var t=TYPES[S.type],V=(S.seed-1)%(t.n||1);
   var story=S.format==='story',top=story?200:56,sh=S.partners?(story?180:170):0,safe=story?220:0,y1=H-sh-safe-(S.partners?40:80);
   CB={x:70,w:W-140,align:'center'};
