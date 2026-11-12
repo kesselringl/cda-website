@@ -86,6 +86,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green);b
 .ph-box img{width:100%;height:100%;object-fit:cover}
 .ph-box.has{border-style:solid;padding:0}
 .tips{margin:0;padding-left:1.1em;color:var(--muted);font-size:.9rem}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .consent{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;font-weight:400;font-size:.93rem}
 .consent input{width:20px;height:20px;margin-top:2px;accent-color:var(--green)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-weight:700;font-size:1rem;border:0;border-radius:var(--radius);padding:14px 22px;cursor:pointer;text-decoration:none}
@@ -116,7 +117,16 @@ footer nav a{display:inline-block;padding:6px 2px;min-height:24px}
   <h1>Dein Steckbrief</h1>
   <p class="lead">Auf der Homepage bekommt jeder Spieler eine eigene Karte: vorne Foto und Bilanz, hinten dein Steckbrief. Die Angaben nutzen wir auch für Instagram, zum Beispiel beim „Spieler des Monats“. Alles ist freiwillig – füll einfach aus, was du magst. Dauert keine 3 Minuten.</p>
 
-  <form class="form" id="f" novalidate>
+  <div class="form" id="gateBox" style="margin-bottom:22px">
+    <fieldset>
+      <legend>Vereinscode</legend>
+      <p style="margin:0 0 10px">Das Formular ist nur für Mitglieder. Den Code findest du in der Vereins-WhatsApp-Gruppe oder bekommst ihn von Leon.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><label for="code" class="sr-only">Vereinscode</label><input type="text" id="code" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="40" placeholder="Vereinscode" style="flex:1 1 180px">
+      <button class="btn primary" id="codeGo" type="button">Weiter</button></div>
+      <div class="msg err hidden" id="codeErr" role="alert" style="margin-top:10px"></div>
+    </fieldset>
+  </div>
+  <form class="form hidden" id="f" novalidate>
     <fieldset>
       <legend>Wer bist du?</legend>
       <div class="grid">
@@ -230,10 +240,20 @@ footer nav a{display:inline-block;padding:6px 2px;min-height:24px}
 
   var err=document.getElementById('err');
   function showErr(t){err.textContent=t;err.classList.remove('hidden');err.scrollIntoView({behavior:'smooth',block:'center'});}
-  function uuid(){if(crypto.randomUUID)return crypto.randomUUID();var b=crypto.getRandomValues(new Uint8Array(16));b[6]=b[6]&15|64;b[8]=b[8]&63|128;var h=[].map.call(b,function(x){return(x+256).toString(16).slice(1);}).join('');return h.slice(0,8)+'-'+h.slice(8,12)+'-'+h.slice(12,16)+'-'+h.slice(16,20)+'-'+h.slice(20);}
   function hit(p){if(navigator.webdriver)return;try{fetch(U+'/rest/v1/rpc/cda_hit',{method:'POST',keepalive:true,headers:{apikey:K,'Content-Type':'application/json'},body:JSON.stringify({p_page:p})}).catch(function(){});}catch(e){}}
   hit('steckbrief');
 
+  var CODE=null;
+  function ticket(c){return fetch(U+'/rest/v1/rpc/cda_steckbrief_ticket',{method:'POST',headers:{apikey:K,'Content-Type':'application/json'},body:JSON.stringify({p_code:c})})
+    .then(function(r){return r.json().catch(function(){return null;}).then(function(j){if(!r.ok)throw new Error((j&&j.message)||'Fehler '+r.status);return j;});});}
+  var cIn=document.getElementById('code'),cGo=document.getElementById('codeGo'),cErr=document.getElementById('codeErr');
+  function checkCode(){var c=cIn.value.trim();cErr.classList.add('hidden');if(!c){cIn.focus();return;}
+    cGo.disabled=true;cGo.textContent='Prüfe …';
+    ticket(c).then(function(t){cGo.disabled=false;cGo.textContent='Weiter';
+      if(!t){cErr.textContent='Der Vereinscode stimmt nicht. Frag bitte in der Vereins-WhatsApp-Gruppe oder bei Leon nach.';cErr.classList.remove('hidden');return;}
+      CODE=c;document.getElementById('gateBox').classList.add('hidden');document.getElementById('f').classList.remove('hidden');})
+    .catch(function(x){cGo.disabled=false;cGo.textContent='Weiter';cErr.textContent=x.message==='Failed to fetch'?'Keine Verbindung. Bitte gleich noch einmal versuchen.':x.message;cErr.classList.remove('hidden');});}
+  cGo.onclick=checkCode;cIn.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();checkCode();}});
   document.getElementById('f').addEventListener('submit',function(e){
     e.preventDefault();err.classList.add('hidden');
     var name=sel.value==='__other'?document.getElementById('other').value.trim():sel.value;
@@ -243,12 +263,13 @@ footer nav a{display:inline-block;padding:6px 2px;min-height:24px}
     var hand=document.querySelector('input[name=hand]:checked');if(hand)data.hand=hand.value;
     if(!Object.keys(data).length&&!blob)return showErr('Füll bitte mindestens ein Feld aus oder lade ein Foto hoch.');
     var btn=document.getElementById('send');btn.disabled=true;btn.textContent='Wird gesendet …';
-    var photoName=null,photoFail=false;
-    var up=blob?(function(){var fn=uuid()+'.jpg';
+    var photoName=null,photoFail=false,tk=null;
+    ticket(CODE).then(function(t){if(!t)throw new Error('Der Vereinscode gilt nicht mehr – lade die Seite bitte neu');tk=t;
+      if(!blob)return;var fn=t+'.jpg';
       return fetch(U+'/storage/v1/object/steckbrief/'+fn,{method:'POST',headers:{apikey:K,'Content-Type':'image/jpeg','x-upsert':'false'},body:blob})
-        .then(function(r){if(r.ok)photoName=fn;else photoFail=true;}).catch(function(){photoFail=true;});})():Promise.resolve();
-    up.then(function(){
-      return fetch(U+'/rest/v1/rpc/cda_steckbrief_send',{method:'POST',headers:{apikey:K,'Content-Type':'application/json'},body:JSON.stringify({p_name:name,p_data:data,p_photo:photoName,p_consent:true})});
+        .then(function(r){if(r.ok)photoName=fn;else photoFail=true;}).catch(function(){photoFail=true;});
+    }).then(function(){
+      return fetch(U+'/rest/v1/rpc/cda_steckbrief_send',{method:'POST',headers:{apikey:K,'Content-Type':'application/json'},body:JSON.stringify({p_ticket:tk,p_name:name,p_data:data,p_photo:photoName,p_consent:true})});
     }).then(function(r){
       if(!r.ok)return r.json().catch(function(){return{};}).then(function(j){throw new Error(j.message||'Fehler '+r.status);});
       hit('steckbrief-gesendet');
