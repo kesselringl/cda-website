@@ -1,0 +1,35 @@
+name: Technik-Check
+
+# Nur von Hand: prüft die veröffentlichte Seite mit Lighthouse (Ladezeit, Barrierefreiheit, Best Practices, SEO)
+# auf Handy und Computer und legt die Ergebnisse in den Zweig technik-check.
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - id: pages
+        uses: actions/configure-pages@v5
+      - name: Werkzeuge
+        run: |
+          npm i --no-save lighthouse@12.6.0 axe-core@4.10.2 playwright@1.49.1
+          npx playwright install --with-deps chromium
+      - name: Prüfen
+        env:
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
+        run: node scripts/technik-check.mjs out
+      - name: Ergebnisse in den Zweig technik-check legen (wird jedes Mal überschrieben)
+        run: |
+          cd out
+          git init -q -b technik-check
+          git add .
+          git -c user.name="CDA Bot" -c user.email=actions@users.noreply.github.com commit -q -m "Technik-Check"
+          git push -f -q "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" technik-check
