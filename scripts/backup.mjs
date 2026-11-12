@@ -8,10 +8,10 @@ const OUT = process.argv[2] || 'backup';
 mkdirSync(OUT, { recursive: true });
 const H = { apikey: K, 'Content-Type': 'application/json' };
 
-async function table(name, order) {
+async function table(name, order, cols = '*') {
   const all = [];
   for (let from = 0; ; from += 500) {
-    const r = await fetch(`${U}/rest/v1/${name}?select=*&order=${order}`, { headers: { ...H, Range: `${from}-${from + 499}`, 'Range-Unit': 'items' } });
+    const r = await fetch(`${U}/rest/v1/${name}?select=${cols}&order=${order}`, { headers: { ...H, Range: `${from}-${from + 499}`, 'Range-Unit': 'items' } });
     if (!r.ok && r.status !== 206) throw new Error(`${name}: HTTP ${r.status} ${await r.text()}`);
     const rows = await r.json(); all.push(...rows);
     if (rows.length < 500) break;
@@ -25,7 +25,7 @@ async function rpc(fn) {
 }
 
 const manifest = { erstellt: new Date().toISOString(), quelle: U, inhalt: {} };
-const jobs = [['spieler', () => table('players', 'id')], ['abende', () => table('events', 'date')], ['anmeldungen', () => table('signups', 'event_date')], ['steckbriefe', () => rpc('cda_profiles')]];
+const jobs = [['spieler', () => table('players', 'id')], ['abende', () => table('events', 'date')], ['anmeldungen', () => table('signups', 'event_date', 'id,event_date,player_id,guest_name,created_at')], ['steckbriefe', () => rpc('cda_profiles')]];
 let failed = 0;
 for (const [name, fn] of jobs) {
   try {
