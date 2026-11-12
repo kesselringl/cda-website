@@ -68,7 +68,7 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 .gk-ins{margin:12px 0 0;padding:10px 12px 10px 28px;background:#0f1311;border:1px solid #2f6b3c;border-radius:10px;font-size:13px}.gk-ins li{margin:3px 0}
 .gk-scroll{overflow-x:auto}.gk-t{font-size:13px;white-space:nowrap}.gk-t th,.gk-t td{padding:5px 8px;text-align:left;border-bottom:1px solid var(--line)}.gk-t th{color:var(--mute);font-weight:600;font-size:12px}.gk-t tr.st td:first-child{font-weight:700}.gk-t td.win{color:#7dffa0;font-weight:700}.gk-t td.loss{color:#ff7d86;font-weight:700}
 .gk-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.gk-bar select{flex:1 1 320px;min-width:0;background:#0f1311;color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:9px 10px;font:600 14px Archivo,Arial,sans-serif}
-.gk,.gk-us{min-width:0}#gegv .grid2{grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
+.gk,.gk-us{min-width:0}.wa-box{max-width:720px}.wa-box textarea{width:100%;box-sizing:border-box;font:15px/1.5 Archivo,Arial,sans-serif;background:#0f1311;color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:12px}.wa-box select{width:100%}.wa-act{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}#gegv .grid2{grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
 .gk-us summary{cursor:pointer;padding:4px 0}.gk-us .gk{border:0;padding:12px 0 0;background:none}
 
 .sapp{background:#0CA12D;color:#08130b;border:0;border-radius:999px;padding:6px 12px;font:700 13px Archivo,Arial,sans-serif;cursor:pointer;margin-right:14px}
@@ -82,7 +82,7 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 <header class="top">
   <img src="logo.png" alt="" width="296" height="378">
   <h1>CDA <span>Grafik-Studio</span></h1>
-  <nav class="vtabs" id="vtabs" hidden><button type="button" data-view="g" aria-pressed="true">Grafiken</button><button type="button" data-view="s" aria-pressed="false">Besucherzahlen</button><button type="button" data-view="o" aria-pressed="false">Gegner-Check</button><button type="button" data-view="p" aria-pressed="false">Steckbriefe<span id="pbadge" class="pbadge" hidden></span></button></nav>
+  <nav class="vtabs" id="vtabs" hidden><button type="button" data-view="g" aria-pressed="true">Grafiken</button><button type="button" data-view="s" aria-pressed="false">Besucherzahlen</button><button type="button" data-view="w" aria-pressed="false">WhatsApp</button><button type="button" data-view="o" aria-pressed="false">Gegner-Check</button><button type="button" data-view="p" aria-pressed="false">Steckbriefe<span id="pbadge" class="pbadge" hidden></span></button></nav>
   <button type="button" id="sapp" class="sapp" hidden>📲 Als App installieren</button><a href="./">zur Homepage</a><a href="#" id="logout" hidden style="margin-left:14px">Abmelden</a>
 </header>
 <div class="smodal" id="smodal" hidden role="dialog" aria-modal="true" aria-labelledby="smt"><div class="sbox"><button type="button" class="sx" aria-label="Schließen">×</button>
@@ -123,6 +123,7 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 <section class="statsv" id="statsv" hidden></section>
 <section class="statsv" id="profv" hidden></section>
 <section class="statsv" id="gegv" hidden></section>
+<section class="statsv" id="wav" hidden></section>
 <script>
 /* Gegner-Check: 2. Bundesliga, Doppelspieltag = zwei Gegner am selben Tag (Daten: liga.json aus den 3K-Spielberichten) */
 (function(){
@@ -267,7 +268,7 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 (function(){var U='https://qeevsqrmltewbtrnfrfm.supabase.co',K='sb_publishable_pwnzx63cque5lKZEVCe4mA_5SvBP8Yd',A=null;try{A=JSON.parse(localStorage.getItem('cda-auth')||'null');}catch(e){}
   function save(j){A={role:'lead',access:j.access_token,refresh:j.refresh_token,exp:Date.now()+(j.expires_in||3600)*1000};try{localStorage.setItem('cda-auth',JSON.stringify(A));}catch(e){}}
   function open(){setTimeout(function(){window.dispatchEvent(new Event('cda-open'));},50);document.getElementById('gate').hidden=true;document.getElementById('app').hidden=false;document.getElementById('logout').hidden=false;document.getElementById('vtabs').hidden=false;window.dispatchEvent(new Event('resize'));}
-  function gate(){document.getElementById('gate').hidden=false;document.getElementById('app').hidden=true;document.getElementById('statsv').hidden=true;document.getElementById('profv').hidden=true;document.getElementById('gegv').hidden=true;document.getElementById('vtabs').hidden=true;setTimeout(function(){var p=document.getElementById('gpw');if(p)p.focus();},50);}
+  function gate(){document.getElementById('gate').hidden=false;document.getElementById('app').hidden=true;document.getElementById('statsv').hidden=true;document.getElementById('profv').hidden=true;document.getElementById('gegv').hidden=true;document.getElementById('wav').hidden=true;document.getElementById('vtabs').hidden=true;setTimeout(function(){var p=document.getElementById('gpw');if(p)p.focus();},50);}
   function refresh(){return fetch(U+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{apikey:K,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:A.refresh})}).then(function(r){return r.ok?r.json():null;}).then(function(j){if(j){save(j);return true;}return false;}).catch(function(){return false;});}
   if(A&&A.role==='lead'&&A.refresh){if(A.exp>Date.now()+60000)open();else refresh().then(function(ok){ok?open():gate();});}else gate();
   document.getElementById('gform').onsubmit=function(e){e.preventDefault();var err=document.getElementById('gerr');err.textContent='Anmelden …';
@@ -373,7 +374,7 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
       var data={};c.querySelectorAll('[data-k]').forEach(function(i){var v=i.value.trim();if(v)data[i.getAttribute('data-k')]=v;});
       b.disabled=true;rpc('cda_steckbrief_set',{p_id:id,p_status:a,p_data:data,p_name:c.querySelector('.pname').value}).then(profiles).catch(function(x){alert(x.message);b.disabled=false;});};}
   document.getElementById('vtabs').onclick=function(e){var b=e.target.closest('[data-view]');if(!b)return;var v=b.getAttribute('data-view');this.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed',x===b);});
-    document.getElementById('statsv').hidden=v!=='s';document.getElementById('profv').hidden=v!=='p';document.getElementById('gegv').hidden=v!=='o';document.getElementById('app').hidden=v!=='g';if(v==='s')stats();if(v==='p')profiles();if(v==='o')window.cdaGegner();};
+    document.getElementById('statsv').hidden=v!=='s';document.getElementById('profv').hidden=v!=='p';document.getElementById('gegv').hidden=v!=='o';document.getElementById('wav').hidden=v!=='w';document.getElementById('app').hidden=v!=='g';if(v==='s')stats();if(v==='p')profiles();if(v==='o')window.cdaGegner();if(v==='w')window.cdaWA();};
   // Zahl neuer Einsendungen gleich nach dem Anmelden im Reiter anzeigen
   window.addEventListener('cda-open',function(){rpc('cda_steckbrief_list').then(function(rows){PROWS=rows||[];badge();}).catch(function(){});});
 })();
@@ -1331,5 +1332,70 @@ Promise.all([fetch('data.json').then(function(r){return r.json();}),Promise.all(
   PREV=a[4]&&a[4].teams&&a[4].teams['1']?Object.assign({season:a[4].season},a[4].teams['1']):null;
   return Promise.all(photoPlayers().map(function(n){return load(PLAYERS[n].photo);}));
 }).then(function(){if(!TYPES[S.type])S.type='ergebnis';S.look=TYPES[S.type].look;buildTypeSelect();buildThemes();buildSrc();refill();});
+// ================= WhatsApp-Nachricht für die Vereinsgruppe =================
+// Klingt wie von Leon, passt sich an Anmeldungen, Spielmodus, Termin und Jahreszeit an. „Neu formulieren“ würfelt eine andere Fassung.
+var WA={date:null,seed:0,kind:'auto',txt:''};
+function waRng(k){var h=2166136261;k.split('').forEach(function(c){h=Math.imul(h^c.charCodeAt(0),16777619);});var a=h>>>0;return function(){a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function waFirst(n){return String(n||'').replace(/ \(Gast\)$/,'').split(' ')[0];}
+function waNames(L){var n=L.map(waFirst).filter(function(v,i,a){return v&&a.indexOf(v)===i;});if(n.length<=3)return n.length>1?n.slice(0,-1).join(', ')+' und '+n[n.length-1]:n[0]||'';return n.slice(0,3).join(', ')+' und '+(L.length-3)+' weitere';}
+function waBase(){return location.origin+location.pathname.replace(/[^\/]*$/,'');}
+function waBuild(e,kind){
+  var date=e.date,R=waRng(date+'#'+kind+'#'+WA.seed),one=function(a){return a[Math.floor(R()*a.length)];},L=SIGN[date]||[],n=L.length,nm=waNames(L);
+  var dt=new Date(date+'T12:00:00'),wd=WD[dt.getDay()],dd=dmy(date).slice(0,6),diff=daysTo(date),when=diff===0?'heute':diff===1?'morgen':'am '+wd;
+  var mode=e.mode==='alt'?'open':e.mode,y=+date.slice(0,4),md=date.slice(5),out=[];
+  var prev=EVENTS.filter(function(x){return x.date<date;}).sort(function(a,b){return a.date<b.date?-1:1;}),last=prev[prev.length-1];
+  // Begrüßung
+  if(kind==='heute')out.push(one(['Heute Abend wird geworfen! 🎯','Servus zusammen, heute ist wieder Darts-Abend! 🎯','Na, wer kommt heute Abend? 🎯','Heute ist Donnerstag – ihr wisst, was das heißt 😏🎯']));
+  else if(kind==='push')out.push(one(['Kurzer Reminder 👋','Leute, kurze Erinnerung 🎯','Hallo? Ist da wer? 😄','Letzter Aufruf für '+wd+' 📣']));
+  else out.push(one(['Servus zusammen! 👋','Hey Leute 🎯','Servus Jungs und Mädels 👋','Na, wer hat '+when+' Bock auf Darts? 🎯','Abend zusammen! 🎯']));
+  // Anlass: Jahreszeit
+  var hook='';
+  if(md>='12-10'&&md<='12-22')hook=one(['Letzter Donnerstag vor der Weihnachtspause 🎄 – lasst uns das Jahr gscheid ausklingen lassen!','Vor der Weihnachtspause werfen wir nochmal ordentlich 🎄']);
+  else if(md>='01-07'&&md<='01-13')hook=one(['Das erste Mal im neuen Jahr – gute Vorsätze direkt am Board umsetzen 😄','Endlich geht’s wieder los nach der Pause!']);
+  // Spielmodus
+  var ML={open:['Gespielt wird ganz normal 501 – egal ob Ligaspieler oder Hobbywerfer, jeder kann mitmachen.','Ganz entspannt 501, jeder ist willkommen – auch wenn du nur ab und zu wirfst.','501 Double-out, lockere Runde – genau richtig nach der Arbeit 🍻'],
+    c501:['Ganz normal 501, ohne Masters-Druck – perfekt zum Reinkommen.','Klassisch 501 Double-out, ohne Wertung – einfach Spaß haben.'],
+    di301:['301 Double-In: erst ein Doppel treffen, dann zählt’s. Kurz, knackig, gemein 😅','Diesmal 301 Double-In – wer das Doppel zuerst trifft, ist klar im Vorteil 😉'],
+    cricket:['Cricket-Nacht! Felder schließen statt rechnen – mal was ganz anderes.','Cricket ist angesagt: 15 bis 20 und Bull, da zählt Taktik 🧠'],
+    lucky:['Lucky Doubles: Die Doppel werden zugelost – stark mit schwach, da hat jeder eine Chance.','Lucky Doubles! Der Partner wird gelost, also kann wirklich jeder gewinnen 🍀'],
+    friend:['Bring a Friend: Bringt jemanden mit, ihr spielt zusammen im Doppel. Perfekt, um Freunde mal ans Board zu holen!','Diesmal „Bring a Friend“ – nehmt Kumpel, Freundin oder Kollegen mit, ihr spielt als Doppel 🍻'],
+    finals:['Die Masters-Finals stehen an – die Besten der Saison spielen um den kompletten Pott! 🏆']};
+  var line=one(ML[mode]||ML.c501);
+  if(mode==='m501'){var pot=potFor(y),rk=mastersRanking(y),lead=rk[0];
+    line=(e.no===1?one(['Masters #1 – die neue Saison startet, alle fangen bei null an!','Auftakt der Masters-Saison: Masters #1, jeder startet bei null 💪']):'Masters #'+(e.no||'')+': Punkte für die Rangliste und die Finals.')+(pot?' Im Pott sind schon '+euro(pot)+' 💰':'');
+    if(lead&&R()<.7)line+='\n'+one(['Aktuell vorne: '+waFirst(lead.name)+' mit '+lead.pts+' Punkten – wer holt ihn ein?',waFirst(lead.name)+' führt gerade mit '+lead.pts+' Punkten. Das lassen wir doch nicht so stehen 😏']);}
+  if(kind!=='push'||R()<.5)out.push((hook?hook+'\n':'')+line);
+  // letzter Sieger
+  var pw=last&&last.summary&&(last.summary.podium||[])[0];if(pw&&pw.name&&R()<.55){var w=pw.name.split(' & ').map(waFirst).join(' & ');
+    out.push(one(['Letztes Mal hat '+w+' abgeräumt – Revanche? 😉','Beim letzten Mal war '+w+' nicht zu stoppen. Wer stoppt '+(w.indexOf('&')>0?'die beiden':'ihn')+' diesmal?']));}
+  // Anmeldestand
+  out.push(n===0?one(['Noch ist die Liste leer – wer macht den Anfang? 😄','Wer traut sich als Erster auf die Liste?','Noch keiner angemeldet – zeigt mal, dass ihr da seid!']):
+    n<=5?one([nm+(n===1?' ist':' sind')+' schon dabei – da geht noch was! 💪',nm+(n===1?' hat':' haben')+' schon zugesagt. Wer noch?',(n===1?'Bisher nur '+nm:'Bisher '+nm)+' – da muss mehr gehen! 😄']):
+    n<=11?one(['Schon '+n+' Anmeldungen, unter anderem '+waNames(L.slice(0,3))+' – wird ein guter Abend!',n+' sind schon dabei 🔥 Kommt dazu, je mehr desto besser!']):
+    n<=15?one([n+' Anmeldungen – die Bude wird voll! 🔥 Wer noch mitwill, schnell eintragen.','Wahnsinn, schon '+n+' Leute dabei! Tragt euch ein, damit wir planen können.']):
+    'Schon '+n+' Anmeldungen 🤯 Bitte unbedingt eintragen, wenn ihr kommt – dann planen wir die Boards rechtzeitig.');
+  if(kind!=='push')out.push('📅 '+wd+', '+dd+' · ab 20 Uhr · '+(mode==='finals'?'Sportheim TSV Dinkelscherben':'Bismarck Bistro')+(mode==='friend'||R()<.3?'\nGäste sind wie immer willkommen!':''));
+  out.push(one(['Hier kurz anmelden (oder absagen):','Anmelden geht in 10 Sekunden:','Bitte kurz eintragen, damit wir planen können:','Zur Anmeldung:'])+'\n'+waBase()+'?s=wa#kontakt/'+date);
+  var bye=one(['','Bis '+(diff===0?'heute Abend':diff===1?'morgen':wd)+'! 🍻','Ich freu mich auf euch! 🎯','Bis dann, Leon','']);if(bye)out.push(bye);
+  return out.join('\n\n');}
+function waView(){var el=$('wav'),ds=upcoming().filter(function(e){return e.mode!=='finals'||true;}).slice(0,8);if(!ds.length){el.innerHTML='<div class="box"><p class="note">Kein Termin gefunden.</p></div>';return;}
+  if(!WA.date||!ds.some(function(e){return e.date===WA.date;}))WA.date=ds[0].date;var e=ds.filter(function(x){return x.date===WA.date;})[0];
+  signupsFor(e.date).then(function(){
+    var diff=daysTo(e.date),auto=diff===0?'heute':'einladung',kind=WA.kind==='auto'?auto:WA.kind;WA.txt=waBuild(e,kind);var n=(SIGN[e.date]||[]).length;
+    var kinds=[['auto','Automatisch'],['einladung','Einladung'],['heute','Am Spieltag'],['push','Nachfassen']];
+    el.innerHTML='<div class="box wa-box"><h2>WhatsApp-Nachricht für die Vereinsgruppe</h2>'+
+      '<label class="f" for="wadate">Abend</label><select id="wadate">'+ds.map(function(x){return '<option value="'+x.date+'"'+(x.date===e.date?' selected':'')+'>'+dow(x.date).slice(0,2)+' '+dmy(x.date)+' · '+(x.mode==='alt'?'Offene Competition':(MODE[x.mode]||MODE.alt)[0]+(x.no?' #'+x.no:''))+'</option>';}).join('')+'</select>'+
+      '<label class="f">Anlass</label><div class="seg" id="wakind">'+kinds.map(function(k){return '<button type="button" data-v="'+k[0]+'" aria-pressed="'+(WA.kind===k[0])+'">'+k[1]+'</button>';}).join('')+'</div>'+
+      '<p class="hint">'+n+' Anmeldung'+(n===1?'':'en')+' für diesen Abend'+(n?': '+esc((SIGN[e.date]||[]).join(', ')):'')+'</p>'+
+      '<label class="f" for="watxt">Text (kannst du hier noch ändern)</label><textarea id="watxt" rows="14">'+esc(WA.txt)+'</textarea>'+
+      '<div class="wa-act"><a class="btn primary" id="wago" target="_blank" rel="noopener" href="https://wa.me/?text='+encodeURIComponent(WA.txt)+'">In WhatsApp teilen</a><button type="button" class="btn" id="wacopy">Kopieren</button><button type="button" class="btn" id="waroll">🔄 Neu formulieren</button></div>'+
+      '<p class="hint">Jede Fassung ist anders: Begrüßung, Anmeldestand, Spielmodus, letzter Sieger, Masters-Pott und Jahreszeit fließen ein. „Einladung“ am besten am Mittwoch, „Am Spieltag“ donnerstags mittags, „Nachfassen“ wenn sich wenige angemeldet haben.</p></div>';
+    $('wadate').onchange=function(){WA.date=this.value;WA.seed=0;waView();};
+    $('wakind').onclick=function(ev){var b=ev.target.closest('button');if(!b)return;WA.kind=b.dataset.v;waView();};
+    $('waroll').onclick=function(){WA.seed++;waView();};
+    $('watxt').oninput=function(){WA.txt=this.value;$('wago').href='https://wa.me/?text='+encodeURIComponent(WA.txt);};
+    $('wacopy').onclick=function(){var b=this;(navigator.clipboard?navigator.clipboard.writeText(WA.txt):Promise.reject()).then(function(){b.textContent='Kopiert ✓';setTimeout(function(){b.textContent='Kopieren';},1500);},function(){prompt('Text kopieren:',WA.txt);});};
+  });}
+window.cdaWA=waView;
 })();
 </script>
