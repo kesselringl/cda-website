@@ -1,0 +1,17 @@
+{
+  "id": "./grafik-studio.html",
+  "name": "CDA Grafik-Studio",
+  "short_name": "CDA Studio",
+  "description": "Instagram-Grafiken, Besucherzahlen und Steckbriefe der Clochard Darter Augsburg (nur Turnierleitung).",
+  "lang": "de",
+  "start_url": "./grafik-studio.html",
+  "scope": "./grafik-studio.html",
+  "display": "standalone",
+  "background_color": "#0E1510",
+  "theme_color": "#0E1510",
+  "icons": [
+    { "src": "studio-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "studio-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "studio-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

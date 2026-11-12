@@ -128,9 +128,9 @@ ${PRIVATE.has(f) ? '<meta name="robots" content="noindex, nofollow">' : `<link r
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0E1510">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="manifest" href="manifest.webmanifest">
-<meta name="apple-mobile-web-app-title" content="CDA">
+<link rel="apple-touch-icon" href="${f === 'grafik-studio.html' ? 'studio-180.png' : 'apple-touch-icon.png'}">
+<link rel="manifest" href="${f === 'grafik-studio.html' ? 'studio.webmanifest' : 'manifest.webmanifest'}">
+<meta name="apple-mobile-web-app-title" content="${f === 'grafik-studio.html' ? 'CDA Studio' : 'CDA'}">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
