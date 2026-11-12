@@ -78,23 +78,24 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 </header>
 <div class="smodal" id="smodal" hidden role="dialog" aria-modal="true" aria-labelledby="smt"><div class="sbox"><button type="button" class="sx" aria-label="Schließen">×</button>
   <img src="studio-192.png" alt="" width="72" height="72"><h3 id="smt">Studio als eigene App</h3><ol id="ssteps"></ol>
-  <p class="hint">Danach hast du ein eigenes Symbol „CDA Studio“ – ein Tipp, und du bist direkt im Grafik-Studio, angemeldet bleibst du auch.</p></div></div>
+  <p class="hint">Danach hast du ein eigenes Symbol „CDA Studio“, getrennt von der CDA-App. Beim ersten Start einmal anmelden.</p></div></div>
 <script>
 /* Grafik-Studio als eigene App (eigenes Symbol „CDA Studio“) */
-(function(){var b=document.getElementById('sapp'),m=document.getElementById('smodal'),d=null,ua=navigator.userAgent||'';
+(function(){var b=document.getElementById('sapp'),m=document.getElementById('smodal'),ua=navigator.userAgent||'';
+  var APP='https://kesselringl.github.io/cda-studio/'; // eigene Adresse der Studio-App (getrennt von der CDA-App)
+  if(window.top!==window.self){document.querySelectorAll('header a[href="./"]').forEach(function(a){a.target='_blank';a.rel='noopener';});return;} // läuft schon in der Studio-App
   var st=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;if(st)return;
   var ios=/iPhone|iPad|iPod/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1),mac=/Macintosh/.test(ua)&&/Safari/.test(ua)&&!/Chrome|Chromium|Edg|Firefox/.test(ua)&&!ios;
-  b.hidden=false; // immer anbieten – ohne Installations-Dialog zeigt der Button die passende Anleitung
-  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();d=e;});
-  window.addEventListener('appinstalled',function(){b.hidden=true;});
-  b.onclick=function(){if(d){d.prompt();d.userChoice.then(function(){d=null;});return;}
+  b.hidden=false;
+  b.onclick=function(){
     var edge=/Edg\//.test(ua),android=/Android/.test(ua),fx=/Firefox/.test(ua);
-    var steps=ios?['Diese Seite in <b>Safari</b> öffnen.','Auf <b>Teilen</b> tippen (Quadrat mit Pfeil).','<b>„Zum Home-Bildschirm“</b> wählen und <b>„Hinzufügen“</b>.']
-      :mac?['Menüleiste: <b>„Ablage“</b>.','<b>„Zum Dock hinzufügen …“</b> wählen.','Mit <b>„Hinzufügen“</b> bestätigen.']
-      :fx?['Firefox kann keine Apps installieren.','Öffne das Grafik-Studio in <b>Chrome</b> oder <b>Edge</b> und tippe dort auf diesen Button.']
-      :edge?['Oben rechts auf <b>⋯</b> klicken.','<b>„Apps“</b> → <b>„Diese Website als App installieren“</b>. Fehlt „Apps“, steht es unter <b>„Weitere Tools“</b> → <b>„Apps“</b>.','Als Namen <b>„CDA Studio“</b> lassen und <b>„Installieren“</b>.']
-      :android?['Oben rechts auf <b>⋮</b> tippen.','<b>„Zum Startbildschirm hinzufügen“</b> → <b>„Installieren“</b>.','Es erscheint das Symbol <b>„CDA Studio“</b>.']
-      :['Oben rechts im Chrome-Menü auf <b>⋮</b> klicken.','<b>„Streamen, speichern und teilen“</b> → <b>„Seite als App installieren …“</b>.','Als Namen <b>„CDA Studio“</b> lassen und <b>„Installieren“</b>. Wichtig: im normalen Chrome-Fenster, nicht in der CDA-App.'];
+    var open='<a href="'+APP+'" target="_blank" rel="noopener" style="color:#2BC653">'+APP.replace('https://','')+'</a> öffnen.';
+    var steps=ios?['Diese Seite in <b>Safari</b> öffnen: '+open,'Auf <b>Teilen</b> tippen (Quadrat mit Pfeil).','<b>„Zum Home-Bildschirm“</b> wählen und <b>„Hinzufügen“</b>.']
+      :mac?[open,'Menüleiste: <b>„Ablage“</b> → <b>„Zum Dock hinzufügen …“</b>.','Mit <b>„Hinzufügen“</b> bestätigen.']
+      :fx?['Firefox kann keine Apps installieren.','Öffne '+APP.replace('https://','')+' in <b>Chrome</b> oder <b>Edge</b>.']
+      :edge?[open,'Oben rechts auf <b>⋯</b> → <b>„Weitere Tools“</b> → <b>„Apps“</b> → <b>„Diese Website als App installieren“</b>.','Als Namen <b>„CDA Studio“</b> lassen und <b>„Installieren“</b>.']
+      :android?[open,'Oben rechts auf <b>⋮</b> → <b>„Zum Startbildschirm hinzufügen“</b> → <b>„Installieren“</b>.','Es erscheint das Symbol <b>„CDA Studio“</b>.']
+      :[open,'Oben rechts auf <b>⋮</b> → <b>„Streamen, speichern und teilen“</b> → <b>„Seite als App installieren …“</b> (oder das Installieren-Symbol in der Adressleiste).','Als Namen <b>„CDA Studio“</b> lassen und <b>„Installieren“</b>.'];
     document.getElementById('ssteps').innerHTML=steps.map(function(t){return '<li>'+t+'</li>';}).join('');m.hidden=false;};
   m.onclick=function(e){if(e.target===m||e.target.closest('.sx'))m.hidden=true;};})();
 </script>
