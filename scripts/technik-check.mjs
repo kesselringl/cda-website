@@ -28,6 +28,22 @@ for (const p of PAGES) {
   }
 }
 
+// Trace der Startseite (Handy): welche Aufgaben blockieren den Hauptthread?
+try {
+  execFileSync('npx', ['lighthouse', BASE, '--quiet', '--output=json', `--output-path=${OUT}/_trace.json`, `--chrome-path=${CHROME}`, '--chrome-flags=--headless=new --no-sandbox', '--only-categories=performance', '--save-assets'], { stdio: 'inherit', timeout: 180000 });
+  const tr = JSON.parse(readFileSync(`${OUT}/_trace-0.trace.json`, 'utf8')); const ev = tr.traceEvents || tr;
+  const main = ev.filter(e => e.ph === 'X' && e.dur > 20000 && e.name === 'RunTask').sort((a, b) => b.dur - a.dur).slice(0, 6);
+  const lines = [];
+  for (const t of main) {
+    lines.push(`TASK ${Math.round(t.dur / 1000)} ms @${Math.round(t.ts / 1000)}`);
+    const inner = ev.filter(e => e.ph === 'X' && e.tid === t.tid && e.ts >= t.ts && e.ts + (e.dur || 0) <= t.ts + t.dur && e.dur > 3000 && e.name !== 'RunTask');
+    const agg = {}; inner.forEach(e => { const d = e.args && (e.args.data || e.args.beginData) || {}; const k = e.name + ' ' + (d.functionName || '') + ' ' + ((d.url || '').split('/').pop()) + (d.lineNumber != null ? ':' + d.lineNumber : '') + (d.type ? ' type=' + d.type : '') + (d.stackTrace && d.stackTrace[0] ? ' from ' + d.stackTrace[0].functionName + ':' + d.stackTrace[0].lineNumber : ''); agg[k] = Math.max(agg[k] || 0, e.dur); });
+    Object.entries(agg).sort((a, b) => b[1] - a[1]).slice(0, 14).forEach(([k, v]) => lines.push('   ' + Math.round(v / 1000) + ' ms ' + k));
+  }
+  writeFileSync(`${OUT}/trace-tasks.txt`, lines.join('\n'));
+  execFileSync('rm', ['-f', `${OUT}/_trace-0.trace.json`, `${OUT}/_trace-0.devtoolslog.json`, `${OUT}/_trace.json`]);
+} catch (e) { writeFileSync(`${OUT}/trace-tasks.txt`, 'Fehler: ' + e.message); }
+
 // axe + Konsole + Screenshots in verschiedenen Größen
 const axe = readFileSync('node_modules/axe-core/axe.min.js', 'utf8');
 const b = await chromium.launch();
