@@ -972,7 +972,80 @@ var TYPES={
       var p=ps.filter(function(x){return x.name===pn;})[0]||{},i=PLAYERS[pn]||{},rows=[['Spitzname',i.nick],['Im Verein seit',i.since],['Wurfhand',i.hand],['Lieblings-Checkout',i.checkout],['Darts',i.darts],['Walk-on',i.walkon],['Spielertyp',i.typ],['Beruf',i.beruf],['Hobby',i.hobby]].filter(function(r){return r[1];});
       return{_note:rows.length?'':'Für diesen Spieler sind noch keine Steckbrief-Angaben hinterlegt (players.json, nur mit Einwilligung).',kicker:'Steckbrief',kicker2:p.team?['','1. Mannschaft','2. Mannschaft','3. Mannschaft','4. Mannschaft'][p.team]:'',name:pn||'',list:rows.map(function(r){return r.join('|');}).join('\n'),
         s1:p.avg?'Average|'+de(p.avg):'',s2:p.single?'Einzel|'+p.single:'',s3:p.double?'Doppel|'+p.double:'',quote:i.motto||i.cda||''};},
-    poster:function(f,V){return{custom:function(top,y1){playerProfile(f,V,top,y1);}};}}
+    poster:function(f,V){return{custom:function(top,y1){playerProfile(f,V,top,y1);}};}},
+  // ---------- Jahresrückblick ----------
+  wrapped:{g:'Jahresrückblick',label:'CDA Wrapped (Karussell)',look:'neon',src:'wslide',n:2,fields:function(){var s=S.pick&&WSL.some(function(x){return x[0]===S.pick;})?S.pick:'intro';S.pick=s;var r=WF[s]();r._s=s;
+      r._note=(r._note?r._note+' ':'')+'Folie '+(WSL.map(function(x){return x[0];}).indexOf(s)+1)+' von '+WSL.length+' – alle Folien nacheinander speichern und als Karussell posten.';return r;},
+    poster:function(f,V){return WP[f._s]?WP[f._s](f,V):{b:[C.head(f.title,200)]};}}
+};
+// ================= CDA Wrapped (Jahresrückblick) =================
+var WSL=[['intro','Intro'],['zahlen','Das Jahr in Zahlen'],['teams','Unsere vier Teams'],['buli','2. Bundesliga'],['siege','Die meisten Einzelsiege'],['quote','Beste Siegquote'],['avg','Bester Average'],['spiel','Spiel des Jahres'],['doppel','Doppel des Jahres'],['masters','CDA Masters'],['danke','Danke']];
+var LIGA=null,LIGAP=null;
+function ligaLoad(){if(!LIGAP)LIGAP=fetch('liga.json').then(function(r){return r.ok?r.json():null;}).catch(function(){return null;}).then(function(j){LIGA=j||{matches:[]};if(S.type==='wrapped')refill();});return LIGAP;}
+function wYear(){var d=new Date();return String(d.getMonth()===0?d.getFullYear()-1:d.getFullYear());}
+function wGames(){var y=wYear(),o=[];Object.keys(DATA.teams).forEach(function(k){var t=DATA.teams[k];
+    (t.matchdays||[]).forEach(function(md){md.games.forEach(function(g){o.push({team:k,date:md.date,home:g.home,away:g.away,score:g.score});});});
+    (t.matches||[]).forEach(function(m){if(isUs(m.home)||isUs(m.away))o.push({team:k,date:m.date,home:m.home,away:m.away,score:m.score});});});
+  if(PREV&&PREV.matchdays)PREV.matchdays.forEach(function(md){md.games.forEach(function(g){o.push({team:'1',date:md.date,home:g.home,away:g.away,score:g.score});});});
+  return o.filter(function(g){return g.score&&g.date&&g.date.slice(0,4)===y;});}
+function wPlayers(){var P={};Object.keys(DATA.teams).forEach(function(k){(DATA.teams[k].players||[]).forEach(function(p){var x=P[p.name]=P[p.name]||{name:p.name,teams:[],sw:0,sl:0,dw:0,dl:0,avg:null};
+    if(x.teams.indexOf(+k)<0)x.teams.push(+k);var s=String(p.single||'').split(':').map(Number),d=String(p.double||'').split(':').map(Number);
+    if(s.length===2&&!isNaN(s[0])){x.sw+=s[0];x.sl+=s[1];}if(d.length===2&&!isNaN(d[0])){x.dw+=d[0];x.dl+=d[1];}if(p.avg&&k==='1')x.avg=p.avg;});});
+  return Object.keys(P).map(function(k){return P[k];});}
+function wTeamTag(p){return p.teams.map(function(t){return 'CDA '+['','I','II','III','IV'][t];}).join(' / ');}
+function wLiga(){var o={singles:[],pairs:{}};((LIGA&&LIGA.matches)||[]).forEach(function(m){var us=isUs(m.home)?'h':isUs(m.away)?'a':null;if(!us||!m.games)return;var th=us==='h'?'a':'h',opp=us==='h'?m.away:m.home;
+    m.games.forEach(function(g){var won=g['l'+us]>g['l'+th];
+      if(g.t==='E')o.singles.push({name:g[us][0],avg:g['a'+us],legs:g['l'+us]+':'+g['l'+th],won:won,vs:g[th][0],opp:opp,date:m.date});
+      else{var k=g[us].slice().sort().join(' & '),r=o.pairs[k]=o.pairs[k]||{k:k,c:0,w:0,av:[]};r.c++;if(won)r.w++;if(g['a'+us])r.av.push(g['a'+us]);}});});
+  o.pairs=Object.keys(o.pairs).map(function(k){var r=o.pairs[k];r.avg=r.av.length?r.av.reduce(function(a,b){return a+b;},0)/r.av.length:0;return r;});return o;}
+function wRows(ps,val,sub){return ps.slice(0,5).map(function(p,i){return (i+1)+'|'+p.name+'|'+val(p)+'|'+sub(p);}).join('\n');}
+var WF={
+  intro:function(){return{kicker:'CDA Wrapped',kicker2:'Jahresrückblick',title:'Wrapped',big:wYear(),sub:'Unser Dartjahr in Zahlen',slogan:'Wischen für mehr →'};},
+  zahlen:function(){var g=wGames(),w=0,d=0,l=0,by={};g.forEach(function(x){var r=res(x);if(r==='S')w++;else if(r==='U')d++;else l++;var b=by[x.team]=by[x.team]||[0,0,0];b[0]++;if(r==='S')b[1]++;if(r==='N')b[2]++;});
+    return{_note:'Zählt alle Ligaspiele aller vier Mannschaften mit Datum '+wYear()+' (Rückrunde 25/26 der 1. Mannschaft inklusive).',kicker2:'Alle vier Mannschaften',title:'Das Jahr in Zahlen',big:String(w),biglabel:'Siege in '+wYear(),
+      s1:'Spiele|'+g.length,s2:'Remis|'+d,s3:'Niederlagen|'+l,list:Object.keys(by).sort().map(function(k){var b=by[k];return 'CDA '+['','I','II','III','IV'][k]+'|'+b[0]+' Spiele · '+b[1]+' Siege';}).join('\n'),slogan:Math.round(w/Math.max(1,g.length)*100)+' % Siegquote'};},
+  teams:function(){var rows=Object.keys(DATA.teams).map(function(k){var t=DATA.teams[k],u=(t.table||[]).filter(function(r){return r.us;})[0];return u?u.pos+'|'+t.label+'|'+pts(u)+'|'+(t.league||'').replace('3K WINMAU ','')+(u.l===0&&u.played>=3?' · ungeschlagen':''):'';}).filter(Boolean);
+    var first=rows.filter(function(r){return r[0]==='1'&&r[1]==='|';}).length;
+    return{kicker2:'Saison '+DATA.season,title:'Unsere Teams',list:rows.join('\n'),slogan:first>1?first+' von '+rows.length+' Teams an der Tabellenspitze':'Vier Teams. Ein Verein.'};},
+  buli:function(){var md=(DATA.teams['1'].matchdays||[]).filter(function(m){return m.games.every(function(g){return g.score;});}),n=md.length;
+    var a=PREV&&PREV.matchdays&&n?statsAfter(PREV.matchdays,n):null,b=n?statsAfter(md,n):null,pe=PREV&&PREV.table?PREV.table.filter(function(r){return r.us;})[0]:null,u=(DATA.teams['1'].table||[]).filter(function(r){return r.us;})[0];
+    var row=function(lb,x,y,low){return lb+'|'+(x==null?'':x)+'|'+(y==null?'':y)+(low?'|low':'');};
+    return{_note:'Vergleich zum gleichen Zeitpunkt: beide Saisons nach '+n+' Spieltagen.',kicker2:'3K WINMAU 2. Bundesliga Süd',title:'2. Bundesliga',a:'Saison '+seasonShort(PREV&&PREV.season||'2025/26'),b:'Saison '+seasonShort(DATA.season),
+      list:[row('Punkte',a&&a.p,b&&b.p),row('Siege',a&&a.w,b&&b.w),row('Niederlagen',a&&a.l,b&&b.l,true),row('Sets',a&&a.sw+':'+a.sl,b&&b.sw+':'+b.sl)].join('\n'),
+      slogan:(pe?'Vorsaison Platz '+pe.pos+' · ':'')+(u?(u.pos===1?(u.l===0?'jetzt ungeschlagen auf Platz 1':'jetzt Tabellenführer'):'jetzt Platz '+u.pos):'')};},
+  siege:function(){var ps=wPlayers().filter(function(p){return p.sw;}).sort(function(a,b){return b.sw-a.sw||a.sl-b.sl;});
+    return{_note:'Einzelsiege der laufenden Saison '+DATA.season+', alle Mannschaften zusammen.',kicker2:'Saison '+DATA.season,title:'Siegmaschinen',list:wRows(ps,function(p){return p.sw+' Siege';},function(p){return wTeamTag(p)+' · Einzel '+p.sw+':'+p.sl;}),slogan:'Die meisten Einzelsiege im Verein'};},
+  quote:function(){var ps=wPlayers().filter(function(p){return p.sw+p.sl>=5;}).sort(function(a,b){return b.sw/(b.sw+b.sl)-a.sw/(a.sw+a.sl)||(b.sw+b.sl)-(a.sw+a.sl);});
+    return{_note:'Mindestens 5 Einzel; bei gleicher Quote liegt vorne, wer mehr gespielt hat.',kicker2:'Saison '+DATA.season,title:'Beste Quote',list:wRows(ps,function(p){return Math.round(p.sw/(p.sw+p.sl)*100)+' %';},function(p){return wTeamTag(p)+' · Einzel '+p.sw+':'+p.sl;}),slogan:'Kaum zu schlagen'};},
+  avg:function(){var ps=wPlayers().filter(function(p){return p.avg&&p.sw+p.sl>=4;}).sort(function(a,b){return b.avg-a.avg;});
+    return{kicker2:'2. Bundesliga · Saison '+DATA.season,title:'Bester Average',list:wRows(ps,function(p){return de(p.avg);},function(p){return 'Einzel '+p.sw+':'+p.sl;}),slogan:'Average im Einzel'};},
+  spiel:function(){if(!LIGA){ligaLoad();return{_note:'Spielberichte werden geladen …',title:'Spiel des Jahres'};}
+    var s=wLiga().singles.filter(function(x){return x.avg;}).sort(function(a,b){return b.avg-a.avg;}),t=s[0];if(!t)return{_note:'Noch keine Spielberichte.',title:'Spiel des Jahres'};
+    return{_note:'Höchster Einzel-Average eines CDA-Spielers in einem Bundesliga-Spiel der Saison '+DATA.season+'.',kicker2:'Bester Einzel-Average',title:'Spiel des Jahres',big:de(t.avg),biglabel:t.name,
+      list:'Gegner|'+t.vs+' ('+short(t.opp)+')\nLegs|'+t.legs+(t.won?' gewonnen':'')+'\nDatum|'+dmy(t.date)+(s[1]?'\nPlatz 2|'+s[1].name+' · '+de(s[1].avg):'')+(s[2]?'\nPlatz 3|'+s[2].name+' · '+de(s[2].avg):''),slogan:'Was für ein Auftritt',foto:photoSrc(t.name)?t.name:''};},
+  doppel:function(){if(!LIGA){ligaLoad();return{_note:'Spielberichte werden geladen …',title:'Doppel des Jahres'};}
+    var p=wLiga().pairs.filter(function(r){return r.c>=2;}).sort(function(a,b){return ratio(b.w+':'+(b.c-b.w))-ratio(a.w+':'+(a.c-a.w))||b.avg-a.avg;}),t=p[0];if(!t)return{_note:'Noch nicht genug Doppel.',title:'Doppel des Jahres'};
+    return{_note:'Bestes Doppelpaar der 1. Mannschaft (mindestens 2 Doppel zusammen), Saison '+DATA.season+'.',kicker2:'2. Bundesliga',title:'Doppel des Jahres',sub:t.k,s1:'Bilanz|'+t.w+':'+(t.c-t.w),s2:'Average|'+de(t.avg),s3:'Doppel|'+t.c,
+      list:p.slice(1,4).map(function(r,i){return (i+2)+'|'+r.k+'|'+r.w+':'+(r.c-r.w)+'|Ø '+de(r.avg);}).join('\n'),slogan:'Zusammen stärker'};},
+  masters:function(){var y=wYear(),ev=EVENTS.filter(function(e){return e.date.slice(0,4)===y;}),win={};ev.forEach(function(e){var p=(e.summary&&e.summary.podium||[])[0];if(p)win[p.name]=(win[p.name]||0)+1;});
+    var top=Object.keys(win).sort(function(a,b){return win[b]-win[a];});
+    return{_note:'Werbung für die CDA Masters erst posten, wenn der Umzug der Homepage erledigt ist.'+(ev.length?'':' In '+y+' gibt es keine Abende in der Datenbank – Werte bitte von Hand eintragen oder die Folie weglassen.'),kicker2:'Donnerstags im Bismarck Bistro',title:'CDA Masters',
+      s1:'Abende|'+ev.length,s2:'Sieger|'+top.length,s3:'',list:top.slice(0,4).map(function(n,i){return (i+1)+'|'+n+'|'+win[n]+'×|Turniersiege';}).join('\n'),slogan:'Ab Januar geht es weiter – jeder kann mitspielen'};},
+  danke:function(){return{kicker2:'Jahresrückblick '+wYear(),title:'Danke!',sub:'An alle Spielerinnen und Spieler, Fans, Helfer und Partner – ohne euch geht es nicht.',slogan:'Auf ein starkes '+(+wYear()+1)+'!'};}
+};
+function wList(f,o){return C.list(lines(f.list).map(function(a){return{rank:+a[0],name:a[1],value:a[2],sub:a[3],img:photoSrc(a[1]),hl:a[0]==='1'};}),o);}
+var WP={
+  intro:function(f,V){return{rays:true,b:[C.label(f.kicker2),C.head('CDA '+f.title,170),C.big(f.big,'',{h:420,rays:true}),C.sub(f.sub,34),C.tag(f.slogan)]};},
+  zahlen:function(f,V){return{b:[C.label(f.kicker2),C.head(f.title,V?150:170),C.big(f.big,f.biglabel,{h:V?220:260}),C.stats(kp(f),{h:150}),C.kv(lines(f.list),{rh:56}),C.tag(f.slogan)]};},
+  teams:function(f,V){var Lr=lines(f.list);return{b:[C.label(f.kicker2),C.head(f.title,200),C.list(Lr.map(function(a){return{rank:+a[0],name:a[1],value:a[2]+' Pkt',sub:a[3],hl:a[0]==='1'};}),{rh:118}),C.tag(f.slogan)]};},
+  buli:function(f,V){return{ghost:'VS',b:[C.label(f.kicker2),C.head(f.title,V?160:190),C.compare([f.a,f.b],lines(f.list)),C.tag(f.slogan)]};},
+  siege:function(f,V){return{b:[C.label(f.kicker2),C.head(f.title,V?180:210),wList(f,{rh:108,gold:true}),C.label(f.slogan)]};},
+  quote:function(f,V){return WP.siege(f,V);},
+  avg:function(f,V){return WP.siege(f,V);},
+  spiel:function(f,V){var img=V===1&&IMG[photoSrc(f.foto)],b=[C.label(f.kicker2),C.head(f.title,img?150:180),C.big(f.big,f.biglabel,{h:img?240:280,rays:true}),C.kv(lines(f.list),{rh:58}),C.tag(f.slogan)];return img?{hero:[img,'right'],cb:'left',b:b}:{rays:true,b:b};},
+  doppel:function(f,V){return{b:[C.label(f.kicker2),C.head(f.title,V?150:170),C.sub(f.sub,40,{max:2}),C.stats(kp(f),{h:150}),wList(f,{rh:84}),C.tag(f.slogan)]};},
+  masters:function(f,V){return{rays:true,b:[C.label(f.kicker2),C.head(f.title,200),C.stats(kp(f),{h:150}),wList(f,{rh:90,gold:true}),C.tag(f.slogan)]};},
+  danke:function(f,V){return{rays:true,b:[C.label(f.kicker2),C.head(f.title,300),C.sub(f.sub,34,{max:3}),C.tag(f.slogan)]};}
 };
 function kp(f){return['s1','s2','s3'].map(function(k){return(f[k]||'').split('|');}).filter(function(a){return a[0]&&a[1];});}
 function allPlayers(){var out=[];Object.keys(DATA.teams).forEach(function(k){(DATA.teams[k].players||[]).forEach(function(p){if(!out.some(function(o){return o.name===p.name;}))out.push({name:p.name,team:+k,avg:p.avg,single:p.single,double:p.double});});});
@@ -983,6 +1056,11 @@ function CR(){return rng(S.capSeed*131+S.type.length*7);}
 function one(R,a){return a[Math.floor(R()*a.length)];}
 function tagsLiga(x){return S.team==='1'?['#ClochardDarterAugsburg','#CDA',x||'#GameDay','#Bundesliga','#2BundesligaSüd']:['#ClochardDarterAugsburg','#CDA',x||'#GameDay','#Steeldarts','#Augsburg'];}
 var CAP={
+  wrapped:function(f,R){var y=wYear(),Lx=['🎁🎯 CDA WRAPPED '+y+' 🎯🎁','','Das war unser Dartjahr '+y+' – Zeit für einen Rückblick! 👉 Wischt euch durch die Zahlen, die Siegmaschinen und die Highlights des Jahres.',''];
+    try{var g=wGames(),w=g.filter(function(x){return res(x)==='S';}).length;Lx.push('📊 '+g.length+' Ligaspiele · '+w+' Siege');}catch(e){}
+    Object.keys(DATA.teams).forEach(function(k){var t=DATA.teams[k],u=(t.table||[]).filter(function(r){return r.us;})[0];if(u)Lx.push((u.pos===1?'🏆':'🎯')+' '+t.label+': Platz '+u.pos+' in der '+(t.league||'').replace('3K WINMAU ',''));});
+    Lx.push('','💚❤️ Danke an alle Spielerinnen und Spieler, Fans, Helfer und unsere Partner – allen voran GW-TEC!','','Markiert euch, teilt es und schreibt uns: Was war euer Darts-Moment des Jahres? 👇','','GOOD DARTS. GOOD PEOPLE. 🎯');
+    return[Lx,['#ClochardDarterAugsburg','#CDA','#CDAWrapped','#Jahresrückblick','#Steeldarts','#Augsburg']];},
   ergebnis:function(f,R){var md=f._md,gs=md.games,rs=gs.map(res),w=rs.filter(function(x){return x==='S';}).length,d=rs.filter(function(x){return x==='U';}).length,l=rs.length-w-d,p=w*2+d,u=usRow(),nx=nextMd(),T=String(f.title||'').toUpperCase();
     var hook=w===gs.length?one(R,['🎯🔥 '+T+'! 🔥🎯','💥 '+T+' – VOLLE PUNKTE! 💥','🚀 '+T+'! WAS FÜR EIN SPIELTAG! 🚀']):l===gs.length?one(R,['😤 Heute hat es nicht gereicht.','🎯 Kein guter Tag – aber wir kommen zurück! 💪']):one(R,['🎯 '+T+'! 💪','⚖️ '+T+' – Punkte gesammelt! 🎯']);
     var intro=w===gs.length?one(R,['Was für ein Auftritt der Mannschaft! 💪 Am '+String(f.kicker2||'').split(' · ')[0]+' holen wir '+(md.home?'vor heimischer Kulisse':'auswärts')+' volle '+p+' Punkte und zeigen, warum wir da oben stehen. 🔝','Konzentriert, eiskalt, als Team: '+(md.home?'Zu Hause':'Auf fremdem Boden')+' lassen wir nichts anbrennen und nehmen '+p+' Punkte mit! 🏠✨']):
@@ -1045,8 +1123,8 @@ var CAP={
 
 var LABEL={kicker:'Oben rechts (Anlass)',kicker2:'Oben rechts, zweite Zeile',title:'Große Überschrift',sub:'Unterzeile',table:'Tabellenzeile',venue:'Spielort',street:'Adresse',note:'Hinweis',slogan:'Schlusszeile',foto:'Spielerfoto im Bild (bei „Andere Aufteilung“)',
   s1:'Wert 1 (Bezeichnung|Wert)',s2:'Wert 2 (Bezeichnung|Wert)',s3:'Wert 3 (Bezeichnung|Wert)',p1:'1. Platz',p2:'2. Platz',p3:'3. Platz',name:'Name',quote:'Motto / Zitat',modus:'Spielmodus erklärt',
-  list:'Liste',names:'Angemeldet (eine Zeile pro Name)',count:'Anzahl Anmeldungen',pot:'Betrag im Pott',potlabel:'Text unter dem Betrag',a:'Spalte links',b:'Spalte rechts',days:'Tage bis zum Termin',label:'Text unter den Tagen'};
-var LISTHINT={ms_aus:'Bezeichnung|Wert',ms_how:'Schritt|Erklärung',ms_fin:'Bezeichnung|Wert',tabelle:'Platz|Name|Punkte|Zusatz',saison:'Bezeichnung|Vorsaison|jetzt (|low = kleiner ist besser)',top5:'Platz|Name|Wert|Zusatz',rangliste:'Platz|Name|Punkte|Zusatz',gegner:'Bezeichnung|Wert',comp:'Bezeichnung|Wert',masters:'Bezeichnung|Wert',sieger:'Bezeichnung|Wert',steckbrief:'Bezeichnung|Wert'};
+  list:'Liste',names:'Angemeldet (eine Zeile pro Name)',count:'Anzahl Anmeldungen',pot:'Betrag im Pott',potlabel:'Text unter dem Betrag',a:'Spalte links',b:'Spalte rechts',days:'Tage bis zum Termin',label:'Text unter den Tagen',big:'Große Zahl',biglabel:'Text unter der großen Zahl'};
+var LISTHINT={wrapped:'je nach Folie: Platz|Name|Wert|Zusatz oder Bezeichnung|Wert',ms_aus:'Bezeichnung|Wert',ms_how:'Schritt|Erklärung',ms_fin:'Bezeichnung|Wert',tabelle:'Platz|Name|Punkte|Zusatz',saison:'Bezeichnung|Vorsaison|jetzt (|low = kleiner ist besser)',top5:'Platz|Name|Wert|Zusatz',rangliste:'Platz|Name|Punkte|Zusatz',gegner:'Bezeichnung|Wert',comp:'Bezeichnung|Wert',masters:'Bezeichnung|Wert',sieger:'Bezeichnung|Wert',steckbrief:'Bezeichnung|Wert'};
 
 // ================= Oberfläche =================
 function buildTypeSelect(){var g={},h='';Object.keys(TYPES).forEach(function(k){var t=TYPES[k];(g[t.g]=g[t.g]||[]).push('<option value="'+k+'"'+(k===S.type?' selected':'')+'>'+esc(t.label)+'</option>');});
@@ -1075,10 +1153,12 @@ function buildSrc(){
       return '<li>'+esc(r.name)+' <span>'+esc(['','I','II','III','IV'][r.team]?'CDA '+['','I','II','III','IV'][r.team]+' · ':'')+d.join(' · ')+' · '+de(r.score,1)+' P.</span></li>';}).join('')+'</ol><p class="hint">Wertung im Monat: Einzelsieg 3, Einzelniederlage −1, Doppelsieg 1,5, Doppelniederlage −0,5 (Bundesliga ×1,5); ab Januar zusätzlich Masters-Punkte ÷ 4 und 4 je Turniersieg. Bei Gleichstand zählt der Saison-Average.</p></div>';}
     else h+='<p class="hint">'+(ks.length?'In diesem Monat gibt es noch keine Spiele mit Ergebnis.':'Monatswerte entstehen ab dem nächsten nächtlichen Abruf.')+'</p>';
     h+='<label class="f">Spieler (vorausgewählt: Vorschlag)</label><select id="pick">'+allPlayers().map(function(p){return opt(p.name,p.name+(photoSrc(p.name)?' 📷':''));}).join('')+'</select>';}
+  else if(t.src==='wslide'){h+='<label class="f">Folie</label><select id="pick">'+WSL.map(function(x,i){return opt(x[0],(i+1)+'. '+x[1]);}).join('')+'</select><div style="display:flex;gap:8px;margin-top:8px"><button type="button" class="btn" id="wprev" style="flex:1">← Folie zurück</button><button type="button" class="btn" id="wnext" style="flex:1">Nächste Folie →</button></div><p class="hint">Format „Beitrag 4:5“ für das Karussell. Alle Werte sind vorausgefüllt und lassen sich unten ändern.</p>';}
   else if(t.src==='player'){h+='<label class="f">Spieler</label><select id="pick">'+allPlayers().map(function(p){return opt(p.name,p.name+(photoSrc(p.name)?' 📷':''));}).join('')+'</select>';}
   $('src').innerHTML=h;
   var tm=$('team');if(tm)tm.onchange=function(){S.team=tm.value;S.pick=null;buildSrc();refill();};
   var pk=$('pick');if(pk)pk.onchange=function(){S.pick=pk.value;refill();};
+  var wst=function(d){var i=WSL.map(function(x){return x[0];}).indexOf(S.pick)+d;if(i<0||i>=WSL.length)return;S.pick=WSL[i][0];buildSrc();refill();};if($('wprev')){$('wprev').onclick=function(){wst(-1);};$('wnext').onclick=function(){wst(1);};}
   var cr=$('crit');if(cr)cr.onchange=function(){S.crit=cr.value;refill();};
   var mo=$('month');if(mo)mo.onchange=function(){S.month=mo.value;S.pick=null;buildSrc();refill();};
 }
