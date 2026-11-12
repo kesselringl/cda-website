@@ -60,6 +60,8 @@ jobs:
 
       - name: Monatswerte für den Spieler des Monats
         run: node scripts/build-month-stats.mjs
+      - name: Spieltagsberichte aus der Ergebnis-Historie
+        run: node scripts/build-berichte.mjs
 
       - id: pages
         uses: actions/configure-pages@v5

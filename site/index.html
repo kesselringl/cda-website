@@ -1312,7 +1312,7 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
   }
   // Blickfang oben: nächster Heimspieltag (bis 3 Wochen vorher), sonst die nächste Donnerstags-Competition
   // ===== Startseite: Aufmacher + Aktuelles, automatisch aus data.json und Competition-Kalender =====
-  var LIVE=null,MANUAL=[];
+  var LIVE=null,MANUAL=[],BERICHTE={};
   var dShort=new Intl.DateTimeFormat('de-DE',{weekday:'short',day:'2-digit',month:'2-digit'});
   function pts(r){return typeof r.points==='number'?r.points:+String(r.points).split(':')[0];}
   function teamGames(t){
@@ -1323,6 +1323,10 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
   var DERBY=/augsburg|augschburger|lechhausen|göggingen|haunstetten|oberhausen|pfersee|hochzoll|kriegshaber/i;
   function relDay(iso){var d=Math.round((new Date(iso+'T12:00:00')-new Date(new Date().toISOString().slice(0,10)+'T12:00:00'))/864e5);
     return d===0?'Heute':d===1?'Morgen':d===-1?'Gestern':d<-60||d>300?new Date(iso+'T12:00:00').toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}):dShort.format(new Date(iso+'T12:00:00'));}
+  // Matchwinner aus den automatischen Spieltagsberichten (berichte.json, aus der Ergebnis-Historie berechnet)
+  function mwText(k,date){var r=BERICHTE[k+'-'+date];if(!r||!r.mw||!r.mw.length)return '';
+    var n=r.mw.map(function(m){return m.name;}),s=r.mw[0].single,d=r.mw[0].double;
+    return ' '+(n.length>1?'Ohne Niederlage im Einzel: '+n.slice(0,-1).join(', ')+' und '+n[n.length-1]+' (je '+s+')':'Matchwinner: '+n[0]+' mit '+s+' im Einzel'+(d?' und '+d+' im Doppel':''))+'.';}
   function buildNews(){
     var out=[],today=new Date().toISOString().slice(0,10),D=LIVE;
     var addDays=function(n){var t=new Date();t.setDate(t.getDate()+n);return t.toISOString().slice(0,10);};
@@ -1334,7 +1338,7 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
       var second=tb.filter(function(r){return !r.us;})[0],lead=second?pts(us)-pts(second):0,rk={};tb.forEach(function(r){rk[r.name]=r.pos;});
       var halfDone=tb.every(function(r){return r.played===N-1;})&&N>2;
       var streak=0;for(var i=done.length-1;i>=0&&res(done[i]).r==='s';i--)streak++;
-      var unbeaten=us.l===0&&us.played>=3,league=t.league||'';
+      var unbeaten=us.l===0&&us.played>=3,league=t.league||'',hasRecent=done.some(function(g){return g.date>=addDays(-14);});
       // Herbstmeister / Hinrunde
       if(halfDone&&us.pos===1){
         var nxt=next[0];
@@ -1344,21 +1348,21 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
           hero:{badge:'★ Herbstmeister',eyebrow:league+' · Hinrunde beendet',title:'Herbst&shy;meister.'+(unbeaten?' <em>Unge&shy;schlagen.</em>':' <em>Ganz oben.</em>'),
             lead:(k==='1'?'Unsere Erste':lab)+' überwintert an der Tabellenspitze der '+esc(league)+': '+us.w+' Siege und '+us.d+' Remis aus '+us.played+' Spielen'+(lead>0?', '+lead+(lead===1?' Punkt':' Punkte')+' vor '+esc(second.name):'')+'.'+(nxt?' Weiter geht es am '+fullDate.format(new Date(nxt.date+'T12:00:00'))+(nxt.homeDay?' mit einem Heimspieltag in Dinkelscherben':'')+'.':''),
             actions:'<a class="btn primary" href="#saison">Tabelle &amp; Spielplan</a><a class="btn ghost" href="#teams">Zur Mannschaft</a>'}});
-      }else if(us.pos===1&&us.played>=3){
+      }else if(us.pos===1&&us.played>=3&&!hasRecent){
         out.push({prio:72,kind:'gold',tag:'Tabellenführer',team:lab,date:done.length?done[done.length-1].date:today,href:'#teams',
           title:lab+' grüßt von der Spitze',text:(unbeaten?'Noch ungeschlagen: ':'')+us.w+' Siege aus '+us.played+' Spielen in der '+league+(lead>0?', '+lead+(lead===1?' Punkt':' Punkte')+' vor '+second.name:lead===0&&second?', punktgleich mit '+second.name:'')+'.'+(streak>=3?' Dazu '+streak+' Siege in Folge.':'')});
-      }else if(streak>=3){
+      }else if(streak>=3&&!hasRecent){
         out.push({prio:58,kind:'green',tag:'Serie',team:lab,date:done[done.length-1].date,href:'#teams',title:lab+' mit '+streak+' Siegen in Folge',text:'Aktuell Platz '+us.pos+' in der '+league+'.'});
       }
       // Letztes Ergebnis (bis 10 Tage zurück)
-      var recent=done.filter(function(g){return g.date>=addDays(-10);});
+      var recent=done.filter(function(g){return g.date>=addDays(-14);});
       if(recent.length){
         var lastDate=recent[recent.length-1].date,day=recent.filter(function(g){return g.date===lastDate;}),rs=day.map(res);
         var allW=rs.every(function(x){return x.r==='s';}),anyL=rs.some(function(x){return x.r==='n';});
         var title=day.length>1?(allW?'Doppelsieg für '+lab:lab+' holt '+rs.reduce(function(a,x){return a+(x.r==='s'?2:x.r==='u'?1:0);},0)+' von '+day.length*2+' Punkten')
           :(rs[0].r==='s'?lab+' gewinnt '+rs[0].a+':'+rs[0].b:rs[0].r==='u'?lab+' spielt '+rs[0].a+':'+rs[0].b+' Remis':lab+' verliert '+rs[0].a+':'+rs[0].b);
         out.push({prio:62+(allW?4:0)+(k==='1'?6:0),kind:anyL&&!allW?'loss':'green',tag:'Ergebnis',team:lab,date:lastDate,href:k==='1'?'#saison':'#teams',title:title,
-          text:day.map(function(g,i){return (rs[i].r==='s'?'Sieg':rs[i].r==='u'?'Remis':'Niederlage')+' '+rs[i].a+':'+rs[i].b+' '+(g.home?'gegen':'bei')+' '+g.opp;}).join(' · ')+'. Jetzt Platz '+us.pos+'.'});
+          text:day.map(function(g,i){return (rs[i].r==='s'?'Sieg':rs[i].r==='u'?'Remis':'Niederlage')+' '+rs[i].a+':'+rs[i].b+' '+(g.home?'gegen':'bei')+' '+g.opp;}).join(' · ')+'.'+mwText(k,lastDate)+(us.pos===1?' Damit Tabellenführer in der '+league+(lead>0?', '+lead+(lead===1?' Punkt':' Punkte')+' vor '+second.name:'')+(unbeaten?', weiter ohne Niederlage':'')+'.':' Jetzt Platz '+us.pos+' von '+tb.length+' in der '+league+'.')+(streak>=3?' '+streak+' Siege in Folge.':'')});
       }
       // Nächstes Spiel (bis 14 Tage voraus)
       var up=next.filter(function(g){return g.date<=addDays(14);});
@@ -1516,6 +1520,7 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
     var h=new Date().getHours();return out.filter(function(e){return e.date>today||(e.date===today&&h<20);});
   }
   window.CDA_CAL={upcoming:upcoming,MODE:MODE,cal:cdaCalendar};
+  fetch('berichte.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(b){if(!b||!b.reports)return;b.reports.forEach(function(x){BERICHTE[x.id]=x;});if(typeof renderHero==='function')renderHero();}).catch(function(){});
   fetch('news.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():[];}).then(function(n){MANUAL=n||[];if(typeof renderHero==='function')renderHero();}).catch(function(){});
   if(typeof renderHero==='function'){try{renderHero();}catch(e){}}
   // ===== Anmeldung (Supabase): Name einmal wählen, dann mit einem Tippen dabei =====

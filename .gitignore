@@ -3,3 +3,4 @@ node_modules/
 .fonts-tmp/
 site/kalender/
 site/monatswerte.json
+site/berichte.json
