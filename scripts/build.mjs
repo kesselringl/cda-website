@@ -65,7 +65,7 @@ const fontsOk = await selfHostFonts();
 // Adresse der Seite kommt im Workflow von GitHub Pages (passt sich nach dem Domain-Umzug automatisch an)
 const BASE = (process.env.SITE_URL || 'https://kesselringl.github.io/cda-website').replace(/\/?$/, '/');
 const PRIVATE = new Set(['grafik-studio.html', 'studio.html', 'competition.html', 'steckbrief.html']);
-const PUBLIC = ['index.html', 'impressum.html', 'datenschutz.html'];
+const PUBLIC = ['index.html']; // Impressum und Datenschutz sind bewusst nicht für Suchmaschinen (noindex)
 const esc = t => String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 
 // Strukturierte Daten für Google: Verein + nächste Competition-Termine

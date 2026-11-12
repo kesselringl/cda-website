@@ -48,6 +48,16 @@ for (const p of PAGES.slice(0, 5)) {
     await ctx.close();
   }
 }
+// Wo die Startseite auf einem langsamen Handy (4x gedrosselt) Rechenzeit verbraucht
+const prof = [];
+{ const ctx = await b.newContext(devices['iPhone 13']); const pg = await ctx.newPage(); const cdp = await ctx.newCDPSession(pg);
+  await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 }); await cdp.send('Profiler.enable'); await cdp.send('Profiler.setSamplingInterval', { interval: 500 }); await cdp.send('Profiler.start');
+  await pg.goto(BASE, { waitUntil: 'networkidle' }); await pg.waitForTimeout(3000);
+  const { profile } = await cdp.send('Profiler.stop'); const byId = {}; profile.nodes.forEach(n => byId[n.id] = n); const self = {};
+  profile.samples.forEach((sid, i) => { const n = byId[sid], f = n.callFrame, k = (f.functionName || '(anonym)') + ' @' + (f.url.split('/').pop() || '-') + ':' + (f.lineNumber + 1); self[k] = (self[k] || 0) + (profile.timeDeltas[i] || 0); });
+  Object.entries(self).sort((a, b) => b[1] - a[1]).slice(0, 30).forEach(([k, v]) => prof.push(Math.round(v / 1000) + ' ms  ' + k));
+  const lt = await pg.evaluate(() => performance.getEntriesByType('longtask').length); prof.push('longtasks: ' + lt); await ctx.close(); }
 await b.close();
+writeFileSync(`${OUT}/profil.txt`, prof.join('\n'));
 writeFileSync(`${OUT}/summary.json`, JSON.stringify({ base: BASE, at: new Date().toISOString(), lighthouse: summary, browser: extra }, null, 1));
 console.log(summary.map(s => s.page + ' ' + JSON.stringify(s.scores || s.error)).join('\n'));

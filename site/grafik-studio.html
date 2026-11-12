@@ -9,7 +9,7 @@
 [hidden]{display:none!important}
 body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 Archivo,Arial,sans-serif}
 header.top{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line)}
-header.top img{height:40px}
+header.top img{height:40px;width:auto}
 header.top h1{font:900 26px/1 "Big Shoulders Display",Impact,sans-serif;letter-spacing:.02em;margin:0;text-transform:uppercase}
 header.top h1 span{color:var(--green)}
 header.top a{margin-left:auto;color:var(--mute);font-size:13px}
@@ -61,10 +61,11 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 .pst{font:700 11px Archivo,Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;padding:3px 8px;border-radius:999px}.st-neu{background:#E30212;color:#fff}.st-live{background:#0CA12D;color:#fff}.st-abgelehnt{background:#3a403c;color:#bbb}
 .pfields{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px 12px;margin-top:10px}.pfields label{display:block;font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:.06em}.pfields input{display:block;width:100%;margin-top:3px;background:#151a17;color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:7px 9px;font:500 14px Archivo,Arial,sans-serif;text-transform:none;letter-spacing:0}
 @media(max-width:620px){.pcardx{grid-template-columns:90px minmax(0,1fr);gap:12px}}
+.gbox img{width:auto}
 </style>
 
 <header class="top">
-  <img src="logo.png" alt="">
+  <img src="logo.png" alt="" width="296" height="378">
   <h1>CDA <span>Grafik-Studio</span></h1>
   <nav class="vtabs" id="vtabs" hidden><button type="button" data-view="g" aria-pressed="true">Grafiken</button><button type="button" data-view="s" aria-pressed="false">Besucherzahlen</button><button type="button" data-view="p" aria-pressed="false">Steckbriefe<span id="pbadge" class="pbadge" hidden></span></button></nav>
   <a href="./">zur Homepage</a><a href="#" id="logout" hidden style="margin-left:14px">Abmelden</a>
@@ -72,7 +73,7 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 
 <div id="gate" class="gate" hidden>
   <div class="gbox">
-    <img src="logo.png" alt="">
+    <img src="logo.png" alt="" width="296" height="378">
     <h2>Grafik-Studio</h2>
     <p>Nur für Vereinsverantwortliche. Bitte mit dem Zugang der Turnierleitung anmelden.</p>
     <form id="gform"><input type="password" id="gpw" placeholder="Passwort Turnierleitung" autocomplete="current-password" required><button class="btn" type="submit">Anmelden</button></form>

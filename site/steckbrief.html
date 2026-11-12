@@ -8,7 +8,7 @@
 /* Layout: Rechtstexte – ruhige Lesespalte, Kopf und Fuß wie auf der Startseite */
 :root{
   --bg:#F3F5F1; --surface:#FFFFFF; --ink:#111913; --muted:#56635A; --line:#D9E0D7;
-  --green:#08872A; --green-bright:#0CA12D; --red:#E30212; --bone:#ECE6D3; --wire:#B9C2BB;
+  --green:#077A26; --green-bright:#0CA12D; --btn-bg:#077A26; --btn-ink:#fff; --red:#E30212; --bone:#ECE6D3; --wire:#B9C2BB;
   --board:#0E1510; --board-ink:#EEF2EC; --board-muted:#9FB0A3; --board-line:#26332A;
   --chip:#E7EEE6; --tbd:#A35E00; --plate:#FFFFFF;
   --f-display:"Big Shoulders Display","Arial Narrow","Roboto Condensed",Impact,sans-serif;
@@ -17,13 +17,13 @@
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0A0F0B; --surface:#121A14; --ink:#E6ECE5; --muted:#98A79B; --line:#243028;
-  --green:#2BC653; --green-bright:#2BC653; --red:#FF3A45; --bone:#D9D2BE; --wire:#56635A;
+  --green:#2BC653; --green-bright:#2BC653; --btn-bg:#2BC653; --btn-ink:#08130b; --red:#FF3A45; --bone:#D9D2BE; --wire:#56635A;
   --board:#060907; --board-ink:#EEF2EC; --board-muted:#93A497; --board-line:#1F2A22;
   --chip:#18231B; --tbd:#F0A54A; --plate:#F2F4F0; color-scheme:dark;
 }}
 :root[data-theme="dark"]{
   --bg:#0A0F0B; --surface:#121A14; --ink:#E6ECE5; --muted:#98A79B; --line:#243028;
-  --green:#2BC653; --green-bright:#2BC653; --red:#FF3A45; --bone:#D9D2BE; --wire:#56635A;
+  --green:#2BC653; --green-bright:#2BC653; --btn-bg:#2BC653; --btn-ink:#08130b; --red:#FF3A45; --bone:#D9D2BE; --wire:#56635A;
   --board:#060907; --board-ink:#EEF2EC; --board-muted:#93A497; --board-line:#1F2A22;
   --chip:#18231B; --tbd:#F0A54A; --plate:#F2F4F0; color-scheme:dark;
 }
@@ -89,8 +89,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green);b
 .consent{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;font-weight:400;font-size:.93rem}
 .consent input{width:20px;height:20px;margin-top:2px;accent-color:var(--green)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-weight:700;font-size:1rem;border:0;border-radius:var(--radius);padding:14px 22px;cursor:pointer;text-decoration:none}
-.btn.primary{background:var(--green);color:#fff}
-.btn.primary:hover{background:var(--green-bright)}
+.btn.primary{background:var(--btn-bg);color:var(--btn-ink)}
+.btn.primary:hover{filter:brightness(1.12)}
 .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
 .btn[disabled]{opacity:.6;cursor:wait}
 .msg{border-radius:8px;padding:14px 16px;font-weight:600}
@@ -101,10 +101,11 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green);b
 .hidden{display:none!important}
 .req{color:var(--red)}
 @media (max-width:640px){.grid{grid-template-columns:1fr}.photo{grid-template-columns:110px 1fr}fieldset{padding:14px}}
+footer nav a{display:inline-block;padding:6px 2px;min-height:24px}
 </style>
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="index.html"><img src="logo.png" alt="Vereinslogo Clochard Darter Augsburg"><span><b>Clochard Darter</b><small>Augsburg e.V. · seit 1986</small></span></a>
+    <a class="brand" href="index.html"><img src="logo-sm.webp" alt="Vereinslogo Clochard Darter Augsburg" width="125" height="160"><span><b>Clochard Darter</b><small>Augsburg e.V. · seit 1986</small></span></a>
     <a class="back" href="index.html">Zur Startseite</a>
   </div>
 </header>
