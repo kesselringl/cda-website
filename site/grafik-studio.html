@@ -43,7 +43,7 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 .hint{font-size:12px;color:var(--mute);margin:6px 0 0}
 .note{font-size:12px;color:#ffd27a;margin:4px 0 6px}
 .vtabs{display:flex;gap:6px;margin-left:16px}.vtabs button{background:#202623;color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font:700 13px Archivo,Arial,sans-serif;cursor:pointer}.vtabs button[aria-pressed=true]{background:var(--green);border-color:var(--green)}
-@media(max-width:620px){header.top{flex-wrap:wrap}.vtabs{order:3;width:100%;margin:6px 0 0}}
+@media(max-width:620px){header.top{flex-wrap:wrap}.vtabs{order:3;width:100%;margin:6px 0 0;flex-wrap:wrap}.vtabs button{padding:6px 11px}}
 .statsv{max-width:1100px;margin:0 auto;padding:16px;display:grid;gap:16px}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}.kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}.kpi b{display:block;font:900 40px/1 "Big Shoulders Display",Impact,sans-serif;color:#fff}.kpi span{color:var(--mute);font-size:13px}
 .bars{display:flex;align-items:flex-end;gap:3px;height:180px;padding-top:10px}.bars i{flex:1;background:linear-gradient(#22d150,#0CA12D);border-radius:3px 3px 0 0;min-height:2px;position:relative}.bars i:hover::after{content:attr(data-t);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);white-space:nowrap;background:#000;padding:3px 6px;border-radius:4px;font:600 11px Archivo,sans-serif;font-style:normal}
@@ -62,6 +62,15 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 .pfields{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px 12px;margin-top:10px}.pfields label{display:block;font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:.06em}.pfields input{display:block;width:100%;margin-top:3px;background:#151a17;color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:7px 9px;font:500 14px Archivo,Arial,sans-serif;text-transform:none;letter-spacing:0}
 @media(max-width:620px){.pcardx{grid-template-columns:90px minmax(0,1fr);gap:12px}}
 .gbox img{width:auto}
+.gk h3{font:900 30px/1 "Big Shoulders Display",Impact,sans-serif;text-transform:uppercase;margin:2px 0 0}.gk h4{font:800 13px/1 Archivo,Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--mute);margin:16px 0 6px}
+.gk-h{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.gk-tag{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#7dffa0}.gk-pos{text-align:right}.gk-pos b{display:block;font:900 34px/1 "Big Shoulders Display",Impact,sans-serif}.gk-pos span{font-size:12px;color:var(--mute)}
+.gk-form{display:flex;align-items:center;gap:4px;margin-top:10px}.fm{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:6px;font:800 12px Archivo,Arial,sans-serif;color:#fff}.fS{background:#0CA12D}.fU{background:#6b6f6c}.fN{background:#E30212}
+.gk-ins{margin:12px 0 0;padding:10px 12px 10px 28px;background:#0f1311;border:1px solid #2f6b3c;border-radius:10px;font-size:13px}.gk-ins li{margin:3px 0}
+.gk-scroll{overflow-x:auto}.gk-t{font-size:13px;white-space:nowrap}.gk-t th,.gk-t td{padding:5px 8px;text-align:left;border-bottom:1px solid var(--line)}.gk-t th{color:var(--mute);font-weight:600;font-size:12px}.gk-t tr.st td:first-child{font-weight:700}.gk-t td.win{color:#7dffa0;font-weight:700}.gk-t td.loss{color:#ff7d86;font-weight:700}
+.gk-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.gk-bar select{flex:1 1 320px;min-width:0;background:#0f1311;color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:9px 10px;font:600 14px Archivo,Arial,sans-serif}
+.gk,.gk-us{min-width:0}#gegv .grid2{grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
+.gk-us summary{cursor:pointer;padding:4px 0}.gk-us .gk{border:0;padding:12px 0 0;background:none}
+
 .sapp{background:#0CA12D;color:#08130b;border:0;border-radius:999px;padding:6px 12px;font:700 13px Archivo,Arial,sans-serif;cursor:pointer;margin-right:14px}
 .sapp[hidden],.smodal[hidden]{display:none!important}
 .smodal{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.6);display:grid;place-items:center;padding:16px}
@@ -73,7 +82,7 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 <header class="top">
   <img src="logo.png" alt="" width="296" height="378">
   <h1>CDA <span>Grafik-Studio</span></h1>
-  <nav class="vtabs" id="vtabs" hidden><button type="button" data-view="g" aria-pressed="true">Grafiken</button><button type="button" data-view="s" aria-pressed="false">Besucherzahlen</button><button type="button" data-view="p" aria-pressed="false">Steckbriefe<span id="pbadge" class="pbadge" hidden></span></button></nav>
+  <nav class="vtabs" id="vtabs" hidden><button type="button" data-view="g" aria-pressed="true">Grafiken</button><button type="button" data-view="s" aria-pressed="false">Besucherzahlen</button><button type="button" data-view="o" aria-pressed="false">Gegner-Check</button><button type="button" data-view="p" aria-pressed="false">Steckbriefe<span id="pbadge" class="pbadge" hidden></span></button></nav>
   <button type="button" id="sapp" class="sapp" hidden>📲 Als App installieren</button><a href="./">zur Homepage</a><a href="#" id="logout" hidden style="margin-left:14px">Abmelden</a>
 </header>
 <div class="smodal" id="smodal" hidden role="dialog" aria-modal="true" aria-labelledby="smt"><div class="sbox"><button type="button" class="sx" aria-label="Schließen">×</button>
@@ -113,6 +122,107 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 
 <section class="statsv" id="statsv" hidden></section>
 <section class="statsv" id="profv" hidden></section>
+<section class="statsv" id="gegv" hidden></section>
+<script>
+/* Gegner-Check: 2. Bundesliga, Doppelspieltag = zwei Gegner am selben Tag (Daten: liga.json aus den 3K-Spielberichten) */
+(function(){
+  var L=null,D=null,SEL=null,US='Clochard Darter Augsburg';
+  function h(x){return String(x==null?'':x).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function dd(s){if(!s)return'';var p=s.split('-');return p[2]+'.'+p[1]+'.'+p[0];}
+  function n1(x){return x==null||isNaN(x)?'–':x.toFixed(1).replace('.',',');}
+  function mean(a){a=a.filter(function(x){return x!=null;});return a.length?a.reduce(function(s,x){return s+x;},0)/a.length:null;}
+  function shortTeam(n){return n===US?'CDA':n;}
+  function done(m){return !!(m.score&&m.games&&m.games.length);}
+  function teamMatches(t){return L.matches.filter(function(m){return (m.home===t||m.away===t)&&m.score;}).sort(function(a,b){return (a.date+a.time).localeCompare(b.date+b.time);});}
+
+  function analyse(t){
+    var ms=teamMatches(t),P={},PR={},vs=[];
+    ms.forEach(function(m){var side=m.home===t?'h':'a',os=side==='h'?'a':'h',opp=side==='h'?m.away:m.home,seen={};
+      (m.games||[]).forEach(function(g){var me=g[side],won=g['l'+side]>g['l'+os];
+        if(g.t==='E'){var n=me[0];if(!n)return;var p=P[n]=P[n]||{n:n,m:{},e:0,ew:0,lf:0,la:0,av:[],pos:[],d:0,dw:0,last:''};
+          p.e++;if(won)p.ew++;p.lf+=g['l'+side];p.la+=g['l'+os];p.av.push(g['a'+side]);p.pos.push(g.nr);
+          if(opp===US&&t!==US)vs.push({date:m.date,them:n,us:g[os][0],lt:g['l'+side],lu:g['l'+os],at:g['a'+side],au:g['a'+os]});}
+        else{var k=me.slice().sort().join(' + ');var r=PR[k]=PR[k]||{k:k,c:0,w:0,av:[],last:''};r.c++;if(won)r.w++;r.av.push(g['a'+side]);r.last=m.date;
+          me.forEach(function(n){var p=P[n]=P[n]||{n:n,m:{},e:0,ew:0,lf:0,la:0,av:[],pos:[],d:0,dw:0,last:''};p.d++;if(won)p.dw++;});
+          if(opp===US&&t!==US)vs.push({date:m.date,them:me.join(' + '),us:g[os].join(' + '),lt:g['l'+side],lu:g['l'+os],at:g['a'+side],au:g['a'+os],dbl:1});}
+        me.forEach(function(n){if(P[n]){P[n].m[m.id]=1;P[n].last=m.date;}});});});
+    var nm=ms.filter(done).length;
+    var pl=Object.keys(P).map(function(k){var p=P[k];p.apps=Object.keys(p.m).length;p.avg=mean(p.av);p.stamm=nm>0&&p.apps/nm>=0.5;
+      var c={};p.pos.forEach(function(x){c[x]=(c[x]||0)+1;});p.posTop=Object.keys(c).sort(function(a,b){return c[b]-c[a]||a-b;}).slice(0,2).join('/');
+      p.posAvg=mean(p.pos);return p;}).sort(function(a,b){return b.apps-a.apps||(b.avg||0)-(a.avg||0);});
+    var prs=Object.keys(PR).map(function(k){var r=PR[k];r.avg=mean(r.av);return r;}).sort(function(a,b){return b.c-a.c||b.w-a.w;});
+    var form=ms.map(function(m){var s=m.score.split(':').map(Number),me=m.home===t?s[0]:s[1],ot=m.home===t?s[1]:s[0];
+      return{r:me>ot?'S':me<ot?'N':'U',opp:shortTeam(m.home===t?m.away:m.home),sc:me+':'+ot,date:m.date};});
+    var row=((D&&D.teams&&D.teams['1']&&D.teams['1'].table)||[]).filter(function(r){return r.name===t;})[0]||null;
+    return{t:t,pl:pl,prs:prs,form:form,row:row,vs:vs,nm:nm,teamAvg:mean(pl.filter(function(p){return p.e;}).map(function(p){return p.avg;}))};
+  }
+
+  function insights(a){var out=[],e=a.pl.filter(function(p){return p.e>=2;});
+    var best=e.slice().sort(function(x,y){return (y.avg||0)-(x.avg||0);})[0];if(best)out.push('Stärkster Einzelspieler: <b>'+h(best.n)+'</b> (Ø '+n1(best.avg)+', '+best.ew+':'+(best.e-best.ew)+')');
+    var hot=e.filter(function(p){return p.e>=3&&p.ew/p.e>=0.75;}).map(function(p){return h(p.n)+' ('+p.ew+':'+(p.e-p.ew)+')';});if(hot.length)out.push('Kaum zu schlagen: '+hot.join(', '));
+    var weak=e.filter(function(p){return p.e>=3&&p.ew/p.e<=0.34;}).map(function(p){return h(p.n)+' ('+p.ew+':'+(p.e-p.ew)+')';});if(weak.length)out.push('Wackelt im Einzel: '+weak.join(', '));
+    var top=a.pl.filter(function(p){return p.e>=2&&p.posAvg!=null&&p.posAvg<=2.5;}).map(function(p){return h(p.n);});if(top.length)out.push('Spielt meist vorne (Pos. 1–2): '+top.join(', '));
+    var dp=a.prs.filter(function(r){return r.c>=2;})[0];if(dp)out.push('Eingespieltes Doppel: <b>'+h(dp.k)+'</b> ('+dp.c+'× zusammen, '+dp.w+':'+(dp.c-dp.w)+')');
+    var dsum=a.prs.reduce(function(s,r){return[s[0]+r.w,s[1]+r.c-r.w];},[0,0]);if(dsum[0]+dsum[1])out.push('Doppel gesamt: '+dsum[0]+':'+dsum[1]+(dsum[0]>dsum[1]?' – eher stark im Doppel':dsum[0]<dsum[1]?' – Doppel sind ihre Schwäche':''));
+    return out;}
+
+  function card(a,title){
+    var r=a.row,f=a.form.slice(-5);
+    var hd='<div class="box gk"><div class="gk-h"><div><span class="gk-tag">'+h(title||'')+'</span><h3>'+h(shortTeam(a.t))+'</h3></div>'+
+      (r?'<div class="gk-pos"><b>'+r.pos+'.</b><span>'+r.points+' Pkt · '+r.w+'-'+r.d+'-'+r.l+' · Sätze '+h(r.sets)+'</span></div>':'')+'</div>'+
+      '<div class="gk-form">'+(f.length?f.map(function(x){return '<span class="fm f'+x.r+'" title="'+h(dd(x.date)+' gegen '+x.opp+' '+x.sc)+'">'+x.r+'</span>';}).join('')+'<span class="hint" style="margin:0 0 0 6px">letzte '+f.length+' · Ø Einzel '+n1(a.teamAvg)+'</span>':'<span class="hint">noch keine Spiele</span>')+'</div>';
+    var ins=a.t===US?[]:insights(a);
+    if(ins.length)hd+='<ul class="gk-ins">'+ins.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul>';
+    hd+='<h4>Spieler</h4><div class="gk-scroll"><table class="stbl gk-t"><thead><tr><th>Spieler</th><th title="Begegnungen mit Einsatz">Sp.</th><th>Einzel</th><th>Legs</th><th>Ø Avg</th><th title="häufigste Position im Einzel (1–8)">Pos.</th><th>Doppel</th><th>zuletzt</th></tr></thead><tbody>'+
+      a.pl.map(function(p){return '<tr'+(p.stamm?' class="st"':'')+'><td>'+(p.stamm?'★ ':'')+h(p.n)+'</td><td>'+p.apps+'/'+a.nm+'</td><td>'+(p.e?p.ew+':'+(p.e-p.ew):'–')+'</td><td>'+(p.e?p.lf+':'+p.la:'–')+'</td><td>'+n1(p.avg)+'</td><td>'+(p.posTop||'–')+'</td><td>'+(p.d?p.dw+':'+(p.d-p.dw):'–')+'</td><td>'+dd(p.last).slice(0,6)+'</td></tr>';}).join('')+'</tbody></table></div>'+
+      '<p class="hint">★ = Stammspieler (bei mindestens der Hälfte der Begegnungen dabei). Ø Avg = Durchschnitt der Einzel-Averages.</p>';
+    if(a.prs.length)hd+='<h4>Doppel</h4><div class="gk-scroll"><table class="stbl gk-t"><thead><tr><th>Paar</th><th>Sp.</th><th>Bilanz</th><th>Ø Avg</th></tr></thead><tbody>'+
+      a.prs.slice(0,8).map(function(r){return '<tr><td>'+h(r.k)+'</td><td>'+r.c+'</td><td>'+r.w+':'+(r.c-r.w)+'</td><td>'+n1(r.avg)+'</td></tr>';}).join('')+'</tbody></table></div>';
+    if(a.vs.length)hd+='<h4>Bisher gegen uns</h4><div class="gk-scroll"><table class="stbl gk-t"><thead><tr><th>Datum</th><th>'+h(shortTeam(a.t))+'</th><th>Legs</th><th>CDA</th></tr></thead><tbody>'+
+      a.vs.map(function(v){var w=v.lu>v.lt;return '<tr><td>'+dd(v.date).slice(0,6)+'</td><td>'+h(v.them)+' <span class="hint">'+n1(v.at)+'</span></td><td class="'+(w?'win':'loss')+'">'+v.lt+':'+v.lu+'</td><td>'+h(v.us)+' <span class="hint">'+n1(v.au)+'</span></td></tr>';}).join('')+'</tbody></table></div>';
+    return hd+'</div>';}
+
+  function plain(a){var s=[shortTeam(a.t)+(a.row?' – '+a.row.pos+'. Platz, '+a.row.points+' Punkte':'')];
+    s.push('Form: '+(a.form.slice(-5).map(function(x){return x.r+' '+x.sc+' '+x.opp;}).join(' | ')||'–'));
+    s.push('Spieler (Begegnungen, Einzel, Legs, Avg, Pos., Doppel):');
+    a.pl.forEach(function(p){s.push('- '+(p.stamm?'★ ':'')+p.n+': '+p.apps+'/'+a.nm+', '+(p.e?p.ew+':'+(p.e-p.ew):'–')+', '+(p.e?p.lf+':'+p.la:'–')+', '+n1(p.avg)+', Pos. '+(p.posTop||'–')+', Doppel '+(p.d?p.dw+':'+(p.d-p.dw):'–'));});
+    if(a.prs.length){s.push('Doppel:');a.prs.slice(0,8).forEach(function(r){s.push('- '+r.k+': '+r.c+'×, '+r.w+':'+(r.c-r.w)+', Avg '+n1(r.avg));});}
+    if(a.vs.length){s.push('Bisher gegen CDA:');a.vs.forEach(function(v){s.push('- '+v.them+' '+v.lt+':'+v.lu+' '+v.us);});}
+    return s.join('\n');}
+
+  function days(){var by={};L.matches.filter(function(m){return m.home===US||m.away===US;}).forEach(function(m){(by[m.round]=by[m.round]||[]).push(m);});
+    return Object.keys(by).map(Number).sort(function(a,b){return a-b;}).map(function(r){var g=by[r].sort(function(a,b){return String(a.time).localeCompare(String(b.time));});
+      return{r:r,date:g[0].date,games:g,opps:g.map(function(m){return m.home===US?m.away:m.home;}),done:g.every(function(m){return m.score;})};});}
+
+  function draw(){var el=document.getElementById('gegv'),ds=days(),today=new Date().toISOString().slice(0,10);
+    if(SEL==null){var nx=ds.filter(function(d){return d.date>=today&&!d.done;})[0]||ds[ds.length-1];SEL=nx?'r'+nx.r:'';}
+    var teams=[];L.matches.forEach(function(m){[m.home,m.away].forEach(function(t){if(t!==US&&teams.indexOf(t)<0)teams.push(t);});});teams.sort();
+    var opts='<optgroup label="Unsere Spieltage (2. Bundesliga)">'+ds.map(function(d){return '<option value="r'+d.r+'"'+(SEL==='r'+d.r?' selected':'')+'>'+d.r+'. Spieltag · '+dd(d.date)+' · '+d.opps.map(shortTeam).join(' + ')+(d.done?' (gespielt)':'')+'</option>';}).join('')+'</optgroup>'+
+      '<optgroup label="Einzelne Mannschaft">'+teams.map(function(t){return '<option value="t'+h(t)+'"'+(SEL==='t'+t?' selected':'')+'>'+h(t)+'</option>';}).join('')+'</optgroup>';
+    var html='<div class="box"><h2>Gegner-Check · 2. Bundesliga</h2><div class="gk-bar"><select id="gsel" aria-label="Spieltag oder Mannschaft">'+opts+'</select><button type="button" class="pbtn" id="gcopy">Als Text kopieren</button></div>';
+    var list=[],d=null;
+    if(SEL.charAt(0)==='r'){d=ds.filter(function(x){return 'r'+x.r===SEL;})[0];
+      if(d){html+='<p class="hint">'+(d.games.map(function(m){var opp=m.home===US?m.away:m.home;return '<b>'+h(m.time||'')+' Uhr</b> '+(m.home===US?'CDA – '+h(opp):h(opp)+' – CDA')+(m.score?' · '+h(m.score):'');}).join(' &nbsp;·&nbsp; '))+(d.games[0]&&d.games[0].date?'':'')+'</p>';
+        list=d.games.map(function(m,i){return{t:m.home===US?m.away:m.home,title:(m.time||'')+' Uhr · Gegner '+(i+1)};});}}
+    else list=[{t:SEL.slice(1),title:'Mannschaft'}];
+    html+='<p class="hint">Daten aus den 3K-Spielberichten aller Begegnungen der Liga · Stand '+new Date(L.updated).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})+' Uhr</p></div>';
+    var an=list.map(function(x){var a=analyse(x.t);a.title=x.title;return a;});
+    html+='<div class="grid2">'+an.map(function(a){return card(a,a.title);}).join('')+'</div>';
+    var us=analyse(US);
+    html+='<details class="box gk-us"><summary><b>Unser Kader (CDA I) zum Vergleich</b></summary>'+card(us,'Wir')+'</details>';
+    el.innerHTML=html;
+    document.getElementById('gsel').onchange=function(){SEL=this.value;draw();};
+    document.getElementById('gcopy').onclick=function(){var b=this,t=(d?'Spieltag '+d.r+' am '+dd(d.date)+'\n\n':'')+an.map(plain).join('\n\n')+'\n\nCDA I zum Vergleich:\n'+plain(us);
+      (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){b.textContent='Kopiert ✓';setTimeout(function(){b.textContent='Als Text kopieren';},1500);},function(){prompt('Text kopieren:',t);});};}
+
+  window.cdaGegner=function(){var el=document.getElementById('gegv');
+    if(L){draw();return;}
+    el.innerHTML='<div class="box"><p class="hint" style="margin:0">Lade Spielberichte …</p></div>';
+    Promise.all([fetch('liga.json',{cache:'no-cache'}).then(function(r){if(!r.ok)throw new Error('Die Spielberichte sind noch nicht da (liga.json fehlt).');return r.json();}),
+      fetch('data.json').then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})])
+      .then(function(x){L=x[0];D=x[1];draw();}).catch(function(e){el.innerHTML='<div class="box"><p class="note">'+h(e.message)+'</p></div>';});};
+})();
+</script>
 
 <div class="app" id="app" hidden>
   <div class="ctl">
@@ -157,7 +267,7 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 (function(){var U='https://qeevsqrmltewbtrnfrfm.supabase.co',K='sb_publishable_pwnzx63cque5lKZEVCe4mA_5SvBP8Yd',A=null;try{A=JSON.parse(localStorage.getItem('cda-auth')||'null');}catch(e){}
   function save(j){A={role:'lead',access:j.access_token,refresh:j.refresh_token,exp:Date.now()+(j.expires_in||3600)*1000};try{localStorage.setItem('cda-auth',JSON.stringify(A));}catch(e){}}
   function open(){setTimeout(function(){window.dispatchEvent(new Event('cda-open'));},50);document.getElementById('gate').hidden=true;document.getElementById('app').hidden=false;document.getElementById('logout').hidden=false;document.getElementById('vtabs').hidden=false;window.dispatchEvent(new Event('resize'));}
-  function gate(){document.getElementById('gate').hidden=false;document.getElementById('app').hidden=true;document.getElementById('statsv').hidden=true;document.getElementById('profv').hidden=true;document.getElementById('vtabs').hidden=true;setTimeout(function(){var p=document.getElementById('gpw');if(p)p.focus();},50);}
+  function gate(){document.getElementById('gate').hidden=false;document.getElementById('app').hidden=true;document.getElementById('statsv').hidden=true;document.getElementById('profv').hidden=true;document.getElementById('gegv').hidden=true;document.getElementById('vtabs').hidden=true;setTimeout(function(){var p=document.getElementById('gpw');if(p)p.focus();},50);}
   function refresh(){return fetch(U+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{apikey:K,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:A.refresh})}).then(function(r){return r.ok?r.json():null;}).then(function(j){if(j){save(j);return true;}return false;}).catch(function(){return false;});}
   if(A&&A.role==='lead'&&A.refresh){if(A.exp>Date.now()+60000)open();else refresh().then(function(ok){ok?open():gate();});}else gate();
   document.getElementById('gform').onsubmit=function(e){e.preventDefault();var err=document.getElementById('gerr');err.textContent='Anmelden …';
@@ -263,7 +373,7 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
       var data={};c.querySelectorAll('[data-k]').forEach(function(i){var v=i.value.trim();if(v)data[i.getAttribute('data-k')]=v;});
       b.disabled=true;rpc('cda_steckbrief_set',{p_id:id,p_status:a,p_data:data,p_name:c.querySelector('.pname').value}).then(profiles).catch(function(x){alert(x.message);b.disabled=false;});};}
   document.getElementById('vtabs').onclick=function(e){var b=e.target.closest('[data-view]');if(!b)return;var v=b.getAttribute('data-view');this.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed',x===b);});
-    document.getElementById('statsv').hidden=v!=='s';document.getElementById('profv').hidden=v!=='p';document.getElementById('app').hidden=v!=='g';if(v==='s')stats();if(v==='p')profiles();};
+    document.getElementById('statsv').hidden=v!=='s';document.getElementById('profv').hidden=v!=='p';document.getElementById('gegv').hidden=v!=='o';document.getElementById('app').hidden=v!=='g';if(v==='s')stats();if(v==='p')profiles();if(v==='o')window.cdaGegner();};
   // Zahl neuer Einsendungen gleich nach dem Anmelden im Reiter anzeigen
   window.addEventListener('cda-open',function(){rpc('cda_steckbrief_list').then(function(rows){PROWS=rows||[];badge();}).catch(function(){});});
 })();
