@@ -41,12 +41,15 @@ jobs:
       - name: Daten von 3K und nuLiga holen
         run: npm run fetch
 
+      - name: Spielberichte der 2. Bundesliga für den Gegner-Check
+        run: node scripts/build-liga.mjs
+
       - name: Neuen Stand im Repository sichern
         run: |
-          if [ -n "$(git status --porcelain -- site/data.json)" ]; then
+          if [ -n "$(git status --porcelain -- site/data.json site/liga.json)" ]; then
             git config user.name  "CDA Ergebnis-Bot"
             git config user.email "actions@users.noreply.github.com"
-            git add site/data.json
+            git add site/data.json site/liga.json
             git commit -m "Ergebnisse aktualisiert"
             git push
           fi
