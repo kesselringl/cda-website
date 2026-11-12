@@ -92,7 +92,7 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
     var steps=ios?['Diese Seite in <b>Safari</b> öffnen.','Auf <b>Teilen</b> tippen (Quadrat mit Pfeil).','<b>„Zum Home-Bildschirm“</b> wählen und <b>„Hinzufügen“</b>.']
       :mac?['Menüleiste: <b>„Ablage“</b>.','<b>„Zum Dock hinzufügen …“</b> wählen.','Mit <b>„Hinzufügen“</b> bestätigen.']
       :fx?['Firefox kann keine Apps installieren.','Öffne das Grafik-Studio in <b>Chrome</b> oder <b>Edge</b> und tippe dort auf diesen Button.']
-      :edge?['Oben rechts auf <b>⋯</b> klicken.','<b>„Apps“</b> → <b>„Diese Website als App installieren“</b>.','Als Namen <b>„CDA Studio“</b> lassen und <b>„Installieren“</b>.']
+      :edge?['Oben rechts auf <b>⋯</b> klicken.','<b>„Apps“</b> → <b>„Diese Website als App installieren“</b>. Fehlt „Apps“, steht es unter <b>„Weitere Tools“</b> → <b>„Apps“</b>.','Als Namen <b>„CDA Studio“</b> lassen und <b>„Installieren“</b>.']
       :android?['Oben rechts auf <b>⋮</b> tippen.','<b>„Zum Startbildschirm hinzufügen“</b> → <b>„Installieren“</b>.','Es erscheint das Symbol <b>„CDA Studio“</b>.']
       :['Oben rechts im Chrome-Menü auf <b>⋮</b> klicken.','<b>„Streamen, speichern und teilen“</b> → <b>„Seite als App installieren …“</b>.','Als Namen <b>„CDA Studio“</b> lassen und <b>„Installieren“</b>. Wichtig: im normalen Chrome-Fenster, nicht in der CDA-App.'];
     document.getElementById('ssteps').innerHTML=steps.map(function(t){return '<li>'+t+'</li>';}).join('');m.hidden=false;};
