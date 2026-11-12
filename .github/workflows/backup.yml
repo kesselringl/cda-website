@@ -1,0 +1,30 @@
+name: Datensicherung
+
+# Jeden Montag früh (und von Hand): Spieler, Abende/Spielstände, Anmeldungen und freigegebene Steckbriefe
+# aus Supabase sichern. Ablage als Workflow-Artefakt (90 Tage aufbewahrt), nicht im öffentlichen Repo.
+on:
+  schedule:
+    - cron: '23 2 * * 1'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Daten holen
+        run: node scripts/backup.mjs backup
+      - name: Datum
+        id: d
+        run: echo "d=$(TZ=Europe/Berlin date +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cda-sicherung-${{ steps.d.outputs.d }}
+          path: backup/
+          retention-days: 90
