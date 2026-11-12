@@ -641,9 +641,6 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
 .hero-app .ha-t small{font-size:.8rem;color:#B9C2BB;line-height:1.35;margin-top:2px}
 .hero-app .ha-go{flex:none;background:#2BC653;color:#08130b;font-weight:800;font-size:.9rem;padding:9px 14px;border-radius:999px}
 .hero-app[hidden]{display:none}
-.studio-fab{position:fixed;right:16px;bottom:16px;z-index:40;display:inline-flex;align-items:center;gap:8px;background:#E30212;color:#fff;font-weight:800;text-decoration:none;padding:12px 16px;border-radius:999px;box-shadow:0 10px 30px rgba(0,0,0,.35);font-size:.95rem}
-.studio-fab:hover{filter:brightness(1.1)}
-@media (max-width:560px){.studio-fab span{display:none}.studio-fab{padding:14px;font-size:1.2rem}}
 </style>
 
 <div class="draft"><div class="wrap"><span>Vorschau der neuen Vereinsseite</span><span>Die bisherige Seite bleibt bis zum Umzug unter cda-ev.eu erreichbar</span></div></div>
@@ -1100,9 +1097,6 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
 (function(){var URL={gwtec:'https://www.gw-tec.de/',bbm:'https://www.bbm-mahler.de/',gronde:'https://gronde.eu/',thalhofer:'https://www.matthias-thalhofer.com/',frey:'',spiel77:'https://www.spiel-77-casino.de/',karella:'https://karella.de/'};
   document.querySelectorAll('[data-sp]').forEach(function(t){var u=URL[t.getAttribute('data-sp')];if(!u)return;var pl=t.querySelector('.plate,.main-plate');if(!pl)return;
     var a=document.createElement('a');a.href=u;a.target='_blank';a.rel='noopener sponsored';a.className='sp-link';a.setAttribute('aria-label','Website von '+(pl.querySelector('img')||{}).alt);pl.parentNode.insertBefore(a,pl);a.appendChild(pl);});})();
-/* Schnellzugriff aufs Grafik-Studio – nur sichtbar, wenn auf diesem Gerät die Turnierleitung angemeldet ist */
-(function(){try{var a=JSON.parse(localStorage.getItem('cda-auth')||'null');if(!a||a.role!=='lead')return;
-  var l=document.createElement('a');l.href='grafik-studio.html';l.className='studio-fab';l.innerHTML='🎨 <span>Grafik-Studio</span>';l.setAttribute('aria-label','Zum Grafik-Studio');document.body.appendChild(l);}catch(e){}})();
 /* „CDA-App installieren“: Chrome/Edge/Android mit echtem Installieren-Dialog, iPhone/iPad und Mac-Safari mit kurzer Anleitung */
 (function(){
   var btns=document.querySelectorAll('.app-install'),modal=document.getElementById('appModal'),deferred=null;
