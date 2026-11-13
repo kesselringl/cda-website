@@ -1162,7 +1162,7 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
         ['R','2027-05-10','20:00','Walter Frosch Darters','CDA II'],
         ['R','2027-06-02','20:00','CDA II','DJK Lechhausen II'],
         ['R','2027-06-07','20:00','SV Steingriff II','CDA II']],
-       p:['Andreas Mors','Robert Strehl','Michael Voigt','Claus Mader','Leo Hörmann','Jonas Thoma','Ewald Lautenschlager','Dominik Thoma','Martin Hungbaur']},
+       p:['Andreas Mors','Robert Strehl','Michael Voigt','Claus Mader','Leo Hörmann','Jonas Thoma','Ewald Lautenschlager','Dominik Thoma','Martin Hungbaur','Sancha Koal']},
     3:{roman:'III',liga:'3. Bezirksliga Schwaben Süd',ort:'Bismarck Bistro, Augsburg',note:'Auf jeder Karte steht die Einzelbilanz der Saison. Steckbriefe mit Foto kommen nach und nach dazu.',
        table:{label:'Platz 8 · 3:5 Punkte',stand:'nach 4 Begegnungen',rows:[[1,'Foxvalley DC','27:13','7:1'],[2,'DJK Lechhausen V','32:18','7:3'],[3,'Pegasus Darter II','22:18','6:2'],['…'],[7,'FC Ebershausen Darts','15:15','3:3'],[8,'CDA III','21:19','3:5',1],[9,'SV Bergheim Darts','20:20','3:5']]},
        stats:{'Robert Strehl':'6:2','Markus Ziegler':'5:1','Simon Schmidbaur':'3:1','Carola Wüstner':'2:2','Dennis Mandl':'2:6','Manfred Tochtermann':'0:2'},
@@ -1214,7 +1214,8 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
         ['R','2027-05-31','20:00','TSV Pöttmes III','CDA IV']],
        p:['Sebastian Röck','Andreas Wengenmayr','Adrian Pirner','Adrian Seidl','Clemens Fleischmann','Maximilian Urban','Gerald Nitzer','Dennis Meissner','Fabian Schreyer']}
   };
-  var multi={'Leo Hörmann':'CDA I + II','Robert Strehl':'CDA II + III'};
+  // Spieler, die in mehreren Mannschaften gemeldet sind – automatisch aus den Kaderlisten
+  var multi={};Object.keys(teams).forEach(function(k){teams[k].p.forEach(function(n){(multi[n]=multi[n]||[]).push(teams[k].roman);});});
   function esc(t){return t.replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   function tbd(t){return '<i class="tbd">'+t+'</i>';}
   function show(id){
@@ -1265,11 +1266,11 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
     var pr=PROFILES[n]||{},parts=n.split(' '),first=parts.slice(0,-1).join(' '),last=parts[parts.length-1];
     var ini=(parts[0][0]+last[0]).toUpperCase(),st=t.stats&&t.stats[n],q='–',rec='–';
     if(st){var w=+st.split(':')[0],l=+st.split(':')[1];rec=st;q=(w+l)?Math.round(w/(w+l)*100)+' %':'–';}
-    var other=multi[n]?multi[n].replace('CDA '+t.roman,'').replace(/[+ ]/g,'').trim():'';
+    var other=(multi[n]||[]).filter(function(r){return r!==t.roman;});
     var fields=FIELDS.filter(function(f){return pr[f[0]];}),bs=(ERF.players[n]||[]).filter(function(b){return ERF.defs[b.id];}),hasP=!!(fields.length||pr.motto);
     var has=hasP||bs.length>0;
     var front='<div class="pc-face pc-front"><div class="pc-photo">'+(pr.photo?'<img src="'+esc(pr.photo)+'" alt="Foto von '+esc(n)+'" loading="lazy">':'<span class="pc-mono" aria-hidden="true">'+ini+'</span>')+
-      '<span class="pc-badge">CDA '+t.roman+'</span>'+(other?'<span class="pc-badge b2">auch CDA '+esc(other)+'</span>':'')+
+      '<span class="pc-badge">CDA '+t.roman+'</span>'+(other.length?'<span class="pc-badge b2">auch CDA '+other.join(' + ')+'</span>':'')+
       '<span class="pc-name"><small>'+esc(first)+(pr.nick?' · „'+pr.nick+'“':'')+'</small><b>'+esc(last)+'</b></span></div>'+
       '<div class="pc-stats'+(t.avg?' three':'')+'"><div><b>'+rec+'</b><span>Einzel 26/27</span></div><div><b>'+q+'</b><span>Siegquote</span></div>'+(t.avg?'<div><b>'+(t.avg[n]?t.avg[n].toFixed(2).replace('.',','):'–')+'</b><span>Average</span></div>':'')+'</div>'+
       (bs.length?'<div class="pc-ach" aria-label="'+bs.length+' Abzeichen">'+bs.slice(0,4).map(function(b){var d=ERF.defs[b.id];return '<i class="t-'+d.tier+'" title="'+esc(d.label)+'">'+d.icon+'</i>';}).join('')+(bs.length>4?'<span>+'+(bs.length-4)+'</span>':'')+'</div>':'')+

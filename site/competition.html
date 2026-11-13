@@ -632,7 +632,7 @@ P('Andreas Mors',62,'II',0,.9);P('Jonas Thoma',70,'II',0,.7);P('Ewald Lautenschl
 P('Carola Wüstner',50,'III',0,.45);P('Dennis Mandl',54,'III',0,.3);P('Adrian Seidl',52,'IV',0,.4);P('Sebastian Röck',50,'IV',0,.3);
 P('Max (Gast)',42,'',1,.3,1);P('Sophie (Gast)',38,'',1,.3,11);P('Tom (Gast)',45,'',1,.25,3);P('Lisa (Gast)',40,'',1,.12,2);P('Jan (Gast)',47,'',1,.12,12);P('Kevin (Gast)',51,'',1,.12,4);
 P('Franz Rötzsch',71,'I',0,.35);P('Jürgen Pistl',67,'I',0,.35);P('Markus Stiegeler',61,'I',0,.3);P('Markus Görg',57,'I',0,.3);P('Florian Zitzler',60,'I',0,.3);
-P('Sancha Koal',62,'I',0,.3);P('Simon Seifert',63,'I',0,.35);P('Dominik Thoma',59,'II',0,.25);P('Martin Hungbaur',56,'II',0,.25);P('Manfred Tochtermann',51,'III',0,.25);
+P('Sancha Koal',62,'I/II',0,.3);P('Simon Seifert',63,'I',0,.35);P('Dominik Thoma',59,'II',0,.25);P('Martin Hungbaur',56,'II',0,.25);P('Manfred Tochtermann',51,'III',0,.25);
 P('Markus Ziegler',49,'III',0,.2);P('Andreas Wengenmayr',48,'IV',0,.2);P('Clemens Fleischmann',47,'IV',0,.2);P('Maximilian Urban',50,'IV',0,.2);P('Gerald Nitzer',46,'IV',0,.2);
 var NICK={1:'The Lion'},PHOTO=(function(){var F=["bastian-rauh", "florian-kaiser", "ivo-schubert", "leo-hoermann", "leon-crump", "leon-kesselring", "marco-geiger", "marcus-kreiner", "markus-goerg", "sancha-koal", "simon-seifert"],o={};PLAYERS.forEach(function(p){var s=p.name.toLowerCase().replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');if(F.indexOf(s)>=0)o[p.id]='spieler/'+s+'.webp';});return o;})();
 function pl(id){for(var i=0;i<PLAYERS.length;i++)if(PLAYERS[i].id===id)return PLAYERS[i];return null;}
