@@ -316,6 +316,9 @@ th.sorted{color:var(--green-ink)}
   .mk svg{width:24px;height:24px}
   .chead{padding:10px 12px}
 }
+
+.callbtn{font:700 .78rem var(--f-body);border:1.5px solid var(--line,#ccc);background:transparent;color:var(--muted);border-radius:999px;padding:4px 12px;cursor:pointer;line-height:1.2}
+.callbtn[aria-pressed=true]{background:var(--green);border-color:var(--green);color:#fff}
 .gev.gnone{cursor:default}
 .sync{font-size:.78rem;font-weight:700;padding:4px 10px;border-radius:99px;white-space:nowrap}
 .sync.ok{background:color-mix(in srgb,var(--green) 18%,transparent);color:var(--green-ink)}
@@ -1206,7 +1209,25 @@ function render(){
   else V.innerHTML=viewBoard(+v.slice(1));
   try{if(!SITE)sessionStorage.setItem('cda-sb',JSON.stringify({role:S.role,view:S.view,me:S.me}));}catch(e){}
   try{fitBoard();}catch(e){}
+  try{callerTick();}catch(e){}
 }
+/* --- Caller-Stimme: sagt Scores, „du brauchst …“ und Game Shot an (pro Gerät an/aus) --- */
+var CALL={on:false,sig:{}};try{CALL.on=localStorage.getItem('cda-caller')==='1';}catch(e){}
+var CANSPEAK=typeof window!=='undefined'&&'speechSynthesis' in window&&typeof SpeechSynthesisUtterance!=='undefined';
+function callVoice(){var vs=CANSPEAK?speechSynthesis.getVoices():[],de=vs.filter(function(v){return /^de/i.test(v.lang);});
+  return de.filter(function(v){return /google|natural|online|anna|helena|katja|hedda|petra|marlene|vicki/i.test(v.name);})[0]||de[0]||null;}
+function say(t,o){if(!CALL.on||!CANSPEAK)return;o=o||{};var u=new SpeechSynthesisUtterance(t),v=callVoice();u.lang='de-DE';if(v)u.voice=v;u.rate=o.rate||1.02;u.pitch=o.pitch||1;speechSynthesis.speak(u);}
+function vname(n){return String(n||'').replace(/ \(Gast\)/g,'').split(' & ').map(function(x){return x.split(' ')[0];}).join(' und ');}
+function callerTick(){var v=S.view||'';if(!/^b\d$/.test(v))return;var b=+v.slice(1),ev=S.ev,m=byId(ev,ev.boards[b]);if(!m||!m.legs||!m.legs.length)return;
+  var leg=curLeg(m),sig=m.id+'|'+m.legs.length+'|'+leg.visits.length+'|'+(m.over?1:0),old=CALL.sig[b];CALL.sig[b]=sig;
+  if(!CALL.on||!CANSPEAK||!old||old===sig)return;var o=old.split('|');if(o[0]!==String(m.id))return;
+  if(m.over&&o[3]!=='1'){speechSynthesis.cancel();say('Game Shot! Und das Match für '+vname(partN(ev,m.winner===0?m.a:m.b))+'!',{rate:.95,pitch:1.05});return;}
+  if(m.legs.length>+o[1]){var pl=m.legs[m.legs.length-2];if(pl&&pl.winner!=null){speechSynthesis.cancel();say('Game Shot! Leg für '+vname(partN(ev,pl.winner===0?m.a:m.b))+'.');}return;}
+  if(m.legs.length<+o[1]||leg.visits.length<=+o[2]||MD(ev).kind==='cricket')return;
+  var vv=leg.visits[leg.visits.length-1],txt=vv.bust?'Überworfen!':vv.score===0?'Keine Punkte.':vv.score===180?'Hundertachtzig!':String(vv.score)+'.';
+  var p=turn(leg),r=restX(ev,m,leg,p);if(!m.over&&CO[r]&&isIn(ev,leg,p))txt+=' '+vname(pn(thrower(ev,m,leg,p)))+', du brauchst '+r+'.';
+  speechSynthesis.cancel();say(txt,vv.score===180?{rate:.8,pitch:1.15}:vv.score>=140?{pitch:1.08}:{});}
+function callerToggle(){CALL.on=!CALL.on;try{localStorage.setItem('cda-caller',CALL.on?'1':'0');}catch(e){}if(CALL.on){CALL.sig={};say('Caller ist an. Game on!');}else if(CANSPEAK)speechSynthesis.cancel();}
 /* --- Auswahl / Anmeldung --- */
 function evLabel(ev){var md=MD(ev);return md.name+' · '+wdS(ev.date)+' '+dshort(ev.date);}
 function realNext(n){var t=realToday(),out=[],d=new Date(t+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+1);
@@ -1564,7 +1585,7 @@ function viewBoard(b){
   if(ev.phase==='done')return ceremony(ev);
   if(!m)return '<div class="panel idle"><div class="big-n">Board '+(b+1)+'</div><p class="muted" style="margin:0">'+(ev.phase==='checkin'?'Der Abend ist noch nicht gestartet.':'Gerade kein Match. Sobald zwei Teilnehmer frei sind, erscheint es hier automatisch.')+'</p></div>';
   if(!m.started)return callScreen(ev,b,m);
-  var leg=curLeg(m),t=turn(leg),dv=devType(),tab=dv==='tablet',head='<div class="sb-head"><span class="stage">Board '+(b+1)+devTag(dv)+' · '+MD(ev).name+' · '+m.stage+'</span><span class="wsmall">Schreiber: '+(m.writer?pnh(m.writer):'offen')+'</span><span class="fmt num">Leg '+m.legs.length+' · '+MD(ev).sub+' · Best of '+(m.ft*2-1)+'</span></div>';
+  var leg=curLeg(m),t=turn(leg),dv=devType(),tab=dv==='tablet',head='<div class="sb-head"><span class="stage">Board '+(b+1)+devTag(dv)+' · '+MD(ev).name+' · '+m.stage+'</span>'+(CANSPEAK?'<button type="button" class="callbtn" data-act="caller" data-b="'+b+'" aria-pressed="'+CALL.on+'" title="Caller-Stimme an/aus">'+(CALL.on?'🔊':'🔇')+' Caller</button>':'')+'<span class="wsmall">Schreiber: '+(m.writer?pnh(m.writer):'offen')+'</span><span class="fmt num">Leg '+m.legs.length+' · '+MD(ev).sub+' · Best of '+(m.ft*2-1)+'</span></div>';
   return '<div class="scorer'+(tab?' tablet':'')+(MD(ev).kind==='cricket'?'':' x01')+(m.over?' is-over':'')+'">'+head+(MD(ev).kind==='cricket'?cricketBoard(ev,b,m,leg,t):x01Board(ev,b,m,leg,t))+'</div>';
 }
 function x01Board(ev,b,m,leg,t){
@@ -1872,6 +1893,7 @@ function doAct(t,a,b){
   else if(a==='sim'){simMatch(ev,b);}
   else if(a==='simall'){simAll(ev);}
   else if(a==='simv'){simVisit(ev,b);}
+  else if(a==='caller'){callerToggle();}
   else if(a==='key'){key(b,t.getAttribute('data-k'));}
   else if(a==='quick'){S.input[b]=t.getAttribute('data-q');key(b,'Enter');}
   else if(a==='co'){S.msg[b]=checkoutX(ev,b,+t.getAttribute('data-d'));}
