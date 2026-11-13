@@ -567,6 +567,7 @@ footer a:hover{text-decoration:underline}
 @media (max-width:960px){
   .hero .wrap{grid-template-columns:1fr;padding-block:40px 64px}
   .ticket{transform:none;max-width:460px;margin-inline:0}
+  .upnext{max-width:none}
   .season,.team,.partners,.pitch,.join{grid-template-columns:1fr}
   .venues{grid-template-columns:1fr}
   .jubi .wrap{grid-template-columns:auto 1fr}
@@ -669,6 +670,36 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
 .tk-sep{font-style:normal;color:rgba(255,255,255,.25);margin:0 18px;font-size:.5rem}
 @keyframes tk{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @media (prefers-reduced-motion: reduce){.tk-track{animation:none;flex-wrap:wrap;width:auto}.tk-run[aria-hidden]{display:none}.hero-copy.hs-in{animation:none}}
+
+/* „Als Nächstes“ (rechts im Aufmacher) */
+.upnext{position:relative;box-sizing:border-box;min-width:0;width:100%;max-width:440px;margin-inline:auto;background:linear-gradient(165deg,rgba(255,255,255,.07),rgba(255,255,255,.015));border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:10px;box-shadow:0 30px 80px rgba(0,0,0,.45);color:#fff}
+.up-head{display:flex;align-items:center;gap:10px;padding:10px 12px 12px;font-size:.74rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#b9c2bb}
+.up-dot{width:9px;height:9px;border-radius:50%;background:#2BC653;box-shadow:0 0 0 0 rgba(43,198,83,.6);animation:upPulse 2s infinite}
+@keyframes upPulse{70%{box-shadow:0 0 0 10px rgba(43,198,83,0)}100%{box-shadow:0 0 0 0 rgba(43,198,83,0)}}
+.up-cal{margin-left:auto;font-size:.72rem;letter-spacing:.04em;text-transform:none;color:#b9c2bb;text-decoration:none;font-weight:700}.up-cal:hover{color:#fff}
+.up-row{display:flex;gap:14px;align-items:center;padding:12px;border-radius:14px;color:inherit;text-decoration:none;transition:background .2s,transform .2s}
+.up-row+.up-row{margin-top:4px}
+.up-row:hover{background:rgba(255,255,255,.06);transform:translateX(3px)}
+.up-tile{flex:none;width:58px;height:66px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;background:#1d2420;border:1px solid rgba(255,255,255,.08)}
+.up-tile b{font-family:var(--f-display);font-weight:900;font-size:1.7rem;margin:2px 0}.up-tile small{font-size:.6rem;font-weight:800;letter-spacing:.12em;opacity:.8}
+.up-tile.green{background:#0a8a2a;border-color:#2BC653}.up-tile.red{background:#b3020f;border-color:#E30212}.up-tile.gold{background:#E6B43A;color:#1a1300;border-color:#ffd56b}
+.up-tx{display:flex;flex-direction:column;min-width:0;flex:1;gap:2px}.up-row{min-width:0}
+.up-kind{font-size:.66rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#2BC653}
+.up-row b{font-size:1rem;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.up-sub{font-size:.8rem;color:#9fb0a5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.up-main{background:linear-gradient(135deg,rgba(43,198,83,.16),rgba(43,198,83,.04));border:1px solid rgba(43,198,83,.35);padding:16px 14px;align-items:flex-start}
+.up-main .up-tile{width:68px;height:78px}.up-main .up-tile b{font-size:2.1rem}
+.up-main b{font-family:var(--f-display);font-size:1.35rem;font-weight:800;white-space:normal}
+.up-main .up-sub{white-space:normal}
+.up-masters,.upnext.masters .up-main{background:linear-gradient(135deg,rgba(230,180,58,.2),rgba(230,180,58,.04));border-color:rgba(230,180,58,.5)}.upnext.masters .up-main .up-kind{color:#F2C75C}
+.up-count{display:flex;gap:8px;margin-top:10px}.up-count:empty{display:none}
+.up-count span{display:flex;align-items:baseline;gap:4px;font-size:.7rem;font-weight:700;color:#b9c2bb;text-transform:uppercase;letter-spacing:.06em;background:rgba(0,0,0,.35);border-radius:8px;padding:6px 9px}
+.up-count b{font-family:var(--f-display);font-size:1.35rem;color:#fff;font-variant-numeric:tabular-nums;white-space:nowrap}
+.up-count .live{background:#E30212;color:#fff;font-size:.85rem;letter-spacing:.1em}
+.up-tile.gold+.up-tx .up-kind{color:#F2C75C}.up-tile.red+.up-tx .up-kind{color:#ff6b74}
+.up-go{margin-top:10px;font-weight:800;font-size:.85rem;color:#2BC653}
+.up-main:hover .up-go{text-decoration:underline}
+@media (prefers-reduced-motion: reduce){.up-dot{animation:none}.up-row:hover{transform:none}}
 </style>
 
 <div class="draft"><div class="wrap"><span>Vorschau der neuen Vereinsseite</span><span>Die bisherige Seite bleibt bis zum Umzug unter cda-ev.eu erreichbar</span></div></div>
@@ -1528,19 +1559,28 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
     if(nx){d=new Date(nx.date+'T20:00:00');}else{d=new Date();d.setHours(20,0,0,0);var add=(4-d.getDay()+7)%7;if(add===0&&now.getHours()>=23)add=7;d.setDate(d.getDate()+add);}
     target=d;end=new Date(d.getTime()+3*36e5);
     var mode=nx?nx.mode:'alt',isM=mode==='m501',name=mode==='alt'?'Offene Competition':C.MODE[mode][0];
-    T.classList.remove('home');T.classList.toggle('masters',isM);
-    set('t-kind',name);set('t-wd','Donnerstag');
-    set('t-day',('0'+d.getDate()).slice(-2)+'.'+('0'+(d.getMonth()+1)).slice(-2)+'.');set('t-time','20 bis 23 Uhr');
-    var sub=mode==='alt'?'Offenes Turnier, jeder kann mitspielen.':C.MODE[mode][1].split(' · ').slice(0,2).join(' · ');
-    var preRL=nx&&nx.date<'2027-01-07';
-    set('t-body',(isM?'<span class="t-flag">Zählt für die Masters-Rangliste</span>':'')+'<span class="t-mode">'+esc(sub)+'</span><p class="t-place"><b>Bismarck Bistro</b><br>Bismarckstraße 7, 86159 Augsburg</p>'+
-      (typeof window.CDA_SIGNCOUNT==='function'&&nx&&window.CDA_SIGNCOUNT(nx.date)?'<span class="t-cnt">👥 '+window.CDA_SIGNCOUNT(nx.date)+' angemeldet</span>':'')+
-      '<div class="t-cta"><a href="#kontakt'+(nx?'/'+nx.date:'')+'">Anmelden</a><a class="alt" href="#masters">'+(preRL?'Neu ab 7.1.: CDA Masters':'CDA Masters')+'</a></div>'+
-      '<a class="t-abo" href="'+(location.origin+location.pathname.replace(/[^\/]*$/,'')+'kalender/cda-competition.ics').replace(/^https?:/,'webcal:')+'">📅 Alle Termine in deinen Kalender</a>');
+    // Rechts: „Als Nächstes“ – die nächsten Termine wie in einer Sport-App, oben groß die Competition mit Countdown
+    var MON=['JAN','FEB','MÄR','APR','MAI','JUN','JUL','AUG','SEP','OKT','NOV','DEZ'],WDS=['SO','MO','DI','MI','DO','FR','SA'];
+    var tile=function(iso,cls){var x=new Date(iso+'T12:00:00');return '<span class="up-tile '+cls+'"><small>'+WDS[x.getDay()]+'</small><b>'+x.getDate()+'</b><small>'+MON[x.getMonth()]+'</small></span>';};
+    var sub=mode==='alt'?'Offenes Turnier, jeder kann mitspielen':C.MODE[mode][1].split(' · ').slice(0,2).join(' · ');
+    var preRL=nx&&nx.date<'2027-01-07',isoNx=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
+    var cnt=typeof window.CDA_SIGNCOUNT==='function'&&nx?window.CDA_SIGNCOUNT(nx.date):0;
+    var rows=[];
+    rows.push('<a class="up-row up-main'+(isM?' up-ms':'')+'" href="#kontakt'+(nx?'/'+nx.date:'')+'">'+tile(isoNx,isM?'gold':'green')+'<span class="up-tx"><span class="up-kind">'+esc(name)+(isM?' · zählt für die Rangliste':'')+'</span><b>Competition im Bismarck Bistro</b><span class="up-sub">20–23 Uhr · '+esc(sub)+(cnt?' · 👥 '+cnt+' angemeldet':'')+'</span>'+
+      '<span class="up-count" id="t-count" aria-live="polite"></span><span class="up-go">Jetzt anmelden →</span></span></a>');
+    var ev=[];
+    if(LIVE&&LIVE.teams)['1','2','3','4'].forEach(function(k){var t=LIVE.teams[k];if(!t)return;var g=teamGames(t).filter(function(x){return !x.score&&x.date>=todayStr;}).sort(function(x,y){return x.date<y.date?-1:1;})[0];
+      if(g)ev.push({date:g.date,k:k,html:'<a class="up-row" href="'+(k==='1'?'#saison':'#teams')+'">'+tile(g.date,k==='1'?'red':'dark')+'<span class="up-tx"><span class="up-kind">'+esc(t.label||'CDA '+k)+(g.homeDay||g.home?' · Heimspiel':' · Auswärts')+'</span><b>'+(g.home?'gegen ':'bei ')+esc(g.opp)+'</b><span class="up-sub">'+(g.time?g.time+' Uhr · ':'')+esc(String(t.league||'').replace('3K WINMAU ',''))+'</span></span></a>'});});
+    if(preRL)ev.push({date:'2027-01-07',k:'m',html:'<a class="up-row" href="#masters">'+tile('2027-01-07','gold')+'<span class="up-tx"><span class="up-kind">Neu · CDA Masters</span><b>Start der Masters-Saison</b><span class="up-sub">Rangliste, Preisgeld und Finals</span></span></a>'});
+    ev.sort(function(x,y){return x.date<y.date?-1:1;});
+    // CDA I und (bis Januar) der Masters-Start immer dabei, dazu der nächste Termin der anderen Teams
+    var pick=ev.filter(function(x){return x.k==='1'||x.k==='m';}).slice(0,2).concat(ev.filter(function(x){return x.k!=='1'&&x.k!=='m';}).slice(0,preRL?1:2)).sort(function(x,y){return x.date<y.date?-1:1;});
+    T.className='upnext'+(isM?' masters':'');
+    T.innerHTML='<div class="up-head"><span class="up-dot" aria-hidden="true"></span>Als Nächstes<a href="'+(location.origin+location.pathname.replace(/[^\/]*$/,'')+'kalender/cda-competition.ics').replace(/^https?:/,'webcal:')+'" class="up-cal" title="Alle Termine in deinen Kalender">📅 Kalender</a></div>'+rows.join('')+pick.map(function(x){return x.html;}).join('');
     function tick(){var ms=target-new Date(),c=document.getElementById('t-count');
-      if(ms<=0){c.innerHTML=new Date()<end?'<div class="live">Heute live</div>':'';return;}
+      if(!c)return;if(ms<=0){c.innerHTML=new Date()<end?'<span class="live">● Heute live</span>':'';return;}
       var dd=Math.floor(ms/864e5),hh=Math.floor(ms%864e5/36e5),mm=Math.floor(ms%36e5/6e4);
-      c.innerHTML='<div><b>'+dd+'</b><span>'+(dd===1?'Tag':'Tage')+'</span></div><div><b>'+hh+'</b><span>Std.</span></div><div><b>'+mm+'</b><span>Min.</span></div>';}
+      c.innerHTML='<span><b>'+dd+'</b>'+(dd===1?'Tag':'Tage')+'</span><span><b>'+hh+'</b>Std.</span><span><b>'+mm+'</b>Min.</span>';}
     tick();clearInterval(heroTimer);heroTimer=setInterval(tick,30000);
     renderNews(story);
   }
