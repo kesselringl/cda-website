@@ -700,6 +700,38 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
 .up-go{margin-top:10px;font-weight:800;font-size:.85rem;color:#2BC653}
 .up-main:hover .up-go{text-decoration:underline}
 @media (prefers-reduced-motion: reduce){.up-dot{animation:none}.up-row:hover{transform:none}}
+
+/* Aktuelles: Kacheln im Sport-App-Stil */
+#news .news-grid{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-flow:dense;gap:16px}
+#news .news-card{position:relative;overflow:hidden;background:var(--board);color:var(--board-ink);border:1px solid rgba(255,255,255,.06);border-top:0;border-radius:18px;padding:20px;gap:10px;box-shadow:0 10px 30px rgba(0,0,0,.12)}
+#news .news-card::before{content:"";position:absolute;inset:0 0 auto;height:4px;background:var(--nc,var(--green-bright))}
+#news .news-card::after{content:"";position:absolute;right:-60px;bottom:-60px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,transparent 0 30%,rgba(255,255,255,.04) 31% 33%,transparent 34% 52%,rgba(255,255,255,.04) 53% 55%,transparent 56%);pointer-events:none}
+#news .news-card:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(0,0,0,.2);border-color:rgba(255,255,255,.12)}
+#news .news-card .n-tag{color:var(--nc,var(--green-bright))}#news .news-card .n-date{color:#8f9d94}
+#news .news-card h3{color:#fff;font-size:1.2rem;text-transform:uppercase;letter-spacing:.01em}
+#news .news-card p{color:#aab6ae;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+#news .news-card.k-green{--nc:#2BC653}#news .news-card.k-gold,#news .news-card.k-ms{--nc:#E6B43A}#news .news-card.k-red{--nc:#ff4d5a}#news .news-card.k-loss{--nc:#8f9d94}
+#news .news-card.k-ms{background:linear-gradient(150deg,#2a2210,var(--board) 65%)}
+#news .news-card.k-gold{background:linear-gradient(150deg,#262011,var(--board) 60%)}
+#news .n-feat{grid-column:span 2;padding:26px}
+#news .news-card>*{min-width:0}
+#news .n-feat h3{font-size:clamp(1.5rem,2.4vw,2.1rem)}
+.n-score{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.ns-row{display:flex;align-items:center;gap:12px;min-width:0}
+.ns-r{flex:none;width:26px;height:26px;border-radius:7px;display:grid;place-items:center;font-weight:800;font-size:.8rem;color:#fff}.ns-r.r-s{background:#0CA12D}.ns-r.r-u{background:#6b6f6c}.ns-r.r-n{background:#E30212}
+.ns-num{font-family:var(--f-display);font-weight:900;font-size:2rem;line-height:1;color:#fff;font-variant-numeric:tabular-nums;white-space:nowrap}.ns-num i{font-style:normal;color:#2BC653;margin:0 2px}
+.ns-opp{font-size:.86rem;line-height:1.25;color:#aab6ae;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.n-feat .ns-num{font-size:clamp(2.6rem,4vw,3.6rem)}.n-feat .ns-opp{font-size:1rem}.n-feat .n-score{gap:12px;margin-top:10px}
+.n-mw{margin-top:6px}.n-mw small{display:block;font-size:.66rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#8f9d94;margin-bottom:6px}
+.n-mw>div{display:flex;flex-wrap:wrap;gap:6px}
+.mw-chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:99px;padding:3px 10px 3px 3px;font-size:.8rem;font-weight:700;color:#fff}
+.mw-chip img,.mw-chip i{width:26px;height:26px;border-radius:50%;object-fit:cover;object-position:top;background:#1d2420;font-style:normal;font-size:.62rem;display:grid;place-items:center;color:#9fb0a5}
+.n-foot{margin-top:auto;padding-top:8px;font-size:.78rem;font-weight:700;color:#2BC653;letter-spacing:.02em}
+.n-big{display:flex;align-items:baseline;gap:12px;margin:4px 0;flex-wrap:wrap}.news-card.k-green .n-big b{color:#2BC653}.n-big b{font-family:var(--f-display);font-weight:900;font-size:4.2rem;line-height:.9;color:#F2C75C}.n-big span{font-weight:700;color:#e9e3cf;font-size:.95rem;line-height:1.2}
+.n-feat .n-big b{font-size:7rem}
+.n-icon{font-size:2.6rem;line-height:1}
+@media(max-width:1000px){#news .news-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){#news .news-grid{grid-template-columns:1fr}#news .n-feat{grid-column:auto;grid-row:auto}}
 </style>
 
 <div class="draft"><div class="wrap"><span>Vorschau der neuen Vereinsseite</span><span>Die bisherige Seite bleibt bis zum Umzug unter cda-ev.eu erreichbar</span></div></div>
@@ -1418,14 +1450,14 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
       // Herbstmeister / Hinrunde
       if(halfDone&&us.pos===1){
         var nxt=next[0];
-        out.push({prio:k==='1'?98:90,kind:'gold',tag:'Herbstmeister',team:lab,date:done.length?done[done.length-1].date:today,href:'#saison',
+        out.push({prio:k==='1'?98:90,kind:'gold',icon:'🏆',tag:'Herbstmeister',team:lab,date:done.length?done[done.length-1].date:today,href:'#saison',
           title:lab+' ist Herbstmeister'+(unbeaten?', ungeschlagen':''),
           text:'Nach der Hinrunde steht '+lab+' in der '+league+' ganz oben: '+us.w+' Siege, '+us.d+' Remis'+(us.l?', '+us.l+' Niederlage'+(us.l>1?'n':''):'')+(lead>0?' und '+lead+(lead===1?' Punkt':' Punkte')+' Vorsprung auf '+second.name:'')+'.',
           hero:{badge:'★ Herbstmeister',eyebrow:league+' · Hinrunde beendet',title:'Herbst&shy;meister.'+(unbeaten?' <em>Unge&shy;schlagen.</em>':' <em>Ganz oben.</em>'),
             lead:(k==='1'?'Unsere Erste':lab)+' überwintert an der Tabellenspitze der '+esc(league)+': '+us.w+' Siege und '+us.d+' Remis aus '+us.played+' Spielen'+(lead>0?', '+lead+(lead===1?' Punkt':' Punkte')+' vor '+esc(second.name):'')+'.'+(nxt?' Weiter geht es am '+fullDate.format(new Date(nxt.date+'T12:00:00'))+(nxt.homeDay?' mit einem Heimspieltag in Dinkelscherben':'')+'.':''),
             actions:'<a class="btn primary" href="#saison">Tabelle &amp; Spielplan</a><a class="btn ghost" href="#teams">Zur Mannschaft</a>'}});
       }else if(us.pos===1&&us.played>=3&&!hasRecent){
-        out.push({prio:72,kind:'gold',tag:'Tabellenführer',team:lab,date:done.length?done[done.length-1].date:today,href:'#teams',
+        out.push({prio:72,kind:'gold',icon:'👑',tag:'Tabellenführer',team:lab,date:done.length?done[done.length-1].date:today,href:'#teams',
           title:lab+' grüßt von der Spitze',text:(unbeaten?'Noch ungeschlagen: ':'')+us.w+' Siege aus '+us.played+' Spielen in der '+league+(lead>0?', '+lead+(lead===1?' Punkt':' Punkte')+' vor '+second.name:lead===0&&second?', punktgleich mit '+second.name:'')+'.'+(streak>=3?' Dazu '+streak+' Siege in Folge.':'')});
       }else if(streak>=3&&!hasRecent){
         out.push({prio:58,kind:'green',tag:'Serie',team:lab,date:done[done.length-1].date,href:'#teams',title:lab+' mit '+streak+' Siegen in Folge',text:'Aktuell Platz '+us.pos+' in der '+league+'.'});
@@ -1437,7 +1469,9 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
         var allW=rs.every(function(x){return x.r==='s';}),anyL=rs.some(function(x){return x.r==='n';});
         var title=day.length>1?(allW?'Doppelsieg für '+lab:lab+' holt '+rs.reduce(function(a,x){return a+(x.r==='s'?2:x.r==='u'?1:0);},0)+' von '+day.length*2+' Punkten')
           :(rs[0].r==='s'?lab+' gewinnt '+rs[0].a+':'+rs[0].b:rs[0].r==='u'?lab+' spielt '+rs[0].a+':'+rs[0].b+' Remis':lab+' verliert '+rs[0].a+':'+rs[0].b);
-        out.push({prio:62+(allW?4:0)+(k==='1'?6:0),kind:anyL&&!allW?'loss':'green',tag:'Ergebnis',team:lab,date:lastDate,href:k==='1'?'#saison':'#teams',title:title,
+        var bR=BERICHTE[k+'-'+lastDate],mwN=bR&&bR.mw?bR.mw.map(function(m){return m.name;}):[];
+        var vis={type:'score',games:day.map(function(g,i){return{a:rs[i].a,b:rs[i].b,r:rs[i].r,opp:g.opp,home:g.home};}),mw:mwN,foot:(us.pos===1?'Tabellenführer':'Platz '+us.pos)+(streak>=3?' · '+streak+' Siege in Folge':unbeaten?' · ungeschlagen':'')};
+        out.push({prio:62+(allW?4:0)+(k==='1'?6:0),kind:anyL&&!allW?'loss':'green',tag:'Ergebnis',team:lab,date:lastDate,href:k==='1'?'#saison':'#teams',title:title,vis:vis,
           text:day.map(function(g,i){return (rs[i].r==='s'?'Sieg':rs[i].r==='u'?'Remis':'Niederlage')+' '+rs[i].a+':'+rs[i].b+' '+(g.home?'gegen':'bei')+' '+g.opp;}).join(' · ')+'.'+mwText(k,lastDate)+(us.pos===1?' Damit Tabellenführer in der '+league+(lead>0?', '+lead+(lead===1?' Punkt':' Punkte')+' vor '+second.name:'')+(unbeaten?', weiter ohne Niederlage':'')+'.':' Jetzt Platz '+us.pos+' von '+tb.length+' in der '+league+'.')+(streak>=3?' '+streak+' Siege in Folge.':'')});
       }
       // Nächstes Spiel (bis 14 Tage voraus)
@@ -1450,7 +1484,7 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
       }
       // Spieler-Highlights
       if(k==='1'&&t.players){var best=t.players.filter(function(p){return p.avg;}).sort(function(a,b){return b.avg-a.avg;})[0];
-        if(best)out.push({prio:40,kind:'green',tag:'Bester Werfer',team:lab,date:done.length?done[done.length-1].date:today,href:'#teams',title:best.name+' mit '+best.avg.toFixed(2).replace('.',',')+' Average',text:'Bester Average der Ersten in der '+league+' (Einzel '+best.single+').'});}
+        if(best)out.push({prio:40,kind:'green',tag:'Bester Werfer',vis:{type:'big',num:best.avg.toFixed(2).replace('.',','),label:'Average · '+best.name},team:lab,date:done.length?done[done.length-1].date:today,href:'#teams',title:best.name+' mit '+best.avg.toFixed(2).replace('.',',')+' Average',text:'Bester Average der Ersten in der '+league+' (Einzel '+best.single+').'});}
       if(t.players)t.players.forEach(function(p){if(!p.single)return;var w=+p.single.split(':')[0],l=+p.single.split(':')[1];
         if(l===0&&w>=6)out.push({prio:38,kind:'green',tag:'Weiße Weste',team:lab,date:done.length?done[done.length-1].date:today,href:'#teams',title:p.name+': '+w+':0 in den Einzeln',text:'Noch kein Einzel verloren in dieser Saison ('+lab+').'});});
     });
@@ -1458,7 +1492,7 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
     var C=window.CDA_CAL;
     if(C){var RL='2027-01-07';
       if(today<RL){var days=Math.round((new Date(RL+'T12:00:00')-new Date(today+'T12:00:00'))/864e5);
-        out.push({prio:80,kind:'ms',tag:'Neustart Competition',team:'CDA Masters',date:RL,href:'#masters',title:'Noch '+days+' Tage bis zu den CDA Masters',text:'Ab 7. Januar 2027: jeden dritten Donnerstag Masters mit Rangliste, Preisgeld und Finals beim TSV Dinkelscherben.'});}
+        out.push({prio:80,kind:'ms',tag:'Neustart Competition',team:'CDA Masters',date:RL,href:'#masters',vis:{type:'big',num:days,label:days===1?'Tag bis zu den CDA Masters':'Tage bis zu den CDA Masters'},title:'Noch '+days+' Tage bis zu den CDA Masters',text:'Ab 7. Januar 2027: jeden dritten Donnerstag Masters mit Rangliste, Preisgeld und Finals beim TSV Dinkelscherben.'});}
       else{var nm=C.upcoming().filter(function(e){return e.mode==='m501'||e.mode==='finals';})[0];
         if(nm)out.push({prio:nm.date<=addDays(7)?82:50,kind:'ms',tag:nm.mode==='finals'?'Finals':'CDA Masters',team:'Competition',date:nm.date,href:'#masters',
           title:(nm.mode==='finals'?'CDA-Masters-Finals: ':'Nächster Masters-Abend: ')+relDay(nm.date),
@@ -1466,18 +1500,27 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
     }
     // Von Hand gepflegte Meldungen (news.json), z. B. Titel bei Meisterschaften
     MANUAL.forEach(function(n){if(n.until&&n.until<today)return;var age=Math.round((new Date(today)-new Date(n.date))/864e5);
-      out.push({prio:age<=30?88:44,manual:true,kind:n.kind||'gold',tag:n.tag,team:n.team||'CDA',date:n.date,href:n.href||'#',title:n.title,text:n.text});});
+      out.push({prio:age<=30?88:44,manual:true,icon:n.icon||'🏆',kind:n.kind||'gold',tag:n.tag,team:n.team||'CDA',date:n.date,href:n.href||'#',title:n.title,text:n.text});});
     out.sort(function(a,b){return b.prio-a.prio||(a.date<b.date?1:-1);});
     return out;
   }
   function renderNews(skip){
-    var all=buildNews().filter(function(n){return n!==skip&&!(skip&&n.title===skip.title);}),list=all.slice(0,6),sec=document.getElementById('news');
+    var all=buildNews().filter(function(n){return n!==skip&&!(skip&&n.title===skip.title);}),list=all.slice(0,7),sec=document.getElementById('news');
     // eine von Hand gepflegte Meldung bekommt immer einen Platz
-    var man=all.filter(function(n){return n.manual;})[0];if(man&&list.indexOf(man)<0&&list.length===6)list[5]=man;
+    var man=all.filter(function(n){return n.manual;})[0];if(man&&list.indexOf(man)<0&&list.length===7)list[6]=man;
     if(!list.length){sec.hidden=true;return;}
     sec.hidden=false;
-    document.getElementById('news-grid').innerHTML=list.map(function(n){
-      return '<a class="news-card k-'+n.kind+'" href="'+n.href+'"><span class="n-top"><span class="n-tag">'+esc(n.tag)+' · '+esc(n.team)+'</span><span class="n-date">'+relDay(n.date)+'</span></span><h3>'+esc(n.title)+'</h3><p>'+esc(n.text)+'</p></a>';}).join('');
+    var PRF=(typeof PROFILES!=='undefined'&&PROFILES)||{};
+    var av=function(n){var p=PRF[n]&&PRF[n].photo;return '<span class="mw-chip">'+(p?'<img src="'+esc(p)+'" alt="" loading="lazy">':'<i>'+esc(n.split(' ').map(function(w){return w[0];}).join('').slice(0,2))+'</i>')+esc(n)+'</span>';};
+    var fi=-1;list.forEach(function(n,i){if(fi<0&&n.vis&&n.vis.type==='score')fi=i;});if(fi>0){list.unshift(list.splice(fi,1)[0]);fi=0;}
+    var feat=fi===0&&(list.length+1)%4===0;
+    document.getElementById('news-grid').innerHTML=list.map(function(n,idx){
+      var v=n.vis,body='';
+      if(v&&v.type==='score'){body='<div class="n-score">'+v.games.map(function(g){return '<div class="ns-row"><span class="ns-r r-'+g.r+'">'+{s:'S',u:'U',n:'N'}[g.r]+'</span><span class="ns-num">'+g.a+'<i>:</i>'+g.b+'</span><span class="ns-opp">'+(g.home?'gegen ':'bei ')+esc(g.opp)+'</span></div>';}).join('')+'</div>'+
+        (v.mw.length?'<div class="n-mw"><small>'+(v.mw.length>1?'Ohne Niederlage im Einzel':'Matchwinner')+'</small><div>'+v.mw.slice(0,3).map(av).join('')+'</div></div>':'')+'<div class="n-foot">'+esc(v.foot)+'</div>';}
+      else if(v&&v.type==='big'){body='<div class="n-big"><b>'+v.num+'</b><span>'+esc(v.label)+'</span></div><p>'+esc(n.text)+'</p>';}
+      else body=(n.icon?'<span class="n-icon" aria-hidden="true">'+n.icon+'</span>':'')+'<p>'+esc(n.text)+'</p>';
+      return '<a class="news-card k-'+n.kind+(idx===0&&feat?' n-feat':'')+(v?' v-'+v.type:'')+'" href="'+n.href+'"><span class="n-top"><span class="n-tag">'+esc(n.tag)+' · '+esc(n.team)+'</span><span class="n-date">'+relDay(n.date)+'</span></span><h3>'+esc(n.title)+'</h3>'+body+'</a>';}).join('');
   }
 
   // ===== Startseite: wechselnde Themen im Aufmacher + Laufband =====
