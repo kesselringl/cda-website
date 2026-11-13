@@ -461,6 +461,17 @@ th.sorted{color:var(--green-ink)}
   .fitb .scorer.x01 .quick2{grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(2,minmax(0,1fr))}.fitb .scorer.x01 .quick2 button.q180{grid-column:auto}
   .fitb .scorer.x01 .side .rest{font-size:min(15cqh,15cqw)!important}}
 
+
+/* Ziffernblock: Ziffern exakt mittig, Finish-Tasten markiert */
+.inbox2 .pad button{display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;position:relative;overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation}
+.inbox2 .pad button>span{display:block;line-height:.8;padding-top:.08em}
+.inbox2 .pad button.cok{border-color:#E6B43A;color:#F2C75C;background:linear-gradient(180deg,rgba(230,180,58,.18),rgba(230,180,58,.06))}
+.inbox2 .pad button.cok small{position:absolute;top:3px;right:6px;font-family:var(--f-body,inherit);font-size:max(9px,.34em);font-weight:800;letter-spacing:.1em;text-transform:uppercase;opacity:.9;line-height:1}
+.inbox2 .pad button.cok::after{content:"";position:absolute;inset:auto 0 0 0;height:100%;background:rgba(230,180,58,.35);transform:scaleY(0);transform-origin:bottom}
+.inbox2 .pad button.cok.holding::after{transform:scaleY(1);transition:transform .55s linear}
+.inbox2.finish{border-color:#E6B43A}
+.inbox2 .who .fin{color:#F2C75C;letter-spacing:.06em}
+
 /* Siegerehrung */
 .cer{display:grid;gap:22px;justify-items:center;text-align:center;padding:36px 20px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius)}
 .cer .ct{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--green-ink);font-weight:700}
@@ -905,6 +916,11 @@ function submitX(ev,b,val){
   if(!bust)hl(ev,m,leg,who,s);
   return bust?'Überworfen. '+pn(who)+' bleibt auf '+r+'.':'';
 }
+/* Schnell-Check: Rest mit 1/2/3 Darts gecheckt (lange auf die Ziffer drücken bzw. Taste halten) */
+function checkDarts(ev,b){var m=byId(ev,ev.boards[b]);if(!m||m.over||!m.started||ev.ask[b]||MD(ev).kind==='cricket')return [];
+  var leg=curLeg(m),p=turn(leg),r=restX(ev,m,leg,p);if(!CO[r]||!isIn(ev,leg,p))return [];var o=[];for(var d=minDarts(r);d<=3;d++)o.push(d);return o;}
+function quickCheck(ev,b,d){if(checkDarts(ev,b).indexOf(d)<0)return false;var m=byId(ev,ev.boards[b]),leg=curLeg(m),r=restX(ev,m,leg,turn(leg));
+  S.input[b]='';submitX(ev,b,String(r));if(!ev.ask[b])return false;S.msg[b]=checkoutX(ev,b,d);if(!S.msg[b])S.msg[b]='Gecheckt mit '+d+' Dart'+(d>1?'s':'')+'! 🎯';return true;}
 function checkoutX(ev,b,darts){
   var m=byId(ev,ev.boards[b]),a=ev.ask[b];if(!m||!a)return '';
   var leg=curLeg(m);leg.visits.push({p:a.p,who:a.who,score:a.score,bust:false,darts:darts,co:true});ev.ask[b]=null;
@@ -1543,10 +1559,10 @@ function x01Board(ev,b,m,leg,t){
   else if(ev.ask[b]){var a=ev.ask[b],btns='';for(var d=a.min;d<=3;d++)btns+='<button class="btn primary" data-act="co" data-b="'+b+'" data-d="'+d+'">'+d+' Dart'+(d>1?'s':'')+'</button>';
     input='<div class="ask"><p>Check! '+pnh(a.who)+' macht '+a.score+'. Mit wie vielen Darts in dieser Aufnahme?</p><div class="row">'+btns+'<button class="btn" data-act="undo" data-b="'+b+'">Abbrechen</button></div></div>';}
   else{
-    var pad='';[7,8,9,4,5,6,1,2,3].forEach(function(k){pad+='<button data-act="key" data-b="'+b+'" data-k="'+k+'">'+k+'</button>';});
+    var cd=checkDarts(ev,b),pad='';[7,8,9,4,5,6,1,2,3].forEach(function(k){var c=cd.indexOf(k)>=0;pad+='<button data-act="key" data-b="'+b+'" data-k="'+k+'"'+(c?' class="cok" title="Lange drücken: gecheckt mit '+k+' Dart'+(k>1?'s':'')+'"':'')+'><span>'+k+'</span>'+(c?'<small>Check</small>':'')+'</button>';});
     pad+='<button class="fn" data-act="key" data-b="'+b+'" data-k="Backspace">Löschen</button><button data-act="key" data-b="'+b+'" data-k="0">0</button><button class="ok" data-act="key" data-b="'+b+'" data-k="Enter">Eintragen</button><button class="fn" data-act="undo" data-b="'+b+'">↶ Zurück</button><button class="rs" data-act="key" data-b="'+b+'" data-k="Rest">Restscore</button>';
     var qL=[26,41,45,60,81,85,100,140,180].map(function(q){return '<button data-act="quick" data-b="'+b+'" data-q="'+q+'"'+(q===180?' class="q180"':'')+'>'+q+'</button>';}).join('');
-    input='<div class="entry2"><div class="quick2 ql">'+qL+'</div><div class="inbox2"><span class="who">Aufnahme von '+pnh(thrower(ev,m,leg,t))+'</span><div class="val num">'+esc(S.input[b]||'')+'<span class="cursor"></span></div><div class="msg'+(err?' err':'')+'">'+esc(err?msg.slice(4):msg)+'</div><div class="pad">'+pad+'</div></div></div>'+
+    input='<div class="entry2"><div class="quick2 ql">'+qL+'</div><div class="inbox2'+(cd.length?' finish':'')+'"><span class="who">Aufnahme von '+pnh(thrower(ev,m,leg,t))+(cd.length?' · <b class="fin">Finish! '+cd.join('/')+' lange drücken = gecheckt</b>':'')+'</span><div class="val num">'+esc(S.input[b]||'')+'<span class="cursor"></span></div><div class="msg'+(err?' err':'')+'">'+esc(err?msg.slice(4):msg)+'</div><div class="pad">'+pad+'</div></div></div>'+
       '<div class="legend"><span><kbd>0–9</kbd> Punkte</span><span><kbd>Enter</kbd> eintragen</span><span><kbd>R</kbd> Restscore</span><span><kbd>Strg+Z</kbd> zurück</span>'+(md.di?'<span>Double-In: nur die Punkte ab dem Doppel eintragen</span>':'')+'<button class="linkbtn" data-act="simv" data-b="'+b+'">Demo: Aufnahme simulieren</button></div>'+
       (devType()==='tablet'&&!noSim()?'<div class="row" style="justify-content:center"><button class="linkbtn" data-act="simv" data-b="'+b+'">Demo: Aufnahme simulieren</button></div>':'');
   }
@@ -1779,6 +1795,15 @@ function key(b,k){
 }
 function top(){if(SITE){var h=CFG.host;if(h&&h.getBoundingClientRect().top<0)h.scrollIntoView();}else window.scrollTo(0,0);}
 var LT=SITE?DOC:document;
+var LP={t:null,fired:false,el:null};
+function lpClear(){if(LP.t)clearTimeout(LP.t);LP.t=null;if(LP.el)LP.el.classList.remove('holding');LP.el=null;}
+LT.addEventListener('pointerdown',function(e){var t=e.target.closest('button.cok[data-k]');if(!t)return;lpClear();LP.fired=false;LP.el=t;t.classList.add('holding');
+  var b=+t.getAttribute('data-b'),d=+t.getAttribute('data-k');
+  LP.t=setTimeout(function(){LP.t=null;LP.fired=true;if(LP.el)LP.el.classList.remove('holding');try{navigator.vibrate&&navigator.vibrate(40);}catch(x){}
+    liveRun(b,function(){quickCheck(S.ev,b,d);});render();},550);});
+['pointerup','pointerleave','pointercancel'].forEach(function(n){LT.addEventListener(n,function(){if(LP.t)lpClear();},true);});
+LT.addEventListener('contextmenu',function(e){if(e.target.closest('button.cok'))e.preventDefault();});
+LT.addEventListener('click',function(e){if(LP.fired){LP.fired=false;e.stopImmediatePropagation();e.preventDefault();}},true);
 LT.addEventListener('click',function(e){
   var tb=e.target.closest('[data-tab]');if(tb){var tv=tb.getAttribute('data-tab');if(tv==='logout'){authLogout();S.live=false;S.ev=SIM_EV;SV.gateLoaded=false;}if(tv==='logout'||tv==='gate'){S.role=null;S.login={};tv='gate';}S.view=tv;render();window.scrollTo(0,0);return;}
   var t=e.target.closest('[data-act]');if(!t||t.disabled)return;
@@ -1858,8 +1883,16 @@ if(!SITE)document.addEventListener('keydown',function(e){
   if((e.ctrlKey||e.metaKey)&&k.toLowerCase()==='z'){e.preventDefault();liveRun(b,function(){S.msg[b]=undo(S.ev,b);});render();return;}
   if(!cr&&(k==='r'||k==='R')){e.preventDefault();liveRun(b,function(){key(b,'Rest');});render();return;}
   if(cr&&/^[tdsTDS]$/.test(k)){e.preventDefault();liveRun(b,function(){key(b,k);});render();return;}
+  if(!cr&&/^[123]$/.test(k)){e.preventDefault();if(e.repeat)return;
+    if(KH.k&&KH.k!==k)khFlush();
+    if(checkDarts(S.ev,b).indexOf(+k)>=0){KH.k=k;KH.b=b;KH.done=false;KH.t=setTimeout(function(){KH.t=null;KH.done=true;liveRun(b,function(){quickCheck(S.ev,b,+k);});render();},500);return;}}
+  else if(KH.k)khFlush();
   if(/^\d$/.test(k)||k==='Enter'||k==='Backspace'||k==='Escape'){e.preventDefault();liveRun(b,function(){key(b,k);});render();}
 });
+/* Ziffer kurz gedrückt = normale Eingabe, gehalten = Check */
+var KH={k:null,b:0,t:null,done:false};
+function khFlush(){var k=KH.k,b=KH.b;if(KH.t)clearTimeout(KH.t);KH.t=null;KH.k=null;if(KH.done){KH.done=false;return;}if(k){liveRun(b,function(){key(b,k);});render();}}
+if(!SITE)document.addEventListener('keyup',function(e){if(KH.k&&e.key===KH.k)khFlush();});
 if(!SITE){try{var ss=JSON.parse(sessionStorage.getItem('cda-sb')||'null');if(ss&&ss.role&&(ss.role==='spec'||!LIVEAUTH)){S.role=ss.role;S.view=ss.view;S.me=ss.me||null;}}catch(e){}
   if(LIVEAUTH&&AUTH&&AUTH.role){S.role=AUTH.role;S.view=(ss&&ss.role===AUTH.role&&ss.view)||AUTH.role;authRefresh();enterLive();}
   else if(LIVEAUTH&&S.role==='spec'){S.role=null;S.view='gate';}
