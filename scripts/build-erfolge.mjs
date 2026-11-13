@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Erfolge & Abzeichen der CDA Masters / Competition → site/erfolge.json
 // Quelle: abgeschlossene, echte Abende aus Supabase (öffentlich lesbar, ohne Testabende).
-// Gäste bekommen keine Abzeichen (ihre Namen erscheinen nur mit Einwilligung).
+// Gäste bekommen genauso Abzeichen wie Mitglieder (sie stehen auch in der Rangliste) – das lockt sie wieder ans Board.
 // Aufruf: node scripts/build-erfolge.mjs            (holt aus Supabase)
 //         node scripts/build-erfolge.mjs datei.json  (Test mit exportierten Abenden [{date,state}])
 import { readFile, writeFile } from 'node:fs/promises';
@@ -46,7 +46,7 @@ export function compute(rows) {
   const me = n => P[n] || (P[n] = { n: 0, streak: 0, lastIdx: -2, t180: 0, wins: 0, evWins: 0, modes: {}, h2h: {} });
   const give = (name, id, date) => { won[name] = won[name] || {}; if (won[name][id]) return; won[name][id] = date; award.push({ name, id, date }); };
   evs.forEach((ev, idx) => {
-    const R = ev.roster || {}, nm = id => R[id] && R[id].name, guest = id => !R[id] || R[id].guest;
+    const R = ev.roster || {}, nm = id => R[id] && String(R[id].name).replace(/\s*\(Gast\)$/, ''), guest = id => !R[id];
     const parts = ev.parts || {}, mode = ev.mode, cricket = mode === 'cricket', date = ev.date;
     const members = pid => (parts[pid] && parts[pid].members) || [];
     const pids = (ev.pids || []).filter(id => !guest(id));
@@ -92,8 +92,8 @@ export function compute(rows) {
     Object.keys(dt).forEach(n => { if (dt[n] < 30) return; const a = sc[n] / dt[n] * 3; if (a >= 60) give(n, 'avg-60', date); if (a >= 70) give(n, 'avg-70', date); if (a >= 80) give(n, 'avg-80', date); });
     // Platzierungen aus der Zusammenfassung
     const all = (ev.summary && ev.summary.all) || [];
-    const guestNames = new Set(Object.values(R).filter(x => x.guest).map(x => x.name));
-    all.forEach(x => String(x.name || '').split(' & ').forEach(n => { if (!n || guestNames.has(n) || !P[n]) return;
+    const guestNames = new Set();
+    all.forEach(x => String(x.name || '').split(' & ').map(n => n.replace(/\s*\(Gast\)$/, '')).forEach(n => { if (!n || guestNames.has(n) || !P[n]) return;
       if (x.place <= 3) give(n, 'podest', date);
       if (x.place === 1) { const s = me(n); s.evWins++; give(n, 'tagessieg', date); if (s.evWins >= 3) give(n, 'hattrick', date);
         if (mode === 'm501') give(n, 'masters-sieg', date); if (mode === 'finals') give(n, 'masters-champion', date); } }));
