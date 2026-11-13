@@ -770,6 +770,79 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
   #verein.chron .timeline .dot{grid-column:1!important;grid-row:1 / span 2}#verein.chron .timeline .dot::after{top:12px;margin-top:0}
   #verein.chron .timeline li .yr,#verein.chron .timeline li:nth-child(even) .yr{grid-column:2!important;grid-row:1;text-align:left;padding:0 0 6px;font-size:2.2rem}
   #verein.chron .timeline li .txt{grid-column:2!important;grid-row:2}}
+
+/* ===== Neuer Look: Saison, Teams, Spielorte, Mitglied, Partner ===== */
+#saison{background:var(--board);color:var(--board-ink);position:relative;overflow:hidden}
+#saison::before{content:attr(data-ghost);position:absolute;right:-.04em;top:.12em;font:900 clamp(7rem,20vw,19rem)/.8 var(--f-display);color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.06);pointer-events:none;letter-spacing:-.02em}
+#saison::after{content:"";position:absolute;left:-200px;bottom:-200px;width:480px;height:480px;border-radius:50%;background:repeating-conic-gradient(rgba(227,2,18,.12) 0 9deg,rgba(8,135,42,.12) 9deg 18deg);-webkit-mask:radial-gradient(circle,transparent 0 55%,#000 56% 70%,transparent 71%);mask:radial-gradient(circle,transparent 0 55%,#000 56% 70%,transparent 71%);pointer-events:none}
+#saison .wrap{position:relative;z-index:1}
+#saison .eyebrow{color:var(--green-bright)}#saison h2{color:#fff}
+#saison .form-line{color:var(--board-muted)}
+#saison .panel{background:#141d17;border-color:rgba(255,255,255,.07);color:var(--board-ink);border-radius:18px;box-shadow:0 14px 34px rgba(0,0,0,.25)}
+#saison .panel-head{border-color:var(--board-line)}#saison .panel-head h3{color:#fff;text-transform:uppercase;letter-spacing:.02em}#saison .panel-head span{color:var(--board-muted)}
+#saison th,#saison td{border-color:var(--board-line)}#saison th{color:var(--board-muted)}
+#saison td.pos{font-family:var(--f-display);font-weight:900;font-size:1.25rem;color:var(--board-muted)}
+#saison td{color:var(--board-ink)}#saison tr.us td{background:rgba(43,198,83,.16);color:#fff}#saison tr.us td.pos{color:var(--green-bright)}
+#saison tbody tr:not(.us):hover td{background:rgba(255,255,255,.03)}
+#saison .day{border-color:var(--board-line);transition:background .2s}#saison .day:hover{background:rgba(255,255,255,.025)}
+#saison .day-label{color:transparent;-webkit-text-stroke:1.5px var(--green-bright);font-size:3.1rem}
+#saison .day-meta{color:var(--board-muted)}#saison .match b{color:#fff}
+#saison .match .score{color:#fff;font-size:1.65rem}
+#saison .res.u{background:#5d6b62}
+#saison .next-md{background:linear-gradient(135deg,#0f3d1d,#0b120d 62%);border:1px solid rgba(255,255,255,.07);border-radius:18px}
+#saison .md-plan{background:#141d17;border-color:rgba(255,255,255,.07);color:var(--board-ink)}
+#saison .md-plan summary{color:#fff}#saison .md-plan[open] summary,#saison .md-day{border-color:var(--board-line)}
+#saison .md-day .d,#saison .md-line .tm{color:var(--board-muted)}#saison .md-day.cur{background:rgba(43,198,83,.12)}
+#saison a{color:#7fe39a}
+
+#teams{background:linear-gradient(180deg,var(--bg),color-mix(in srgb,var(--green-bright) 6%,var(--bg)))}
+#teams .tab{border-width:2px;padding:10px 22px;font-family:var(--f-display);font-weight:800;letter-spacing:.05em;transition:transform .15s,box-shadow .2s,border-color .2s}
+#teams .tab:hover{border-color:var(--green-bright);transform:translateY(-1px)}
+#teams .tab[aria-selected="true"]{background:var(--green);border-color:var(--green);color:#fff;box-shadow:0 8px 22px rgba(8,135,42,.32)}
+#teams .team-info{position:relative;overflow:hidden;background:linear-gradient(160deg,#134222,var(--board) 58%);border:1px solid rgba(255,255,255,.06);border-radius:18px;box-shadow:0 18px 40px rgba(0,0,0,.18)}
+#teams .team-info::after{content:"";position:absolute;right:-90px;top:-90px;width:240px;height:240px;border-radius:50%;background:repeating-conic-gradient(rgba(227,2,18,.22) 0 9deg,rgba(43,198,83,.22) 9deg 18deg);-webkit-mask:radial-gradient(circle,transparent 0 50%,#000 51% 68%,transparent 69%);mask:radial-gradient(circle,transparent 0 50%,#000 51% 68%,transparent 69%);pointer-events:none}
+#teams .team-info .roman{display:flex;align-items:flex-end;gap:14px;font-family:Georgia,"Times New Roman",serif;font-weight:700;font-size:6.4rem;letter-spacing:.02em;color:#fff;text-shadow:0 0 40px rgba(43,198,83,.45);position:relative}
+#teams .team-info .roman::before{content:"CDA";font-family:var(--f-display);font-weight:900;font-size:1.1rem;letter-spacing:.3em;color:var(--green-bright);text-shadow:none;margin-bottom:.5em}
+#teams .team-info dl{position:relative}#teams .team-info dl>div{padding-top:12px;border-top:1px solid rgba(255,255,255,.08)}
+@media(min-width:1001px){#teams .team-info{position:sticky;top:96px}}
+
+#spielorte .venues{gap:18px}
+#spielorte .venue{--vc:var(--green-bright);position:relative;overflow:hidden;background:var(--board);color:var(--board-ink);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:26px;box-shadow:0 10px 30px rgba(0,0,0,.12);transition:transform .2s,box-shadow .2s}
+#spielorte .venue::before{content:"";position:absolute;inset:0 0 auto;height:4px;background:var(--vc)}
+#spielorte .venue::after{content:"";position:absolute;right:-70px;bottom:-70px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,transparent 0 30%,rgba(255,255,255,.04) 31% 33%,transparent 34% 52%,rgba(255,255,255,.04) 53% 55%,transparent 56%);pointer-events:none}
+#spielorte .venue:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(0,0,0,.22)}
+#spielorte .venue h3{color:#fff;font-size:1.55rem;text-transform:uppercase}
+#spielorte .venue address,#spielorte .venue p,#spielorte .venue.dates dd{color:#aab6ae}
+#spielorte .venue .who span{background:rgba(43,198,83,.16);color:#8ef0a8}
+#spielorte .venue a.inline{color:#8ef0a8}
+#spielorte .venue>a:not(.inline),#spielorte .venue-links a{position:relative;z-index:1;align-self:flex-start;display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:999px;background:var(--green-bright);color:#05210d;font-weight:700;text-decoration:none;transition:filter .2s}
+#spielorte .venue>a:not(.inline)::before,#spielorte .venue-links a:first-child::before{content:"📍"}
+#spielorte .venue-links a+a{background:transparent;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.28)}
+#spielorte .venue>a:not(.inline):hover,#spielorte .venue-links a:hover{filter:brightness(1.12);text-decoration:none}
+#spielorte .venue.dates{--vc:#E6B43A;background:linear-gradient(150deg,#262011,var(--board) 60%)}
+#spielorte .venue.dates .who span{background:rgba(230,180,58,.16);color:#f2cd6b}
+#spielorte .venue.dates dt{color:#fff}#spielorte .venue.dates dl>div{padding-left:14px;border-left:3px solid rgba(230,180,58,.6)}
+
+#mitglied .mg-faq{background:#141d17;color:var(--board-ink);border:1px solid rgba(255,255,255,.07);border-radius:18px;box-shadow:0 18px 40px rgba(0,0,0,.3)}
+#mitglied .mg-faq h3{color:#fff;text-transform:uppercase}
+#mitglied .mg-faq details{border-color:var(--board-line)}
+#mitglied .mg-faq summary{transition:color .2s}#mitglied .mg-faq summary:hover,#mitglied .mg-faq details[open] summary{color:var(--green-bright)}
+#mitglied .mg-faq summary::after{color:var(--green-bright)}
+#mitglied .mg-faq details p{color:var(--board-muted)}#mitglied .mg-faq a{color:#8ef0a8}#mitglied .mg-faq b{color:#fff}
+
+#partner .p-tile{position:relative;transition:transform .2s,box-shadow .2s,border-color .2s;border-radius:14px}
+#partner .p-tile:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(0,0,0,.1);border-color:var(--green-bright)}
+#partner .main-partner{position:relative;overflow:hidden;background:linear-gradient(160deg,#2a2210,var(--board) 55%);border-radius:18px;box-shadow:inset 0 0 0 1px rgba(230,180,58,.35),0 18px 40px rgba(0,0,0,.18)}
+#partner .main-partner .eyebrow{color:#E6B43A}
+#partner .pitch{position:relative;overflow:hidden;background:var(--board);color:var(--board-ink);border:0;border-radius:18px;padding:34px;box-shadow:0 18px 40px rgba(0,0,0,.18)}
+#partner .pitch::after{content:"";position:absolute;right:-160px;top:-160px;width:420px;height:420px;border-radius:50%;background:repeating-conic-gradient(rgba(227,2,18,.14) 0 9deg,rgba(43,198,83,.14) 9deg 18deg);-webkit-mask:radial-gradient(circle,transparent 0 55%,#000 56% 70%,transparent 71%);mask:radial-gradient(circle,transparent 0 55%,#000 56% 70%,transparent 71%);pointer-events:none}
+#partner .pitch>*{position:relative;z-index:1}
+#partner .pitch h3{color:#fff;font-size:clamp(1.6rem,3vw,2.2rem);text-transform:uppercase}
+#partner .pitch .lead{color:var(--board-muted)}#partner .pitch b{color:#fff}
+#partner .pitch li::before{background:var(--green-bright)}
+#partner .reach div{border-left-color:#E6B43A}
+#partner .reach b{color:#E6B43A;font-size:clamp(2.1rem,3.4vw,2.8rem)}
+#partner .reach span{color:var(--board-muted)}
 </style>
 
 <div class="draft"><div class="wrap"><span>Vorschau der neuen Vereinsseite</span><span>Die bisherige Seite bleibt bis zum Umzug unter cda-ev.eu erreichbar</span></div></div>
@@ -831,7 +904,7 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
       <div class="news-grid" id="news-grid"></div>
     </div>
   </section>
-  <section id="saison" aria-labelledby="saison-title">
+  <section id="saison" data-ghost="26/27" aria-labelledby="saison-title">
     <div class="wrap">
       <div class="sec-head">
         <div><p class="eyebrow">CDA I · 2. Bundesliga Süd</p><h2 id="saison-title">Saison 2026/27</h2></div>
