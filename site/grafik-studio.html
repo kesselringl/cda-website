@@ -68,7 +68,10 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 .gk-ins{margin:12px 0 0;padding:10px 12px 10px 28px;background:#0f1311;border:1px solid #2f6b3c;border-radius:10px;font-size:13px}.gk-ins li{margin:3px 0}
 .gk-scroll{overflow-x:auto}.gk-t{font-size:13px;white-space:nowrap}.gk-t th,.gk-t td{padding:5px 8px;text-align:left;border-bottom:1px solid var(--line)}.gk-t th{color:var(--mute);font-weight:600;font-size:12px}.gk-t tr.st td:first-child{font-weight:700}.gk-t td.win{color:#7dffa0;font-weight:700}.gk-t td.loss{color:#ff7d86;font-weight:700}
 .gk-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.gk-bar select{flex:1 1 320px;min-width:0;background:#0f1311;color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:9px 10px;font:600 14px Archivo,Arial,sans-serif}
-.gk,.gk-us{min-width:0}.wa-box{max-width:720px}.wa-box textarea{width:100%;box-sizing:border-box;font:15px/1.5 Archivo,Arial,sans-serif;background:#0f1311;color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:12px}.wa-box select{width:100%}.wa-act{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}#gegv .grid2{grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
+.gk,.gk-us{min-width:0}.wa-box{max-width:720px}.ap{max-width:860px}.ap-h{font:800 13px/1 Archivo,Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--mute);margin:18px 0 8px}
+.ap-it{display:flex;gap:12px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:12px;margin:8px 0;background:#0f1311}.ap-it.done{opacity:.55}.ap-ic{font-size:24px;line-height:1}.ap-tx{flex:1;min-width:0}.ap-tx b{display:block}.ap-tx span{font-size:13px;color:var(--mute)}.ap-bt{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.apn{display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 5px;margin-left:4px;border-radius:9px;background:#E30212;color:#fff;font-size:11px;font-weight:800}
+@media(max-width:620px){.ap-it{flex-wrap:wrap}.ap-bt{width:100%;justify-content:stretch}.ap-bt>*{flex:1}}.wa-box textarea{width:100%;box-sizing:border-box;font:15px/1.5 Archivo,Arial,sans-serif;background:#0f1311;color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:12px}.wa-box select{width:100%}.wa-act{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}#gegv .grid2{grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
 .gk-us summary{cursor:pointer;padding:4px 0}.gk-us .gk{border:0;padding:12px 0 0;background:none}
 
 .sapp{background:#0CA12D;color:#08130b;border:0;border-radius:999px;padding:6px 12px;font:700 13px Archivo,Arial,sans-serif;cursor:pointer;margin-right:14px}
@@ -82,7 +85,7 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 <header class="top">
   <img src="logo.png" alt="" width="296" height="378">
   <h1>CDA <span>Grafik-Studio</span></h1>
-  <nav class="vtabs" id="vtabs" hidden><button type="button" data-view="g" aria-pressed="true">Grafiken</button><button type="button" data-view="s" aria-pressed="false">Besucherzahlen</button><button type="button" data-view="w" aria-pressed="false">WhatsApp</button><button type="button" data-view="o" aria-pressed="false">Gegner-Check</button><button type="button" data-view="p" aria-pressed="false">Steckbriefe<span id="pbadge" class="pbadge" hidden></span></button></nav>
+  <nav class="vtabs" id="vtabs" hidden><button type="button" data-view="g" aria-pressed="true">Grafiken</button><button type="button" data-view="s" aria-pressed="false">Besucherzahlen</button><button type="button" data-view="a" aria-pressed="false">Autopilot</button><button type="button" data-view="w" aria-pressed="false">WhatsApp</button><button type="button" data-view="o" aria-pressed="false">Gegner-Check</button><button type="button" data-view="p" aria-pressed="false">Steckbriefe<span id="pbadge" class="pbadge" hidden></span></button></nav>
   <button type="button" id="sapp" class="sapp" hidden>📲 Als App installieren</button><a href="./">zur Homepage</a><a href="#" id="logout" hidden style="margin-left:14px">Abmelden</a>
 </header>
 <div class="smodal" id="smodal" hidden role="dialog" aria-modal="true" aria-labelledby="smt"><div class="sbox"><button type="button" class="sx" aria-label="Schließen">×</button>
@@ -124,6 +127,7 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 <section class="statsv" id="profv" hidden></section>
 <section class="statsv" id="gegv" hidden></section>
 <section class="statsv" id="wav" hidden></section>
+<section class="statsv" id="apv" hidden></section>
 <script>
 /* Gegner-Check: 2. Bundesliga, Doppelspieltag = zwei Gegner am selben Tag (Daten: liga.json aus den 3K-Spielberichten) */
 (function(){
@@ -268,7 +272,7 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 (function(){var U='https://qeevsqrmltewbtrnfrfm.supabase.co',K='sb_publishable_pwnzx63cque5lKZEVCe4mA_5SvBP8Yd',A=null;try{A=JSON.parse(localStorage.getItem('cda-auth')||'null');}catch(e){}
   function save(j){A={role:'lead',access:j.access_token,refresh:j.refresh_token,exp:Date.now()+(j.expires_in||3600)*1000};try{localStorage.setItem('cda-auth',JSON.stringify(A));}catch(e){}}
   function open(){setTimeout(function(){window.dispatchEvent(new Event('cda-open'));},50);document.getElementById('gate').hidden=true;document.getElementById('app').hidden=false;document.getElementById('logout').hidden=false;document.getElementById('vtabs').hidden=false;window.dispatchEvent(new Event('resize'));}
-  function gate(){document.getElementById('gate').hidden=false;document.getElementById('app').hidden=true;document.getElementById('statsv').hidden=true;document.getElementById('profv').hidden=true;document.getElementById('gegv').hidden=true;document.getElementById('wav').hidden=true;document.getElementById('vtabs').hidden=true;setTimeout(function(){var p=document.getElementById('gpw');if(p)p.focus();},50);}
+  function gate(){document.getElementById('gate').hidden=false;document.getElementById('app').hidden=true;document.getElementById('statsv').hidden=true;document.getElementById('profv').hidden=true;document.getElementById('gegv').hidden=true;document.getElementById('wav').hidden=true;document.getElementById('apv').hidden=true;document.getElementById('vtabs').hidden=true;setTimeout(function(){var p=document.getElementById('gpw');if(p)p.focus();},50);}
   function refresh(){return fetch(U+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{apikey:K,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:A.refresh})}).then(function(r){return r.ok?r.json():null;}).then(function(j){if(j){save(j);return true;}return false;}).catch(function(){return false;});}
   if(A&&A.role==='lead'&&A.refresh){if(A.exp>Date.now()+60000)open();else refresh().then(function(ok){ok?open():gate();});}else gate();
   document.getElementById('gform').onsubmit=function(e){e.preventDefault();var err=document.getElementById('gerr');err.textContent='Anmelden …';
@@ -374,7 +378,7 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
       var data={};c.querySelectorAll('[data-k]').forEach(function(i){var v=i.value.trim();if(v)data[i.getAttribute('data-k')]=v;});
       b.disabled=true;rpc('cda_steckbrief_set',{p_id:id,p_status:a,p_data:data,p_name:c.querySelector('.pname').value}).then(profiles).catch(function(x){alert(x.message);b.disabled=false;});};}
   document.getElementById('vtabs').onclick=function(e){var b=e.target.closest('[data-view]');if(!b)return;var v=b.getAttribute('data-view');this.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed',x===b);});
-    document.getElementById('statsv').hidden=v!=='s';document.getElementById('profv').hidden=v!=='p';document.getElementById('gegv').hidden=v!=='o';document.getElementById('wav').hidden=v!=='w';document.getElementById('app').hidden=v!=='g';if(v==='s')stats();if(v==='p')profiles();if(v==='o')window.cdaGegner();if(v==='w')window.cdaWA();};
+    document.getElementById('statsv').hidden=v!=='s';document.getElementById('profv').hidden=v!=='p';document.getElementById('gegv').hidden=v!=='o';document.getElementById('wav').hidden=v!=='w';document.getElementById('apv').hidden=v!=='a';document.getElementById('app').hidden=v!=='g';if(v==='s')stats();if(v==='p')profiles();if(v==='o')window.cdaGegner();if(v==='w')window.cdaWA();if(v==='a')window.cdaAP();};
   // Zahl neuer Einsendungen gleich nach dem Anmelden im Reiter anzeigen
   window.addEventListener('cda-open',function(){rpc('cda_steckbrief_list').then(function(rows){PROWS=rows||[];badge();}).catch(function(){});});
 })();
@@ -1331,7 +1335,7 @@ Promise.all([fetch('data.json').then(function(r){return r.json();}),Promise.all(
   MW=a[6]||null;
   PREV=a[4]&&a[4].teams&&a[4].teams['1']?Object.assign({season:a[4].season},a[4].teams['1']):null;
   return Promise.all(photoPlayers().map(function(n){return load(PLAYERS[n].photo);}));
-}).then(function(){if(!TYPES[S.type])S.type='ergebnis';S.look=TYPES[S.type].look;buildTypeSelect();buildThemes();buildSrc();refill();});
+}).then(function(){if(!TYPES[S.type])S.type='ergebnis';S.look=TYPES[S.type].look;buildTypeSelect();buildThemes();buildSrc();refill();try{apBadge();apFromHash();}catch(x){}});
 // ================= WhatsApp-Nachricht für die Vereinsgruppe =================
 // Klingt wie von Leon, passt sich an Anmeldungen, Spielmodus, Termin und Jahreszeit an. „Neu formulieren“ würfelt eine andere Fassung.
 var WA={date:null,seed:0,kind:'auto',txt:''};
@@ -1397,5 +1401,60 @@ function waView(){var el=$('wav'),ds=upcoming().filter(function(e){return e.mode
     $('wacopy').onclick=function(){var b=this;(navigator.clipboard?navigator.clipboard.writeText(WA.txt):Promise.reject()).then(function(){b.textContent='Kopiert ✓';setTimeout(function(){b.textContent='Kopieren';},1500);},function(){prompt('Text kopieren:',WA.txt);});};
   });}
 window.cdaWA=waView;
+
+// ================= Content-Autopilot: was steht zum Posten an? =================
+var APK='cda-ap-done';
+function apDone(){try{return JSON.parse(localStorage.getItem(APK)||'{}');}catch(x){return{};}}
+function apSet(id,v){var d=apDone();if(v)d[id]=Date.now();else delete d[id];try{localStorage.setItem(APK,JSON.stringify(d));}catch(x){}}
+function apAdd(iso,n){var t=new Date(iso+'T12:00:00Z');t.setUTCDate(t.getUTCDate()+n);return t.toISOString().slice(0,10);}
+function apPreMove(){return /github\.io$/.test(location.hostname)||location.hostname==='localhost';}
+function apItems(){
+  var T=today(),out=[],keep=S.team,add=function(o){if(o.post<T)o.post=T;out.push(o);};
+  Object.keys(DATA.teams).forEach(function(k){S.team=k;var t=DATA.teams[k],lab=t.label,u=(t.table||[]).filter(function(r){return r.us;})[0],mds=matchdays();
+    mds.filter(function(m){return played(m)&&m.date>=apAdd(T,-5)&&m.date<=T;}).forEach(function(m){
+      var res=m.games.map(function(g){return (isUs(g.home)?'CDA '+g.score+' '+short(g.away):short(g.home)+' '+g.score+' CDA');}).join(' · ');
+      var vs=m.round&&t.matchdays?m.label:'Spiel gegen '+short(isUs(m.games[0].home)?m.games[0].away:m.games[0].home);
+      add({id:'erg-'+k+'-'+m.key,post:m.date,icon:'🏁',title:'Ergebnis '+lab+(t.matchdays?' – '+m.label:' gegen '+vs.replace('Spiel gegen ','')),why:res,set:{type:'ergebnis',team:k,pick:m.key}});
+      if(k==='1'||(u&&u.pos===1))add({id:'tab-'+k+'-'+m.key,post:apAdd(m.date,1),icon:'📊',title:'Tabelle '+lab+' nach dem '+vs,why:u?'Platz '+u.pos+', '+u.points+' Punkte':'',set:{type:'tabelle',team:k}});
+      if(u&&u.pos===1&&u.l===0&&u.played>=4)add({id:'top-'+k+'-'+m.key,post:apAdd(m.date,2),icon:'🏆',title:lab+': ungeschlagen an der Spitze',why:u.w+' Siege, '+u.d+' Remis – das ist einen eigenen Post wert',set:{type:'meilenstein',team:k}});});
+    var nx=mds.filter(function(m){return !played(m)&&m.date>T&&m.date<=apAdd(T,10);})[0];
+    if(nx){add({id:'vor-'+k+'-'+nx.key,post:apAdd(nx.date,-2),icon:'📣',title:'Spieltag-Vorschau '+lab+' – '+nx.label,why:dow(nx.date)+', '+dmy(nx.date)+(nx.home?' · Heimspiel':'')+' · '+nx.games.map(function(g){return short(isUs(g.home)?g.away:g.home);}).join(' & '),set:{type:'vorschau',team:k,pick:nx.key}});
+      if(k==='1')nx.games.forEach(function(g,i){var o=isUs(g.home)?g.away:g.home;add({id:'geg-'+nx.key+'-'+i,post:apAdd(nx.date,-5+i),icon:'🔎',title:'Gegner vorstellen: '+short(o),why:'vor dem '+nx.label+' am '+dmy(nx.date),set:{type:'gegner',team:'1',pick:o}});});}});
+  S.team=keep;
+  var d=new Date(T+'T12:00:00'),day=d.getDate(),ym=T.slice(0,7);
+  var mk=defaultMonth();if(day<=7&&mk)add({id:'sdm-'+mk,post:ym+'-03',icon:'⭐',title:'Spieler des Monats '+monthLabel(mk),why:'Vorschlag nach Monatswertung: '+((monthRanking(mk)[0]||{}).name||'–'),set:{type:'spieler',month:mk}});
+  var t5=ym+'-18';if(t5>=T&&t5<=apAdd(T,7)||day>=18&&day<=22)add({id:'top5-'+ym,post:t5,icon:'🎯',title:'Top 5 nach Average (CDA I)',why:'monatliches Ranking – kommt immer gut an',set:{type:'top5',team:'1',crit:'avg'}});
+  if(T.slice(5)>='12-14')add({id:'wrapped-'+T.slice(0,4),post:T.slice(0,4)+'-12-20',icon:'🎁',title:'CDA Wrapped '+T.slice(0,4)+' (Karussell)',why:'11 Folien Jahresrückblick',set:{type:'wrapped',pick:'intro'}});
+  // Competition: WhatsApp intern immer, öffentliche Posts erst nach dem Umzug
+  var nc=upcoming().filter(function(e){return e.mode!=='finals'&&e.date>=T&&e.date<=apAdd(T,7);})[0];
+  if(nc){add({id:'wa-'+nc.date,post:apAdd(nc.date,-1),icon:'💬',title:'WhatsApp-Einladung für Donnerstag',why:dmy(nc.date)+' · in die Vereinsgruppe',view:'w',wa:{date:nc.date,kind:'einladung'}});
+    add({id:'wah-'+nc.date,post:nc.date,icon:'💬',title:'WhatsApp: „Heute Abend wird geworfen“',why:'Erinnerung am Spieltag, mittags',view:'w',wa:{date:nc.date,kind:'heute'}});
+    if(!apPreMove())add({id:'comp-'+nc.date,post:apAdd(nc.date,-2),icon:'📢',title:(nc.mode==='m501'?'Masters-Ankündigung #'+nc.no:'Competition-Ankündigung'),why:dmy(nc.date),set:{type:nc.mode==='m501'?'masters':'comp',pick:nc.date}});}
+  if(!apPreMove())EVENTS.filter(function(e){return e.date>=apAdd(T,-3);}).forEach(function(e){add({id:'sieg-'+e.date,post:apAdd(e.date,1),icon:'🥇',title:'Siegerehrung vom '+dmy(e.date),why:((e.summary.podium||[])[0]||{}).name||'',set:{type:'sieger',pick:e.date}});});
+  var seen={};return out.filter(function(o){if(seen[o.id])return false;seen[o.id]=1;return o.post<=apAdd(T,7);}).sort(function(a,b){return a.post<b.post?-1:a.post>b.post?1:0;});}
+function apOpen(o){
+  if(o.view==='w'){WA.date=o.wa.date;WA.kind=o.wa.kind;WA.seed=0;document.querySelector('#vtabs [data-view=w]').click();return;}
+  var s=o.set;S.type=s.type;if(s.team)S.team=s.team;S.pick=s.pick||null;if(s.month)S.month=s.month;if(s.crit)S.crit=s.crit;S.look=TYPES[S.type].look;
+  document.querySelector('#vtabs [data-view=g]').click();buildTypeSelect();buildThemes();buildSrc();refill();window.scrollTo(0,0);}
+function apBadge(){var T=today(),dn=apDone(),n=apItems().filter(function(o){return o.post<=T&&!dn[o.id];}).length,b=document.querySelector('#vtabs [data-view=a]');if(b)b.innerHTML='Autopilot'+(n?' <span class="apn">'+n+'</span>':'');}
+function apView(){
+  var el=$('apv'),T=today(),dn=apDone(),it=apItems(),open=it.filter(function(o){return !dn[o.id];}),done=it.filter(function(o){return dn[o.id];});
+  var now=open.filter(function(o){return o.post<=T;}),later=open.filter(function(o){return o.post>T;});
+  var card=function(o,isDone){return '<div class="ap-it'+(isDone?' done':'')+'"><span class="ap-ic">'+o.icon+'</span><div class="ap-tx"><b>'+esc(o.title)+'</b><span>'+esc(o.why||'')+'</span></div><div class="ap-bt">'+
+    (isDone?'<button type="button" class="pbtn" data-undo="'+esc(o.id)+'">Zurückholen</button>':'<button type="button" class="btn primary" data-open="'+esc(o.id)+'">'+(o.view==='w'?'Text öffnen':'Grafik öffnen')+'</button><button type="button" class="pbtn" data-done="'+esc(o.id)+'">✓ Erledigt</button>')+'</div></div>';};
+  var days={};later.forEach(function(o){(days[o.post]=days[o.post]||[]).push(o);});
+  el.innerHTML='<div class="box ap"><h2>Content-Autopilot</h2><p class="hint" style="margin-top:0">Was jetzt und in den nächsten 7 Tagen zum Posten ansteht – automatisch aus Ergebnissen, Spielplan, Monatswertung und Competition. „Grafik öffnen“ stellt alles fertig ein, du prüfst nur noch und postest.</p>'+
+    '<h3 class="ap-h">Jetzt dran'+(now.length?' ('+now.length+')':'')+'</h3>'+(now.length?now.map(function(o){return card(o);}).join(''):'<p class="hint">Gerade nichts offen – alles gepostet 👍</p>')+
+    Object.keys(days).sort().map(function(dd){return '<h3 class="ap-h">'+dow(dd)+', '+dmy(dd).slice(0,6)+'</h3>'+days[dd].map(function(o){return card(o);}).join('');}).join('')+
+    (done.length?'<details class="ap-done"><summary>'+done.length+' erledigt</summary>'+done.map(function(o){return card(o,true);}).join('')+'</details>':'')+
+    (apPreMove()?'<p class="hint">Öffentliche Posts zur Competition und zu den CDA Masters schlägt der Autopilot erst nach dem Umzug der Homepage vor.</p>':'')+
+    '<p class="hint">Neue Ergebnisse meldet dir der Autopilot zusätzlich per E-Mail (über GitHub). „Erledigt“ merkt sich dieses Gerät.</p></div>';
+  el.onclick=function(ev){var b=ev.target.closest('button');if(!b)return;var id=b.dataset.open||b.dataset.done||b.dataset.undo,o=it.filter(function(x){return x.id===id;})[0];
+    if(b.dataset.open&&o)apOpen(o);else if(b.dataset.done){apSet(id,1);apView();}else if(b.dataset.undo){apSet(id,0);apView();}apBadge();};
+  apBadge();}
+window.cdaAP=apView;
+// Direktlink aus der Benachrichtigung: grafik-studio.html#ap=<id>
+function apFromHash(){var m=/[#&]ap=([^&]+)/.exec(location.hash);if(!m)return;var id=decodeURIComponent(m[1]),o=apItems().filter(function(x){return x.id===id;})[0];
+  if(o){var go=function(){if(document.getElementById('vtabs').hidden){setTimeout(go,500);return;}apOpen(o);};go();}else{var g=function(){if(document.getElementById('vtabs').hidden){setTimeout(g,500);return;}document.querySelector('#vtabs [data-view=a]').click();};g();}}
 })();
 </script>

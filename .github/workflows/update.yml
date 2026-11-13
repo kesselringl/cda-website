@@ -13,6 +13,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
   pages: write
   id-token: write
 
@@ -53,6 +54,12 @@ jobs:
             git commit -m "Ergebnisse aktualisiert"
             git push
           fi
+
+      - name: Content-Autopilot (E-Mail über GitHub, wenn eine Grafik bereitliegt)
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/autopilot-notify.mjs
 
       - name: Supabase wach halten (kostenlose Projekte pausieren nach 7 Tagen ohne Abruf)
         continue-on-error: true
