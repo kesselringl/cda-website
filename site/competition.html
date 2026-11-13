@@ -472,6 +472,21 @@ th.sorted{color:var(--green-ink)}
 .inbox2.finish{border-color:#E6B43A}
 .inbox2 .who .fin{color:#F2C75C;letter-spacing:.06em}
 
+
+/* Match-Karte nach dem Spiel */
+.mcard{width:100%;max-width:620px;margin:6px auto;background:var(--panel-2);border:1px solid var(--line);border-radius:14px;padding:12px 16px;display:grid;gap:4px}
+.mc-h{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;font-weight:800;padding-bottom:8px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.mc-h span:first-child{text-align:left}.mc-h span:last-child{text-align:right}.mc-h .mc-win{color:var(--green-ink)}
+.mc-sc{font-family:var(--f-display);font-weight:900;font-size:2rem;line-height:1}
+.mc-r{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:baseline}
+.mc-r span{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;text-align:center}
+.mc-r b{font-family:var(--f-display);font-weight:800;font-size:1.4rem;font-variant-numeric:tabular-nums}.mc-r b:last-child{text-align:right}
+.mc-r b.mc-w{color:var(--gold)}
+.fitb .scorer.x01 .over{overflow:auto;max-height:100%;padding:min(2cqh,18px);gap:min(1.2cqh,10px)}
+.fitb .scorer.x01.is-over{grid-template-rows:auto minmax(0,30fr) minmax(0,70fr) auto}
+.fitb .scorer.x01.is-over .side .visits,.fitb .scorer.x01.is-over .side .co,.fitb .scorer.x01.is-over .side .st{display:none}
+.fitb .scorer.x01 .over .res{font-size:min(5cqh,2.4rem)}
+
 /* Siegerehrung */
 .cer{display:grid;gap:22px;justify-items:center;text-align:center;padding:36px 20px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius)}
 .cer .ct{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--green-ink);font-weight:700}
@@ -1525,7 +1540,15 @@ function callScreen(ev,b,m){
     '<p class="muted" style="margin:0">'+partH(ev,m.a)+' beginnt das erste Leg.</p><button class="btn primary" data-act="go" data-b="'+b+'">Alle da, Match starten'+(ev.btype[b]==='pc'?' <kbd>Enter</kbd>':'')+'</button></div>';
 }
 function overPanel(ev,b,m){
-  var w=m.winner;return '<div class="over"><span class="muted">Match beendet</span><span class="res">'+partH(ev,w===0?m.a:m.b)+' gewinnt '+legsWon(m,w)+':'+legsWon(m,1-w)+'</span><span>Schreiber fürs nächste Match an diesem Board: <b>'+partH(ev,w===0?m.b:m.a)+'</b></span><div class="row" style="justify-content:center"><button class="btn primary" data-act="commit" data-b="'+b+'">Ergebnis speichern, nächstes Match <kbd>Enter</kbd></button><button class="btn" data-act="undo" data-b="'+b+'">Korrigieren</button></div></div>';
+  var w=m.winner,cr=MD(ev).kind==='cricket';
+  // Match-Karte: kurze Bilanz beider Seiten
+  var st=[0,1].map(function(p){var o={t180:0,t140:0,hf:0,best:0,legs:legsWon(m,p)};m.legs.forEach(function(l){var d=0;l.visits.forEach(function(v){if(v.p!==p)return;d+=v.darts||0;if(cr||v.bust)return;
+      if(v.score===180)o.t180++;else if(v.score>=140)o.t140++;if(v.co){if(v.score>o.hf)o.hf=v.score;if(l.winner===p&&(!o.best||d<o.best))o.best=d;}});});o.q=sideQ(ev,m,p).replace('Ø ','');return o;});
+  var row=function(lb,a,b2,hiLow){var na=parseFloat(String(a).replace(',','.'))||0,nb=parseFloat(String(b2).replace(',','.'))||0,wa=hiLow==='low'?(na&&(!nb||na<nb)):na>nb,wb=hiLow==='low'?(nb&&(!na||nb<na)):nb>na;
+    if(!a&&!b2)return '';return '<div class="mc-r"><b class="'+(wa?'mc-w':'')+'">'+(a||'–')+'</b><span>'+lb+'</span><b class="'+(wb?'mc-w':'')+'">'+(b2||'–')+'</b></div>';};
+  var card='<div class="mcard"><div class="mc-h"><span class="'+(w===0?'mc-win':'')+'">'+partH(ev,m.a)+'</span><span class="mc-sc num">'+legsWon(m,0)+' : '+legsWon(m,1)+'</span><span class="'+(w===1?'mc-win':'')+'">'+partH(ev,m.b)+'</span></div>'+
+    row(cr?'Marks/Runde':'Average',st[0].q,st[1].q)+(cr?'':row('180er',st[0].t180||'',st[1].t180||'')+row('140+',st[0].t140||'',st[1].t140||'')+row('Höchstes Finish',st[0].hf||'',st[1].hf||'')+row('Kürzestes Leg (Darts)',st[0].best||'',st[1].best||'','low'))+'</div>';
+  return '<div class="over"><span class="muted">Match beendet</span><span class="res">'+partH(ev,w===0?m.a:m.b)+' gewinnt '+legsWon(m,w)+':'+legsWon(m,1-w)+'</span>'+card+'<span>Schreiber fürs nächste Match an diesem Board: <b>'+partH(ev,w===0?m.b:m.a)+'</b></span><div class="row" style="justify-content:center"><button class="btn primary" data-act="commit" data-b="'+b+'">Ergebnis speichern, nächstes Match <kbd>Enter</kbd></button><button class="btn" data-act="undo" data-b="'+b+'">Korrigieren</button></div></div>';
 }
 function ceremony(ev){
   var pd=podium(ev),md=MD(ev),top=pd.slice(0,3),by={};top.forEach(function(x){by[x.place]=x;});
@@ -1542,7 +1565,7 @@ function viewBoard(b){
   if(!m)return '<div class="panel idle"><div class="big-n">Board '+(b+1)+'</div><p class="muted" style="margin:0">'+(ev.phase==='checkin'?'Der Abend ist noch nicht gestartet.':'Gerade kein Match. Sobald zwei Teilnehmer frei sind, erscheint es hier automatisch.')+'</p></div>';
   if(!m.started)return callScreen(ev,b,m);
   var leg=curLeg(m),t=turn(leg),dv=devType(),tab=dv==='tablet',head='<div class="sb-head"><span class="stage">Board '+(b+1)+devTag(dv)+' · '+MD(ev).name+' · '+m.stage+'</span><span class="wsmall">Schreiber: '+(m.writer?pnh(m.writer):'offen')+'</span><span class="fmt num">Leg '+m.legs.length+' · '+MD(ev).sub+' · Best of '+(m.ft*2-1)+'</span></div>';
-  return '<div class="scorer'+(tab?' tablet':'')+(MD(ev).kind==='cricket'?'':' x01')+'">'+head+(MD(ev).kind==='cricket'?cricketBoard(ev,b,m,leg,t):x01Board(ev,b,m,leg,t))+'</div>';
+  return '<div class="scorer'+(tab?' tablet':'')+(MD(ev).kind==='cricket'?'':' x01')+(m.over?' is-over':'')+'">'+head+(MD(ev).kind==='cricket'?cricketBoard(ev,b,m,leg,t):x01Board(ev,b,m,leg,t))+'</div>';
 }
 function x01Board(ev,b,m,leg,t){
   var md=MD(ev);
