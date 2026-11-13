@@ -72,7 +72,7 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 .ap-it{display:flex;gap:12px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:12px;margin:8px 0;background:#0f1311}.ap-it.done{opacity:.55}.ap-ic{font-size:24px;line-height:1}.ap-tx{flex:1;min-width:0}.ap-tx b{display:block}.ap-tx span{font-size:13px;color:var(--mute)}.ap-bt{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .ap-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px;border:1px dashed #2f6b3c;border-radius:12px;background:#0d1a11;margin:6px 0 4px}.ap-bar span{flex:1 1 220px;font-size:13px;color:var(--mute)}.ap-bar select{background:#0f1311;color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:8px}
 .ap-cb{width:20px;height:20px;accent-color:#0CA12D;flex:none}.ap-cb0{width:20px;flex:none}
-.ap-bun{max-width:860px;border-color:#2f6b3c}.ap-bh{display:flex;justify-content:space-between;align-items:center}.ap-th{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin:10px 0}.ap-th figure{margin:0}.ap-th img{width:100%;border-radius:8px;display:block}.ap-th figcaption{font-size:12px;color:var(--mute);margin-top:4px}.ap-mv{display:flex;gap:6px;margin-top:4px}
+.ap-bun{max-width:860px;border-color:#2f6b3c}.ap-bh{display:flex;justify-content:space-between;align-items:center}.ap-th{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin:10px 0}.ap-th figure{margin:0}.ap-th figure.on .ap-img{outline:3px solid var(--red);outline-offset:2px}.ap-img{position:relative;display:block;padding:0;border:0;background:none;cursor:pointer;width:100%;border-radius:8px}.ap-busy{position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.6);color:#fff;font-size:28px;border-radius:8px}.ap-ed{border:1px solid var(--line);border-radius:12px;padding:12px;margin:6px 0 14px;background:#0f1311}.ap-edh{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:8px}.ap-edh span{font-size:13px;color:var(--mute)}.ap-lk{grid-template-columns:repeat(auto-fill,minmax(92px,1fr))}.ap-th img{width:100%;border-radius:8px;display:block}.ap-th figcaption{font-size:12px;color:var(--mute);margin-top:4px}.ap-mv{display:flex;gap:6px;margin-top:4px}
 .ap-bun textarea{width:100%;box-sizing:border-box;font:14px/1.5 Archivo,Arial,sans-serif;background:#0f1311;color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:12px}
 .apn{display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 5px;margin-left:4px;border-radius:9px;background:#E30212;color:#fff;font-size:11px;font-weight:800}
 @media(max-width:620px){.ap-it{flex-wrap:wrap}.ap-bt{width:100%;justify-content:stretch}.ap-bt>*{flex:1}}.wa-box textarea{width:100%;box-sizing:border-box;font:15px/1.5 Archivo,Arial,sans-serif;background:#0f1311;color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:12px}.wa-box select{width:100%}.wa-act{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}#gegv .grid2{grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
@@ -1451,7 +1451,7 @@ function apView(){
   var ergs=open.filter(function(o){return o.set&&o.set.type==='ergebnis';}),nsel=Object.keys(APSEL).length;
   var bar='<div class="ap-bar"><b>Sammelpost</b><span>'+(nsel?nsel+' ausgewählt':'Haken setzen, um mehrere Grafiken als ein Karussell mit einer Bildunterschrift zu posten')+'</span>'+
     (ergs.length>=2?'<button type="button" class="pbtn" id="apall">Alle '+ergs.length+' Ergebnisse auswählen</button>':'')+
-    (nsel>=2?'<select id="aplook" aria-label="Look für alle"><option value="">Look: je Grafik Standard</option>'+Object.keys(LOOKS).map(function(k){return '<option value="'+k+'">Look: '+esc(LOOKS[k].label)+' für alle</option>';}).join('')+'</select><button type="button" class="btn primary" id="apgo">Karussell erstellen ('+nsel+')</button>':'')+'</div>';
+    (nsel>=2?'<select id="aplook" aria-label="Look für alle"><option value="">Look: abwechslungsreich (jedes Bild anders)</option>'+Object.keys(LOOKS).map(function(k){return '<option value="'+k+'">Look: '+esc(LOOKS[k].label)+' für alle</option>';}).join('')+'</select><button type="button" class="btn primary" id="apgo">Karussell erstellen ('+nsel+')</button>':'')+'</div>';
   el.innerHTML='<div id="apb"></div><div class="box ap"><h2>Content-Autopilot</h2><p class="hint" style="margin-top:0">Was jetzt und in den nächsten 7 Tagen zum Posten ansteht – automatisch aus Ergebnissen, Spielplan, Monatswertung und Competition. „Grafik öffnen“ stellt alles fertig ein, du prüfst nur noch und postest.</p>'+bar+
     '<h3 class="ap-h">Jetzt dran'+(now.length?' ('+now.length+')':'')+'</h3>'+(now.length?now.map(function(o){return card(o);}).join(''):'<p class="hint">Gerade nichts offen – alles gepostet 👍</p>')+
     Object.keys(days).sort().map(function(dd){return '<h3 class="ap-h">'+dow(dd)+', '+dmy(dd).slice(0,6)+'</h3>'+days[dd].map(function(o){return card(o);}).join('');}).join('')+
@@ -1467,41 +1467,57 @@ function apView(){
 
 // ================= Sammelpost: mehrere Grafiken als ein Karussell mit einer Bildunterschrift =================
 var APSEL={},BUNDLE=null;
-function apRender(list,look){var keep={type:S.type,team:S.team,pick:S.pick,month:S.month,crit:S.crit,look:S.look},out=[],i=0;
-  function next(){if(i>=list.length){Object.assign(S,keep);buildTypeSelect();buildThemes();buildSrc();return refill().then(function(){return out;});}
-    var o=list[i++],s=o.set;S.type=s.type;if(s.team)S.team=s.team;S.pick=s.pick||null;if(s.month)S.month=s.month;if(s.crit)S.crit=s.crit;S.look=look&&LOOKS[look]?look:TYPES[S.type].look;buildSrc();
-    return refill().then(function(){return new Promise(function(ok){cv.toBlob(function(b){out.push({o:o,blob:b,name:fname().replace('.png','_'+i+'.png'),f:S.f,team:S.team});ok();},'image/png');});}).then(next);}
+var APPOOL=['arena','carbon','board','broadcast','duoton','speed','buehne','laser','konfetti','sisal','glitch','feuer','led','clean','print'];
+function apLooks(list,look){var used={};return list.map(function(o,i){var l=look&&LOOKS[look]?look:null;if(!l){var d=TYPES[o.set.type].look;l=!used[d]?d:APPOOL.filter(function(x){return LOOKS[x]&&!used[x];})[0]||d;}used[l]=1;return l;});}
+function apSnap(o,look,seed){var s=o.set;S.type=s.type;if(s.team)S.team=s.team;S.pick=s.pick||null;if(s.month)S.month=s.month;if(s.crit)S.crit=s.crit;S.look=look;S.seed=seed;buildSrc();
+  return refill().then(function(){return new Promise(function(ok){cv.toBlob(function(b){ok({o:o,blob:b,look:look,seed:seed,name:fname(),f:S.f,team:S.team});},'image/png');});});}
+function apKeep(){return{type:S.type,team:S.team,pick:S.pick,month:S.month,crit:S.crit,look:S.look,seed:S.seed};}
+function apRestore(k){Object.assign(S,k);buildTypeSelect();buildThemes();buildSrc();return refill();}
+function apRender(list,look){var keep=apKeep(),looks=apLooks(list,look),out=[],i=0;
+  function next(){if(i>=list.length)return apRestore(keep).then(function(){return out;});var j=i++;return apSnap(list[j],looks[j],1+j).then(function(p){out.push(p);}).then(next);}
   return next();}
+function apRedo(idx){var p=BUNDLE.parts[idx],keep=apKeep();BUNDLE.busyOne=idx;apBundleView();
+  return apSnap(p.o,p.look,p.seed).then(function(np){BUNDLE.parts[idx]=np;return apRestore(keep);}).then(function(){BUNDLE.busyOne=null;BUNDLE.cap=apCaption(BUNDLE.parts,BUNDLE.cap);apBundleView();});}
 function one2(a){return a[Math.floor(Math.random()*a.length)];}
-function apCaption(parts){
+function apCaption(parts,prev){if(prev&&BUNDLE&&BUNDLE.capEdited)return prev;
   var ergs=parts.filter(function(p){return p.o.set.type==='ergebnis';}),L=[],tags=['#ClochardDarterAugsburg','#CDA','#Steeldarts','#Augsburg'];
   if(ergs.length===parts.length){var w=0,l=0;ergs.forEach(function(p){(p.f._md.games||[]).forEach(function(g){var r=res(g);if(r==='S')w++;if(r==='N')l++;});});
-    var we=ergs.every(function(p){var d=new Date(p.f._md.date+'T12:00:00').getDay();return d===0||d===5||d===6;}),zr=we?'Wochenende':'Woche';
-    L.push(w&&!l?one2(['🎯 Was für ein '+zr+' – alle CDA-Teams mit Sieg! 💚❤️','🎯 '+ergs.length+' Spiele, '+w+' Siege – perfekte'+(we?'s':'')+' '+zr+' für den CDA! 💚❤️']):w>l?'🎯 Ergebnis-Update: '+w+' Siege für unsere Teams 💪':l>w?'🎯 Ergebnis-Update vom Spieltag – nicht alles lief nach Plan, wir greifen wieder an! 💪':'🎯 Ergebnis-Update von unseren Teams','');
+    var we=ergs.every(function(p){var d=new Date(p.f._md.date+'T12:00:00').getDay();return d===0||d===5||d===6;}),zr=we?'Wochenende':'Woche',ein=we?'ein':'eine';
+    L.push(w&&!l?one2(['🎯 Was für '+ein+' '+zr+' – alle CDA-Teams mit Sieg! 💚❤️','🎯 '+ergs.length+' Spiele, '+w+' Siege – perfekte'+(we?'s':'')+' '+zr+' für den CDA! 💚❤️']):w>l?'🎯 Ergebnis-Update: '+w+' Siege für unsere Teams 💪':l>w?'🎯 Ergebnis-Update vom Spieltag – nicht alles lief nach Plan, wir greifen wieder an! 💪':'🎯 Ergebnis-Update von unseren Teams','');
     ergs.forEach(function(p){var t=DATA.teams[p.team],gs=p.f._md.games||[],u=(t.table||[]).filter(function(r){return r.us;})[0];
       gs.forEach(function(g){var r=res(g),opp=isUs(g.home)?g.away:g.home;L.push((r==='S'?'✅':r==='U'?'➖':'❌')+' '+t.label+' '+(isUs(g.home)?g.score:g.score.split(':').reverse().join(':'))+' gegen '+opp);});
       if(u)L.push('    '+(t.league||'').replace('3K WINMAU ','')+' · Platz '+u.pos+(u.l===0&&u.played>=3?' · ungeschlagen 🔥':''));});
     L.push('','👉 Wischt euch durch alle Ergebnisse!');tags.push('#Darts','#Ligaspiel');}
   else{L.push('🎯 Update vom CDA','');parts.forEach(function(p){L.push(p.o.icon+' '+p.o.title);});L.push('','👉 Wischt euch durch!');}
   L.push('','💚❤️ Danke an alle Fans und unsere Partner!','','🔗 '+location.origin.replace(/^https?:\/\//,'')+location.pathname.replace(/[^\/]*$/,'')+'?s=ig','',tags.join(' '));return L.join('\n');}
-function apBundleView(){var el=$('apb');if(!BUNDLE){el.innerHTML='';return;}
+function apBundleView(){var el=$('apb');if(!el)return;if(!BUNDLE){el.innerHTML='';return;}
   if(BUNDLE.busy){el.innerHTML='<div class="box"><p class="hint" style="margin:0">Erstelle '+BUNDLE.list.length+' Grafiken …</p></div>';return;}
-  var urls=BUNDLE.parts.map(function(p){return URL.createObjectURL(p.blob);});
+  (BUNDLE.urls||[]).forEach(function(u){URL.revokeObjectURL(u);});var urls=BUNDLE.urls=BUNDLE.parts.map(function(p){return URL.createObjectURL(p.blob);}),sel=BUNDLE.sel;
+  var ed='';if(sel!=null){var p=BUNDLE.parts[sel];
+    ed='<div class="ap-ed"><div class="ap-edh"><b>Bild '+(sel+1)+' anpassen</b><span>'+esc(p.o.title)+'</span></div>'+
+      '<div class="themes ap-lk">'+Object.keys(LOOKS).map(function(k){return '<button type="button" data-lk="'+k+'" aria-pressed="'+(p.look===k)+'"><i style="background:'+LOOKS[k].sw+'"></i>'+LOOKS[k].label+'</button>';}).join('')+'</div>'+
+      '<div class="wa-act"><button type="button" class="btn" id="bvar">🎲 Andere Variante</button><button type="button" class="btn" id="bopen">Im Studio bearbeiten</button><button type="button" class="pbtn" id="bfin">Fertig</button></div>'+
+      '<p class="hint">Klick auf einen Look ändert nur dieses Bild. „Andere Variante“ würfelt Hintergrund und Anordnung neu. „Im Studio bearbeiten“ öffnet die Grafik mit allen Feldern (Texte, Format) – danach dort „Bild speichern“.</p></div>';}
   el.innerHTML='<div class="box ap-bun"><div class="ap-bh"><h2>Sammelpost · '+BUNDLE.parts.length+' Bilder</h2><button type="button" class="pbtn" id="bclose">Schließen</button></div>'+
-    '<div class="ap-th">'+urls.map(function(u,i){return '<figure><img src="'+u+'" alt="Bild '+(i+1)+'"><figcaption>'+(i+1)+'. '+esc(BUNDLE.parts[i].o.title)+'</figcaption><div class="ap-mv"><button type="button" class="pbtn" data-mv="'+i+'" data-d="-1" aria-label="nach vorne">◀</button><button type="button" class="pbtn" data-mv="'+i+'" data-d="1" aria-label="nach hinten">▶</button></div></figure>';}).join('')+'</div>'+
+    '<p class="hint" style="margin:0 0 6px">Bild anklicken, um den Look einzeln anzupassen.</p>'+
+    '<div class="ap-th">'+urls.map(function(u,i){return '<figure class="'+(sel===i?'on':'')+'"><button type="button" class="ap-img" data-pick="'+i+'" aria-label="Bild '+(i+1)+' anpassen">'+(BUNDLE.busyOne===i?'<span class="ap-busy">…</span>':'')+'<img src="'+u+'" alt=""></button><figcaption>'+(i+1)+'. '+esc(BUNDLE.parts[i].o.title)+' · <b>'+esc(LOOKS[BUNDLE.parts[i].look].label)+'</b></figcaption><div class="ap-mv"><button type="button" class="pbtn" data-mv="'+i+'" data-d="-1" aria-label="nach vorne">◀</button><button type="button" class="pbtn" data-mv="'+i+'" data-d="1" aria-label="nach hinten">▶</button></div></figure>';}).join('')+'</div>'+ed+
     '<label class="f" for="bcap">Eine Bildunterschrift für alle</label><textarea id="bcap" rows="12">'+esc(BUNDLE.cap)+'</textarea>'+
     '<div class="wa-act"><button type="button" class="btn primary" id="bshare" hidden>Alle teilen (Instagram)</button><button type="button" class="btn" id="bsave">Alle Bilder speichern</button><button type="button" class="btn" id="bcopy">Bildunterschrift kopieren</button><button type="button" class="btn" id="bdone">✓ Alle erledigt</button></div>'+
     '<p class="hint">Auf dem Handy: „Alle teilen“ → Instagram → Beitrag, dann sind alle Bilder schon als Karussell ausgewählt; die Bildunterschrift vorher kopieren und einfügen. Am PC: Bilder speichern und in Instagram mehrere auswählen. Reihenfolge mit ◀ ▶ ändern.</p></div>';
-  var files=function(){return BUNDLE.parts.map(function(p){return new File([p.blob],p.name,{type:'image/png'});});};
+  var files=function(){return BUNDLE.parts.map(function(p,i){return new File([p.blob],(i+1)+'_'+p.name,{type:'image/png'});});};
   try{if(navigator.canShare&&navigator.canShare({files:files()})){var sb=$('bshare');sb.hidden=false;sb.onclick=function(){navigator.share({files:files(),text:BUNDLE.cap}).catch(function(){});};}}catch(x){}
-  $('bcap').oninput=function(){BUNDLE.cap=this.value;};
+  $('bcap').oninput=function(){BUNDLE.cap=this.value;BUNDLE.capEdited=true;};
   $('bsave').onclick=function(){BUNDLE.parts.forEach(function(p,i){setTimeout(function(){var a=document.createElement('a');a.href=URL.createObjectURL(p.blob);a.download=(i+1)+'_'+p.name;document.body.appendChild(a);a.click();setTimeout(function(){a.remove();},1500);},i*400);});};
   $('bcopy').onclick=function(){var b=this;(navigator.clipboard?navigator.clipboard.writeText(BUNDLE.cap):Promise.reject()).then(function(){b.textContent='Kopiert ✓';setTimeout(function(){b.textContent='Bildunterschrift kopieren';},1500);},function(){prompt('Text kopieren:',BUNDLE.cap);});};
   $('bdone').onclick=function(){BUNDLE.parts.forEach(function(p){apSet(p.o.id,1);});BUNDLE=null;APSEL={};apView();};
   $('bclose').onclick=function(){BUNDLE=null;apBundleView();};
-  el.querySelectorAll('[data-mv]').forEach(function(b){b.onclick=function(){var i=+b.dataset.mv,j=i+(+b.dataset.d);if(j<0||j>=BUNDLE.parts.length)return;var t=BUNDLE.parts[i];BUNDLE.parts[i]=BUNDLE.parts[j];BUNDLE.parts[j]=t;BUNDLE.cap=apCaption(BUNDLE.parts);apBundleView();};});
-  el.scrollIntoView({behavior:'smooth',block:'start'});}
-function apBundle(list,look){BUNDLE={list:list,busy:true};apBundleView();apRender(list,look).then(function(parts){BUNDLE={list:list,parts:parts,cap:apCaption(parts)};apBundleView();});}
+  el.querySelectorAll('[data-pick]').forEach(function(b){b.onclick=function(){var i=+b.dataset.pick;BUNDLE.sel=BUNDLE.sel===i?null:i;apBundleView();};});
+  el.querySelectorAll('[data-lk]').forEach(function(b){b.onclick=function(){BUNDLE.parts[sel].look=b.dataset.lk;apRedo(sel);};});
+  if($('bvar'))$('bvar').onclick=function(){BUNDLE.parts[sel].seed+=1+Math.floor(Math.random()*20);apRedo(sel);};
+  if($('bfin'))$('bfin').onclick=function(){BUNDLE.sel=null;apBundleView();};
+  if($('bopen'))$('bopen').onclick=function(){var p=BUNDLE.parts[sel];apOpen(p.o);S.look=p.look;S.seed=p.seed;buildThemes();refill();};
+  el.querySelectorAll('[data-mv]').forEach(function(b){b.onclick=function(){var i=+b.dataset.mv,j=i+(+b.dataset.d);if(j<0||j>=BUNDLE.parts.length)return;var t=BUNDLE.parts[i];BUNDLE.parts[i]=BUNDLE.parts[j];BUNDLE.parts[j]=t;if(BUNDLE.sel===i)BUNDLE.sel=j;else if(BUNDLE.sel===j)BUNDLE.sel=i;BUNDLE.cap=apCaption(BUNDLE.parts,BUNDLE.cap);apBundleView();};});}
+function apBundle(list,look){BUNDLE={list:list,busy:true};apBundleView();apRender(list,look).then(function(parts){BUNDLE={list:list,parts:parts,sel:null};BUNDLE.cap=apCaption(parts);apBundleView();$('apb').scrollIntoView({behavior:'smooth',block:'start'});});}
 window.cdaAP=apView;
 // Direktlink aus der Benachrichtigung: grafik-studio.html#ap=<id>
 function apFromHash(){var m=/[#&]ap=([^&]+)/.exec(location.hash);if(!m)return;var id=decodeURIComponent(m[1]),o=apItems().filter(function(x){return x.id===id;})[0];
