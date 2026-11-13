@@ -45,6 +45,9 @@ jobs:
       - name: Spielberichte der 2. Bundesliga für den Gegner-Check
         run: node scripts/build-liga.mjs
 
+      - name: Abzeichen der CDA Masters aus den Competition-Abenden
+        run: node scripts/build-erfolge.mjs
+
       - name: Neuen Stand im Repository sichern
         run: |
           if [ -n "$(git status --porcelain -- site/data.json site/liga.json)" ]; then

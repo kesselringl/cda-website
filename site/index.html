@@ -192,6 +192,9 @@ tr:last-child td{border-bottom:0}
 .pc-stats b{font-family:var(--f-display);font-weight:800;font-size:1.25rem;line-height:1;font-variant-numeric:tabular-nums}
 .pc-stats span{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:3px}
 .pc-stats.three{grid-template-columns:1fr 1fr 1fr}.pc-stats.three div{padding:8px 7px}.pc-stats.three b{font-size:1.08rem}.pc-stats.three span{letter-spacing:.06em;font-size:.58rem}
+.pc-ach{display:flex;gap:4px;align-items:center;padding:7px 10px 0}.pc-ach i,.pb-ach i{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;font-style:normal;font-size:13px;line-height:1;flex:none;box-shadow:inset 0 0 0 2px rgba(255,255,255,.35)}.pc-ach span{font-size:.72rem;color:var(--muted);font-weight:700;margin-left:2px}
+.t-legende{background:linear-gradient(135deg,#b8f3ff,#7f6bff)}.t-gold{background:linear-gradient(135deg,#ffe58a,#c99a1e)}.t-silber{background:linear-gradient(135deg,#f2f5f7,#9aa4ab)}.t-bronze{background:linear-gradient(135deg,#f0b787,#9c5a28)}
+.pb-ach{margin-top:12px;border-top:1px solid var(--board-line);padding-top:8px}.pb-ach h5{margin:0 0 6px;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--green-bright)}.pb-ach ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:6px 8px;font-size:.74rem}.pb-ach li{display:flex;align-items:center;gap:6px;min-width:0}.pb-ach i{width:20px;height:20px;font-size:11px}
 .pc-hint{font-size:.7rem;color:var(--muted);padding:0 10px 8px;margin-top:-2px}
 .pcard.has-profile .pc-hint{color:var(--green);font-weight:700}
 .pc-back h4{margin:0 0 8px;font-family:var(--f-display);font-weight:900;font-size:1.2rem;text-transform:uppercase;line-height:1}
@@ -1256,22 +1259,23 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
   }
 
   // Spielerkarten: Grunddaten automatisch, Foto und Steckbrief aus players.json (nur mit Einwilligung)
-  var PROFILES=window.CDA_PROFILES||{};
+  var PROFILES=window.CDA_PROFILES||{},ERF={players:{},defs:{}};
   var FIELDS=[['since','Im Verein seit'],['hand','Wurfhand'],['checkout','Lieblings-Checkout'],['darts','Darts'],['walkon','Walk-on-Song'],['typ','Spielertyp'],['erfolg','Größter Erfolg'],['highlight','Bestes Highlight'],['profi','Lieblings-Profi'],['beruf','Beruf'],['hobby','Hobby'],['cda','Was ich am CDA mag']];
   function cardHTML(n,t){
     var pr=PROFILES[n]||{},parts=n.split(' '),first=parts.slice(0,-1).join(' '),last=parts[parts.length-1];
     var ini=(parts[0][0]+last[0]).toUpperCase(),st=t.stats&&t.stats[n],q='–',rec='–';
     if(st){var w=+st.split(':')[0],l=+st.split(':')[1];rec=st;q=(w+l)?Math.round(w/(w+l)*100)+' %':'–';}
     var other=multi[n]?multi[n].replace('CDA '+t.roman,'').replace(/[+ ]/g,'').trim():'';
-    var fields=FIELDS.filter(function(f){return pr[f[0]];});
-    var has=!!(fields.length||pr.motto);
+    var fields=FIELDS.filter(function(f){return pr[f[0]];}),bs=(ERF.players[n]||[]).filter(function(b){return ERF.defs[b.id];}),hasP=!!(fields.length||pr.motto);
+    var has=hasP||bs.length>0;
     var front='<div class="pc-face pc-front"><div class="pc-photo">'+(pr.photo?'<img src="'+esc(pr.photo)+'" alt="Foto von '+esc(n)+'" loading="lazy">':'<span class="pc-mono" aria-hidden="true">'+ini+'</span>')+
       '<span class="pc-badge">CDA '+t.roman+'</span>'+(other?'<span class="pc-badge b2">auch CDA '+esc(other)+'</span>':'')+
       '<span class="pc-name"><small>'+esc(first)+(pr.nick?' · „'+pr.nick+'“':'')+'</small><b>'+esc(last)+'</b></span></div>'+
       '<div class="pc-stats'+(t.avg?' three':'')+'"><div><b>'+rec+'</b><span>Einzel 26/27</span></div><div><b>'+q+'</b><span>Siegquote</span></div>'+(t.avg?'<div><b>'+(t.avg[n]?t.avg[n].toFixed(2).replace('.',','):'–')+'</b><span>Average</span></div>':'')+'</div>'+
-      '<div class="pc-hint">'+(has?'Antippen für Steckbrief':'Steckbrief folgt')+'</div></div>';
+      (bs.length?'<div class="pc-ach" aria-label="'+bs.length+' Abzeichen">'+bs.slice(0,5).map(function(b){var d=ERF.defs[b.id];return '<i class="t-'+d.tier+'" title="'+esc(d.label)+'">'+d.icon+'</i>';}).join('')+(bs.length>5?'<span>+'+(bs.length-5)+'</span>':'')+'</div>':'')+
+      '<div class="pc-hint">'+(hasP?'Antippen für Steckbrief'+(bs.length?' & Abzeichen':''):bs.length?'Antippen für Abzeichen':'Steckbrief folgt')+'</div></div>';
     var WIDE={walkon:1,typ:1,erfolg:1,highlight:1,cda:1,darts:1};
-    var back=has?'<div class="pc-face pc-back" aria-hidden="true"><h4>'+esc(n)+'</h4>'+(pr.nick?'<span class="pb-nick">„'+esc(pr.nick)+'“</span>':'')+'<dl>'+fields.map(function(f){var v=String(pr[f[0]]);return '<div'+(WIDE[f[0]]||v.length>22?' class="wide"':'')+'><dt>'+f[1]+'</dt><dd>'+esc(v)+'</dd></div>';}).join('')+'</dl>'+(pr.motto?'<p class="motto">„'+esc(pr.motto)+'“</p>':'')+'</div>':'';
+    var back=has?'<div class="pc-face pc-back" aria-hidden="true"><h4>'+esc(n)+'</h4>'+(pr.nick?'<span class="pb-nick">„'+esc(pr.nick)+'“</span>':'')+'<dl>'+fields.map(function(f){var v=String(pr[f[0]]);return '<div'+(WIDE[f[0]]||v.length>22?' class="wide"':'')+'><dt>'+f[1]+'</dt><dd>'+esc(v)+'</dd></div>';}).join('')+'</dl>'+(pr.motto?'<p class="motto">„'+esc(pr.motto)+'“</p>':'')+(bs.length?'<div class="pb-ach"><h5>Abzeichen · '+bs.length+'</h5><ul>'+bs.map(function(b){var d=ERF.defs[b.id];return '<li title="'+esc(d.desc)+'"><i class="t-'+d.tier+'">'+d.icon+'</i>'+esc(d.label)+'</li>';}).join('')+'</ul></div>':'')+'</div>':'';
     return '<li class="pcard'+(has?' has-profile':'')+'"><button type="button" class="pc-btn"'+(has?' aria-describedby="pc-flip-hint"':' tabindex="-1" aria-disabled="true"')+'><span class="pc-in">'+front+back+'</span></button></li>';
   }
   document.getElementById('roster').addEventListener('click',function(e){
@@ -1282,6 +1286,8 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
   try{Promise.all([fetch('players.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():{};}).catch(function(){return{};}),
     fetch('https://qeevsqrmltewbtrnfrfm.supabase.co/rest/v1/rpc/cda_profiles',{method:'POST',headers:{apikey:'sb_publishable_pwnzx63cque5lKZEVCe4mA_5SvBP8Yd','Content-Type':'application/json'},body:'{}'}).then(function(r){return r.ok?r.json():{};}).catch(function(){return{};})])
     .then(function(x){var p=x[0]||{},lp=x[1]||{};Object.keys(lp).forEach(function(n){p[n]=Object.assign({},p[n]||{},lp[n],p[n]&&p[n].photo?{photo:p[n].photo}:{});});PROFILES=p;show(currentTeam);});}catch(e){}
+  // Abzeichen der CDA Masters (automatisch aus den Competition-Abenden)
+  try{fetch('erfolge.json',{cache:'no-cache'}).then(function(r){return r.ok?r.json():null;}).then(function(j){if(j&&j.players){ERF=j;show(currentTeam);}}).catch(function(){});}catch(e){}
   document.querySelectorAll('#teams .tab').forEach(function(b){b.addEventListener('click',function(){show(b.id.split('-')[1]);});});
   show('1');
 

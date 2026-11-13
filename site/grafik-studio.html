@@ -1082,6 +1082,16 @@ var TYPES={
       return{_note:rows.length?'':'Für diesen Spieler sind noch keine Steckbrief-Angaben hinterlegt (players.json, nur mit Einwilligung).',kicker:'Steckbrief',kicker2:p.team?['','1. Mannschaft','2. Mannschaft','3. Mannschaft','4. Mannschaft'][p.team]:'',name:pn||'',list:rows.map(function(r){return r.join('|');}).join('\n'),
         s1:p.avg?'Average|'+de(p.avg):'',s2:p.single?'Einzel|'+p.single:'',s3:p.double?'Doppel|'+p.double:'',quote:i.motto||i.cda||''};},
     poster:function(f,V){return{custom:function(top,y1){playerProfile(f,V,top,y1);}};}},
+  abzeichen:{g:'Competition',label:'Abzeichen (Erfolge)',look:'buehne',src:'badge',n:1,fields:function(){
+      if(!ERF){erfLoad().then(function(){if(S.type==='abzeichen'){buildSrc();refill();}});return{_note:'Lade Abzeichen …',title:'Neue Abzeichen'};}
+      var aw=erfAwards(),sel=S.pick||'recent';
+      if(!aw.length)return sel==='one'?{_note:'Noch keine Abzeichen – die gibt es ab dem ersten echten Abend im Januar. Das ist eine Beispielansicht, bitte so nicht posten.',_mode:'one',_id:'hundert-finish',kicker2:'Neues Abzeichen',title:'100er-Finish',name:'Max Beispiel',sub:'Ein Finish von 100 oder mehr',slogan:'Glückwunsch, Max!'}
+        :{_note:'Noch keine Abzeichen – die gibt es ab dem ersten echten Abend im Januar. Das ist eine Beispielansicht, bitte so nicht posten.',kicker2:'CDA Masters · Beispiel',title:'Neue Abzeichen',sub:'Glückwunsch an alle!',list:'Max Beispiel|100er-Finish|hundert-finish\nAnna Muster|Erste 180|erste-180\nTom Probe|Masters-Sieg|masters-sieg',slogan:'Wer holt sich das nächste?'};
+      if(sel==='recent'){var d=(ERF.recent&&ERF.recent.date)||aw[0].date,L2=aw.filter(function(a){return a.date===d;});
+        return{_note:'Alle Abzeichen vom Abend am '+dmy(d)+' ('+L2.length+'). Mehr als '+(S.format==='story'?8:6)+' passen nicht auf ein Bild – dann Zeilen löschen oder einzelne Spieler posten.',kicker2:'CDA Masters · Abend '+dmy(d).slice(0,6),title:'Neue Abzeichen',sub:'Glückwunsch an alle!',list:L2.map(function(a){return a.name+'|'+ERF.defs[a.id].label+'|'+a.id;}).join('\n'),slogan:'Wer holt sich das nächste?'};}
+      var a=aw[+String(sel).slice(2)]||aw[0],d2=ERF.defs[a.id];
+      return{_mode:'one',_id:a.id,_date:a.date,kicker2:'Neues Abzeichen · '+dmy(a.date).slice(0,6),title:d2.label,name:a.name,sub:d2.desc,glyph:d2.glyph,slogan:'Glückwunsch, '+a.name.split(' ')[0]+'!',foto:''};},
+    poster:function(f,V){return{rays:true,custom:function(top,y1){badgePoster(f,V,top,y1);}};}},
   // ---------- Jahresrückblick ----------
   wrapped:{g:'Jahresrückblick',label:'CDA Wrapped (Karussell)',look:'duoton',src:'wslide',n:2,fields:function(){var s=S.pick&&WSL.some(function(x){return x[0]===S.pick;})?S.pick:'intro';S.pick=s;var r=WF[s]();r._s=s;
       r._note=(r._note?r._note+' ':'')+'Folie '+(WSL.map(function(x){return x[0];}).indexOf(s)+1)+' von '+WSL.length+' – alle Folien nacheinander speichern und als Karussell posten.';return r;},
@@ -1156,6 +1166,39 @@ var WP={
   masters:function(f,V){return{rays:true,b:[C.label(f.kicker2),C.head(f.title,200),C.stats(kp(f),{h:150}),wList(f,{rh:90,gold:true}),C.tag(f.slogan)]};},
   danke:function(f,V){return{rays:true,b:[C.label(f.kicker2),C.head(f.title,300),C.sub(f.sub,34,{max:3}),C.tag(f.slogan)]};}
 };
+// ================= Abzeichen (CDA Masters) =================
+var ERF=null;
+function erfLoad(){return fetch('erfolge.json',{cache:'no-cache'}).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;}).then(function(j){ERF=j||{players:{},defs:{},recent:null};return ERF;});}
+var ERF_DEMO={defs:{'hundert-finish':{icon:'💯',glyph:'100+',tier:'silber',label:'100er-Finish',desc:'Ein Finish von 100 oder mehr'},'erste-180':{icon:'🎯',glyph:'180',tier:'bronze',label:'Erste 180',desc:'Die erste 180 bei der Competition'},'masters-sieg':{icon:'🏆',glyph:'M',tier:'gold',label:'Masters-Sieg',desc:'Einen Masters-Abend gewonnen'}}};
+function erfAwards(){var E=ERF||{players:{}},o=[];Object.keys(E.players||{}).forEach(function(n){E.players[n].forEach(function(b){if(b.id!=='debuet'&&E.defs[b.id])o.push({name:n,id:b.id,date:b.date});});});return o.sort(function(a,b){return a.date<b.date?1:a.date>b.date?-1:0;});}
+var MEDAL={legende:['#effcff','#8fd8ff','#5b46d6'],gold:['#fff3b8','#e2b33b','#7a560c'],silber:['#ffffff','#c9d1d6','#5f6970'],bronze:['#ffdcb8','#c27a3c','#5e300c']};
+function badgeMedal(cx,cy,r,tier,glyph){var c=MEDAL[tier]||MEDAL.bronze;
+  // Band
+  ctx.save();[[-1,GREEN],[1,RED]].forEach(function(q){ctx.beginPath();ctx.moveTo(cx+q[0]*r*.18,cy-r*.6);ctx.lineTo(cx+q[0]*r*.78,cy-r*1.75);ctx.lineTo(cx+q[0]*r*.32,cy-r*1.75);ctx.lineTo(cx-q[0]*r*.12,cy-r*.75);ctx.closePath();ctx.fillStyle=q[1];ctx.fill();ctx.fillStyle='rgba(0,0,0,.18)';ctx.fill();});ctx.restore();
+  glow(cx,cy,r*2,c[1],.35);
+  shadow('rgba(0,0,0,.5)',r*.4,0,r*.12);ctx.beginPath();ctx.arc(cx,cy,r,0,7);var g=ctx.createLinearGradient(cx-r,cy-r,cx+r,cy+r);g.addColorStop(0,c[0]);g.addColorStop(.45,c[1]);g.addColorStop(1,c[2]);ctx.fillStyle=g;ctx.fill();shadow();
+  // Zacken-Rand
+  ctx.save();ctx.translate(cx,cy);for(var i=0;i<36;i++){ctx.rotate(Math.PI*2/36);ctx.fillStyle='rgba(255,255,255,.18)';ctx.fillRect(r*.86,-r*.02,r*.12,r*.04);}ctx.restore();
+  ctx.lineWidth=r*.05;ctx.strokeStyle='rgba(255,255,255,.55)';ctx.beginPath();ctx.arc(cx,cy,r*.8,0,7);ctx.stroke();ctx.lineWidth=r*.025;ctx.strokeStyle=rgba(c[2],.6);ctx.beginPath();ctx.arc(cx,cy,r*.74,0,7);ctx.stroke();
+  // Glanz
+  ctx.save();ctx.beginPath();ctx.arc(cx,cy,r*.74,0,7);ctx.clip();ctx.fillStyle='rgba(255,255,255,.22)';ctx.beginPath();ctx.ellipse(cx-r*.25,cy-r*.45,r*.7,r*.32,-.5,0,7);ctx.fill();ctx.restore();
+  var s=fit(String(glyph),r*1.2,r*(String(glyph).length>3?.62:.9),900,BS,10);ctx.textAlign='center';shadow('rgba(0,0,0,.35)',r*.08,0,r*.03);ctx.fillStyle=c[2];setF(900,s,BS);ctx.fillText(String(glyph),cx,cy+s*.34);shadow();}
+function badgePoster(f,V,top,y1){top+=120;var D=(ERF&&ERF.defs&&Object.keys(ERF.defs).length?ERF.defs:ERF_DEMO.defs),story=S.format==='story';
+  ctx.textAlign='center';setF(800,22,AR);ctx.fillStyle=acc();tracked(String(f.kicker2||'').toUpperCase(),W/2,top+10,8,'center');
+  if(f._mode==='one'){var d=D[f._id]||{tier:'bronze',glyph:'?'},mh=(y1-top),r=Math.min(story?240:180,mh*.17),cy=top+r*1.75+40;
+    badgeMedal(W/2,cy,r,d.tier,f.glyph||d.glyph);
+    var yy=cy+r+80,s=fit(String(f.title).toUpperCase(),W-140,story?130:112,L.hw,L.head,40);ctx.save();ctx.translate(W/2,yy+s*.75);if(L.slant)ctx.transform(1,0,-L.slant,1,0,0);setF(L.hw,s,L.head);ctx.textAlign='center';shadow(rgba(L.glow,.35),24);ctx.fillStyle=numFill(-s,0);ctx.fillText(String(f.title).toUpperCase(),0,0);shadow();ctx.restore();yy+=s*.75+60;
+    var ns=fit(String(f.name),W-160,58,800,BS,24);ctx.fillStyle=L.fg;setF(800,ns,BS);ctx.textAlign='center';ctx.fillText(String(f.name).toUpperCase(),W/2,yy);yy+=48;
+    wrap(f.sub||'',W-220,30,500,AR,2).forEach(function(t){setF(500,30,AR);ctx.fillStyle=L.mute;ctx.textAlign='center';ctx.fillText(t,W/2,yy);yy+=40;});
+    if(f.slogan){yy+=20;setF(800,24,AR);var t=String(f.slogan).toUpperCase(),w=tw(t,4)+56;rr(W/2-w/2,yy-30,w,46,23);ctx.fillStyle=acc();ctx.fill();ctx.fillStyle=L.accInk?L.accInk:'#fff';tracked(t,W/2,yy+2,4,'center');}
+    return;}
+  var Lr=lines(f.list).slice(0,story?8:6),hs=fit(String(f.title).toUpperCase(),W-140,story?150:130,L.hw,L.head,40),y=top+80;ctx.save();ctx.translate(W/2,y+hs*.8);if(L.slant)ctx.transform(1,0,-L.slant,1,0,0);setF(L.hw,hs,L.head);ctx.textAlign='center';shadow(rgba(L.glow,.35),24);ctx.fillStyle=numFill(-hs,0);ctx.fillText(String(f.title).toUpperCase(),0,0);shadow();ctx.restore();y+=hs*.8+30;
+  if(f.sub){setF(500,30,AR);ctx.fillStyle=L.mute;ctx.textAlign='center';ctx.fillText(f.sub,W/2,y+10);y+=40;}
+  var rh=Math.min(190,(y1-y-90)/Math.max(1,Lr.length)),x0=110;y+=Math.max(0,((y1-y-90)-rh*Lr.length)/2);
+  Lr.forEach(function(a,i){var d=D[a[2]]||{tier:'bronze',glyph:'?',label:a[1]},yy=y+rh*i+rh/2,mr=rh*.36;badgeMedal(x0+mr,yy+mr*.2,mr,d.tier,d.glyph);
+    ctx.textAlign='left';var ns=fit(String(a[0]).toUpperCase(),W-x0-mr*2-130,rh*.36,800,BS,18);setF(800,ns,BS);ctx.fillStyle=L.fg;ctx.fillText(String(a[0]).toUpperCase(),x0+mr*2+36,yy-4);
+    setF(600,rh*.2,AR);ctx.fillStyle=acc();ctx.fillText(String(a[1]),x0+mr*2+36,yy+rh*.26);if(i<Lr.length-1){ctx.fillStyle=sepCol(.1);ctx.fillRect(x0,y+rh*(i+1),W-2*x0,1);}});
+  if(f.slogan){setF(800,22,AR);ctx.fillStyle=acc();ctx.textAlign='center';tracked(String(f.slogan).toUpperCase(),W/2,y1-30,6,'center');}}
 function kp(f){return['s1','s2','s3'].map(function(k){return(f[k]||'').split('|');}).filter(function(a){return a[0]&&a[1];});}
 function allPlayers(){var out=[];Object.keys(DATA.teams).forEach(function(k){(DATA.teams[k].players||[]).forEach(function(p){if(!out.some(function(o){return o.name===p.name;}))out.push({name:p.name,team:+k,avg:p.avg,single:p.single,double:p.double});});});
   out.sort(function(a,b){var fa=photoSrc(a.name)?0:1,fb=photoSrc(b.name)?0:1;return fa-fb||a.team-b.team||a.name.localeCompare(b.name,'de');});return out;}
@@ -1165,6 +1208,8 @@ function CR(){return rng(S.capSeed*131+S.type.length*7);}
 function one(R,a){return a[Math.floor(R()*a.length)];}
 function tagsLiga(x){return S.team==='1'?['#ClochardDarterAugsburg','#CDA',x||'#GameDay','#Bundesliga','#2BundesligaSüd']:['#ClochardDarterAugsburg','#CDA',x||'#GameDay','#Steeldarts','#Augsburg'];}
 var CAP={
+  abzeichen:function(f,R){var one=f._mode==='one';return[one?['🏅 NEUES ABZEICHEN: '+String(f.title).toUpperCase()+' 🏅','',f.name+' hat sich bei der Competition das Abzeichen „'+f.title+'“ geholt – '+String(f.sub||'').replace(/^./,function(c){return c.toLowerCase();})+'! 💪','','Glückwunsch! 💚❤️ Wer zieht als Nächstes nach?']
+      :['🏅 NEUE ABZEICHEN vom Competition-Abend 🏅',''].concat(lines(f.list).map(function(a){return '🎯 '+a[0]+' – '+a[1];})).concat(['','Glückwunsch an alle! 💚❤️ Jeden Donnerstag gibt es neue Abzeichen zu holen – wer ist das nächste Mal dabei?']),['#ClochardDarterAugsburg','#CDAMasters','#Darts','#Steeldarts','#Augsburg']];},
   wrapped:function(f,R){var y=wYear(),Lx=['🎁🎯 CDA WRAPPED '+y+' 🎯🎁','','Das war unser Dartjahr '+y+' – Zeit für einen Rückblick! 👉 Wischt euch durch die Zahlen, die Siegmaschinen und die Highlights des Jahres.',''];
     try{var g=wGames(),w=g.filter(function(x){return res(x)==='S';}).length;Lx.push('📊 '+g.length+' Ligaspiele · '+w+' Siege');}catch(e){}
     Object.keys(DATA.teams).forEach(function(k){var t=DATA.teams[k],u=(t.table||[]).filter(function(r){return r.us;})[0];if(u)Lx.push((u.pos===1?'🏆':'🎯')+' '+t.label+': Platz '+u.pos+' in der '+(t.league||'').replace('3K WINMAU ',''));});
@@ -1263,6 +1308,7 @@ function buildSrc(){
     else h+='<p class="hint">'+(ks.length?'In diesem Monat gibt es noch keine Spiele mit Ergebnis.':'Monatswerte entstehen ab dem nächsten nächtlichen Abruf.')+'</p>';
     h+='<label class="f">Spieler (vorausgewählt: Vorschlag)</label><select id="pick">'+allPlayers().map(function(p){return opt(p.name,p.name+(photoSrc(p.name)?' 📷':''));}).join('')+'</select>';}
   else if(t.src==='wslide'){h+='<label class="f">Folie</label><select id="pick">'+WSL.map(function(x,i){return opt(x[0],(i+1)+'. '+x[1]);}).join('')+'</select><div style="display:flex;gap:8px;margin-top:8px"><button type="button" class="btn" id="wprev" style="flex:1">← Folie zurück</button><button type="button" class="btn" id="wnext" style="flex:1">Nächste Folie →</button></div><p class="hint">Format „Beitrag 4:5“ für das Karussell. Alle Werte sind vorausgefüllt und lassen sich unten ändern.</p>';}
+  else if(t.src==='badge'){var aw=ERF?erfAwards():[];h+='<label class="f">Was posten?</label><select id="pick">'+opt('recent','Alle neuen Abzeichen vom letzten Abend')+(aw.length?aw.slice(0,80).map(function(a,i){return opt('a:'+i,a.name+' – '+ERF.defs[a.id].label+' ('+dmy(a.date).slice(0,6)+')');}).join(''):opt('one','Beispiel: ein Spieler, ein Abzeichen'))+'</select><p class="hint">Abzeichen vergibt das System automatisch nach jedem Competition-Abend (180er, Finishes, Siege, Serien …).</p>';}
   else if(t.src==='player'){h+='<label class="f">Spieler</label><select id="pick">'+allPlayers().map(function(p){return opt(p.name,p.name+(photoSrc(p.name)?' 📷':''));}).join('')+'</select>';}
   $('src').innerHTML=h;
   var tm=$('team');if(tm)tm.onchange=function(){S.team=tm.value;S.pick=null;buildSrc();refill();};
@@ -1339,7 +1385,7 @@ Promise.all([fetch('data.json').then(function(r){return r.json();}),Promise.all(
   MW=a[6]||null;
   PREV=a[4]&&a[4].teams&&a[4].teams['1']?Object.assign({season:a[4].season},a[4].teams['1']):null;
   return Promise.all(photoPlayers().map(function(n){return load(PLAYERS[n].photo);}));
-}).then(function(){if(!TYPES[S.type])S.type='ergebnis';S.look=TYPES[S.type].look;buildTypeSelect();buildThemes();buildSrc();refill();try{apBadge();apFromHash();}catch(x){}});
+}).then(function(){if(!TYPES[S.type])S.type='ergebnis';S.look=TYPES[S.type].look;buildTypeSelect();buildThemes();buildSrc();refill();erfLoad().then(function(){try{apBadge();}catch(x){}});try{apBadge();apFromHash();}catch(x){}});
 // ================= WhatsApp-Nachricht für die Vereinsgruppe =================
 // Klingt wie von Leon, passt sich an Anmeldungen, Spielmodus, Termin und Jahreszeit an. „Neu formulieren“ würfelt eine andere Fassung.
 var WA={date:null,seed:0,kind:'auto',txt:''};
@@ -1434,6 +1480,7 @@ function apItems(){
   if(nc){add({id:'wa-'+nc.date,post:apAdd(nc.date,-1),icon:'💬',title:'WhatsApp-Einladung für Donnerstag',why:dmy(nc.date)+' · in die Vereinsgruppe',view:'w',wa:{date:nc.date,kind:'einladung'}});
     add({id:'wah-'+nc.date,post:nc.date,icon:'💬',title:'WhatsApp: „Heute Abend wird geworfen“',why:'Erinnerung am Spieltag, mittags',view:'w',wa:{date:nc.date,kind:'heute'}});
     if(!apPreMove())add({id:'comp-'+nc.date,post:apAdd(nc.date,-2),icon:'📢',title:(nc.mode==='m501'?'Masters-Ankündigung #'+nc.no:'Competition-Ankündigung'),why:dmy(nc.date),set:{type:nc.mode==='m501'?'masters':'comp',pick:nc.date}});}
+  if(!apPreMove()&&ERF&&ERF.recent&&ERF.recent.awards&&ERF.recent.awards.length&&ERF.recent.date>=apAdd(T,-3))add({id:'abz-'+ERF.recent.date,post:apAdd(ERF.recent.date,1),icon:'🏅',title:'Neue Abzeichen vom '+dmy(ERF.recent.date).slice(0,6),why:ERF.recent.awards.length+' Abzeichen vergeben',set:{type:'abzeichen',pick:'recent'}});
   if(!apPreMove())EVENTS.filter(function(e){return e.date>=apAdd(T,-3);}).forEach(function(e){add({id:'sieg-'+e.date,post:apAdd(e.date,1),icon:'🥇',title:'Siegerehrung vom '+dmy(e.date),why:((e.summary.podium||[])[0]||{}).name||'',set:{type:'sieger',pick:e.date}});});
   var seen={};return out.filter(function(o){if(seen[o.id])return false;seen[o.id]=1;return o.post<=apAdd(T,7);}).sort(function(a,b){return a.post<b.post?-1:a.post>b.post?1:0;});}
 function apOpen(o){
