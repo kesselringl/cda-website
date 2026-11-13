@@ -644,6 +644,31 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
 .hero-app .ha-t small{font-size:.8rem;color:#B9C2BB;line-height:1.35;margin-top:2px}
 .hero-app .ha-go{flex:none;background:#2BC653;color:#08130b;font-weight:800;font-size:.9rem;padding:9px 14px;border-radius:999px}
 .hero-app[hidden]{display:none}
+
+/* Startseite: wechselnde Themen + Laufband */
+.hero-copy.hs-out{opacity:0;transform:translateY(10px);transition:opacity .28s ease,transform .28s ease}
+.hero-copy.hs-in{animation:hsIn .55s cubic-bezier(.2,.8,.2,1)}
+@keyframes hsIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.hero-dots{display:flex;gap:8px;margin-top:26px}
+.hero-dots button{width:34px;height:20px;padding:0;border:0;background:none;cursor:pointer;display:grid;align-items:center}
+.hero-dots i{display:block;height:4px;border-radius:2px;background:rgba(255,255,255,.22);overflow:hidden;position:relative}
+.hero-dots [aria-selected=true] i::after{content:"";position:absolute;inset:0;background:var(--green-bright);transform-origin:left;animation:hsBar var(--hs-dur,8s) linear forwards}
+.hs-paused .hero-dots [aria-selected=true] i::after{animation-play-state:paused}
+@keyframes hsBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.hero-dots button:focus-visible{outline:2px solid var(--green-bright);outline-offset:2px;border-radius:4px}
+.hero-copy{position:relative}.hs-big{position:absolute;right:-30px;bottom:0;height:min(100%,560px);max-width:46%;object-fit:contain;object-position:bottom right;pointer-events:none;-webkit-mask-image:linear-gradient(to left,#000 55%,transparent);mask-image:linear-gradient(to left,#000 55%,transparent);opacity:.95;z-index:0;animation:hsIn .7s ease}.hs-big[hidden]{display:none}.hero-copy>*:not(.hs-big){position:relative;z-index:1}
+@media(max-width:900px){.hs-big{top:0;bottom:auto;max-width:48%;height:190px;right:-16px;opacity:.35}}
+.hs-photo{width:44px;height:44px;border-radius:50%;object-fit:cover;object-position:top;vertical-align:middle;margin-right:10px;border:2px solid var(--green-bright)}
+.hs-nick{display:block;font-size:.32em;letter-spacing:.06em;color:var(--board-muted);font-weight:700;margin:.2em 0 .1em}
+.ticker{position:relative;z-index:1;overflow:hidden;border-top:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.25);margin-bottom:6px}
+.tk-track{display:flex;width:max-content;animation:tk var(--tk-dur,60s) linear infinite;padding:11px 0;font-size:.88rem;color:var(--board-muted);white-space:nowrap}
+.ticker:hover .tk-track{animation-play-state:paused}
+.tk-run{display:flex;align-items:center}
+.tk-it b{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;margin-right:6px;color:var(--green-bright)}
+.tk-it b.k-gold,.tk-it b.k-ms{color:#E6B43A}.tk-it b.k-red,.tk-it b.k-loss{color:#ff6b74}
+.tk-sep{font-style:normal;color:rgba(255,255,255,.25);margin:0 18px;font-size:.5rem}
+@keyframes tk{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion: reduce){.tk-track{animation:none;flex-wrap:wrap;width:auto}.tk-run[aria-hidden]{display:none}.hero-copy.hs-in{animation:none}}
 </style>
 
 <div class="draft"><div class="wrap"><span>Vorschau der neuen Vereinsseite</span><span>Die bisherige Seite bleibt bis zum Umzug unter cda-ev.eu erreichbar</span></div></div>
@@ -675,6 +700,8 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
           <a class="btn primary" href="#kontakt">Für Donnerstag anmelden</a>
           <a class="btn ghost" href="#teams">Unsere Teams</a>
         </div>
+        <img class="hs-big" id="hs-big" alt="" hidden>
+        <div class="hero-dots" id="hero-dots" role="tablist" aria-label="Themen auf der Startseite"></div>
         <button type="button" class="app-install hero-app" hidden><img src="icon-96.webp" alt="" width="48" height="48"><span class="ha-t"><b>CDA-App aufs Handy</b><small>Ergebnisse, Termine und Anmeldung mit einem Tipp – kostenlos, ohne App Store</small></span><span class="ha-go">Holen</span></button>
       </div>
       <article class="ticket" id="ticket" aria-label="Nächste Donnerstags-Competition">
@@ -694,6 +721,7 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
         </div>
       </article>
     </div>
+    <div class="ticker" id="ticker" hidden><div class="tk-track" id="tk-track"></div></div>
   </section>
 
   <section id="news" aria-labelledby="news-title" hidden>
@@ -1420,13 +1448,62 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
     document.getElementById('news-grid').innerHTML=list.map(function(n){
       return '<a class="news-card k-'+n.kind+'" href="'+n.href+'"><span class="n-top"><span class="n-tag">'+esc(n.tag)+' · '+esc(n.team)+'</span><span class="n-date">'+relDay(n.date)+'</span></span><h3>'+esc(n.title)+'</h3><p>'+esc(n.text)+'</p></a>';}).join('');
   }
+
+  // ===== Startseite: wechselnde Themen im Aufmacher + Laufband =====
+  var HS={i:0,list:[],timer:null,paused:false},RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function splitTitle(t){var w=String(t).split(' ');if(w.length<3)return esc(t)+'.';var k=Math.ceil(w.length/2);return esc(w.slice(0,k).join(' '))+' <em>'+esc(w.slice(k).join(' '))+'.</em>';}
+  function spotlight(){
+    var D=LIVE&&LIVE.teams,PR=(typeof PROFILES!=='undefined'&&PROFILES)||{},pool=[];if(!D)return null;
+    ['1','2','3','4'].forEach(function(k){var t=D[k];if(!t||!t.players)return;t.players.forEach(function(p){if(PR[p.name]&&PR[p.name].photo&&!pool.some(function(x){return x.p.name===p.name;}))pool.push({p:p,k:k,lab:t.label||'CDA '+k,league:t.league||''});});});
+    if(!pool.length)return null;var day=Math.floor(Date.now()/864e5),x=pool[(day*7+HS.spin)%pool.length],pr=PR[x.p.name],parts=x.p.name.split(' '),last=parts.pop();
+    var facts=[];if(x.p.single)facts.push('Einzel '+x.p.single);if(x.p.avg)facts.push(x.p.avg.toFixed(2).replace('.',',')+' Average');
+    var extra=pr.checkout?' Lieblings-Checkout: '+esc(pr.checkout)+'.':pr.walkon?' Walk-on: „'+esc(pr.walkon)+'“.':pr.motto?' Motto: „'+esc(pr.motto)+'“':'';
+    return{wide:false,photo:pr.photo,eyebrow:'Spieler im Fokus · '+esc(x.lab),title:esc(parts.join(' '))+(pr.nick?' <small class="hs-nick">„'+esc(pr.nick)+'“</small>':'')+' <em>'+esc(last)+'.</em>',
+      lead:(facts.length?esc(x.lab)+' in der '+esc(x.league)+': '+facts.join(' · ')+'.':'Stammspieler bei '+esc(x.lab)+'.')+extra,
+      actions:'<a class="btn primary" href="#teams">Zur Mannschaft</a><a class="btn ghost" href="steckbrief.html">Eigenen Steckbrief ausfüllen</a>'};}
+  function heroSlides(first,news,story){
+    var list=first.slice(),used={};if(story)used[story.title]=1;
+    news.filter(function(n){return !used[n.title]&&!n.hero;}).slice(0,3).forEach(function(n){used[n.title]=1;
+      list.push({eyebrow:esc(n.tag)+' · '+esc(n.team)+' · '+esc(relDay(n.date)),title:splitTitle(n.title),lead:esc(n.text),actions:'<a class="btn primary" href="'+n.href+'">Mehr dazu</a><a class="btn ghost" href="#news">Alle Meldungen</a>'});});
+    list.push(spotlight);
+    list.push({eyebrow:'Steeldart in Augsburg · seit 1986',title:'Vier Teams. <em>Ein Verein.</em>',lead:'Rund 50 Mitglieder, vier Mannschaften von der 2. Bundesliga bis zur Bezirksliga, 32 bayerische Meistertitel – und jeden Donnerstag offene Competition im Bismarck Bistro. Einsteiger sind genauso willkommen wie Ligaspieler.',
+      actions:'<a class="btn primary" href="#mitglied">Mitglied werden</a><a class="btn ghost" href="#kontakt">Einfach mitspielen</a>'});
+    HS.list=list;if(HS.spin==null)HS.spin=0;if(HS.i>=list.length)HS.i=0;heroMeasure();heroShow(HS.i,true);heroTicker(news);heroAuto();}
+  // gleich hohe Themen, damit beim Wechsel nichts springt (v. a. auf dem Handy)
+  function heroMeasure(){var box=document.querySelector('.hero-copy');if(!box)return;box.style.minHeight='';var mx=0;
+    HS.list=HS.list.map(function(sl){return typeof sl==='function'?sl():sl;}).filter(Boolean);
+    HS.list.forEach(function(sl){document.getElementById('hero-eyebrow').innerHTML=sl.eyebrow;document.getElementById('hero-title').innerHTML=(sl.badge?'<span class="hero-badge">'+sl.badge+'</span><br>':'')+sl.title;document.getElementById('hero-lead').innerHTML=sl.lead;document.getElementById('hero-actions').innerHTML=sl.actions;mx=Math.max(mx,box.offsetHeight);});
+    box.style.minHeight=mx+'px';}
+  function heroShow(i,instant){
+    var n=HS.list.length;if(!n)return;i=(i+n)%n;var sl=HS.list[i];if(typeof sl==='function'){sl=sl();if(!sl){HS.list.splice(i,1);return heroShow(i,instant);}}
+    HS.i=i;var box=document.querySelector('.hero-copy'),put=function(){
+      document.getElementById('hero-eyebrow').innerHTML=sl.eyebrow;var bp=document.getElementById('hs-big');if(sl.photo){bp.src=sl.photo;bp.hidden=false;}else{bp.hidden=true;bp.removeAttribute('src');}
+      document.getElementById('hero-title').innerHTML=(sl.badge?'<span class="hero-badge">'+sl.badge+'</span><br>':'')+sl.title;
+      document.getElementById('hero-lead').innerHTML=sl.lead;document.getElementById('hero-actions').innerHTML=sl.actions;
+      document.getElementById('hero-dots').innerHTML=HS.list.map(function(_,k){return '<button type="button" role="tab" aria-selected="'+(k===HS.i)+'" aria-label="Thema '+(k+1)+' von '+HS.list.length+'" data-hs="'+k+'"><i></i></button>';}).join('');
+      box.classList.remove('hs-out');void box.offsetWidth;box.classList.add('hs-in');};
+    if(instant||RM){put();return;}box.classList.remove('hs-in');box.classList.add('hs-out');setTimeout(put,280);}
+  function heroAuto(){clearInterval(HS.timer);if(RM||HS.list.length<2)return;HS.timer=setInterval(function(){if(!HS.paused&&!document.hidden){if(HS.i===HS.list.length-1)HS.spin++;heroShow(HS.i+1);}},8000);
+    var d=document.getElementById('hero-dots');d.style.setProperty('--hs-dur','8s');}
+  (function(){var hero=document.querySelector('.hero'),dots=document.getElementById('hero-dots');if(!hero||!dots)return;
+    hero.addEventListener('mouseenter',function(){HS.paused=true;hero.classList.add('hs-paused');});hero.addEventListener('mouseleave',function(){HS.paused=false;hero.classList.remove('hs-paused');});
+    hero.addEventListener('focusin',function(){HS.paused=true;hero.classList.add('hs-paused');});hero.addEventListener('focusout',function(){HS.paused=false;hero.classList.remove('hs-paused');});
+    dots.addEventListener('click',function(e){var b=e.target.closest('[data-hs]');if(!b)return;heroShow(+b.dataset.hs);heroAuto();});
+    var x0=null;hero.querySelector('.hero-copy').addEventListener('touchstart',function(e){x0=e.touches[0].clientX;},{passive:true});
+    hero.querySelector('.hero-copy').addEventListener('touchend',function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>50){heroShow(HS.i+(dx<0?1:-1));heroAuto();}x0=null;});})();
+  function heroTicker(news){var tk=document.getElementById('ticker'),tr=document.getElementById('tk-track');if(!tk)return;
+    var items=news.slice(0,10).map(function(n){return '<span class="tk-it"><b class="k-'+n.kind+'">'+esc(n.tag)+'</b> '+esc(n.title)+'</span>';});
+    items.push('<span class="tk-it"><b class="k-ms">Jeden Donnerstag</b> Competition im Bismarck Bistro · ab 20 Uhr</span>');
+    if(items.length<3){tk.hidden=true;return;}tk.hidden=false;var h=items.join('<i class="tk-sep" aria-hidden="true">●</i>');tr.innerHTML='<span class="tk-run">'+h+'<i class="tk-sep" aria-hidden="true">●</i></span><span class="tk-run" aria-hidden="true">'+h+'<i class="tk-sep" aria-hidden="true">●</i></span>';
+    tr.style.setProperty('--tk-dur',Math.max(30,items.length*7)+'s');}
   function renderHero(){
     var now=new Date(),todayStr=now.toISOString().slice(0,10),soon=new Date(now.getTime()+21*864e5).toISOString().slice(0,10);
     var home=md.filter(function(m){return m[4]&&m[1]>=todayStr&&m[1]<=soon&&m[3].some(function(g){return !g[3];});})[0];
     var T=document.getElementById('ticket'),target,end;
     var set=function(id,h){document.getElementById(id).innerHTML=h;};
     var news=buildNews(),story=null;
-    // 1) Aufmacher links: Heimspieltag > Herbstmeister > Standard (Competition)
+    // 1) Aufmacher links: wechselnde Themen (erstes Thema: Heimspieltag > Herbstmeister > Standard)
+    var slides=[],S0={};set=function(id,h){S0[id.replace('hero-','')]=h;};
     if(home){
       var g0=home[3][0],hdt=new Date(home[1]+'T'+(g0[0]||'12:00')+':00');
       var top=home[3].filter(function(g){return ranks[opp(g)]<=2&&usPos<=2;})[0];
@@ -1444,6 +1521,8 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
         set('hero-actions','<a class="btn primary" href="#kontakt">Für Donnerstag anmelden</a><a class="btn ghost" href="#masters">CDA Masters</a>');
       }
     }
+    slides.push(S0);set=function(id,h){document.getElementById(id).innerHTML=h;};
+    heroSlides(slides,news,story);
     // 2) Ticket rechts: immer die nächste Donnerstags-Competition (Blickfang)
     var C=window.CDA_CAL,nx=C?C.upcoming().filter(function(e){return e.mode!=='finals';})[0]:null,d;
     if(nx){d=new Date(nx.date+'T20:00:00');}else{d=new Date();d.setHours(20,0,0,0);var add=(4-d.getDay()+7)%7;if(add===0&&now.getHours()>=23)add=7;d.setDate(d.getDate()+add);}
