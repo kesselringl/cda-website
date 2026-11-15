@@ -1507,7 +1507,7 @@ var fontsReady=document.fonts?Promise.all(FONTS.map(function(f){return document.
 var evs=fetch(SBU+'/rest/v1/events?select=date,mode,summary:state->summary&status=eq.done&test=eq.false&order=date.desc&limit=200',{headers:{apikey:SBK}}).then(function(r){return r.ok?r.json():[];}).catch(function(){return[];});
 var dbp=fetch(SBU+'/rest/v1/players?select=id,name',{headers:{apikey:SBK}}).then(function(r){return r.ok?r.json():[];}).catch(function(){return[];});
 var mw=fetch('monatswerte.json').then(function(r){return r.ok?r.json():null;}).catch(function(){return null;});
-var prev=fetch('vorsaison.json').then(function(r){return r.ok?r.json():null;}).catch(function(){return null;});
+var prev=fetch('vorsaison.json',{cache:'no-cache'}).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;});
 var livep=fetch(SBU+'/rest/v1/rpc/cda_profiles',{method:'POST',headers:{apikey:SBK,'Content-Type':'application/json'},body:'{}'}).then(function(r){return r.ok?r.json():{};}).catch(function(){return{};});
 Promise.all([fetch('data.json').then(function(r){return r.json();}),Promise.all([fetch('players.json').then(function(r){return r.json();}).catch(function(){return{};}),livep]).then(function(x){var pj=x[0]||{},lp=x[1]||{};Object.keys(lp).forEach(function(n){pj[n]=Object.assign({},pj[n]||{},lp[n],pj[n]&&pj[n].photo?{photo:pj[n].photo}:{});});return pj;}),evs,dbp,prev,fontsReady,mw,load('logo.png'),load('partner/gwtec.webp')].concat(PARTNERS.map(function(p){return load('partner/'+p+'.webp');}))).then(function(a){
   DATA=a[0];PLAYERS={};Object.keys(a[1]||{}).forEach(function(k){if(k[0]!=='_')PLAYERS[k]=a[1][k];});EVENTS=(a[2]||[]).filter(function(e){return e.summary;});(a[3]||[]).forEach(function(p){DBPL[p.id]=p.name;});
