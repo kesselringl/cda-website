@@ -29,7 +29,7 @@ console.log('Staffeln in', CH + ':', groups.length);
 if (!groups.length) console.log(lp.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<link[^>]*>/g, '').slice(0, 6000));
 for (const g of groups) {
   const h = await get(BASE + 'groupPage?championship=' + CHQ + '&group=' + g);
-  const league = dec((h.match(/<h1>([\s\S]*?)<\/h1>/) || [, ''])[1]).replace(/^.*?Schw(aben)? 2025\/26\s*/i, '');
+  const league = dec((h.match(/<h1>([\s\S]*?)<\/h1>/) || [, ''])[1]).replace(/^.*?Schw(aben)? 2025\/26\s*/i, '').replace(/\s*Tabelle und Spielplan.*$/i, '');
   for (const m of h.matchAll(/href="([^"]*teamPortrait\?[^"]*)"[^>]*>([\s\S]*?)<\/a>/g)) {
     const name = dec(m[2]);
     if (/Clochard/i.test(name) && !found.some(f => f.name === name)) found.push({ name, href: m[1].replace(/&amp;/g, '&'), champ: CH, cells: [league], group: g });
