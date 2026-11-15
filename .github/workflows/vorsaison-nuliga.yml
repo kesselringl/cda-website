@@ -1,0 +1,17 @@
+name: Vorsaison II–IV holen (einmalig)
+on:
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: node scripts/fetch-vorsaison-nuliga.mjs
+      - run: |
+          git config user.name "CDA Ergebnis-Bot"; git config user.email "actions@users.noreply.github.com"
+          git add site/vorsaison.json && git commit -m "Vorsaison 2025/26 der Mannschaften II–IV" && git pull --rebase && git push || echo "nichts zu committen"
