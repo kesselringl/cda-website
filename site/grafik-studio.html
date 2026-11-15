@@ -1021,7 +1021,7 @@ var TYPES={
       var lv=function(x){return(String(x||'').replace('3K WINMAU ','').match(/^\d+\.\s*\S+/)||[''])[0];},pl=P&&P.league&&lv(P.league)!==lv(league())?P.league.replace('3K WINMAU ',''):'';
       return{_note:a?(pl?'Achtung: In der Vorsaison spielte '+team().label+' in der '+pl+' – Werte sind nur bedingt vergleichbar.':''):(PREVALL&&PREVALL.fetchedNuLiga?team().label+' hat in der Saison '+(PREVALL.season||'2025/26')+' noch nicht im Ligabetrieb gespielt – es gibt keine Vorjahreswerte. Du kannst links eigene Werte eintragen.':'Vorsaison-Daten für '+team().label+' noch nicht verfügbar – Werte links bitte eintragen.'),kicker:league(),kicker2:'Nach dem '+n+'. '+nl,title:'Saisonvergleich',a:'Saison '+seasonShort(P&&P.season||'2025/26'),_pl:pl,b:'Saison '+seasonShort(DATA.season),
         list:[row('Punkte',a&&a.p,b.p),row('Siege',a&&a.w,b.w),row('Remis',a&&a.d,b.d)+'|n',row('Niederlagen',a&&a.l,b.l,true),row('Sets',a&&a.sw+':'+a.sl,b.sw+':'+b.sl),row('Legs',a&&a.lw?a.lw+':'+a.ll:'',b.lw?b.lw+':'+b.ll:'')].filter(function(r){return !/^Legs\|\|$/.test(r);}).join('\n'),
-        slogan:a&&b.p>a.p?'+'+(b.p-a.p)+' Punkte gegenüber dem Vorjahr':'Der Weg stimmt.'};},
+        slogan:!a&&PREVALL&&PREVALL.fetchedNuLiga?'Premierensaison'+(b.l===0&&b.sp?' · noch ungeschlagen':''):a&&b.p>a.p?'+'+(b.p-a.p)+' Punkte gegenüber dem Vorjahr':'Der Weg stimmt.'};},
     poster:function(f,V){return{ghost:'VS',b:[C.label(f.kicker2),C.head(f.title,V?170:210),C.compare([f.a,f.b],lines(f.list)),C.tag(f.slogan)]};}},
   top5:{g:'Liga',label:'Top 5 Spieler',look:'board',src:'crit',n:2,fields:function(){var ps=(team().players||[]).slice(),c=S.crit;
       ps=ps.filter(function(p){return c==='avg'?p.avg:ratio(c==='single'?p.single:p.total)>=0;});
