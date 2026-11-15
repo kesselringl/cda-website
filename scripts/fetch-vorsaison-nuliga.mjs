@@ -20,26 +20,23 @@ const club = (portrait.match(/club=(\d+)/) || [])[1];
 if (!club) { console.log(portrait.slice(0, 3000)); throw new Error('Vereinsnummer nicht gefunden'); }
 console.log('Verein', club);
 
-// 2) Mannschaften der Vorsaison
-const tries = [`clubTeams?club=${club}&seasonName=${encodeURIComponent(SEASON)}`, `clubTeams?club=${club}&seasonName=${SEASON.replace('/', '%2F')}`];
+// 2) Mannschaften der Vorsaison: alle Staffeln der Meisterschaft „Schw 2025/26“ durchsuchen
+const CH = 'Schw ' + SEASON, CHQ = encodeURIComponent(CH).replace(/%20/g, '+');
 let found = [];
-for (const t of tries) {
-  const h = await get(BASE + t);
-  const re = /<tr[\s\S]*?<\/tr>/g; let m;
-  while ((m = re.exec(h))) {
-    const row = m[0], a = row.match(/href="([^"]*teamPortrait\?[^"]*)"[^>]*>([\s\S]*?)<\/a>/);
-    if (!a) continue;
-    const href = a[1].replace(/&amp;/g, '&'), champ = decodeURIComponent((href.match(/championship=([^&]+)/) || [])[1] || '').replace(/\+/g, ' ');
-    if (!/25\/26|2025\/26/.test(champ)) continue;
-    const cells = [...row.matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)].map(c => dec(c[1]));
-    found.push({ name: dec(a[2]), href, champ, cells });
+const lp = await get(BASE + 'leaguePage?championship=' + CHQ);
+const groups = [...new Set([...lp.matchAll(/groupPage\?championship=[^"&]+&amp;group=(\d+)/g)].map(m => m[1]))];
+console.log('Staffeln in', CH + ':', groups.length);
+if (!groups.length) console.log(lp.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<link[^>]*>/g, '').slice(0, 6000));
+for (const g of groups) {
+  const h = await get(BASE + 'groupPage?championship=' + CHQ + '&group=' + g);
+  const league = dec((h.match(/<h1>([\s\S]*?)<\/h1>/) || [, ''])[1]).replace(/^.*?Schw(aben)? 2025\/26\s*/i, '');
+  for (const m of h.matchAll(/href="([^"]*teamPortrait\?[^"]*)"[^>]*>([\s\S]*?)<\/a>/g)) {
+    const name = dec(m[2]);
+    if (/Clochard/i.test(name) && !found.some(f => f.name === name)) found.push({ name, href: m[1].replace(/&amp;/g, '&'), champ: CH, cells: [league], group: g });
   }
-  console.log(t, '→', found.length, 'Mannschaften');
-  if (found.length) break;
-  console.log(h.replace(/<script[\s\S]*?<\/script>/g, '').slice(0, 4000));
 }
 if (!found.length) throw new Error('Keine Mannschaften der Saison ' + SEASON + ' gefunden');
-found.forEach(f => console.log('-', f.name, '|', f.champ, '|', f.cells.join(' | ')));
+found.forEach(f => console.log('-', f.name, '|', f.cells[0], '| Staffel', f.group));
 
 // 3) Je Mannschaft Tabelle + Spielplan holen
 const ROM = { 'II': '2', 'III': '3', 'IV': '4', 'V': '5' };
@@ -55,7 +52,7 @@ for (const f of found) {
   try {
     const { table } = parseNuGroup(new MiniDocument(await get(groupUrl)), cfg);
     const team = parseNuTeam(new MiniDocument(await get(teamUrl)), cfg);
-    const league = f.cells.find(c => /liga|klasse/i.test(c) && !/Clochard/.test(c)) || '';
+    const league = f.cells[0] || '';
     prev.teams[id] = { label: cfg.label, league, table, matches: team.matches, players: team.players, groupUrl, teamUrl };
     console.log('✓', cfg.label, league, table.length, 'Teams,', team.matches.length, 'Spiele');
   } catch (e) { console.log('✗', f.name, e.message); }

@@ -395,7 +395,7 @@ var SBU='https://qeevsqrmltewbtrnfrfm.supabase.co',SBK='sb_publishable_pwnzx63cq
 var RED='#E30212',GREEN='#0CA12D',INK='#111312',GOLD='#d9b04a';
 var RELAUNCH='2027-01-07',POT_FEE=10,BEST_OF=10,MASTERS_PER_SEASON=16,MS_FEE=15,MIN_QUALI=5,MAX_FINALS=32,FIN_SPLIT=[.40,.25,.17,.12,.06],DAY_SPLIT=[.5,.3,.2];
 var cv=document.getElementById('cv'),ctx=cv.getContext('2d');
-var DATA=null,PLAYERS={},EVENTS=[],SIGN={},DBPL={},IMG={},PREV=null,MW=null,L=null,CB=null,W=1080,H=1350;
+var DATA=null,PLAYERS={},EVENTS=[],SIGN={},DBPL={},IMG={},PREV=null,PREVALL=null,MW=null,L=null,CB=null,W=1080,H=1350;
 var S={month:null,type:'ergebnis',look:'arena',format:'feed',seed:1,capSeed:1,team:'1',pick:null,crit:'avg',partners:true,f:{}};
 var Q=new URLSearchParams(location.search);if(Q.get('t'))S.type=Q.get('t');
 
@@ -493,6 +493,8 @@ function statsAfter(mds,n){var o={sp:0,w:0,d:0,l:0,p:0,sw:0,sl:0,lw:0,ll:0};mds.
   if(g.legs){var lg=g.legs.split(':').map(Number);if(isUs(g.home)){o.lw+=lg[0];o.ll+=lg[1];}else{o.lw+=lg[1];o.ll+=lg[0];}}
   if(r==='S'){o.w++;o.p+=2;}else if(r==='U'){o.d++;o.p+=1;}else o.l++;});});return o;}
 
+function prevTeam(){var T=PREVALL&&PREVALL.teams&&PREVALL.teams[S.team];return T?Object.assign({season:PREVALL.season},T):null;}
+function prevMds(P){if(P.matchdays)return P.matchdays;return(P.matches||[]).filter(function(m){return m.score&&(isUs(m.home)||isUs(m.away));}).sort(function(x,y){return x.date<y.date?-1:1;}).map(function(m){return{date:m.date,games:[m]};});}
 // ---------- Competition-Daten ----------
 function seasonEvents(year,mode){return EVENTS.filter(function(e){return e.date.slice(0,4)===String(year)&&(!mode||e.mode===mode);});}
 function potFor(year){return seasonEvents(year,'m501').reduce(function(a,e){return a+((e.summary.np||e.summary.n||0)*POT_FEE);},0);}
@@ -1014,9 +1016,10 @@ var TYPES={
       return{rays:true,b:[C.label(f.kicker2),C.head(f.title,260),C.tag(f.sub),C.stats(kp(f)),V===1?null:C.list(tb.map(function(r){return{rank:r.pos,name:short(r.name),value:pts(r),hl:r.us};}),{rh:64}),C.label(f.slogan)]};}},
   saison:{g:'Liga',label:'Saisonvergleich',look:'carbon',src:'saison',n:2,fields:function(){
       var cur=matchdays().filter(played),n=Math.max(1,Math.min(+(S.pick||cur.length),cur.length||1));S.pick=String(n);
-      var a=PREV&&PREV.matchdays?statsAfter(PREV.matchdays,n):null,b=statsAfter(cur,n);
+      var P=prevTeam(),pm=P?prevMds(P):null,a=pm&&pm.length?statsAfter(pm,n):null,b=statsAfter(cur,n),md=!!team().matchdays,nl=md?'Spieltag':'Spiel';
       var row=function(l,x,y,low){return l+'|'+(x==null?'':x)+'|'+(y==null?'':y)+(low?'|low':'');};
-      return{_note:PREV?'':'Vorsaison-Daten noch nicht verfügbar – Werte links bitte eintragen.',kicker:league(),kicker2:'Nach dem '+n+'. Spieltag',title:'Saisonvergleich',a:'Saison '+seasonShort(PREV&&PREV.season||'2025/26'),b:'Saison '+seasonShort(DATA.season),
+      var pl=P&&P.league&&P.league.replace('3K WINMAU ','')!==league()?P.league.replace('3K WINMAU ',''):'';
+      return{_note:a?(pl?'Achtung: In der Vorsaison spielte '+team().label+' in der '+pl+' – Werte sind nur bedingt vergleichbar.':''):'Vorsaison-Daten für '+team().label+' noch nicht verfügbar – Werte links bitte eintragen.',kicker:league(),kicker2:'Nach dem '+n+'. '+nl,title:'Saisonvergleich',a:'Saison '+seasonShort(P&&P.season||'2025/26'),_pl:pl,b:'Saison '+seasonShort(DATA.season),
         list:[row('Punkte',a&&a.p,b.p),row('Siege',a&&a.w,b.w),row('Remis',a&&a.d,b.d),row('Niederlagen',a&&a.l,b.l,true),row('Sets',a&&a.sw+':'+a.sl,b.sw+':'+b.sl),row('Legs',a&&a.lw?a.lw+':'+a.ll:'',b.lw?b.lw+':'+b.ll:'')].join('\n'),
         slogan:a&&b.p>a.p?'+'+(b.p-a.p)+' Punkte gegenüber dem Vorjahr':'Der Weg stimmt.'};},
     poster:function(f,V){return{ghost:'VS',b:[C.label(f.kicker2),C.head(f.title,V?170:210),C.compare([f.a,f.b],lines(f.list)),C.tag(f.slogan)]};}},
@@ -1344,7 +1347,7 @@ var CAP={
   saison:function(f,R){var up=0,dn=0,rows=[];var vv=function(v){v=String(v);if(/^\d+:\d+$/.test(v)){var q=v.split(':').map(Number);return q[0]-q[1];}return +v.replace(',','.');};lines(f.list).forEach(function(a){if(a[2]){var x=vv(a[1]),y=vv(a[2]),low=a[3]==='low',ok=a[1]!==''&&!isNaN(x)&&!isNaN(y),u=ok&&(low?y<x:y>x),d=ok&&(low?y>x:y<x);if(u)up++;if(d)dn++;rows.push((u?'📈':d?'📉':'➖')+' '+a[0]+': '+(a[1]||'–')+' ➜ '+a[2]);}});
     var Lx=['📊🆚 SAISONVERGLEICH 🆚📊','',one(R,['Wie stehen wir im Vergleich zur letzten Saison? Gleicher Zeitpunkt, ehrlicher Vergleich '+String(f.kicker2).replace(/^Nach/,'nach')+'. 🔍','Ein Jahr später, gleicher Zeitpunkt ('+String(f.kicker2).replace(/^Nach/,'nach')+') – so hat sich die Mannschaft entwickelt: 📈']),''];
     if(up>dn)Lx.push('~'+one(R,['Die Richtung stimmt: In '+up+' von '+rows.length+' Werten sind wir besser als vor einem Jahr! 🚀','Fortschritt schwarz auf weiß – '+up+' Werte zeigen nach oben. 💪']),'');else if(dn>up)Lx.push('~Ehrlich gesagt: Letztes Jahr lief es zu diesem Zeitpunkt etwas besser. Genau das ist unser Ansporn für die nächsten Spieltage! 💪','');
-    Lx.push('⬅️ '+f.a+'  |  '+f.b+' ➡️');rows.forEach(function(r){Lx.push(r);});var tb=cxTable();if(tb)Lx.push('','~📍 Aktuell: '+tb.txt);
+    if(f._pl)Lx.push('~ℹ️ Kleiner Haken: Letzte Saison spielten wir noch in der '+f._pl+' – jetzt in der '+f.kicker+'.','');Lx.push('⬅️ '+f.a+'  |  '+f.b+' ➡️');rows.forEach(function(r){Lx.push(r);});var tb=cxTable();if(tb)Lx.push('','~📍 Aktuell: '+tb.txt);
     Lx.push('','💬 '+(f.slogan||''),'',cxCta(R,'tab'),'',cxSign(R));return[Lx,tagsLiga('#Saisonvergleich')];},
   top5:function(f,R){var Lr=lines(f.list),Lx=['🔥🎯 TOP 5 – '+String(f.kicker2).toUpperCase()+' 🎯🔥','',one(R,['Wer hat diese Saison bisher am stärksten geworfen? Hier sind unsere Top 5! 👇','Die Zahlen lügen nicht: unsere fünf Besten der Saison. 📊','Ranking-Zeit! 🏁 Diese fünf führen bei uns gerade das Feld an:']),''];
     Lr.forEach(function(a){Lx.push((['🥇','🥈','🥉','4️⃣','5️⃣'][+a[0]-1]||'▫️')+' '+a[1]+' – '+a[2]);if(a[3])Lx.push('~      '+a[3]);});
@@ -1416,7 +1419,7 @@ function buildSrc(){
   if(t.src==='match'||t.src==='next'){h+=teamSel();var l=matchdays().filter(function(m){return t.src==='match'?played(m):!played(m)&&m.date>=today();});if(t.src==='match')l=l.slice().reverse();
     h+='<label class="f">'+(t.src==='match'?'Spieltag':'Nächster Spieltag')+'</label><select id="pick">'+l.map(function(m){return opt(m.key,m.label+' · '+dmy(m.date));}).join('')+'</select>';}
   else if(t.src==='team')h+=teamSel();
-  else if(t.src==='saison'){var n=matchdays().filter(played).length;h+='<label class="f">Vergleich nach dem … Spieltag (beide Saisons zum gleichen Zeitpunkt)</label><select id="pick">'+Array.from({length:n},function(_,i){return opt(i+1,(i+1)+'. Spieltag');}).join('')+'</select>';}
+  else if(t.src==='saison'){var n=matchdays().filter(played).length,nl=team().matchdays?'Spieltag':'Spiel';h+=teamSel()+'<label class="f">Vergleich nach dem … '+nl+' (beide Saisons zum gleichen Zeitpunkt)</label><select id="pick">'+Array.from({length:n},function(_,i){return opt(i+1,(i+1)+'. '+nl);}).join('')+'</select>';}
   else if(t.src==='opponent'){h+=teamSel()+'<label class="f">Gegner</label><select id="pick">'+(team().table||[]).filter(function(r){return !r.us;}).map(function(r){return opt(r.name,r.pos+'. '+r.name);}).join('')+'</select>';}
   else if(t.src==='crit'){h+=teamSel()+'<label class="f">Sortiert nach</label><select id="crit">'+[['avg','Average'],['single','Einzel-Bilanz'],['total','Gesamt-Bilanz']].map(function(c){return '<option value="'+c[0]+'"'+(S.crit===c[0]?' selected':'')+'>'+c[1]+'</option>';}).join('')+'</select>';}
   else if(t.src==='compdate'||t.src==='mastersdate'){h+='<label class="f">Termin</label><select id="pick">'+compDates(t.src==='mastersdate').map(function(e){return opt(e.date,dow(e.date).slice(0,2)+' '+dmy(e.date)+' · '+(MODE[e.mode]||MODE.alt)[0]+(e.no?' #'+e.no:''));}).join('')+'</select><p class="hint">Anmeldungen kommen live aus der Datenbank.</p>';}
@@ -1509,7 +1512,7 @@ var livep=fetch(SBU+'/rest/v1/rpc/cda_profiles',{method:'POST',headers:{apikey:S
 Promise.all([fetch('data.json').then(function(r){return r.json();}),Promise.all([fetch('players.json').then(function(r){return r.json();}).catch(function(){return{};}),livep]).then(function(x){var pj=x[0]||{},lp=x[1]||{};Object.keys(lp).forEach(function(n){pj[n]=Object.assign({},pj[n]||{},lp[n],pj[n]&&pj[n].photo?{photo:pj[n].photo}:{});});return pj;}),evs,dbp,prev,fontsReady,mw,load('logo.png'),load('partner/gwtec.webp')].concat(PARTNERS.map(function(p){return load('partner/'+p+'.webp');}))).then(function(a){
   DATA=a[0];PLAYERS={};Object.keys(a[1]||{}).forEach(function(k){if(k[0]!=='_')PLAYERS[k]=a[1][k];});EVENTS=(a[2]||[]).filter(function(e){return e.summary;});(a[3]||[]).forEach(function(p){DBPL[p.id]=p.name;});
   MW=a[6]||null;
-  PREV=a[4]&&a[4].teams&&a[4].teams['1']?Object.assign({season:a[4].season},a[4].teams['1']):null;
+  PREVALL=a[4]||null;PREV=a[4]&&a[4].teams&&a[4].teams['1']?Object.assign({season:a[4].season},a[4].teams['1']):null;
   return Promise.all(photoPlayers().map(function(n){return load(PLAYERS[n].photo);}));
 }).then(function(){if(!TYPES[S.type])S.type='ergebnis';S.look=TYPES[S.type].look;buildTypeSelect();buildThemes();buildSrc();refill();erfLoad().then(function(){try{apBadge();}catch(x){}});try{apBadge();apFromHash();}catch(x){}});
 // ================= WhatsApp-Nachricht für die Vereinsgruppe =================
