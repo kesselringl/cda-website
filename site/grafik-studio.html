@@ -39,7 +39,9 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 .btn.sec{background:#26302b}
 .btn.red{background:var(--red)}
 .cap{width:100%;max-width:460px}
-.cap textarea{min-height:320px}
+.cap textarea{min-height:420px}
+.gtray{border-color:#2f6b3c}.gt-th{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px;margin:10px 0}.gt-th figure{margin:0;position:relative}.gt-th img{width:100%;border-radius:6px;display:block}.gt-th figcaption{font-size:11px;color:var(--mute);margin-top:3px;line-height:1.25}.gt-x{position:absolute;top:4px;right:4px;width:24px;height:24px;border-radius:50%;border:0;background:#000b;color:#fff;font:700 15px/1 Archivo,Arial,sans-serif;cursor:pointer}#gpb .ap-bun{max-width:none}.btn:disabled{opacity:.45;cursor:default}
+
 .hint{font-size:12px;color:var(--mute);margin:6px 0 0}
 .note{font-size:12px;color:#ffd27a;margin:4px 0 6px}
 .vtabs{display:flex;gap:6px;margin-left:16px}.vtabs button{background:#202623;color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font:700 13px Archivo,Arial,sans-serif;cursor:pointer}.vtabs button[aria-pressed=true]{background:var(--green);border-color:var(--green)}
@@ -259,13 +261,16 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
     <div class="acts">
       <button class="btn" id="dl">Bild speichern</button>
       <button class="btn red" id="share" hidden>Teilen</button>
+      <button class="btn sec" id="addbun">➕ Zum Sammelpost</button>
     </div>
     <div class="cap box">
       <h2>Bildunterschrift</h2>
       <textarea id="caption"></textarea>
-      <div class="two"><button class="btn sec" id="recap">Anderer Text</button><button class="btn" id="copy">Text kopieren</button></div>
-      <p class="hint">Entsteht aus den Feldern, genau 5 Hashtags. „Anderer Text“ würfelt eine neue Formulierung.</p>
+      <div class="two"><button class="btn sec" id="recap">🔄 Anderer Text</button><button class="btn sec" id="caplen">Kürzer</button></div><div class="two"><button class="btn" id="copy">Text kopieren</button></div>
+      <p class="hint">Entsteht aus den Feldern, genau 5 Hashtags. „Anderer Text“ würfelt eine neue Formulierung, „Kürzer“ lässt die Zusatzinfos weg.</p>
     </div>
+    <div id="gtray" class="cap"></div>
+    <div id="gpb" class="cap"></div>
   </div>
 </div>
 
@@ -1218,76 +1223,180 @@ function allPlayers(){var out=[];Object.keys(DATA.teams).forEach(function(k){(DA
 function CR(){return rng(S.capSeed*131+S.type.length*7);}
 function one(R,a){return a[Math.floor(R()*a.length)];}
 function tagsLiga(x){return S.team==='1'?['#ClochardDarterAugsburg','#CDA',x||'#GameDay','#Bundesliga','#2BundesligaSüd']:['#ClochardDarterAugsburg','#CDA',x||'#GameDay','#Steeldarts','#Augsburg'];}
+// ---------- Kontext für ausführliche Bildunterschriften ----------
+// Zeilen, die mit „~“ beginnen, sind Zusatzinfos – bei Länge „Kurz“ fallen sie weg.
+var BER=null;
+var PNAME={bbm:'BBM Beton Bearbeitung Mahler',gronde:'Gronde Sehen & Hören',thalhofer:'Matthias Thalhofer',frey:'FIA Frey Immobilien',spiel77:'Spiel 77 Games',karella:'karella professional Dart'};
+function plur(n,a,b){return n+' '+(n===1?a:b);}
+function first(n){return String(n||'').replace(/ \(Gast\)$/,'').split(' ')[0];}
+function andJoin(a){a=a.filter(Boolean);return a.length>1?a.slice(0,-1).join(', ')+' und '+a[a.length-1]:a[0]||'';}
+function cxThanks(R){var ps=PARTNERS.map(function(k){return PNAME[k]||k;});
+  return one(R,['🙌 Danke an alle Fans, Helfer und unsere Partner – allen voran GW-TEC! 💚❤️','💚❤️ Ein riesiges Dankeschön an unseren Hauptsponsor GW-TEC und an '+andJoin(ps)+' – ohne euch wäre das alles nicht möglich!','🙏 Danke an jeden, der mitfiebert – und an unsere Partner GW-TEC, '+ps.slice(0,3).join(', ')+' & Co. 💚❤️']);}
+function cxSign(R){return one(R,['GOOD DARTS. GOOD PEOPLE. 🎯','Auf geht\'s, CDA! 💚❤️','Mehr als nur ein Verein. 🎯','Einmal CDA, immer CDA. 💚❤️','#CDAFamily – GOOD DARTS. GOOD PEOPLE. 🎯']);}
+function cxTable(){var tb=team().table||[],u=usRow();if(!u)return null;var a=tb.filter(function(r){return r.pos===u.pos-1;})[0],b=tb.filter(function(r){return r.pos===u.pos+1;})[0],lead=tb[0];
+  var o={u:u,txt:'Platz '+u.pos+' von '+tb.length+' mit '+plur(pts(u),'Punkt','Punkten')};
+  if(u.pos===1&&b){var d=pts(u)-pts(b);o.gap=d>0?plur(d,'Punkt','Punkte')+' Vorsprung auf '+short(b.name):'punktgleich mit '+short(b.name);}
+  else if(lead&&!lead.us){var d2=pts(lead)-pts(u);o.gap=d2>0?plur(d2,'Punkt','Punkte')+' hinter Spitzenreiter '+short(lead.name):'punktgleich mit Spitzenreiter '+short(lead.name);}
+  if(a&&!o.gap){o.gap=(pts(a)-pts(u))+' Punkte bis Platz '+a.pos;}
+  var left=Math.max(0,(tb.length-1)*2-u.played);if(team().matchdays&&left)o.left=plur(left,'Spiel','Spiele')+' noch zu spielen';
+  return o;}
+function cxRun(){var gs=allGames().filter(function(g){return g.score;}),n=0,w=0,i;for(i=gs.length-1;i>=0&&res(gs[i])!=='N';i--)n++;for(i=gs.length-1;i>=0&&res(gs[i])==='S';i--)w++;return{unbeaten:n,wins:w,total:gs.length};}
+function cxNext(md){var nx=matchdays().filter(function(m){return !played(m)&&m.date>(md?md.date:today())&&m.date>=today();})[0];if(!nx)return '';
+  var gs=nx.games.map(function(g){return short(opp(g));});return '🗓️ Weiter geht\'s am '+dow(nx.date)+', '+dmy(nx.date)+(gs.length?' gegen '+andJoin(gs):'')+(nx.home?' – dann wieder zu Hause! 🏠':' – auswärts. 🚌');}
+// Spielberichte der 2. Bundesliga (liga.json): wer hat bei uns geglänzt?
+function ligaOf(date){if(S.team!=='1'||!LIGA||!LIGA.matches)return[];return LIGA.matches.filter(function(m){return m.date===date&&(isUs(m.home)||isUs(m.away))&&m.games&&m.games.length;});}
+function cxStars(md){var ms=ligaOf(md.date),P={},D={},best=null,ourAvg=[];
+  ms.forEach(function(m){var h=isUs(m.home),op=h?m.away:m.home;m.games.forEach(function(g){var us=h?g.h:g.a,th=h?g.a:g.h,lu=h?g.lh:g.la,lt=h?g.la:g.lh,av=h?g.ah:g.aa;if(!us||!us.length)return;var won=lu>lt;
+    if(g.t==='E'){var n=us[0],p=P[n]||(P[n]={name:n,w:0,l:0,av:[]});if(won)p.w++;else p.l++;if(av){p.av.push(av);ourAvg.push(av);if(!best||av>best.av)best={name:n,av:av,opp:th&&th[0],team:short(op),legs:lu+':'+lt};}}
+    else{var k=us.slice().sort().join(' & '),d=D[k]||(D[k]={name:k,w:0,l:0});if(won)d.w++;else d.l++;}});});
+  var ps=Object.keys(P).map(function(k){var p=P[k];p.avg=p.av.length?p.av.reduce(function(a,b){return a+b;},0)/p.av.length:0;return p;});
+  return{has:ms.length>0,mw:ps.filter(function(p){return p.w>=2&&p.l===0;}).sort(function(a,b){return b.w-a.w||b.avg-a.avg;}),best:best,
+    dbl:Object.keys(D).map(function(k){return D[k];}).filter(function(d){return d.w>=2&&d.l===0;}),
+    avg:ourAvg.length?ourAvg.reduce(function(a,b){return a+b;},0)/ourAvg.length:0,singles:ps.reduce(function(a,p){return[a[0]+p.w,a[1]+p.l];},[0,0])};}
+function cxMw(md){if(!BER||!BER.reports)return[];var r=BER.reports.filter(function(x){return x.team===S.team&&x.date===md.date;})[0];return r&&r.mw?r.mw:[];}
+// Form eines Gegners aus allen Spielberichten der Liga (nur CDA I)
+function cxOppForm(name){if(S.team!=='1'||!LIGA||!LIGA.matches)return null;var ms=LIGA.matches.filter(function(m){return m.score&&(m.home===name||m.away===name);}).sort(function(a,b){return a.date<b.date?-1:1;}).slice(-5);if(!ms.length)return null;
+  var f=ms.map(function(m){var p=m.score.split(':').map(Number),me=m.home===name?p[0]:p[1],th=m.home===name?p[1]:p[0];return me>th?'S':me<th?'N':'U';});
+  var P={};LIGA.matches.forEach(function(m){if(!m.games||(m.home!==name&&m.away!==name))return;var h=m.home===name;m.games.forEach(function(g){if(g.t!=='E')return;var n=(h?g.h:g.a||[])[0],av=h?g.ah:g.aa;if(!n||!av)return;var p=P[n]||(P[n]={name:n,av:[],w:0});p.av.push(av);if((h?g.lh:g.la)>(h?g.la:g.lh))p.w++;});});
+  var top=Object.keys(P).map(function(k){var p=P[k];p.avg=p.av.reduce(function(a,b){return a+b;},0)/p.av.length;return p;}).filter(function(p){return p.av.length>=2;}).sort(function(a,b){return b.avg-a.avg;}).slice(0,2);
+  return{form:f,top:top};}
+function formIcons(f){return f.map(function(r){return r==='S'?'🟢':r==='U'?'⚪':'🔴';}).join('');}
+function cxCta(R,k){var A={erg:['💬 Wer war für euch der Spieler des Tages? Ab in die Kommentare! 👇','💬 Welches Spiel hat euch am meisten mitfiebern lassen? Schreibt es uns! 👇','👇 Lasst der Mannschaft ein 💚❤️ da!'],
+    vor:['💬 Euer Tipp? Schreibt euer Ergebnis in die Kommentare – wer richtig liegt, bekommt Ruhm und Ehre! 🏆','👇 Markiert jemanden, der mitkommen soll!','💬 Wie geht der Spieltag aus? Wir sind gespannt auf eure Tipps! 👇'],
+    geg:['💬 Eure Prognose? Ab in die Kommentare! 👇','💬 Wer kennt den Gegner? Erzählt es uns! 👇'],
+    tab:['💬 Wo landen wir am Saisonende? Euer Tipp! 👇','👇 Teilt den Beitrag mit allen, die mitfiebern!'],
+    comp:['👇 Markiert eure Dart-Kumpels – zusammen macht es doppelt Spaß!','💬 Wer ist dabei? Schreibt ein 🎯 in die Kommentare!'],
+    spl:['👇 Lasst einen Glückwunsch da! 💚❤️','💬 Gratuliert in den Kommentaren! 👇']};return one(R,A[k]||A.erg);}
+
 var CAP={
-  abzeichen:function(f,R){var one=f._mode==='one';return[one?['🏅 NEUES ABZEICHEN: '+String(f.title).toUpperCase()+' 🏅','',f.name+' hat sich bei der Competition das Abzeichen „'+f.title+'“ geholt – '+String(f.sub||'').replace(/^./,function(c){return c.toLowerCase();})+'! 💪','','Glückwunsch! 💚❤️ Wer zieht als Nächstes nach?']
-      :['🏅 NEUE ABZEICHEN vom Competition-Abend 🏅',''].concat(lines(f.list).map(function(a){return '🎯 '+a[0]+' – '+a[1];})).concat(['','Glückwunsch an alle! 💚❤️ Jeden Donnerstag gibt es neue Abzeichen zu holen – wer ist das nächste Mal dabei?']),['#ClochardDarterAugsburg','#CDAMasters','#Darts','#Steeldarts','#Augsburg']];},
-  wrapped:function(f,R){var y=wYear(),Lx=['🎁🎯 CDA WRAPPED '+y+' 🎯🎁','','Das war unser Dartjahr '+y+' – Zeit für einen Rückblick! 👉 Wischt euch durch die Zahlen, die Siegmaschinen und die Highlights des Jahres.',''];
-    try{var g=wGames(),w=g.filter(function(x){return res(x)==='S';}).length;Lx.push('📊 '+g.length+' Ligaspiele · '+w+' Siege');}catch(e){}
-    Object.keys(DATA.teams).forEach(function(k){var t=DATA.teams[k],u=(t.table||[]).filter(function(r){return r.us;})[0];if(u)Lx.push((u.pos===1?'🏆':'🎯')+' '+t.label+': Platz '+u.pos+' in der '+(t.league||'').replace('3K WINMAU ',''));});
-    Lx.push('','💚❤️ Danke an alle Spielerinnen und Spieler, Fans, Helfer und unsere Partner – allen voran GW-TEC!','','Markiert euch, teilt es und schreibt uns: Was war euer Darts-Moment des Jahres? 👇','','GOOD DARTS. GOOD PEOPLE. 🎯');
+  abzeichen:function(f,R){var oneB=f._mode==='one',Lx;
+    if(oneB)Lx=['🏅 NEUES ABZEICHEN: '+String(f.title).toUpperCase()+' 🏅','',one(R,[f.name+' hat sich bei der Competition das Abzeichen „'+f.title+'“ geholt – '+String(f.sub||'').replace(/^./,function(c){return c.toLowerCase();})+'! 💪',
+        'Stark, '+first(f.name)+'! 👏 Das Abzeichen „'+f.title+'“ gehört ab sofort dir – '+String(f.sub||'').replace(/^./,function(c){return c.toLowerCase();})+'.']),'',
+      '~🎖️ Abzeichen gibt es bei der Competition für besondere Momente: die erste 180, Finishes über 100, Siegesserien, Treue-Abende und vieles mehr. Gesammelt wird auf der Spielerkarte auf unserer Homepage.','',
+      one(R,['Glückwunsch! 💚❤️ Wer zieht als Nächstes nach?','Wer holt sich das nächste? 👀'])];
+    else{Lx=['🏅 NEUE ABZEICHEN VOM COMPETITION-ABEND 🏅','',one(R,['Was für ein Abend – gleich mehrere neue Abzeichen wurden vergeben! 🔥','Die Sammlung wächst: Diese Erfolge gab es am letzten Donnerstag! 👇']),''].concat(lines(f.list).map(function(a){return '🎯 '+a[0]+' – '+a[1];}));
+      Lx.push('','~🎖️ Alle Abzeichen sammeln sich auf den Spielerkarten auf unserer Homepage – schaut mal rein, wer schon was hat!','','Glückwunsch an alle! 💚❤️ Jeden Donnerstag gibt es neue Abzeichen zu holen – wer ist das nächste Mal dabei?');}
+    Lx.push('','🗓️ Jeden Donnerstag ab 20 Uhr im Bismarck Bistro.','',cxSign(R));return[Lx,['#ClochardDarterAugsburg','#CDAMasters','#Darts','#Steeldarts','#Augsburg']];},
+  wrapped:function(f,R){var y=wYear(),Lx=['🎁🎯 CDA WRAPPED '+y+' 🎯🎁','',one(R,['Das war unser Dartjahr '+y+' – Zeit für einen Rückblick! 👉 Wischt euch durch die Zahlen, die Siegmaschinen und die Highlights des Jahres.','Einmal zurückspulen bitte! ⏪ So sah unser Jahr '+y+' in Zahlen aus – Swipe für Swipe. 👉']),''];
+    try{var g=wGames(),w=g.filter(function(x){return res(x)==='S';}).length,d=g.filter(function(x){return res(x)==='U';}).length;Lx.push('📊 '+g.length+' Ligaspiele · '+w+' Siege · '+d+' Remis · '+(g.length-w-d)+' Niederlagen');}catch(e){}
+    Object.keys(DATA.teams).forEach(function(k){var t=DATA.teams[k],u=(t.table||[]).filter(function(r){return r.us;})[0];if(u)Lx.push((u.pos===1?'🏆':'🎯')+' '+t.label+': Platz '+u.pos+' in der '+(t.league||'').replace('3K WINMAU ','')+' ('+pts(u)+' Punkte)');});
+    var tp=(DATA.teams['1'].players||[]).filter(function(p){return p.avg;}).sort(function(a,b){return b.avg-a.avg;})[0];if(tp)Lx.push('~🎯 Bester Average in der 2. Bundesliga: '+tp.name+' mit '+de(tp.avg));
+    Lx.push('',cxThanks(R),'','💬 Was war euer Darts-Moment des Jahres? Schreibt es uns! 👇','',cxSign(R));
     return[Lx,['#ClochardDarterAugsburg','#CDA','#CDAWrapped','#Jahresrückblick','#Steeldarts','#Augsburg']];},
-  ergebnis:function(f,R){var md=f._md,gs=md.games,rs=gs.map(res),w=rs.filter(function(x){return x==='S';}).length,d=rs.filter(function(x){return x==='U';}).length,l=rs.length-w-d,p=w*2+d,u=usRow(),nx=nextMd(),T=String(f.title||'').toUpperCase();
+  ergebnis:function(f,R){var md=f._md,gs=md.games,rs=gs.map(res),w=rs.filter(function(x){return x==='S';}).length,d=rs.filter(function(x){return x==='U';}).length,l=rs.length-w-d,p=w*2+d,T=String(f.title||'').toUpperCase(),tb=cxTable(),run=cxRun(),st=cxStars(md),mw=cxMw(md);
+    var opps=gs.map(function(g){return short(opp(g));}),city=team().matchdays&&md.city?md.city.replace(/,.*/,''):'',wo=md.home?one(R,['vor heimischer Kulisse','zu Hause','in eigener Halle']):(city?'in '+city:'auswärts');
     var hook=w===gs.length?one(R,['🎯🔥 '+T+'! 🔥🎯','💥 '+T+' – VOLLE PUNKTE! 💥','🚀 '+T+'! WAS FÜR EIN SPIELTAG! 🚀']):l===gs.length?one(R,['😤 Heute hat es nicht gereicht.','🎯 Kein guter Tag – aber wir kommen zurück! 💪']):one(R,['🎯 '+T+'! 💪','⚖️ '+T+' – Punkte gesammelt! 🎯']);
-    var intro=w===gs.length?one(R,['Was für ein Auftritt der Mannschaft! 💪 Am '+String(f.kicker2||'').split(' · ')[0]+' holen wir '+(md.home?'vor heimischer Kulisse':'auswärts')+' volle '+p+' Punkte und zeigen, warum wir da oben stehen. 🔝','Konzentriert, eiskalt, als Team: '+(md.home?'Zu Hause':'Auf fremdem Boden')+' lassen wir nichts anbrennen und nehmen '+p+' Punkte mit! 🏠✨']):
-      l===gs.length?'Wir haben alles reingeworfen, aber heute war der Gegner stärker. Mund abputzen, Kopf hoch – nächstes Mal sieht das wieder anders aus! 💪':'Ein Spieltag mit Höhen und Tiefen – am Ende stehen '+p+' Punkte auf unserem Konto. Daran bauen wir auf! 💪';
-    var Lx=[hook,'',intro,'','📋 DIE ERGEBNISSE'];gs.forEach(function(g){var r=res(g);Lx.push((r==='S'?'✅':r==='N'?'❌':'🤝')+' '+short(g.home)+' – '+short(g.away)+'  ➜  '+g.score+(spitze(opp(g))?'  🔥 Spitzenspiel':''));if(g.legs)Lx.push('      🎯 Legs '+g.legs);});
-    if(f.table)Lx.push('','📊 TABELLE: '+f.table+(u&&u.pos===1?' 🏆':''));var lg=sumLegs(gs);if(lg)Lx.push('📈 Legs am Spieltag: '+lg);
-    if(nx)Lx.push('','🗓️ Weiter geht\'s am '+dow(nx.date)+', '+dmy(nx.date)+(nx.home?' – dann wieder zu Hause! 🏠':' – auswärts. 🚌'));
-    Lx.push('','🙌 Danke an alle Fans, Helfer und unsere Partner – allen voran GW-TEC! 💚❤️','',one(R,['GOOD DARTS. GOOD PEOPLE. 🎯','Auf geht\'s, CDA! 💚❤️','Mehr als nur ein Verein. 🎯']));return[Lx,tagsLiga()];},
-  vorschau:function(f,R){var md=f._md,T=String(f.title||'').toUpperCase(),Lx=[one(R,['🎯🔥 '+T+'! 🔥🎯','📣 ES IST WIEDER SOWEIT: '+T+'! 🎯','⏳ COUNTDOWN LÄUFT – '+T+'! 🎯']),'',
-      md.home?one(R,['Wir laden euch herzlich ein: Kommt vorbei, macht Lärm und tragt uns zu den Punkten! 📢💚❤️','Heimspiel heißt: volle Halle, gute Stimmung, beste Darts. Seid dabei! 🏠🎯']):one(R,['Wir sind auswärts gefordert – drückt uns die Daumen und verfolgt die Ergebnisse! 🤞🎯','Auf geht\'s auf die Reise! 🚌 Jetzt zählt jedes Leg.']),'',
+    var intro=w===gs.length?one(R,['Was für ein Auftritt der Mannschaft! 💪 '+wo.replace(/^./,function(c){return c.toUpperCase();})+' holen wir gegen '+andJoin(opps)+' volle '+p+' Punkte.','Konzentriert, eiskalt, als Team: '+wo.replace(/^./,function(c){return c.toUpperCase();})+' lassen wir gegen '+andJoin(opps)+' nichts anbrennen und nehmen alle '+p+' Punkte mit! ✨','Mission erfüllt! ✅ '+andJoin(opps)+(opps.length>1?' mussten':' musste')+' sich '+wo+' geschlagen geben – '+p+' von '+p+' Punkten für uns.']):
+      l===gs.length?one(R,['Wir haben alles reingeworfen, aber gegen '+andJoin(opps)+' war heute nichts zu holen. Mund abputzen, Kopf hoch – nächstes Mal sieht das wieder anders aus! 💪','Nicht unser Tag. Gegen '+andJoin(opps)+' fehlte am Ende das Quäntchen Glück an den Doppeln. Wir schauen nach vorne! 💪']):
+      one(R,['Ein Spieltag mit Höhen und Tiefen – am Ende stehen '+p+' Punkte aus den Spielen gegen '+andJoin(opps)+' auf unserem Konto. Daran bauen wir auf! 💪','Licht und Schatten '+wo+': '+p+' von '+gs.length*2+' möglichen Punkten. Wir nehmen die Punkte mit und greifen beim nächsten Mal wieder voll an! 🎯']);
+    var Lx=[hook,'',intro];
+    // Spielverlauf in einem Satz
+    var tight=gs.filter(function(g){var s=usScore(g).split(':').map(Number);return Math.abs(s[0]-s[1])<=2;}),clear=gs.filter(function(g){var s=usScore(g).split(':').map(Number);return s[0]-s[1]>=4;});
+    if(tight.length)Lx.push('~'+one(R,['Gegen '+short(opp(tight[0]))+' wurde es ein echter Krimi – '+usScore(tight[0])+' am Ende, da war bis zum letzten Doppel alles drin. 😮‍💨','Das '+usScore(tight[0])+' gegen '+short(opp(tight[0]))+' war nichts für schwache Nerven – Spannung bis zum Schluss! 🔥']));
+    else if(clear.length)Lx.push('~'+one(R,['Gegen '+short(opp(clear[0]))+' ließen wir mit '+usScore(clear[0])+' keine Zweifel aufkommen. 💪','Das '+usScore(clear[0])+' gegen '+short(opp(clear[0]))+' war eine Machtdemonstration! 🔥']));
+    Lx.push('','📋 DIE ERGEBNISSE');gs.forEach(function(g){var r=res(g);Lx.push((r==='S'?'✅':r==='N'?'❌':'🤝')+' '+short(g.home)+' – '+short(g.away)+'  ➜  '+g.score+(g.legs?' (Legs '+g.legs+')':'')+(spitze(opp(g))?'  🔥 Spitzenspiel':''));});
+    // Matchwinner und Bestwerte
+    var stars=[];if(st.has){st.mw.slice(0,3).forEach(function(x){stars.push('~▪️ '+x.name+': '+x.w+':0 im Einzel'+(x.avg?' · Ø '+de(x.avg):''));});
+        if(st.best)stars.push('~🎯 Bester Average des Tages: '+st.best.name+' mit '+de(st.best.av)+(st.best.opp?' gegen '+st.best.opp:''));
+        st.dbl.slice(0,2).forEach(function(x){stars.push('~🤝 Doppel '+x.name+': '+x.w+':0');});
+        if(st.avg)stars.push('~📈 Mannschafts-Average im Einzel: '+de(st.avg)+' · Einzel gesamt '+st.singles[0]+':'+st.singles[1]);}
+      else mw.forEach(function(x){stars.push('~▪️ '+x.name+': '+x.single+' im Einzel'+(x.double?' · Doppel '+x.double:''));});
+    if(stars.length)Lx.push('','~⭐ UNSERE MATCHWINNER & BESTWERTE');stars.forEach(function(s){Lx.push(s);});
+    if(tb){Lx.push('','📊 TABELLE: '+tb.txt+(tb.u.pos===1?' 🏆':''));if(tb.gap)Lx.push('~↕️ '+tb.gap);if(tb.left)Lx.push('~⏳ '+tb.left);}
+    if(run.unbeaten>=3)Lx.push('~🔥 Seit '+run.unbeaten+' Ligaspielen ungeschlagen'+(run.wins>=3?' – davon die letzten '+run.wins+' gewonnen':'')+'!');
+    var nx=cxNext(md);if(nx)Lx.push('',nx);
+    Lx.push('',cxCta(R,'erg'),'',cxThanks(R),'',cxSign(R));return[Lx,tagsLiga()];},
+  vorschau:function(f,R){var md=f._md,T=String(f.title||'').toUpperCase(),tb=cxTable(),dd=daysTo(md.date),Lx=[one(R,['🎯🔥 '+T+'! 🔥🎯','📣 ES IST WIEDER SOWEIT: '+T+'! 🎯','⏳ COUNTDOWN LÄUFT – '+T+'! 🎯']),'',
+      (dd===0?'Heute ist es so weit! ':dd===1?'Morgen geht\'s los! ':dd>1&&dd<8?'Noch '+dd+' Tage! ':'')+(md.home?one(R,['Wir laden euch herzlich ein: Kommt vorbei, macht Lärm und tragt uns zu den Punkten! 📢💚❤️','Heimspiel heißt: volle Halle, gute Stimmung, beste Darts. Seid dabei! 🏠🎯','Unser Wohnzimmer ruft! 🏠 Kommt vorbei und erlebt Bundesliga-Darts aus nächster Nähe.']):one(R,['Wir sind auswärts gefordert – drückt uns die Daumen und verfolgt die Ergebnisse! 🤞🎯','Auf geht\'s auf die Reise! 🚌 Jetzt zählt jedes Leg.','Koffer gepackt, Pfeile geschärft – wir holen uns die Punkte auswärts! 🚌🎯'])),'',
       '📅 '+dow(md.date)+', '+dmy(md.date)];
     md.games.forEach(function(g){Lx.push('🕛 '+g.time+' Uhr: '+short(g.home)+' 🆚 '+short(g.away)+(spitze(opp(g))?'  🔥 Spitzenspiel!':''));});
-    if(f.venue)Lx.push('📍 '+f.venue+(f.street?' – '+f.street:''));var u=usRow();if(u)Lx.push('📊 Aktuell: Platz '+u.pos+' mit '+pts(u)+' Punkten');
-    if(f.note)Lx.push('','👉 '+f.note);Lx.push('',(f.slogan||"Auf geht's, CDA!")+' 💚❤️','GOOD DARTS. GOOD PEOPLE. 🎯');return[Lx,tagsLiga()];},
-  gegner:function(f,R){var Lx=['🔎🎯 GEGNER-CHECK: '+String(f.title).toUpperCase()+' 🎯🔎','',one(R,['Wer kommt da auf uns zu? Wir haben uns den nächsten Gegner genauer angeschaut. 🧐','Vorbereitung ist alles – hier die wichtigsten Zahlen zum nächsten Gegner. 📊']),''];
-    kp(f).forEach(function(a){Lx.push('▪️ '+a[0]+': '+a[1]);});lines(f.list).forEach(function(a){Lx.push('▪️ '+a[0]+': '+a[1]);});Lx.push('','💬 Eure Prognose? Ab in die Kommentare! 👇','',(f.slogan||'')+' 💚❤️');return[Lx,tagsLiga('#GegnerCheck')];},
-  tabelle:function(f,R){var Lx=['📊🎯 TABELLE '+String(f.kicker).toUpperCase()+' 🎯📊','',(f.sub?f.sub+' – ':'')+one(R,['so sieht es aktuell aus:','der aktuelle Stand:','hier der Überblick:']),''];
+    if(f.venue)Lx.push('📍 '+f.venue+(f.street?' – '+f.street:''));
+    // Gegner im Kurzporträt
+    var tbl=team().table||[];var gl=[];md.games.forEach(function(g){var o=opp(g),r=tbl.filter(function(x){return x.name===o;})[0],fo=cxOppForm(o),hin=allGames().filter(function(x){return x.score&&opp(x)===o;})[0];
+      var s='~▪️ '+short(o)+(r?': Platz '+r.pos+', '+plur(pts(r),'Punkt','Punkte'):'')+(fo?' · Form '+formIcons(fo.form):'')+(hin?' · Hinspiel '+usScore(hin)+(res(hin)==='S'?' für uns':res(hin)==='N'?' für sie':''):'');gl.push(s);
+      if(fo&&fo.top[0])gl.push('~   Achtung vor '+fo.top[0].name+' (Ø '+de(fo.top[0].avg)+')');});
+    if(gl.length){Lx.push('','~🔎 DIE GEGNER');gl.forEach(function(s){Lx.push(s);});}
+    if(tb){Lx.push('','📊 Wir: '+tb.txt+(tb.gap?' · '+tb.gap:''));}
+    var tp=(team().players||[]).filter(function(p){return p.avg;}).sort(function(a,b){return b.avg-a.avg;})[0];if(tp&&S.team==='1')Lx.push('~🎯 Unser Topwerfer bisher: '+tp.name+' mit Ø '+de(tp.avg));
+    if(f.note)Lx.push('','👉 '+f.note);if(md.home)Lx.push('~🍻 Für Getränke ist gesorgt – bringt Freunde, Familie und gute Laune mit!');
+    Lx.push('',cxCta(R,'vor'),'',(f.slogan||"Auf geht's, CDA!")+' 💚❤️',cxSign(R));return[Lx,tagsLiga()];},
+  gegner:function(f,R){var o=S.pick,fo=cxOppForm(o),hin=allGames().filter(function(g){return g.score&&opp(g)===o;})[0],nxt=allGames().filter(function(g){return !g.score&&opp(g)===o&&g.date>=today();})[0];
+    var Lx=['🔎🎯 GEGNER-CHECK: '+String(f.title).toUpperCase()+' 🎯🔎','',one(R,['Wer kommt da auf uns zu? Wir haben uns den nächsten Gegner genauer angeschaut. 🧐','Vorbereitung ist alles – hier die wichtigsten Zahlen zum nächsten Gegner. 📊','Kenne deinen Gegner! 🧠 Ein Blick auf '+f.title+' vor dem nächsten Duell.']),''];
+    kp(f).forEach(function(a){Lx.push('▪️ '+a[0]+': '+a[1]);});lines(f.list).forEach(function(a){Lx.push('▪️ '+a[0]+': '+a[1]);});
+    if(fo){Lx.push('','~📈 Form (letzte '+fo.form.length+'): '+formIcons(fo.form));if(fo.top.length){Lx.push('~🎯 Die Gefährlichsten:');fo.top.forEach(function(p){Lx.push('~   '+p.name+' – Ø '+de(p.avg)+' in '+plur(p.av.length,'Einzel','Einzeln'));});}}
+    if(hin)Lx.push('','~'+(res(hin)==='S'?'✅ Das Hinspiel ging mit '+usScore(hin)+' an uns – das wollen wir wiederholen!':res(hin)==='N'?'❌ Im Hinspiel hieß es '+usScore(hin)+' – da haben wir noch eine Rechnung offen! 😤':'🤝 Das Hinspiel endete '+usScore(hin)+' – diesmal soll ein Sieger her!'));
+    if(nxt)Lx.push('','🗓️ Das Duell: '+dow(nxt.date)+', '+dmy(nxt.date)+' um '+nxt.time+' Uhr');
+    Lx.push('',cxCta(R,'geg'),'',(f.slogan||'Wir sind bereit.')+' 💚❤️');return[Lx,tagsLiga('#GegnerCheck')];},
+  tabelle:function(f,R){var tb=cxTable(),run=cxRun(),Lx=['📊🎯 TABELLE '+String(f.kicker).toUpperCase()+' 🎯📊','',(f.sub?f.sub+' – ':'')+one(R,['so sieht es aktuell aus:','der aktuelle Stand:','hier der Überblick:']),''];
     lines(f.list).forEach(function(a,i){Lx.push((i===0?'🥇':i===1?'🥈':i===2?'🥉':'▫️')+' '+a[0]+'. '+a[1]+' – '+a[2]+' Punkte'+(/^CDA/.test(a[1])?' 💚❤️':''));});
-    Lx.push('','👉 Alle Ergebnisse auf unserer Homepage (Link in der Bio).');return[Lx,tagsLiga('#Tabelle')];},
-  formkurve:function(f,R){var gs=f._gs,p=gs.reduce(function(a,g){var r=res(g);return a+(r==='S'?2:r==='U'?1:0);},0);var Lx=['📈🔥 FORMKURVE: '+gs.map(res).join(' – ')+' 🔥📈','',one(R,['Die Kurve zeigt klar nach oben! '+p+' von '+gs.length*2+' möglichen Punkten aus den letzten '+gs.length+' Spielen. 💪','Konstanz ist Trumpf: '+p+' von '+gs.length*2+' Punkten aus den letzten '+gs.length+' Spielen. 📊']),''];
-    gs.forEach(function(g){var r=res(g);Lx.push((r==='S'?'✅':r==='N'?'❌':'🤝')+' '+usScore(g)+' gegen '+short(opp(g)));});Lx.push('','📊 '+f.sub,'',(f.slogan||'')+' 💚❤️','GOOD DARTS. GOOD PEOPLE. 🎯');return[Lx,tagsLiga('#Formkurve')];},
-  meilenstein:function(f,R){var w=(f.title||'').toLowerCase().replace(/[^a-zäöüß]/g,''),Lx=['🏆✨ '+String(f.title).toUpperCase()+'! ✨🏆','',w==='herbstmeister'?one(R,['Die Hinrunde ist gespielt – und wir stehen ganz oben! 🔝 Was für eine Leistung der ganzen Mannschaft! 💪','Halbzeit in der '+f.kicker+' – und wir überwintern an der Spitze! ❄️🔝']):w==='tabellenführer'?'Wir grüßen von ganz oben! 🔝 Die Arbeit der letzten Wochen zahlt sich aus. 💪':'Ein besonderer Moment für unseren Verein! 🎉',''];
-    if(f.sub)Lx.push('📊 '+f.sub);kp(f).forEach(function(a){Lx.push('▪️ '+a[0]+': '+a[1]);});
-    Lx.push('','🙏 Danke an die Mannschaft, an alle Fans, Helfer und unsere Partner – allen voran GW-TEC! 💚❤️','','Jetzt heißt es: dranbleiben! 🎯','GOOD DARTS. GOOD PEOPLE.');
+    if(tb){Lx.push('','📍 Wir: '+tb.txt);if(tb.gap)Lx.push('~↕️ '+tb.gap);if(tb.left)Lx.push('~⏳ '+tb.left+' – '+one(R,['da ist noch alles drin!','jetzt heißt es dranbleiben!','jeder Punkt zählt.']));}
+    if(run.unbeaten>=3)Lx.push('~🔥 Seit '+run.unbeaten+' Spielen ungeschlagen!');var nx=cxNext();if(nx)Lx.push('',nx);
+    Lx.push('',cxCta(R,'tab'),'','👉 Alle Ergebnisse auf unserer Homepage (Link in der Bio).');return[Lx,tagsLiga('#Tabelle')];},
+  formkurve:function(f,R){var gs=f._gs,p=gs.reduce(function(a,g){var r=res(g);return a+(r==='S'?2:r==='U'?1:0);},0),run=cxRun();var Lx=['📈🔥 FORMKURVE: '+formIcons(gs.map(res))+' 🔥📈','',one(R,['Die Kurve zeigt klar nach oben! '+p+' von '+gs.length*2+' möglichen Punkten aus den letzten '+gs.length+' Spielen. 💪','Konstanz ist Trumpf: '+p+' von '+gs.length*2+' Punkten aus den letzten '+gs.length+' Spielen. 📊','Zahlen, die Spaß machen: '+p+' Punkte aus '+gs.length+' Spielen! 🔥']),''];
+    gs.forEach(function(g){var r=res(g);Lx.push((r==='S'?'✅':r==='N'?'❌':'🤝')+' '+usScore(g)+' gegen '+short(opp(g))+' ('+dmy(g.date).slice(0,6)+')');});
+    Lx.push('','📊 '+f.sub);if(run.unbeaten>=3)Lx.push('~🔥 Aktuelle Serie: '+run.unbeaten+' Spiele ohne Niederlage');var tb=cxTable();if(tb)Lx.push('~📍 '+tb.txt+(tb.gap?' · '+tb.gap:''));
+    var nx=cxNext();if(nx)Lx.push('',nx);Lx.push('',(f.slogan||'')+' 💚❤️',cxSign(R));return[Lx,tagsLiga('#Formkurve')];},
+  meilenstein:function(f,R){var w=(f.title||'').toLowerCase().replace(/[^a-zäöüß]/g,''),tb=cxTable(),run=cxRun(),Lx=['🏆✨ '+String(f.title).toUpperCase()+'! ✨🏆','',w==='herbstmeister'?one(R,['Die Hinrunde ist gespielt – und wir stehen ganz oben! 🔝 Was für eine Leistung der ganzen Mannschaft! 💪','Halbzeit in der '+f.kicker+' – und wir überwintern an der Spitze! ❄️🔝']):w==='tabellenführer'?one(R,['Wir grüßen von ganz oben! 🔝 Die Arbeit der letzten Wochen zahlt sich aus. 💪','Platz 1! 🥇 Die Mannschaft liefert Woche für Woche – und das sieht man jetzt auch in der Tabelle.']):'Ein besonderer Moment für unseren Verein! 🎉',''];
+    if(f.sub)Lx.push('📊 '+f.sub);kp(f).forEach(function(a){Lx.push('▪️ '+a[0]+': '+a[1]);});if(tb&&tb.gap)Lx.push('~↕️ '+tb.gap);if(run.unbeaten>=3)Lx.push('~🔥 '+run.unbeaten+' Spiele in Folge ungeschlagen');
+    var tp=(team().players||[]).filter(function(p){return p.avg;}).sort(function(a,b){return b.avg-a.avg;}).slice(0,3);if(tp.length)Lx.push('','~⭐ Bester Average bisher: '+tp.map(function(p){return p.name+' ('+de(p.avg)+')';}).join(', '));
+    Lx.push('','🙏 Danke an die Mannschaft, an alle Fans, Helfer und unsere Partner – allen voran GW-TEC! 💚❤️','','Jetzt heißt es: dranbleiben! 🎯',cxSign(R));
     return[Lx,S.team==='1'?['#ClochardDarterAugsburg','#CDA','#Bundesliga','#2BundesligaSüd',w==='herbstmeister'?'#Herbstmeister':w==='tabellenführer'?'#Tabellenführer':'#GameDay']:['#ClochardDarterAugsburg','#CDA',w==='herbstmeister'?'#Herbstmeister':'#Steeldarts','#Dartliga','#Augsburg']];},
-  saison:function(f,R){var Lx=['📊🆚 SAISONVERGLEICH 🆚📊','',one(R,['Wie stehen wir im Vergleich zur letzten Saison? Gleicher Zeitpunkt, ehrlicher Vergleich – '+String(f.kicker2).toLowerCase()+'. 🔍','Ein Jahr später, gleicher Zeitpunkt ('+String(f.kicker2).toLowerCase()+') – so hat sich die Mannschaft entwickelt: 📈']),'','⬅️ '+f.a+'  |  '+f.b+' ➡️'];
-    lines(f.list).forEach(function(a){if(a[2]){var x=+String(a[1]).replace(',','.'),y=+String(a[2]).replace(',','.'),low=a[3]==='low',ok=a[1]!==''&&!isNaN(x)&&!isNaN(y),up=ok&&(low?y<x:y>x),dn=ok&&(low?y>x:y<x);Lx.push((up?'📈':dn?'📉':'➖')+' '+a[0]+': '+(a[1]||'–')+' ➜ '+a[2]);}});
-    Lx.push('','💬 '+(f.slogan||''),'','GOOD DARTS. GOOD PEOPLE. 🎯');return[Lx,tagsLiga('#Saisonvergleich')];},
-  top5:function(f,R){var Lx=['🔥🎯 TOP 5 – '+String(f.kicker2).toUpperCase()+' 🎯🔥','',one(R,['Wer hat diese Saison bisher am stärksten geworfen? Hier sind unsere Top 5! 👇','Die Zahlen lügen nicht: unsere fünf Besten der Saison. 📊']),''];
-    lines(f.list).forEach(function(a){Lx.push((['🥇','🥈','🥉','4️⃣','5️⃣'][+a[0]-1]||'▫️')+' '+a[1]+' – '+a[2]);});Lx.push('','📌 Gemessen an den Ligaspielen dieser Saison.','',(f.slogan||'')+' 💪','GOOD DARTS. GOOD PEOPLE. 🎯');return[Lx,tagsLiga('#TopSpieler')];},
-  comp:function(f,R){var n=lines(f.names).map(function(a){return a[0].replace(' (Gast)','');}),c=+(f.count||0),Lx=[one(R,['🎯🍻 '+String(f.title).toUpperCase()+' – '+String(f.kicker2).toUpperCase()+' 🍻🎯','📣 DONNERSTAG IST DARTS-TAG! 🎯','🎯 NÄCHSTE RUNDE: '+String(f.title).toUpperCase()+'! 🔥']),'',
-      one(R,['Pfeile einpacken und vorbeikommen! 🎒 Bei unserer Competition ist jeder willkommen – egal ob Vereinsspieler, Hobbywerfer oder Neueinsteiger. 🙌','Lust auf einen Abend mit guten Darts und guten Leuten? Dann komm vorbei – Anfänger und Gäste sind ausdrücklich willkommen! 🤝']),'',
+  saison:function(f,R){var up=0,dn=0,rows=[];var vv=function(v){v=String(v);if(/^\d+:\d+$/.test(v)){var q=v.split(':').map(Number);return q[0]-q[1];}return +v.replace(',','.');};lines(f.list).forEach(function(a){if(a[2]){var x=vv(a[1]),y=vv(a[2]),low=a[3]==='low',ok=a[1]!==''&&!isNaN(x)&&!isNaN(y),u=ok&&(low?y<x:y>x),d=ok&&(low?y>x:y<x);if(u)up++;if(d)dn++;rows.push((u?'📈':d?'📉':'➖')+' '+a[0]+': '+(a[1]||'–')+' ➜ '+a[2]);}});
+    var Lx=['📊🆚 SAISONVERGLEICH 🆚📊','',one(R,['Wie stehen wir im Vergleich zur letzten Saison? Gleicher Zeitpunkt, ehrlicher Vergleich '+String(f.kicker2).replace(/^Nach/,'nach')+'. 🔍','Ein Jahr später, gleicher Zeitpunkt ('+String(f.kicker2).replace(/^Nach/,'nach')+') – so hat sich die Mannschaft entwickelt: 📈']),''];
+    if(up>dn)Lx.push('~'+one(R,['Die Richtung stimmt: In '+up+' von '+rows.length+' Werten sind wir besser als vor einem Jahr! 🚀','Fortschritt schwarz auf weiß – '+up+' Werte zeigen nach oben. 💪']),'');else if(dn>up)Lx.push('~Ehrlich gesagt: Letztes Jahr lief es zu diesem Zeitpunkt etwas besser. Genau das ist unser Ansporn für die nächsten Spieltage! 💪','');
+    Lx.push('⬅️ '+f.a+'  |  '+f.b+' ➡️');rows.forEach(function(r){Lx.push(r);});var tb=cxTable();if(tb)Lx.push('','~📍 Aktuell: '+tb.txt);
+    Lx.push('','💬 '+(f.slogan||''),'',cxCta(R,'tab'),'',cxSign(R));return[Lx,tagsLiga('#Saisonvergleich')];},
+  top5:function(f,R){var Lr=lines(f.list),Lx=['🔥🎯 TOP 5 – '+String(f.kicker2).toUpperCase()+' 🎯🔥','',one(R,['Wer hat diese Saison bisher am stärksten geworfen? Hier sind unsere Top 5! 👇','Die Zahlen lügen nicht: unsere fünf Besten der Saison. 📊','Ranking-Zeit! 🏁 Diese fünf führen bei uns gerade das Feld an:']),''];
+    Lr.forEach(function(a){Lx.push((['🥇','🥈','🥉','4️⃣','5️⃣'][+a[0]-1]||'▫️')+' '+a[1]+' – '+a[2]);if(a[3])Lx.push('~      '+a[3]);});
+    if(Lr[0]&&Lr[1])Lx.push('','~'+one(R,[first(Lr[0][1])+' führt das Feld an – aber '+first(Lr[1][1])+' ist dicht dran. Wer schnappt sich am Ende Platz 1? 👀','Glückwunsch '+first(Lr[0][1])+'! 👑 Und Achtung: '+first(Lr[1][1])+' sitzt dir im Nacken.']));
+    Lx.push('','📌 Gemessen an den Ligaspielen dieser Saison.','',cxCta(R,'spl'),'',(f.slogan||'')+' 💪',cxSign(R));return[Lx,tagsLiga('#TopSpieler')];},
+  comp:function(f,R){var n=lines(f.names).map(function(a){return a[0].replace(' (Gast)','');}),c=+(f.count||0),last=EVENTS.slice().sort(function(a,b){return a.date<b.date?1:-1;})[0],pw=last&&last.summary&&(last.summary.podium||[])[0];
+    var Lx=[one(R,['🎯🍻 '+String(f.title).toUpperCase()+' – '+String(f.kicker2).toUpperCase()+' 🍻🎯','📣 DONNERSTAG IST DARTS-TAG! 🎯','🎯 NÄCHSTE RUNDE: '+String(f.title).toUpperCase()+'! 🔥']),'',
+      one(R,['Pfeile einpacken und vorbeikommen! 🎒 Bei unserer Competition ist jeder willkommen – egal ob Vereinsspieler, Hobbywerfer oder Neueinsteiger. 🙌','Lust auf einen Abend mit guten Darts und guten Leuten? Dann komm vorbei – Anfänger und Gäste sind ausdrücklich willkommen! 🤝','Feierabend, Pfeile raus! 🎯 Jeden Donnerstag spielen wir im Bismarck Bistro – locker, fair und mit viel Spaß.']),'',
       '🎮 Spielmodus: '+f.title+(f.modus?' – '+f.modus:''),'📅 '+f.kicker2,'🕗 Beginn 20:00 Uhr (Anmeldung bis 19:45)','📍 Bismarck Bistro, Bismarckstraße 7, Augsburg',''];
     Lx.push(c?'👥 '+c+(c===1?' Anmeldung':' Anmeldungen')+' bisher'+(n.length?': '+n.slice(0,10).join(', ')+(n.length>10?' und weitere':''):'')+' 🔥':'👥 Noch keine Anmeldungen – sei der Erste! 🥇');
-    Lx.push('','👉 Anmeldung mit einem Klick über unsere Homepage (Link in der Bio).','','GOOD DARTS. GOOD PEOPLE. 🎯');return[Lx,['#ClochardDarterAugsburg','#CDA','#Competition','#Steeldarts','#Augsburg']];},
-  masters:function(f,R){var n=lines(f.names).map(function(a){return a[0].replace(' (Gast)','');}),Lx=['🏆💰 '+String(f.title).toUpperCase()+' – '+String(f.kicker2).split(' · ').slice(0,2).join(' · ').toUpperCase()+' 💰🏆','',
-      one(R,['Es geht um Punkte, um Ruhm – und um den Pott! 💰 Aktuell liegen '+f.pot+' im Masters-Pott und jeder Abend legt nach. 📈','Der Masters-Pott wächst: '+f.pot+' warten schon jetzt auf die besten 32 bei den Finals! 🤑']),''];
+    if(pw&&pw.name)Lx.push('~🏆 Letzter Sieger: '+pw.name+' – wer stoppt '+(pw.name.indexOf('&')>0?'die beiden':first(pw.name))+'?');
+    Lx.push('~🎯 Kein eigenes Board, keine Erfahrung? Kein Problem – Leihpfeile gibt es vor Ort und wir erklären dir alles.','','👉 Anmeldung mit einem Klick über unsere Homepage (Link in der Bio).','',cxCta(R,'comp'),'',cxSign(R));return[Lx,['#ClochardDarterAugsburg','#CDA','#Competition','#Steeldarts','#Augsburg']];},
+  masters:function(f,R){var n=lines(f.names).map(function(a){return a[0].replace(' (Gast)','');}),y=msYear(),rk=mastersRanking(y),Lx=['🏆💰 '+String(f.title).toUpperCase()+' – '+String(f.kicker2).split(' · ').slice(0,2).join(' · ').toUpperCase()+' 💰🏆','',
+      one(R,['Es geht um Punkte, um Ruhm – und um den Pott! 💰 Aktuell liegen '+f.pot+' im Masters-Pott und jeder Abend legt nach. 📈','Der Masters-Pott wächst: '+f.pot+' warten schon jetzt auf die besten '+MAX_FINALS+' bei den Finals! 🤑']),''];
     kp(f).forEach(function(a){Lx.push('▪️ '+a[0]+': '+a[1]);});lines(f.list).forEach(function(a){Lx.push('▪️ '+a[0]+': '+a[1]);});
+    if(rk[0])Lx.push('','~📊 Rangliste: '+rk.slice(0,3).map(function(r,i){return ['🥇','🥈','🥉'][i]+' '+r.name+' ('+r.pts+')';}).join('  '));
     if(n.length)Lx.push('','👥 Schon dabei: '+n.slice(0,12).join(', ')+(n.length>12?' und weitere':'')+' 🔥');
-    Lx.push('','💶 Startgeld 15 € – 5 € Preisgeld am Abend, 10 € wandern in den Pott.','👉 Anmeldung über den Link in der Bio.','','GOOD DARTS. GOOD PEOPLE. 🎯');return[Lx,['#ClochardDarterAugsburg','#CDA','#CDAMasters','#Steeldarts','#Augsburg']];},
-  highlights:function(f,R){var Lx=['⚡🎯 HIGHLIGHTS VOM '+String(f.kicker).toUpperCase()+' 🎯⚡','',one(R,['Das waren die Highlights vom '+f.kicker2+' 🔥','Starke Würfe am '+f.kicker2+' – hier die Bestwerte des Abends 👇','Was für Zahlen! 😮 Die Highlights vom '+f.kicker2+':']),''];
+    Lx.push('','💶 Startgeld 15 € – 5 € Preisgeld am Abend, 10 € wandern in den Pott.','~🔥 Es zählen deine besten '+BEST_OF+' Abende – ein schlechter Abend ist also kein Beinbruch.','👉 Anmeldung über den Link in der Bio.','',cxCta(R,'comp'),'',cxSign(R));return[Lx,['#ClochardDarterAugsburg','#CDA','#CDAMasters','#Steeldarts','#Augsburg']];},
+  highlights:function(f,R){var Lx=['⚡🎯 HIGHLIGHTS – '+String(f.kicker).toUpperCase()+' 🎯⚡','',one(R,['Das waren die Highlights vom '+f.kicker2+' 🔥','Starke Würfe am '+f.kicker2+' – hier die Bestwerte des Abends 👇','Was für Zahlen! 😮 Die Highlights vom '+f.kicker2+':']),''];
     lines(f.list).filter(function(a){return a[1];}).forEach(function(a){Lx.push('▪️ '+a[0]+': '+a[1]+(a[2]?' – '+a[2]:''));});
-    if(f._n180)Lx.push('','💥 Insgesamt '+f._n180+' × 180 an einem Abend!');Lx.push('','🗓️ Jeden Donnerstag ab 20 Uhr im Bismarck Bistro – Anmeldung über den Link in der Bio.','','GOOD DARTS. GOOD PEOPLE. 🎯');return[Lx,['#ClochardDarterAugsburg','#CDA','#CDAMasters','#Steeldarts','#Augsburg','#180']];},
+    if(f._n180)Lx.push('','💥 Insgesamt '+f._n180+' × 180 an einem Abend!');if(f._n)Lx.push('~👥 '+f._n+' Spielerinnen und Spieler waren am Start.');
+    Lx.push('','💬 Welcher Wert beeindruckt euch am meisten? 👇','','🗓️ Jeden Donnerstag ab 20 Uhr im Bismarck Bistro – Anmeldung über den Link in der Bio.','',cxSign(R));return[Lx,['#ClochardDarterAugsburg','#CDA','#CDAMasters','#Steeldarts','#Augsburg','#180']];},
   sieger:function(f,R){var Lx=['🏆🎯 '+String(f.kicker).toUpperCase()+' – DIE SIEGER 🎯🏆','',one(R,['Was für ein Abend! 🔥 Spannende Matches, starke Würfe und am Ende diese drei ganz oben:','Glückwunsch an unsere Sieger! 👏 Hier das Podium vom '+f.kicker2+':']),''];
     if(f.p1)Lx.push('🥇 '+f.p1);if(f.p2)Lx.push('🥈 '+f.p2);if(f.p3)Lx.push('🥉 '+f.p3);var b=lines(f.list).filter(function(a){return a[1];});if(b.length){Lx.push('','📊 BESTWERTE');b.forEach(function(a){Lx.push('▪️ '+a[0]+': '+a[1]);});}
-    Lx.push('','🙌 Danke an alle fürs Mitspielen'+(f._n?' – '+f._n+' Teilnehmer!':'!'),'🗓️ Nächster Donnerstag, nächste Chance – Anmeldung über den Link in der Bio.','','GOOD DARTS. GOOD PEOPLE. 🎯');return[Lx,['#ClochardDarterAugsburg','#CDA','#CDAMasters','#Steeldarts','#Augsburg']];},
-  rangliste:function(f,R){var Lx=['🏆📊 MASTERS-RANGLISTE '+String(f.kicker2).toUpperCase()+' 📊🏆','',one(R,['Der Kampf um die 32 Finalplätze läuft! 🔥 So sieht die Rangliste aktuell aus:','Wer schafft es zu den Finals? Hier der aktuelle Stand: 👇']),''];
-    lines(f.list).slice(0,10).forEach(function(a,i){Lx.push((i===0?'🥇':i===1?'🥈':i===2?'🥉':'▫️')+' '+a[0]+'. '+a[1]+' – '+a[2]+' Pkt');});Lx.push('','💰 Im Pott: '+(f.pot||'0 €'),'📌 '+(f.slogan||''),'','👉 Komplette Rangliste auf unserer Homepage (Link in der Bio).');return[Lx,['#ClochardDarterAugsburg','#CDA','#CDAMasters','#Rangliste','#Augsburg']];},
-  spieler:function(f,R){var mr=f._mr,Lx=['🎯⭐ '+String(f.kicker).toUpperCase()+' '+String(f.kicker2).toUpperCase()+' ⭐🎯','','Unser Spieler des Monats '+String(f.kicker2).split(' ')[0]+': '+f.name+'! 👏'+(mr&&mr.es[0]+mr.ds[0]?' Mit '+(mr.es[0]?mr.es[0]+' gewonnenen Einzeln':'')+(mr.es[0]&&mr.ds[0]?' und ':'')+(mr.ds[0]?mr.ds[0]+' gewonnenen Doppeln':'')+' im '+f._mon+' hat er sich die Auszeichnung verdient. 💪':''),''];kp(f).forEach(function(a){Lx.push('▪️ '+a[0]+': '+a[1]);});if(f.quote)Lx.push('','💬 „'+f.quote+'“');Lx.push('','Glückwunsch und weiter so! 💚❤️','GOOD DARTS. GOOD PEOPLE. 🎯');return[Lx,['#ClochardDarterAugsburg','#CDA','#SpielerDesMonats','#Steeldarts','#Augsburg']];},
+    if(f.p1)Lx.push('','~'+one(R,['Herzlichen Glückwunsch, '+first(f.p1)+'! 👑','Der Abend gehört '+f.p1+' – stark gespielt! 💪']));
+    Lx.push('','🙌 Danke an alle fürs Mitspielen'+(f._n?' – '+f._n+' Teilnehmer!':'!'),'🗓️ Nächster Donnerstag, nächste Chance – Anmeldung über den Link in der Bio.','',cxSign(R));return[Lx,['#ClochardDarterAugsburg','#CDA','#CDAMasters','#Steeldarts','#Augsburg']];},
+  rangliste:function(f,R){var Lr=lines(f.list),Lx=['🏆📊 MASTERS-RANGLISTE '+String(f.kicker2).toUpperCase()+' 📊🏆','',one(R,['Der Kampf um die '+MAX_FINALS+' Finalplätze läuft! 🔥 So sieht die Rangliste aktuell aus:','Wer schafft es zu den Finals? Hier der aktuelle Stand: 👇']),''];
+    Lr.slice(0,10).forEach(function(a,i){Lx.push((i===0?'🥇':i===1?'🥈':i===2?'🥉':'▫️')+' '+a[0]+'. '+a[1]+' – '+a[2]+' Pkt');});
+    if(Lr[0]&&Lr[1])Lx.push('','~'+first(Lr[0][1])+' führt mit '+(+Lr[0][2]-(+Lr[1][2]))+' Punkten Vorsprung – noch ist alles offen! 👀');
+    Lx.push('','💰 Im Pott: '+(f.pot||'0 €'),'📌 '+(f.slogan||''),'','👉 Komplette Rangliste auf unserer Homepage (Link in der Bio).','',cxSign(R));return[Lx,['#ClochardDarterAugsburg','#CDA','#CDAMasters','#Rangliste','#Augsburg']];},
+  spieler:function(f,R){var mr=f._mr,mon=String(f.kicker2).split(' ')[0],Lx=['🎯⭐ '+String(f.kicker).toUpperCase()+' '+String(f.kicker2).toUpperCase()+' ⭐🎯','',one(R,['Unser Spieler des Monats '+mon+': '+f.name+'! 👏','Trommelwirbel… 🥁 Spieler des Monats '+mon+' ist '+f.name+'! 🎉','Er hat den '+mon+' geprägt wie kein Zweiter: '+f.name+' ist unser Spieler des Monats! 👑'])];
+    if(mr&&mr.es[0]+mr.ds[0])Lx.push('~Mit '+(mr.es[0]?mr.es[0]+' gewonnenen Einzeln':'')+(mr.es[0]&&mr.ds[0]?' und ':'')+(mr.ds[0]?mr.ds[0]+' gewonnenen Doppeln':'')+' im '+f._mon+' hat er sich die Auszeichnung mehr als verdient. 💪');
+    if(mr&&mr.wins)Lx.push('~Dazu '+plur(mr.wins,'Turniersieg','Turniersiege')+' bei der Donnerstags-Competition! 🏆');
+    Lx.push('');kp(f).forEach(function(a){Lx.push('▪️ '+a[0]+': '+a[1]);});var i=PLAYERS[f.name]||{};if(i.checkout)Lx.push('~▪️ Lieblings-Checkout: '+i.checkout);
+    if(f.quote)Lx.push('','💬 „'+f.quote+'“');Lx.push('',cxCta(R,'spl'),'','Glückwunsch und weiter so! 💚❤️',cxSign(R));return[Lx,['#ClochardDarterAugsburg','#CDA','#SpielerDesMonats','#Steeldarts','#Augsburg']];},
   ms_aus:function(f,R){var Lx=['🏆🎯 '+String(f.title).toUpperCase()+' – DIE AUSSCHREIBUNG 🎯🏆','',one(R,['Die neue Saison der CDA Masters steht! 🔥 Unsere offene Turnierserie in Augsburg – für alle, die Lust auf gute Darts und gute Leute haben. 🙌','Markiert euch die Termine: Die CDA Masters gehen in die nächste Runde! 📅 Jeder kann mitspielen – Mitglied, Gast oder Neueinsteiger.']),''];
-    lines(f.list).forEach(function(a){Lx.push('▪️ '+a[0]+': '+a[1]);});Lx.push('','💰 Je mehr mitspielen, desto größer der Pott für die Finals!','👉 Anmeldung über den Link in der Bio.','','GOOD DARTS. GOOD PEOPLE. 🎯');return[Lx,['#ClochardDarterAugsburg','#CDA','#CDAMasters','#Turnierserie','#Augsburg']];},
+    lines(f.list).forEach(function(a){Lx.push('▪️ '+a[0]+': '+a[1]);});Lx.push('','~🔥 Es zählen deine besten '+BEST_OF+' Abende – du musst also nicht jedes Mal dabei sein.','💰 Je mehr mitspielen, desto größer der Pott für die Finals!','👉 Anmeldung über den Link in der Bio.','',cxCta(R,'comp'),'',cxSign(R));return[Lx,['#ClochardDarterAugsburg','#CDA','#CDAMasters','#Turnierserie','#Augsburg']];},
   ms_how:function(f,R){var Lx=['🎯📈 CDA MASTERS – SO FUNKTIONIERT\'S 📈🎯','',one(R,['Du willst wissen, wie du ins Finale kommst? Ganz einfach – vier Schritte: 👇','Neu bei den CDA Masters? Hier das System in 30 Sekunden: ⏱️']),''];
-    lines(f.list).forEach(function(a,i){Lx.push(['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣'][i]+' '+a[0]+': '+a[1]);});Lx.push('','🔥 Es zählen deine besten '+BEST_OF+' Abende – einmal schlecht gelaufen ist also kein Problem.','👉 Anmeldung über den Link in der Bio.','','GOOD DARTS. GOOD PEOPLE. 🎯');return[Lx,['#ClochardDarterAugsburg','#CDA','#CDAMasters','#Steeldarts','#Augsburg']];},
+    lines(f.list).forEach(function(a,i){Lx.push(['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣'][i]+' '+a[0]+': '+a[1]);});Lx.push('','🔥 Es zählen deine besten '+BEST_OF+' Abende – einmal schlecht gelaufen ist also kein Problem.','~❓ Noch Fragen? Schreib uns einfach eine Nachricht oder komm donnerstags vorbei.','👉 Anmeldung über den Link in der Bio.','',cxSign(R));return[Lx,['#ClochardDarterAugsburg','#CDA','#CDAMasters','#Steeldarts','#Augsburg']];},
   ms_pot:function(f,R){var pv=+(String(f.pot||'0').replace(/[^\d]/g,''))||0,Lx=['💰🏆 MASTERS-POTT: '+f.pot+' 🏆💰','',one(R,['Der Pott wächst und wächst! 📈 '+f.kicker2+' liegen schon '+f.pot+' bereit.','Kontostand Masters-Pott: '+f.pot+' 🤑 – und jeder Abend legt nach!']),'','🏅 SO WIRD BEI DEN FINALS AUSGEZAHLT'];
-    FIN_SPLIT.forEach(function(p,i){Lx.push(['🥇','🥈','🥉','4️⃣','5️⃣'][i]+' '+Math.round(p*100)+' %'+(pv?' = '+euro(pv*p):''));});Lx.push('','➕ '+(f.slogan||''),'👉 Mitspielen und Punkte sammeln – Anmeldung über den Link in der Bio.','','GOOD DARTS. GOOD PEOPLE. 🎯');return[Lx,['#ClochardDarterAugsburg','#CDA','#CDAMasters','#Preisgeld','#Augsburg']];},
-  ms_count:function(f,R){var n=+f.days||0,Lx=['⏳🎯 NOCH '+n+(n===1?' TAG':' TAGE')+'! 🎯⏳','',String(f.title)+': '+f.kicker2+' 📅',f.sub?'📍 '+f.sub:'','',one(R,['Pfeile schärfen, Wurfarm aufwärmen – es geht bald los! 💪','Der Countdown läuft. Bist du dabei? 🔥']),'','👉 '+(f.slogan||'Anmeldung über den Link in der Bio'),'','GOOD DARTS. GOOD PEOPLE. 🎯'];return[Lx,['#ClochardDarterAugsburg','#CDA','#CDAMasters','#Countdown','#Augsburg']];},
+    FIN_SPLIT.forEach(function(p,i){Lx.push(['🥇','🥈','🥉','4️⃣','5️⃣'][i]+' '+Math.round(p*100)+' %'+(pv?' = '+euro(pv*p):''));});Lx.push('','➕ '+(f.slogan||''),'👉 Mitspielen und Punkte sammeln – Anmeldung über den Link in der Bio.','',cxSign(R));return[Lx,['#ClochardDarterAugsburg','#CDA','#CDAMasters','#Preisgeld','#Augsburg']];},
+  ms_count:function(f,R){var n=+f.days||0,Lx=['⏳🎯 NOCH '+n+(n===1?' TAG':' TAGE')+'! 🎯⏳','',String(f.title)+': '+f.kicker2+' 📅',f.sub?'📍 '+f.sub:'','',one(R,['Pfeile schärfen, Wurfarm aufwärmen – es geht bald los! 💪','Der Countdown läuft. Bist du dabei? 🔥']),'','👉 '+(f.slogan||'Anmeldung über den Link in der Bio'),'',cxSign(R)];return[Lx,['#ClochardDarterAugsburg','#CDA','#CDAMasters','#Countdown','#Augsburg']];},
   ms_fin:function(f,R){var Lx=['🏆✨ '+String(f.title).toUpperCase()+' '+String(f.kicker).replace('CDA Masters ','')+' ✨🏆','',f.sub?'📅 '+f.sub:'','',one(R,['Das große Saisonfinale: Die besten '+MAX_FINALS+' spielen um den kompletten Masters-Pott! 💰','Ein Tag, '+MAX_FINALS+' Spieler, ein Pott. 🔥 So läuft das Saisonfinale:']),''];
-    lines(f.list).forEach(function(a){Lx.push('▪️ '+a[0]+': '+a[1]);});Lx.push('','💬 '+(f.slogan||''),'👉 Noch nicht qualifiziert? Jeder Masters-Abend zählt – Anmeldung über den Link in der Bio.','','GOOD DARTS. GOOD PEOPLE. 🎯');return[Lx,['#ClochardDarterAugsburg','#CDA','#CDAMasters','#Finals','#Augsburg']];},
-  ms_kal:function(f,R){var Lx=['📅🎯 '+String(f.title).toUpperCase()+' – ALLE CDA-MASTERS-TERMINE 🎯📅','','Speichern und vormerken! 📌',''];(f._d||[]).forEach(function(e){Lx.push((e.mode==='finals'?'🏆 Finals: Sa ':'▪️ #'+e.no+': Do ')+dmy(e.date));});Lx.push('','⏰ '+(f.sub||''),'📲 '+(f.slogan||''),'','GOOD DARTS. GOOD PEOPLE. 🎯');return[Lx,['#ClochardDarterAugsburg','#CDA','#CDAMasters','#Termine','#Augsburg']];},
-  steckbrief:function(f,R){var Lx=['🎯📇 STECKBRIEF: '+String(f.name).toUpperCase()+' 📇🎯','',one(R,['Lernt unsere Spieler kennen! 👋 Heute: '+f.name+(f.kicker2?' aus der '+f.kicker2:'')+'.','Wer steckt hinter den Pfeilen? 🎯 Heute stellen wir '+f.name+' vor.']),''];
-    lines(f.list).forEach(function(a){Lx.push('▪️ '+a[0]+': '+a[1]);});kp(f).forEach(function(a){Lx.push('📊 '+a[0]+': '+a[1]);});if(f.quote)Lx.push('','💬 Motto: „'+f.quote+'“');Lx.push('','GOOD DARTS. GOOD PEOPLE. 🎯');return[Lx,['#ClochardDarterAugsburg','#CDA','#Steckbrief','#Steeldarts','#Augsburg']];}
+    lines(f.list).forEach(function(a){Lx.push('▪️ '+a[0]+': '+a[1]);});Lx.push('','💬 '+(f.slogan||''),'👉 Noch nicht qualifiziert? Jeder Masters-Abend zählt – Anmeldung über den Link in der Bio.','',cxSign(R));return[Lx,['#ClochardDarterAugsburg','#CDA','#CDAMasters','#Finals','#Augsburg']];},
+  ms_kal:function(f,R){var Lx=['📅🎯 '+String(f.title).toUpperCase()+' – ALLE CDA-MASTERS-TERMINE 🎯📅','','Speichern und vormerken! 📌',''];(f._d||[]).forEach(function(e){Lx.push((e.mode==='finals'?'🏆 Finals: Sa ':'▪️ #'+e.no+': Do ')+dmy(e.date));});Lx.push('','⏰ '+(f.sub||''),'📲 '+(f.slogan||''),'',cxSign(R));return[Lx,['#ClochardDarterAugsburg','#CDA','#CDAMasters','#Termine','#Augsburg']];},
+  steckbrief:function(f,R){var Lx=['🎯📇 STECKBRIEF: '+String(f.name).toUpperCase()+' 📇🎯','',one(R,['Lernt unsere Spieler kennen! 👋 Heute: '+f.name+(f.kicker2?' aus der '+f.kicker2:'')+'.','Wer steckt hinter den Pfeilen? 🎯 Heute stellen wir '+f.name+' vor.','Gesichter des CDA 📸 – heute im Steckbrief: '+f.name+(f.kicker2?' ('+f.kicker2+')':'')+'.']),''];
+    lines(f.list).forEach(function(a){Lx.push('▪️ '+a[0]+': '+a[1]);});var k=kp(f);if(k.length){Lx.push('','~📊 IN DIESER SAISON');k.forEach(function(a){Lx.push('~▪️ '+a[0]+': '+a[1]);});}if(f.quote)Lx.push('','💬 Motto: „'+f.quote+'“');
+    Lx.push('',one(R,['👇 Lasst '+first(f.name)+' ein 💚❤️ da!','💬 Was wolltet ihr '+first(f.name)+' schon immer fragen? 👇']),'',cxSign(R));return[Lx,['#ClochardDarterAugsburg','#CDA','#Steckbrief','#Steeldarts','#Augsburg']];}
 };
+
+function capReload(){if(DATA&&S.f&&!S.f._none)try{caption();}catch(e){}}
+ligaLoad().then(capReload);fetch('berichte.json',{cache:'no-cache'}).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;}).then(function(j){BER=j;capReload();});
 
 var LABEL={kicker:'Oben rechts (Anlass)',kicker2:'Oben rechts, zweite Zeile',title:'Große Überschrift',sub:'Unterzeile',table:'Tabellenzeile',venue:'Spielort',street:'Adresse',note:'Hinweis',slogan:'Schlusszeile',foto:'Spielerfoto im Bild (bei „Andere Aufteilung“)',
   s1:'Wert 1 (Bezeichnung|Wert)',s2:'Wert 2 (Bezeichnung|Wert)',s3:'Wert 3 (Bezeichnung|Wert)',p1:'1. Platz',p2:'2. Platz',p3:'3. Platz',name:'Name',quote:'Motto / Zitat',modus:'Spielmodus erklärt',
@@ -1331,11 +1440,11 @@ function buildSrc(){
   var cr=$('crit');if(cr)cr.onchange=function(){S.crit=cr.value;refill();};
   var mo=$('month');if(mo)mo.onchange=function(){S.month=mo.value;S.pick=null;buildSrc();refill();};
 }
-function refill(){
+function refill(ov){
   var t=TYPES[S.type];
   var pre=(t.src==='compdate'||t.src==='mastersdate')?(function(){var d=compDates(t.src==='mastersdate'),e=d.filter(function(x){return x.date===S.pick;})[0]||d[0];return e?signupsFor(e.date):Promise.resolve();})():Promise.resolve();
   return pre.then(function(){
-    S.f=t.fields()||{};var h='';
+    S.f=ov?JSON.parse(JSON.stringify(ov)):(t.fields()||{});var h='';
     if(S.f._none)h+='<p class="note">'+esc(S.f._none)+'</p>';if(S.f._note)h+='<p class="note">'+esc(S.f._note)+'</p>';
     Object.keys(S.f).filter(function(k){return k[0]!=='_';}).forEach(function(k){var v=S.f[k]==null?'':String(S.f[k]),multi=k==='list'||k==='names';
       h+='<label class="f" for="f_'+k+'">'+(LABEL[k]||k)+(k==='list'&&LISTHINT[S.type]?' <span style="opacity:.7">('+LISTHINT[S.type]+')</span>':'')+'</label>';
@@ -1372,7 +1481,8 @@ function draw(){
 function fitGhost(t){setF(400,100,AN);var w=ctx.measureText(String(t).toUpperCase()).width;return 100*W*1.1/Math.max(1,w);}
 // Link zur Homepage: Adresse wird aus der Studio-Seite selbst abgeleitet (gilt automatisch auch nach dem Domain-Umzug), ?s=ig zählt den Besuch als Instagram
 function siteLink(){var a={comp:'#kontakt',masters:'#kontakt',sieger:'#masters',highlights:'#masters',rangliste:'#masters'}[S.type]||(/^ms_/.test(S.type)?'#masters':'');return location.origin+location.pathname.replace(/[^\/]*$/,'')+'?s=ig'+a;}
-function caption(){var c=CAP[S.type];if(S.f._none||!c){$('caption').value='';return;}var r=c(S.f,CR()),Lx=r[0];Lx.push('','🔗 '+siteLink().replace(/^https?:\/\//,''));Lx.push('',r[1].slice(0,5).join(' '));$('caption').value=Lx.join('\n').replace(/\n{3,}/g,'\n\n');}
+function capLines(Lx){var lg=S.capLen!=='kurz';return Lx.filter(function(l){return lg||String(l).charAt(0)!=='~';}).map(function(l){l=String(l);return l.charAt(0)==='~'?l.slice(1):l;});}
+function caption(){var c=CAP[S.type];if(S.f._none||!c){$('caption').value='';return;}var r=c(S.f,CR()),Lx=capLines(r[0]);Lx.push('','🔗 '+siteLink().replace(/^https?:\/\//,''));Lx.push('',r[1].slice(0,5).join(' '));$('caption').value=Lx.join('\n').replace(/\n{3,}/g,'\n\n');}
 
 // ---------- Speichern / Teilen ----------
 function fname(){return 'CDA_'+S.type+'_'+S.look+'_'+(S.f._md?S.f._md.date:S.f._date||today())+'_'+S.format+'.png';}
@@ -1380,6 +1490,8 @@ $('dl').onclick=function(){cv.toBlob(function(b){var a=document.createElement('a
 try{if(navigator.canShare&&navigator.canShare({files:[new File([''],'x.png',{type:'image/png'})]})){var sh=$('share');sh.hidden=false;sh.onclick=function(){cv.toBlob(function(b){navigator.share({files:[new File([b],fname(),{type:'image/png'})],text:$('caption').value}).catch(function(){});},'image/png');};}}catch(e){}
 $('copy').onclick=function(){var t=$('caption');(navigator.clipboard?navigator.clipboard.writeText(t.value):Promise.reject()).catch(function(){t.select();document.execCommand('copy');}).then(function(){$('copy').textContent='Kopiert ✓';setTimeout(function(){$('copy').textContent='Text kopieren';},1500);});};
 $('recap').onclick=function(){S.capSeed++;caption();};
+$('addbun').onclick=addToBundle;
+$('caplen').onclick=function(){S.capLen=S.capLen==='kurz'?'lang':'kurz';this.textContent=S.capLen==='kurz'?'Ausführlicher':'Kürzer';caption();};
 $('variant').onclick=function(){S.seed++;draw();};
 $('surprise').onclick=function(){var k=Object.keys(LOOKS).filter(function(x){return x!==S.look;});S.look=k[Math.floor(Math.random()*k.length)];S.seed=1+Math.floor(Math.random()*999);buildThemes();draw();};
 $('partners').onchange=function(e){S.partners=e.target.checked;draw();};
@@ -1530,53 +1642,90 @@ function apView(){
 var APSEL={},BUNDLE=null;
 var APPOOL=['arena','carbon','board','broadcast','duoton','speed','buehne','laser','konfetti','sisal','glitch','feuer','led','clean','print'];
 function apLooks(list,look){var used={};return list.map(function(o,i){var l=look&&LOOKS[look]?look:null;if(!l){var d=TYPES[o.set.type].look;l=!used[d]?d:APPOOL.filter(function(x){return LOOKS[x]&&!used[x];})[0]||d;}used[l]=1;return l;});}
-function apSnap(o,look,seed){var s=o.set;S.type=s.type;if(s.team)S.team=s.team;S.pick=s.pick||null;if(s.month)S.month=s.month;if(s.crit)S.crit=s.crit;S.look=look;S.seed=seed;buildSrc();
-  return refill().then(function(){return new Promise(function(ok){cv.toBlob(function(b){ok({o:o,blob:b,look:look,seed:seed,name:fname(),f:S.f,team:S.team});},'image/png');});});}
-function apKeep(){return{type:S.type,team:S.team,pick:S.pick,month:S.month,crit:S.crit,look:S.look,seed:S.seed};}
-function apRestore(k){Object.assign(S,k);buildTypeSelect();buildThemes();buildSrc();return refill();}
+function apSnap(o,look,seed){var s=o.set;S.type=s.type;if(s.team)S.team=s.team;S.pick=s.pick||null;if(s.month)S.month=s.month;if(s.crit)S.crit=s.crit;if(o.format)S.format=o.format;S.look=look;S.seed=seed;buildSrc();
+  return refill(o.f).then(function(){return new Promise(function(ok){cv.toBlob(function(b){ok({o:o,blob:b,look:look,seed:seed,name:fname(),f:S.f,team:S.team});},'image/png');});});}
+function apKeep(){return{type:S.type,team:S.team,pick:S.pick,month:S.month,crit:S.crit,look:S.look,seed:S.seed,format:S.format,f:S.f};}
+function apRestore(k){var f=k.f;Object.assign(S,k);buildTypeSelect();buildThemes();buildSrc();return refill(f&&!f._none?f:null);}
 function apRender(list,look){var keep=apKeep(),looks=apLooks(list,look),out=[],i=0;
   function next(){if(i>=list.length)return apRestore(keep).then(function(){return out;});var j=i++;return apSnap(list[j],looks[j],1+j).then(function(p){out.push(p);}).then(next);}
   return next();}
 function apRedo(idx){var p=BUNDLE.parts[idx],keep=apKeep();BUNDLE.busyOne=idx;apBundleView();
   return apSnap(p.o,p.look,p.seed).then(function(np){BUNDLE.parts[idx]=np;return apRestore(keep);}).then(function(){BUNDLE.busyOne=null;BUNDLE.cap=apCaption(BUNDLE.parts,BUNDLE.cap);apBundleView();});}
 function one2(a){return a[Math.floor(Math.random()*a.length)];}
+// Bildunterschrift für mehrere Bilder: aus den Einzeltexten der Grafiken zusammengesetzt
+function apCtx(p,fn){var k={type:S.type,team:S.team,pick:S.pick,f:S.f};var s=p.o.set;S.type=s.type;if(p.team||s.team)S.team=p.team||s.team;S.pick=s.pick||null;S.f=p.f;try{return fn();}finally{S.type=k.type;S.team=k.team;S.pick=k.pick;S.f=k.f;}}
+var CAPSKIP=/Danke|Dankeschön|Kommentar|GOOD DARTS|Auf geht's, CDA|Einmal CDA|Mehr als nur ein Verein|Markiert|Lasst |Link in der Bio|Homepage|Teilt den|Glückwunsch und weiter|Euer Tipp|Gratuliert|ein 🎯 in die|Wischt/;
+function apPartLines(p){return apCtx(p,function(){var c=CAP[p.o.set.type];if(!c||!p.f||p.f._none)return null;var r=c(p.f,rng(BUNDLE&&BUNDLE.seed||1));return{head:String(r[0][0]||''),body:capLines(r[0].slice(1)).filter(function(l){return l&&!CAPSKIP.test(l);}),tags:r[1]};});}
 function apCaption(parts,prev){if(prev&&BUNDLE&&BUNDLE.capEdited)return prev;
-  var ergs=parts.filter(function(p){return p.o.set.type==='ergebnis';}),L=[],tags=['#ClochardDarterAugsburg','#CDA','#Steeldarts','#Augsburg'];
-  if(ergs.length===parts.length){var w=0,l=0;ergs.forEach(function(p){(p.f._md.games||[]).forEach(function(g){var r=res(g);if(r==='S')w++;if(r==='N')l++;});});
-    var we=ergs.every(function(p){var d=new Date(p.f._md.date+'T12:00:00').getDay();return d===0||d===5||d===6;}),zr=we?'Wochenende':'Woche',ein=we?'ein':'eine';
-    L.push(w&&!l?one2(['🎯 Was für '+ein+' '+zr+' – alle CDA-Teams mit Sieg! 💚❤️','🎯 '+ergs.length+' Spiele, '+w+' Siege – perfekte'+(we?'s':'')+' '+zr+' für den CDA! 💚❤️']):w>l?'🎯 Ergebnis-Update: '+w+' Siege für unsere Teams 💪':l>w?'🎯 Ergebnis-Update vom Spieltag – nicht alles lief nach Plan, wir greifen wieder an! 💪':'🎯 Ergebnis-Update von unseren Teams','');
-    ergs.forEach(function(p){var t=DATA.teams[p.team],gs=p.f._md.games||[],u=(t.table||[]).filter(function(r){return r.us;})[0];
-      gs.forEach(function(g){var r=res(g),opp=isUs(g.home)?g.away:g.home;L.push((r==='S'?'✅':r==='U'?'➖':'❌')+' '+t.label+' '+(isUs(g.home)?g.score:g.score.split(':').reverse().join(':'))+' gegen '+opp);});
-      if(u)L.push('    '+(t.league||'').replace('3K WINMAU ','')+' · Platz '+u.pos+(u.l===0&&u.played>=3?' · ungeschlagen 🔥':''));});
-    L.push('','👉 Wischt euch durch alle Ergebnisse!');tags.push('#Darts','#Ligaspiel');}
-  else{L.push('🎯 Update vom CDA','');parts.forEach(function(p){L.push(p.o.icon+' '+p.o.title);});L.push('','👉 Wischt euch durch!');}
-  L.push('','💚❤️ Danke an alle Fans und unsere Partner!','','🔗 '+location.origin.replace(/^https?:\/\//,'')+location.pathname.replace(/[^\/]*$/,'')+'?s=ig','',tags.join(' '));return L.join('\n');}
-function apBundleView(){var el=$('apb');if(!el)return;if(!BUNDLE){el.innerHTML='';return;}
+  var R=rng((BUNDLE&&BUNDLE.seed||1)*977+parts.length),ergs=parts.filter(function(p){return p.o.set.type==='ergebnis';}),L=[],tc={},addT=function(t){t.forEach(function(x){tc[x]=(tc[x]||0)+1;});};
+  addT(['#ClochardDarterAugsburg','#ClochardDarterAugsburg','#CDA','#CDA']);
+  if(ergs.length===parts.length){var w=0,l=0,d=0;ergs.forEach(function(p){(p.f._md.games||[]).forEach(function(g){var r=res(g);if(r==='S')w++;else if(r==='N')l++;else d++;});});
+    var we=ergs.every(function(p){var dd=new Date(p.f._md.date+'T12:00:00').getDay();return dd===0||dd===5||dd===6;}),zr=we?'Wochenende':'Woche',ein=we?'ein':'eine',n=w+l+d;
+    L.push(w&&!l&&!d?one(R,['🎯🔥 Was für '+ein+' '+zr+' – alle CDA-Teams mit Sieg! 💚❤️','🎯 '+n+' Spiele, '+w+' Siege – perfekte'+(we?'s':'')+' '+zr+' für den CDA! 💚❤️','💥 '+n+' von '+n+'! Die ganze CDA-Familie hat geliefert! 💚❤️']):w>l?one(R,['🎯 Ergebnis-Update: '+w+' Siege aus '+n+' Spielen für unsere Teams 💪','📊 Starke '+zr+': '+w+' Siege'+(d?', '+d+' Remis':'')+' und nur '+l+' Niederlage'+(l===1?'':'n')+' 💪']):l>w?'🎯 Ergebnis-Update – nicht alles lief nach Plan, wir greifen wieder an! 💪':'🎯 Ergebnis-Update von unseren Teams','');
+    L.push('~'+one(R,['Hier kommt der Überblick über alle Spiele unserer Mannschaften:','So lief es für unsere Teams – alle Ergebnisse auf einen Blick:'].concat(ergs.length===4?['Vier Teams, ein Verein – das ist passiert:']:[])),'');
+    ergs.forEach(function(p){apCtx(p,function(){var t=team(),gs=p.f._md.games||[],tb=cxTable(),st=cxStars(p.f._md),mw=cxMw(p.f._md),run=cxRun();
+      L.push('🔹 '+t.label.toUpperCase()+' · '+(t.league||'').replace('3K WINMAU ',''));
+      gs.forEach(function(g){var r=res(g);L.push((r==='S'?'✅':r==='U'?'🤝':'❌')+' '+usScore(g)+' gegen '+short(opp(g))+(g.legs?' (Legs '+(isUs(g.home)?g.legs:g.legs.split(':').reverse().join(':'))+')':''));});
+      var star=st.has&&st.mw.length?st.mw.slice(0,2).map(function(x){return x.name+' ('+x.w+':0)';}):mw.slice(0,2).map(function(x){return x.name+' ('+x.single+')';});if(star.length)L.push('~⭐ Matchwinner: '+andJoin(star));
+      if(st.has&&st.best)L.push('~🎯 Bester Average: '+st.best.name+' ('+de(st.best.av)+')');
+      if(tb)L.push('📊 '+tb.txt+(tb.u.pos===1?' 🏆':'')+(run.unbeaten>=4?' · seit '+run.unbeaten+' Spielen ungeschlagen 🔥':''));L.push('');});});
+    L.push('👉 Wischt euch durch alle Ergebnisse!');addT(['#Darts','#Ligaspiel','#Steeldarts','#Augsburg']);if(ergs.some(function(p){return p.team==='1';}))addT(['#Bundesliga']);}
+  else{var info=parts.map(function(p){return{p:p,c:apPartLines(p)};});
+    var kinds=parts.map(function(p){return TYPES[p.o.set.type].g;}),liga=kinds.every(function(g){return g==='Liga';}),comp=kinds.every(function(g){return g!=='Liga';});
+    L.push(liga?one(R,['📊🎯 ZAHLEN, FAKTEN, CDA! 🎯📊','🎯 DER GROSSE CDA-CHECK 📊','📈 WO STEHEN WIR GERADE? 🎯']):comp?one(R,['🎯🍻 NEUES VON DER COMPETITION 🍻🎯','🏆 DONNERSTAGS-UPDATE 🎯']):one(R,['🎯 UPDATE VOM CDA 💚❤️','📣 NEUES AUS DEM VEREIN 🎯']),'',
+      one(R,['In '+parts.length+' Bildern der komplette Überblick – wischt euch durch! 👉',''+parts.length+' Grafiken, alle Infos: Swipe nach rechts! 👉','Heute gibt\'s gleich '+parts.length+' Bilder auf einmal – viel Spaß beim Durchwischen! 👉']),'');
+    info.forEach(function(x,i){var num=['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟'][i]||'▫️',head=x.c?x.c.head.replace(/^[^A-Za-zÄÖÜäöü0-9]+|[^A-Za-zÄÖÜäöü0-9!.)]+$/g,''):x.p.o.title;
+      L.push(num+' '+head);if(x.c){var b=x.c.body.filter(function(l,j,a){return !(l===''&&(j===0||a[j-1]===''));}).slice(0,10);while(b.length&&b[b.length-1]==='')b.pop();b.forEach(function(l){L.push(l);});addT(x.c.tags);}L.push('');});
+    L.push(one(R,['💬 Welches Bild gefällt euch am besten? Schreibt die Nummer in die Kommentare! 👇','💬 Was sagt ihr zu den Zahlen? Ab in die Kommentare! 👇','👇 Teilt den Beitrag mit allen, die mitfiebern!']));}
+  L.push('',cxThanks(R),'',cxSign(R),'','🔗 '+location.origin.replace(/^https?:\/\//,'')+location.pathname.replace(/[^\/]*$/,'')+'?s=ig','',
+    Object.keys(tc).sort(function(a,b){return tc[b]-tc[a];}).slice(0,6).join(' '));
+  return capLines(L).join('\n').replace(/\n{3,}/g,'\n\n');}
+// ---------- Sammelpost aus dem Grafiken-Reiter: beliebige Grafiken sammeln ----------
+var GSEL=[];
+function addBtnLabel(){var b=$('addbun');if(b)b.textContent=S.editPart!=null&&GSEL[S.editPart]?'✓ Bild '+(S.editPart+1)+' im Sammelpost ersetzen':'➕ Zum Sammelpost'+(GSEL.length?' ('+GSEL.length+')':'');}
+function trayView(){var el=$('gtray');if(!el)return;addBtnLabel();if(!GSEL.length){el.innerHTML='';return;}
+  (trayView.u||[]).forEach(function(u){URL.revokeObjectURL(u);});var us=trayView.u=GSEL.map(function(p){return URL.createObjectURL(p.blob);});
+  el.innerHTML='<div class="box gtray"><div class="ap-bh"><h2>Sammelpost · '+GSEL.length+' '+(GSEL.length===1?'Bild':'Bilder')+'</h2><button type="button" class="pbtn" id="gclr">Leeren</button></div>'+
+    '<div class="gt-th">'+us.map(function(u,i){return '<figure><img src="'+u+'" alt="Bild '+(i+1)+'"><button type="button" class="gt-x" data-rm="'+i+'" aria-label="Bild '+(i+1)+' entfernen">×</button><figcaption>'+(i+1)+'. '+esc(GSEL[i].o.title)+'</figcaption></figure>';}).join('')+'</div>'+
+    '<button type="button" class="btn primary" id="gmake"'+(GSEL.length<2?' disabled':'')+'>Sammelpost erstellen ('+GSEL.length+' Bilder, 1 Text)</button>'+
+    '<p class="hint">Nächste Grafik einstellen (Typ, Mannschaft, Look, Texte) und wieder „➕ Zum Sammelpost“ drücken. Bis zu 10 Bilder. Die Sammlung bleibt erhalten, bis du sie leerst.</p></div>';
+  $('gclr').onclick=function(){GSEL=[];S.editPart=null;if(BUNDLE&&BUNDLE.manual){BUNDLE=null;apBundleView();}trayView();};
+  el.querySelectorAll('[data-rm]').forEach(function(b){b.onclick=function(){GSEL.splice(+b.dataset.rm,1);S.editPart=null;trayView();};});
+  $('gmake').onclick=function(){if(GSEL.length<2)return;BUNDLE={manual:true,el:'gpb',list:GSEL.map(function(p){return p.o;}),parts:GSEL.slice(),sel:null,seed:1};BUNDLE.cap=apCaption(BUNDLE.parts);apBundleView();$('gpb').scrollIntoView({behavior:'smooth',block:'start'});};}
+function addToBundle(){var b=$('addbun');if(S.f._none)return;if(GSEL.length>=10&&S.editPart==null){b.textContent='Maximal 10 Bilder';setTimeout(addBtnLabel,1500);return;}
+  cv.toBlob(function(bl){var t=TYPES[S.type],lig=t.g==='Liga'&&DATA.teams[S.team],o={id:'g'+Date.now(),icon:'🖼️',title:t.label+(lig?' '+DATA.teams[S.team].label:'')+(S.f.kicker2&&!/Saison/.test(S.f.kicker2)?' · '+S.f.kicker2:''),
+      set:{type:S.type,team:S.team,pick:S.pick,month:S.month,crit:S.crit},f:JSON.parse(JSON.stringify(S.f)),format:S.format};
+    var part={o:o,blob:bl,look:S.look,seed:S.seed,name:fname(),f:o.f,team:S.team},i=S.editPart;
+    if(i!=null&&GSEL[i]){GSEL[i]=part;S.editPart=null;b.textContent='✓ Ersetzt';}else{GSEL.push(part);b.textContent='✓ Im Sammelpost ('+GSEL.length+')';}
+    if(BUNDLE&&BUNDLE.manual){BUNDLE.parts=GSEL.slice();BUNDLE.cap=apCaption(BUNDLE.parts,BUNDLE.cap);apBundleView();}
+    trayView();b.textContent=i!=null?'✓ Ersetzt':'✓ Im Sammelpost ('+GSEL.length+')';setTimeout(addBtnLabel,1400);},'image/png');}
+var BEL='apb';function apBundleView(){if(BUNDLE)BEL=BUNDLE.el||'apb';var el=$(BEL);if(!el)return;if(!BUNDLE){el.innerHTML='';return;}if(BUNDLE.manual&&BUNDLE.parts){GSEL=BUNDLE.parts.slice();trayView();}
   if(BUNDLE.busy){el.innerHTML='<div class="box"><p class="hint" style="margin:0">Erstelle '+BUNDLE.list.length+' Grafiken …</p></div>';return;}
   (BUNDLE.urls||[]).forEach(function(u){URL.revokeObjectURL(u);});var urls=BUNDLE.urls=BUNDLE.parts.map(function(p){return URL.createObjectURL(p.blob);}),sel=BUNDLE.sel;
   var ed='';if(sel!=null){var p=BUNDLE.parts[sel];
     ed='<div class="ap-ed"><div class="ap-edh"><b>Bild '+(sel+1)+' anpassen</b><span>'+esc(p.o.title)+'</span></div>'+
       '<div class="themes ap-lk">'+Object.keys(LOOKS).map(function(k){return '<button type="button" data-lk="'+k+'" aria-pressed="'+(p.look===k)+'"><i style="background:'+LOOKS[k].sw+'"></i>'+LOOKS[k].label+'</button>';}).join('')+'</div>'+
       '<div class="wa-act"><button type="button" class="btn" id="bvar">🎲 Andere Variante</button><button type="button" class="btn" id="bopen">Im Studio bearbeiten</button><button type="button" class="pbtn" id="bfin">Fertig</button></div>'+
-      '<p class="hint">Klick auf einen Look ändert nur dieses Bild. „Andere Variante“ würfelt Hintergrund und Anordnung neu. „Im Studio bearbeiten“ öffnet die Grafik mit allen Feldern (Texte, Format) – danach dort „Bild speichern“.</p></div>';}
+      '<p class="hint">Klick auf einen Look ändert nur dieses Bild. „Andere Variante“ würfelt Hintergrund und Anordnung neu. '+(BUNDLE.manual?'„Im Studio bearbeiten“ öffnet die Grafik mit allen Feldern – danach „✓ Bild ersetzen“ drücken.':'„Im Studio bearbeiten“ öffnet die Grafik mit allen Feldern (Texte, Format) – danach dort „Bild speichern“.')+'</p></div>';}
   el.innerHTML='<div class="box ap-bun"><div class="ap-bh"><h2>Sammelpost · '+BUNDLE.parts.length+' Bilder</h2><button type="button" class="pbtn" id="bclose">Schließen</button></div>'+
     '<p class="hint" style="margin:0 0 6px">Bild anklicken, um den Look einzeln anzupassen.</p>'+
     '<div class="ap-th">'+urls.map(function(u,i){return '<figure class="'+(sel===i?'on':'')+'"><button type="button" class="ap-img" data-pick="'+i+'" aria-label="Bild '+(i+1)+' anpassen">'+(BUNDLE.busyOne===i?'<span class="ap-busy">…</span>':'')+'<img src="'+u+'" alt=""></button><figcaption>'+(i+1)+'. '+esc(BUNDLE.parts[i].o.title)+' · <b>'+esc(LOOKS[BUNDLE.parts[i].look].label)+'</b></figcaption><div class="ap-mv"><button type="button" class="pbtn" data-mv="'+i+'" data-d="-1" aria-label="nach vorne">◀</button><button type="button" class="pbtn" data-mv="'+i+'" data-d="1" aria-label="nach hinten">▶</button></div></figure>';}).join('')+'</div>'+ed+
     '<label class="f" for="bcap">Eine Bildunterschrift für alle</label><textarea id="bcap" rows="12">'+esc(BUNDLE.cap)+'</textarea>'+
-    '<div class="wa-act"><button type="button" class="btn primary" id="bshare" hidden>Alle teilen (Instagram)</button><button type="button" class="btn" id="bsave">Alle Bilder speichern</button><button type="button" class="btn" id="bcopy">Bildunterschrift kopieren</button><button type="button" class="btn" id="bdone">✓ Alle erledigt</button></div>'+
+    '<div class="wa-act"><button type="button" class="btn primary" id="bshare" hidden>Alle teilen (Instagram)</button><button type="button" class="btn" id="bsave">Alle Bilder speichern</button><button type="button" class="btn" id="bcopy">Bildunterschrift kopieren</button><button type="button" class="btn" id="brecap">🔄 Anderer Text</button>'+(BUNDLE.manual?'<button type="button" class="btn" id="bdone">✓ Gepostet – Sammlung leeren</button>':'<button type="button" class="btn" id="bdone">✓ Alle erledigt</button>')+'</div>'+
     '<p class="hint">Auf dem Handy: „Alle teilen“ → Instagram → Beitrag, dann sind alle Bilder schon als Karussell ausgewählt; die Bildunterschrift vorher kopieren und einfügen. Am PC: Bilder speichern und in Instagram mehrere auswählen. Reihenfolge mit ◀ ▶ ändern.</p></div>';
   var files=function(){return BUNDLE.parts.map(function(p,i){return new File([p.blob],(i+1)+'_'+p.name,{type:'image/png'});});};
   try{if(navigator.canShare&&navigator.canShare({files:files()})){var sb=$('bshare');sb.hidden=false;sb.onclick=function(){navigator.share({files:files(),text:BUNDLE.cap}).catch(function(){});};}}catch(x){}
   $('bcap').oninput=function(){BUNDLE.cap=this.value;BUNDLE.capEdited=true;};
+  $('brecap').onclick=function(){BUNDLE.seed=(BUNDLE.seed||1)+1;BUNDLE.capEdited=false;BUNDLE.cap=apCaption(BUNDLE.parts);$('bcap').value=BUNDLE.cap;};
   $('bsave').onclick=function(){BUNDLE.parts.forEach(function(p,i){setTimeout(function(){var a=document.createElement('a');a.href=URL.createObjectURL(p.blob);a.download=(i+1)+'_'+p.name;document.body.appendChild(a);a.click();setTimeout(function(){a.remove();},1500);},i*400);});};
   $('bcopy').onclick=function(){var b=this;(navigator.clipboard?navigator.clipboard.writeText(BUNDLE.cap):Promise.reject()).then(function(){b.textContent='Kopiert ✓';setTimeout(function(){b.textContent='Bildunterschrift kopieren';},1500);},function(){prompt('Text kopieren:',BUNDLE.cap);});};
-  $('bdone').onclick=function(){BUNDLE.parts.forEach(function(p){apSet(p.o.id,1);});BUNDLE=null;APSEL={};apView();};
+  $('bdone').onclick=function(){if(BUNDLE.manual){BUNDLE=null;GSEL=[];S.editPart=null;apBundleView();trayView();return;}BUNDLE.parts.forEach(function(p){apSet(p.o.id,1);});BUNDLE=null;APSEL={};apView();};
   $('bclose').onclick=function(){BUNDLE=null;apBundleView();};
   el.querySelectorAll('[data-pick]').forEach(function(b){b.onclick=function(){var i=+b.dataset.pick;BUNDLE.sel=BUNDLE.sel===i?null:i;apBundleView();};});
   el.querySelectorAll('[data-lk]').forEach(function(b){b.onclick=function(){BUNDLE.parts[sel].look=b.dataset.lk;apRedo(sel);};});
   if($('bvar'))$('bvar').onclick=function(){BUNDLE.parts[sel].seed+=1+Math.floor(Math.random()*20);apRedo(sel);};
   if($('bfin'))$('bfin').onclick=function(){BUNDLE.sel=null;apBundleView();};
-  if($('bopen'))$('bopen').onclick=function(){var p=BUNDLE.parts[sel];apOpen(p.o);S.look=p.look;S.seed=p.seed;buildThemes();refill();};
+  if($('bopen'))$('bopen').onclick=function(){var p=BUNDLE.parts[sel];if(BUNDLE.manual){var st=p.o.set;S.type=st.type;if(st.team)S.team=st.team;S.pick=st.pick||null;if(st.month)S.month=st.month;if(st.crit)S.crit=st.crit;if(p.o.format)S.format=p.o.format;S.look=p.look;S.seed=p.seed;S.editPart=sel;buildTypeSelect();buildThemes();buildSrc();refill(p.o.f);addBtnLabel();window.scrollTo(0,0);return;}apOpen(p.o);S.look=p.look;S.seed=p.seed;buildThemes();refill();};
   el.querySelectorAll('[data-mv]').forEach(function(b){b.onclick=function(){var i=+b.dataset.mv,j=i+(+b.dataset.d);if(j<0||j>=BUNDLE.parts.length)return;var t=BUNDLE.parts[i];BUNDLE.parts[i]=BUNDLE.parts[j];BUNDLE.parts[j]=t;if(BUNDLE.sel===i)BUNDLE.sel=j;else if(BUNDLE.sel===j)BUNDLE.sel=i;BUNDLE.cap=apCaption(BUNDLE.parts,BUNDLE.cap);apBundleView();};});}
 function apBundle(list,look){BUNDLE={list:list,busy:true};apBundleView();apRender(list,look).then(function(parts){BUNDLE={list:list,parts:parts,sel:null};BUNDLE.cap=apCaption(parts);apBundleView();$('apb').scrollIntoView({behavior:'smooth',block:'start'});});}
 window.cdaAP=apView;
