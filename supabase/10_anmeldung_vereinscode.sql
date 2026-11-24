@@ -7,7 +7,7 @@
 -- Ohne Freischaltung kann niemand ein Mitglied anmelden.
 -- Gäste: weiterhin ohne Code, aber mit Grenzen gegen Spam:
 --   - kein Gast mit dem Namen eines Mitglieds
---   - höchstens 2 Gäste pro Handy und Abend, höchstens 12 Gäste pro Abend
+--   - höchstens 2 Gäste pro Handy und Abend (insgesamt beliebig viele Gäste pro Abend)
 --   - höchstens 20 Gast-Anmeldungen pro Stunde insgesamt
 -- Falsche Codes: nach 50 Fehlversuchen pro Stunde Pause; schon freigeschaltete Handys sind davon nicht betroffen.
 --
@@ -82,9 +82,6 @@ begin
     end if;
     if (select count(*) from public.signups where event_date = p_date and guest_name is not null and token_hash = th) >= 2 then
       raise exception 'Von diesem Handy sind für den Abend schon 2 Gäste angemeldet.';
-    end if;
-    if (select count(*) from public.signups where event_date = p_date and guest_name is not null) >= 12 then
-      raise exception 'Für diesen Abend sind schon 12 Gäste angemeldet. Bitte kurz beim Vorstand melden.';
     end if;
     if (select count(*) from public.signups where guest_name is not null and created_at > now() - interval '1 hour') >= 20 then
       raise exception 'Gerade sind sehr viele Anmeldungen eingegangen. Bitte später noch einmal probieren.';
