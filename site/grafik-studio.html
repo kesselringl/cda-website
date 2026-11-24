@@ -1359,7 +1359,7 @@ var CAP={
       '🎮 Spielmodus: '+f.title+(f.modus?' – '+f.modus:''),'📅 '+f.kicker2,'🕗 Beginn 20:00 Uhr (Anmeldung bis 19:45)','📍 Bismarck Bistro, Bismarckstraße 7, Augsburg',''];
     Lx.push(c?'👥 '+c+(c===1?' Anmeldung':' Anmeldungen')+' bisher'+(n.length?': '+n.slice(0,10).join(', ')+(n.length>10?' und weitere':''):'')+' 🔥':'👥 Noch keine Anmeldungen – sei der Erste! 🥇');
     if(pw&&pw.name)Lx.push('~🏆 Letzter Sieger: '+pw.name+' – wer stoppt '+(pw.name.indexOf('&')>0?'die beiden':first(pw.name))+'?');
-    Lx.push('~🎯 Kein eigenes Board, keine Erfahrung? Kein Problem – Leihpfeile gibt es vor Ort und wir erklären dir alles.','','👉 Anmeldung mit einem Klick über unsere Homepage (Link in der Bio).','',cxCta(R,'comp'),'',cxSign(R));return[Lx,['#ClochardDarterAugsburg','#CDA','#Competition','#Steeldarts','#Augsburg']];},
+    Lx.push('~🎯 Keine Erfahrung? Kein Problem – wir erklären dir alles vor Ort.','','👉 Anmeldung mit einem Klick über unsere Homepage (Link in der Bio).','',cxCta(R,'comp'),'',cxSign(R));return[Lx,['#ClochardDarterAugsburg','#CDA','#Competition','#Steeldarts','#Augsburg']];},
   masters:function(f,R){var n=lines(f.names).map(function(a){return a[0].replace(' (Gast)','');}),y=msYear(),rk=mastersRanking(y),Lx=['🏆💰 '+String(f.title).toUpperCase()+' – '+String(f.kicker2).split(' · ').slice(0,2).join(' · ').toUpperCase()+' 💰🏆','',
       one(R,['Es geht um Punkte, um Ruhm – und um den Pott! 💰 Aktuell liegen '+f.pot+' im Masters-Pott und jeder Abend legt nach. 📈','Der Masters-Pott wächst: '+f.pot+' warten schon jetzt auf die besten '+MAX_FINALS+' bei den Finals! 🤑']),''];
     kp(f).forEach(function(a){Lx.push('▪️ '+a[0]+': '+a[1]);});lines(f.list).forEach(function(a){Lx.push('▪️ '+a[0]+': '+a[1]);});
@@ -1557,20 +1557,52 @@ function waBuild(e,kind){
     n<=11?one(['Schon '+n+' Anmeldungen, unter anderem '+waNames(L.slice(0,3))+' – wird ein guter Abend!',n+' sind schon dabei 🔥 Kommt dazu, je mehr desto besser!']):
     n<=15?one([n+' Anmeldungen – die Bude wird voll! 🔥 Wer noch mitwill, schnell eintragen.','Wahnsinn, schon '+n+' Leute dabei! Tragt euch ein, damit wir planen können.']):
     'Schon '+n+' Anmeldungen 🤯 Bitte unbedingt eintragen, wenn ihr kommt – dann planen wir die Boards rechtzeitig.');
-  if(kind!=='push')out.push('📅 '+wd+', '+dd+' · ab 20 Uhr · '+(mode==='finals'?'Sportheim TSV Dinkelscherben':'Bismarck Bistro')+(mode==='friend'||R()<.3?'\nGäste sind wie immer willkommen!':''));
-  out.push(one(['Hier kurz anmelden (oder absagen):','Anmelden geht in 10 Sekunden:','Bitte kurz eintragen, damit wir planen können:','Zur Anmeldung:'])+'\n'+waBase()+'?s=wa#kontakt/'+date);
-  // Kurzanleitung mit Vereinscode (Mitglieder schalten ihr Handy einmal frei)
+  var ort=mode==='finals'?'Sportheim TSV Dinkelscherben':'Bismarck Bistro';
+  if(kind!=='push')out.push('📅 '+wd+', '+dd+' · ab 20 Uhr · '+ort);
+  out.push(one(['Hier kurz anmelden (oder absagen):','Anmelden geht in 10 Sekunden:','Bitte kurz eintragen, damit wir planen können:','Zur Anmeldung:','Zusagen per Klick:'])+'\n'+waBase()+'?s=wa#kontakt/'+date);
+  // Kurzanleitung mit Vereinscode (die Nachricht geht nur an Mitglieder)
   var code=waCode()||'[VEREINSCODE]';
-  if(kind==='einladung'||kind==='auto')out.push(one(['So geht’s:','Kurz erklärt:','Falls ihr’s zum ersten Mal macht:'])+'\n1️⃣ Link öffnen\n2️⃣ Nur beim ersten Mal den Vereinscode eingeben: *'+code+'*\n3️⃣ Namen antippen und auf „Ich bin dabei“ ✅\nGäste tippen einfach auf „Ich bin kein Mitglied“.');
-  else out.push(one(['Vereinscode (nur beim ersten Mal): *'+code+'* – dann Namen antippen und „Ich bin dabei“ ✅','Neues Handy? Einmal den Vereinscode *'+code+'* eingeben, Namen antippen, fertig ✅']));
-  var bye=one(['','Bis '+(diff===0?'heute Abend':diff===1?'morgen':wd)+'! 🍻','Ich freu mich auf euch! 🎯','Bis dann, Leon','']);if(bye)out.push(bye);
+  if(kind==='einladung')out.push(one([
+    'So geht’s:\n1️⃣ Link öffnen\n2️⃣ Nur beim ersten Mal den Vereinscode eingeben: *'+code+'*\n3️⃣ Namen antippen und „Ich bin dabei“ ✅',
+    '🔑 Vereinscode: *'+code+'* (nur beim ersten Mal pro Handy)\nDann euren Namen antippen und „Ich bin dabei“ – fertig ✅',
+    'Neu auf der Homepage? Einmal den Vereinscode *'+code+'* eingeben, Namen antippen, „Ich bin dabei“. Ab dann reicht ein Tipp 👍',
+    'Kurz erklärt: Link auf ➜ Code *'+code+'* (nur beim ersten Mal) ➜ Name ➜ „Ich bin dabei“ ✅ Dauert keine 10 Sekunden.']));
+  else out.push(one(['Vereinscode (nur beim ersten Mal): *'+code+'* – dann Namen antippen und „Ich bin dabei“ ✅','Neues Handy? Einmal den Code *'+code+'* eingeben, Namen antippen, fertig ✅','🔑 Code fürs erste Mal: *'+code+'*']));
+  // Freunde mitbringen
+  var FR=['Bringt gern Freunde mit 🍻 Die tragen sich unter „Ich bin kein Mitglied“ ein (ohne Code) oder kommen einfach spontan vorbei.',
+    'Freunde, Partner, Arbeitskollegen – alle sind willkommen! Gäste melden sich ohne Code über „Ich bin kein Mitglied“ an.',
+    'Ihr habt einen Kumpel, der mal reinschnuppern will? Unbedingt mitbringen! Erfahrung braucht keiner 😉',
+    'Nehmt gern jemanden mit – egal ob Anfänger oder Ligaspieler aus einem anderen Verein.'];
+  if(mode==='friend')out.push('Diesmal ganz wichtig: Jeder bringt jemanden mit! 🤝 '+one(['Eure Begleitung meldet sich unter „Ich bin kein Mitglied“ an.','Euer Doppelpartner trägt sich als Gast ein, ganz ohne Code.']));
+  else if(kind!=='push'||R()<.4)out.push(one(FR));
+  // Weitersagen in der Dartszene
+  var SP=['📣 Bitte verbreitet das überall: Trainingsgruppe, Ligateam, Stammtisch, Arbeit – jeder, der gern wirft, ist willkommen!',
+    '📣 Wir wollen die Competition wieder richtig groß machen – das klappt nur mit euch! Erzählt’s in der Dartszene rum, schickt den Link in eure anderen Gruppen.',
+    '📣 Kleine Bitte: Teilt den Link in euren anderen Dartgruppen und im Status. Spieler aus anderen Vereinen sind ausdrücklich eingeladen!',
+    '📣 Macht Werbung! Ligagegner, Kneipenkumpels, Kollegen – sagt allen, dass donnerstags beim CDA geworfen wird.',
+    '📣 Jeder neue Spieler macht den Abend besser. Also: weitersagen, mitbringen, Status posten 💪',
+    '📣 Ziel sind volle Boards 🎯 Ihr kennt doch alle jemanden, der Darts spielt – schickt ihm den Link!'];
+  if(kind==='einladung'||R()<.6)out.push(one(SP));
+  // Motivierender Abschluss
+  var MO=['Wir hoffen auf eine volle Hütte! 🔥','Lasst uns zeigen, dass beim CDA donnerstags was los ist! 💚❤️','Je mehr, desto lustiger – wir freuen uns auf zahlreiche Teilnahme! 🎯','Kommt zahlreich, es lohnt sich! 🎯🍻','Auf einen starken Abend – wir zählen auf euch! 💪','Bis '+(diff===0?'heute Abend':diff===1?'morgen':wd)+' – ich freu mich auf euch! 🎯'];
+  out.push(one(MO)+(R()<.4?'\nLeon':''));
+  return out.join('\n\n');}
+function waPromo(e){
+  var date=e.date,R=waRng(date+'#werbung#'+WA.seed),one=function(a){return a[Math.floor(R()*a.length)];},mode=e.mode==='alt'?'open':e.mode,dt=new Date(date+'T12:00:00'),wd=WD[dt.getDay()],dd=dmy(date).slice(0,6),out=[];
+  var MODEN={open:'501 Double-out',c501:'501 Double-out',di301:'301 Double-In',cricket:'Cricket',lucky:'Lucky Doubles (Doppelpartner wird gelost)',friend:'Bring a Friend (Doppel mit deiner Begleitung)',m501:'CDA Masters – 501 mit Rangliste und Preisgeld',finals:'CDA Masters Finals'};
+  out.push(one(['🎯 Lust auf Steeldarts am Donnerstag?','🎯 Offene Darts-Competition in Augsburg – jeder kann mitspielen!','🎯 Donnerstags wird in Augsburg geworfen – sei dabei!','🎯 Du spielst Darts? Dann komm vorbei!']));
+  out.push(one(['Der Clochard Darter Augsburg e.V. lädt jeden Donnerstag zur offenen Competition ein – egal ob Ligaspieler, Hobbywerfer oder Anfänger.','Beim Clochard Darter Augsburg spielen jeden Donnerstag Mitglieder und Gäste zusammen eine lockere Competition. Vereinszugehörigkeit egal, Spaß garantiert.','Jeden Donnerstag spielt der CDA eine offene Competition – Gäste aus anderen Vereinen und Neueinsteiger sind ausdrücklich willkommen!']));
+  out.push('📅 '+wd+', '+dd+' · ab 20 Uhr\n📍 '+(mode==='finals'?'Sportheim TSV Dinkelscherben, Burggasse 50':'Bismarck Bistro, Bismarckstraße 7, Augsburg')+'\n🎮 '+(MODEN[mode]||MODEN.open));
+  if(mode==='m501')out.push('💰 CDA Masters: Startgeld 15 € – Preisgeld am Abend für die Top 3, der Rest wandert in den Pott für die Finals.');
+  out.push(one(['Anmelden (als Gast unter „Ich bin kein Mitglied“):','Kurz anmelden – Gäste tippen auf „Ich bin kein Mitglied“:','Anmeldung in 10 Sekunden, ohne Konto:'])+'\n'+waBase()+'?s=wa#kontakt/'+date);
+  out.push(one(['Ergebnisse und Rangliste gibt’s live auf unserer Homepage. Wir freuen uns auf dich! 🍻','Ergebnisse laufen live auf unserer Homepage mit – und danach gibt’s noch ein Kaltgetränk 🍻','Bring gern noch jemanden mit – je voller, desto besser! 💚❤️']));
   return out.join('\n\n');}
 function waCode(){try{return localStorage.getItem('cda-sbcode')||'';}catch(x){return '';}}
 function waView(){var el=$('wav'),ds=upcoming().filter(function(e){return e.mode!=='finals'||true;}).slice(0,8);if(!ds.length){el.innerHTML='<div class="box"><p class="note">Kein Termin gefunden.</p></div>';return;}
   if(!WA.date||!ds.some(function(e){return e.date===WA.date;}))WA.date=ds[0].date;var e=ds.filter(function(x){return x.date===WA.date;})[0];
   signupsFor(e.date).then(function(){
-    var diff=daysTo(e.date),auto=diff===0?'heute':'einladung',kind=WA.kind==='auto'?auto:WA.kind;WA.txt=waBuild(e,kind);var n=(SIGN[e.date]||[]).length;
-    var kinds=[['auto','Automatisch'],['einladung','Einladung'],['heute','Am Spieltag'],['push','Nachfassen']];
+    var diff=daysTo(e.date),auto=diff===0?'heute':'einladung',kind=WA.kind==='auto'?auto:WA.kind;WA.txt=kind==='werbung'?waPromo(e):waBuild(e,kind);var n=(SIGN[e.date]||[]).length;
+    var kinds=[['auto','Automatisch'],['einladung','Einladung'],['heute','Am Spieltag'],['push','Nachfassen'],['werbung','Zum Weiterleiten']];
     el.innerHTML='<div class="box wa-box"><h2>WhatsApp-Nachricht für die Vereinsgruppe</h2>'+
       '<label class="f" for="wadate">Abend</label><select id="wadate">'+ds.map(function(x){return '<option value="'+x.date+'"'+(x.date===e.date?' selected':'')+'>'+dow(x.date).slice(0,2)+' '+dmy(x.date)+' · '+(x.mode==='alt'?'Offene Competition':(MODE[x.mode]||MODE.alt)[0]+(x.no?' #'+x.no:''))+'</option>';}).join('')+'</select>'+
       '<label class="f">Anlass</label><div class="seg" id="wakind">'+kinds.map(function(k){return '<button type="button" data-v="'+k[0]+'" aria-pressed="'+(WA.kind===k[0])+'">'+k[1]+'</button>';}).join('')+'</div>'+
@@ -1579,7 +1611,7 @@ function waView(){var el=$('wav'),ds=upcoming().filter(function(e){return e.mode
       '<p class="hint">'+n+' Anmeldung'+(n===1?'':'en')+' für diesen Abend'+(n?': '+esc((SIGN[e.date]||[]).join(', ')):'')+'</p>'+
       '<label class="f" for="watxt">Text (kannst du hier noch ändern)</label><textarea id="watxt" rows="14">'+esc(WA.txt)+'</textarea>'+
       '<div class="wa-act"><a class="btn primary" id="wago" target="_blank" rel="noopener" href="https://wa.me/?text='+encodeURIComponent(WA.txt)+'">In WhatsApp teilen</a><button type="button" class="btn" id="wacopy">Kopieren</button><button type="button" class="btn" id="waroll">🔄 Neu formulieren</button></div>'+
-      '<p class="hint">Jede Fassung ist anders: Begrüßung, Anmeldestand, Spielmodus, letzter Sieger, Masters-Pott und Jahreszeit fließen ein. „Einladung“ am besten am Mittwoch, „Am Spieltag“ donnerstags mittags, „Nachfassen“ wenn sich wenige angemeldet haben.</p></div>';
+      '<p class="hint">Jede Fassung ist anders: Begrüßung, Anmeldestand, Spielmodus, letzter Sieger, Masters-Pott und Jahreszeit fließen ein. „Einladung“ am besten am Mittwoch, „Am Spieltag“ donnerstags mittags, „Nachfassen“ wenn sich wenige angemeldet haben. „Zum Weiterleiten“ ist für andere Dartgruppen und Nicht-Mitglieder – ohne Vereinscode.</p></div>';
     $('wadate').onchange=function(){WA.date=this.value;WA.seed=0;waView();};
     $('wakind').onclick=function(ev){var b=ev.target.closest('button');if(!b)return;WA.kind=b.dataset.v;waView();};
     $('waroll').onclick=function(){WA.seed++;waView();};
