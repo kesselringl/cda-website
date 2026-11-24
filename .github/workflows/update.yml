@@ -70,6 +70,9 @@ jobs:
           curl -sS -m 20 -o /dev/null -w "Supabase: %{http_code}\n" \
             "https://qeevsqrmltewbtrnfrfm.supabase.co/rest/v1/players?select=id&limit=1" \
             -H "apikey: sb_publishable_pwnzx63cque5lKZEVCe4mA_5SvBP8Yd"
+          # Alte Anmeldungen (> 3 Monate) und alte Besucherzähler (> 2 Jahre) löschen – siehe supabase/09
+          curl -sS -m 20 -X POST "https://qeevsqrmltewbtrnfrfm.supabase.co/rest/v1/rpc/cda_cleanup" \
+            -H "apikey: sb_publishable_pwnzx63cque5lKZEVCe4mA_5SvBP8Yd" -H "Content-Type: application/json" -d '{}' -w "\nAufräumen: %{http_code}\n"
 
       - name: Monatswerte für den Spieler des Monats
         run: node scripts/build-month-stats.mjs

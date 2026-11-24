@@ -20,7 +20,10 @@ async function rpc(fn, body, expectOpen) {
   const r = await fetch(`${U}/rest/v1/rpc/${fn}`, { method: 'POST', headers: H, body: JSON.stringify(body || {}) });
   log(r.ok === expectOpen, `Funktion ${fn}`, r.ok ? 'aufrufbar' : `gesperrt (HTTP ${r.status})`);
 }
-for (const t of ['players', 'events']) await read(t, true);
+await read('players', true, 'id,name,team,active');
+await read('players', false); // alle Spalten (inkl. Anlagedatum): gesperrt seit Teil 9
+await read('events', true);
+await rpc('cda_cleanup', {}, true);
 await read('signups', true, 'id,event_date,player_id,guest_name,created_at');
 await read('signups', false); // alle Spalten inkl. Geräte-Prüfsumme: muss gesperrt sein
 for (const t of ['staff', 'events_log', 'page_views', 'steckbriefe', 'cda_secrets', 'steckbrief_tickets', 'steckbrief_fails']) await read(t, false);

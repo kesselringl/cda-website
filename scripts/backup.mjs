@@ -25,7 +25,7 @@ async function rpc(fn) {
 }
 
 const manifest = { erstellt: new Date().toISOString(), quelle: U, inhalt: {} };
-const jobs = [['spieler', () => table('players', 'id')], ['abende', () => table('events', 'date')], ['anmeldungen', () => table('signups', 'event_date', 'id,event_date,player_id,guest_name,created_at')], ['steckbriefe', () => rpc('cda_profiles')]];
+const jobs = [['spieler', () => table('players', 'id', 'id,name,team,active')], ['abende', () => table('events', 'date')], ['anmeldungen', () => table('signups', 'event_date', 'id,event_date,player_id,guest_name,created_at')], ['steckbriefe', () => rpc('cda_profiles')]];
 let failed = 0;
 for (const [name, fn] of jobs) {
   try {
@@ -48,7 +48,7 @@ try {
   writeFileSync(`${OUT}/wiederherstellen.sql`, `-- CDA – Wiederherstellung aus der Sicherung vom ${manifest.erstellt}
 -- Im Supabase SQL Editor komplett einfügen und „Run“. Vorhandene Einträge bleiben unverändert,
 -- es werden nur fehlende Spieler und Abende ergänzt.
-insert into public.players overriding system value select * from jsonb_populate_recordset(null::public.players, $cda$${q('spieler')}$cda$::jsonb) on conflict do nothing;
+insert into public.players (id, name, team, active) overriding system value select id, name, team, coalesce(active, true) from jsonb_populate_recordset(null::public.players, $cda$${q('spieler')}$cda$::jsonb) on conflict do nothing;
 insert into public.events overriding system value select * from jsonb_populate_recordset(null::public.events, $cda$${q('abende')}$cda$::jsonb) on conflict do nothing;
 select setval(pg_get_serial_sequence('public.players','id'), greatest((select max(id) from public.players), 1)) where pg_get_serial_sequence('public.players','id') is not null;
 select setval(pg_get_serial_sequence('public.events','id'), greatest((select max(id) from public.events), 1)) where pg_get_serial_sequence('public.events','id') is not null;
