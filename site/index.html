@@ -1075,7 +1075,7 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
             <details class="su-guest">
               <summary>Ich bin kein Mitglied / zum ersten Mal da</summary>
               <div class="su-grow"><input id="su-gname" type="text" maxlength="30" autocomplete="name" placeholder="Vor- und Nachname"><button type="button" class="btn primary" id="su-gok">Weiter</button></div>
-              <label class="su-consent"><input type="checkbox" id="su-gconsent"> Ich bin einverstanden, dass mein Name in der Teilnehmerliste, in Tabellen und Ergebnissen des CDA angezeigt wird.</label>
+              <label class="su-consent"><input type="checkbox" id="su-gconsent"> Ich bin einverstanden, dass mein Name in der Teilnehmerliste sowie mit meinen Ergebnissen (Live-Ansicht, Rangliste, Statistiken, Vereinsgrafiken) angezeigt wird. <a href="datenschutz.html" style="color:inherit">Datenschutz</a></label>
               <p class="su-fine">Wir speichern nur deinen Namen und deine Anmeldungen. Mehr in der <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a>.</p>
             </details>
           </div>
@@ -1821,7 +1821,8 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
       if(!r.ok)return r.text().then(function(t){var m='';try{m=JSON.parse(t).message;}catch(e){}throw new Error(m||('Fehler '+r.status));});
       return r.status===204?null:r.json();});}
   var store={get:function(k){try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
-  var TOKEN=store.get('cda-token');if(!TOKEN){TOKEN=Array.from(crypto.getRandomValues(new Uint8Array(16))).map(function(b){return ('0'+b.toString(16)).slice(-2);}).join('');store.set('cda-token',TOKEN);}
+  // Gerätekennung erst bei der ersten An-/Abmeldung anlegen (nicht schon beim Seitenaufruf)
+  var TOKEN=store.get('cda-token');function tok(){if(!TOKEN){TOKEN=Array.from(crypto.getRandomValues(new Uint8Array(16))).map(function(b){return ('0'+b.toString(16)).slice(-2);}).join('');store.set('cda-token',TOKEN);}return TOKEN;}
   var ME=store.get('cda-me'),PLAYERS=[],SIGN=[],FOCUS=null;
   var msel=document.getElementById('su-mode'),minfo=document.getElementById('su-mode-info'),serr=document.getElementById('su-err');
   var fmt=new Intl.DateTimeFormat('de-DE',{weekday:'short',day:'2-digit',month:'2-digit'});
@@ -1872,7 +1873,7 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
   document.getElementById('su-list').addEventListener('click',function(e){
     var b=e.target.closest('.su-btn');if(!b||!ME)return;var d=b.getAttribute('data-date'),inn=b.getAttribute('data-act')==='in';
     b.disabled=true;b.textContent=inn?'Wird gespeichert …':'Wird abgesagt …';showErr('');
-    sb('/rest/v1/rpc/'+(inn?'cda_signup':'cda_cancel'),{method:'POST',body:{p_date:d,p_player:ME.id,p_guest:ME.id?null:ME.name,p_token:TOKEN}})
+    sb('/rest/v1/rpc/'+(inn?'cda_signup':'cda_cancel'),{method:'POST',body:{p_date:d,p_player:ME.id,p_guest:ME.id?null:ME.name,p_token:tok()}})
       .then(load).then(function(){if(!inn&&mine({date:d}))showErr('Absagen ging nicht: Du hast dich mit einem anderen Gerät angemeldet. Sag bitte der Turnierleitung kurz Bescheid.');})
       .catch(function(x){showErr('Das hat nicht geklappt: '+x.message);renderMe();});
   });
