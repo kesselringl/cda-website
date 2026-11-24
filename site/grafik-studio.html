@@ -1536,12 +1536,12 @@ function waBuild(e,kind){
   if(md>='12-10'&&md<='12-22')hook=one(['Letzter Donnerstag vor der Weihnachtspause 🎄 – lasst uns das Jahr gscheid ausklingen lassen!','Vor der Weihnachtspause werfen wir nochmal ordentlich 🎄']);
   else if(md>='01-07'&&md<='01-13')hook=one(['Das erste Mal im neuen Jahr – gute Vorsätze direkt am Board umsetzen 😄','Endlich geht’s wieder los nach der Pause!']);
   // Spielmodus
-  var ML={open:['Gespielt wird ganz normal 501 – egal ob Ligaspieler oder Hobbywerfer, jeder kann mitmachen.','Ganz entspannt 501, jeder ist willkommen – auch wenn du nur ab und zu wirfst.','501 Double-out, lockere Runde – genau richtig nach der Arbeit 🍻'],
-    c501:['Ganz normal 501, ohne Masters-Druck – perfekt zum Reinkommen.','Klassisch 501 Double-out, ohne Wertung – einfach Spaß haben.'],
-    di301:['301 Double-In: erst ein Doppel treffen, dann zählt’s. Kurz, knackig, gemein 😅','Diesmal 301 Double-In – wer das Doppel zuerst trifft, ist klar im Vorteil 😉'],
-    cricket:['Cricket-Nacht! Felder schließen statt rechnen – mal was ganz anderes.','Cricket ist angesagt: 15 bis 20 und Bull, da zählt Taktik 🧠'],
-    lucky:['Lucky Doubles: Die Doppel werden zugelost – stark mit schwach, da hat jeder eine Chance.','Lucky Doubles! Der Partner wird gelost, also kann wirklich jeder gewinnen 🍀'],
-    friend:['Bring a Friend: Bringt jemanden mit, ihr spielt zusammen im Doppel. Perfekt, um Freunde mal ans Board zu holen!','Diesmal „Bring a Friend“ – nehmt Kumpel, Freundin oder Kollegen mit, ihr spielt als Doppel 🍻'],
+  var ML={open:['Gespielt wird 501 Double-out – Turnierform legen wir vor Ort je nach Teilnehmerzahl fest.','Auf dem Programm: 501 Double-out, Gruppen oder K.-o. je nachdem, wie viele kommen.','Klassischer Abend: 501 Double-out, Ergebnisse laufen live auf der Homepage mit.'],
+    c501:['Gespielt wird 501 Double-out, ohne Masters-Wertung – ideal, um sich für die nächsten Masters warmzuwerfen 🔥','501 Double-out ohne Masters-Punkte – perfekte Generalprobe für den nächsten Masters-Abend.','Diesmal 501 Double-out ohne Wertung – zählt nicht für die Rangliste, aber für die Ehre 😏'],
+    di301:['301 Double-In: erst ein Doppel treffen, dann zählt’s. Kurz, knackig, gemein 😅','Diesmal 301 Double-In – wer zuerst ein Doppel trifft, ist klar im Vorteil 😉','301 Double-In steht an: Ohne Doppel kein Start – da wird so mancher Favorit nervös 😄'],
+    cricket:['Cricket-Nacht! Felder schließen statt rechnen – mal was ganz anderes 🧠','Cricket ist angesagt: 15 bis 20 und Bull, da zählt Taktik statt Scoring.','Abwechslung im Programm: Cricket! Wer die Bull trifft, macht den Unterschied 🎯'],
+    lucky:['Lucky Doubles: Die Doppel werden zugelost – da kann wirklich jeder gewinnen 🍀','Lucky Doubles! Partner per Los, da gibt’s garantiert Überraschungen 😄','Diesmal Lucky Doubles – ihr wisst vorher nicht, mit wem ihr spielt. Genau das macht’s spannend 🍀'],
+    friend:['Bring a Friend: Jeder bringt jemanden mit und ihr spielt zusammen im Doppel 🍻','Diesmal „Bring a Friend“ – Kumpel, Partnerin oder Kollegen mitbringen, ihr spielt als Doppel.','Bring-a-Friend-Abend! Holt eure Leute ans Board, gespielt wird im Doppel mit eurer Begleitung 🤝'],
     finals:['Die Masters-Finals stehen an – die Besten der Saison spielen um den kompletten Pott! 🏆']};
   var line=one(ML[mode]||ML.c501);
   if(mode==='m501'){var pot=potFor(y),rk=mastersRanking(y),lead=rk[0];
