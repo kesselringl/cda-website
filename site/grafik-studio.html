@@ -1559,8 +1559,13 @@ function waBuild(e,kind){
     'Schon '+n+' Anmeldungen 🤯 Bitte unbedingt eintragen, wenn ihr kommt – dann planen wir die Boards rechtzeitig.');
   if(kind!=='push')out.push('📅 '+wd+', '+dd+' · ab 20 Uhr · '+(mode==='finals'?'Sportheim TSV Dinkelscherben':'Bismarck Bistro')+(mode==='friend'||R()<.3?'\nGäste sind wie immer willkommen!':''));
   out.push(one(['Hier kurz anmelden (oder absagen):','Anmelden geht in 10 Sekunden:','Bitte kurz eintragen, damit wir planen können:','Zur Anmeldung:'])+'\n'+waBase()+'?s=wa#kontakt/'+date);
+  // Kurzanleitung mit Vereinscode (Mitglieder schalten ihr Handy einmal frei)
+  var code=waCode()||'[VEREINSCODE]';
+  if(kind==='einladung'||kind==='auto')out.push(one(['So geht’s:','Kurz erklärt:','Falls ihr’s zum ersten Mal macht:'])+'\n1️⃣ Link öffnen\n2️⃣ Nur beim ersten Mal den Vereinscode eingeben: *'+code+'*\n3️⃣ Namen antippen und auf „Ich bin dabei“ ✅\nGäste tippen einfach auf „Ich bin kein Mitglied“.');
+  else out.push(one(['Vereinscode (nur beim ersten Mal): *'+code+'* – dann Namen antippen und „Ich bin dabei“ ✅','Neues Handy? Einmal den Vereinscode *'+code+'* eingeben, Namen antippen, fertig ✅']));
   var bye=one(['','Bis '+(diff===0?'heute Abend':diff===1?'morgen':wd)+'! 🍻','Ich freu mich auf euch! 🎯','Bis dann, Leon','']);if(bye)out.push(bye);
   return out.join('\n\n');}
+function waCode(){try{return localStorage.getItem('cda-sbcode')||'';}catch(x){return '';}}
 function waView(){var el=$('wav'),ds=upcoming().filter(function(e){return e.mode!=='finals'||true;}).slice(0,8);if(!ds.length){el.innerHTML='<div class="box"><p class="note">Kein Termin gefunden.</p></div>';return;}
   if(!WA.date||!ds.some(function(e){return e.date===WA.date;}))WA.date=ds[0].date;var e=ds.filter(function(x){return x.date===WA.date;})[0];
   signupsFor(e.date).then(function(){
@@ -1569,6 +1574,8 @@ function waView(){var el=$('wav'),ds=upcoming().filter(function(e){return e.mode
     el.innerHTML='<div class="box wa-box"><h2>WhatsApp-Nachricht für die Vereinsgruppe</h2>'+
       '<label class="f" for="wadate">Abend</label><select id="wadate">'+ds.map(function(x){return '<option value="'+x.date+'"'+(x.date===e.date?' selected':'')+'>'+dow(x.date).slice(0,2)+' '+dmy(x.date)+' · '+(x.mode==='alt'?'Offene Competition':(MODE[x.mode]||MODE.alt)[0]+(x.no?' #'+x.no:''))+'</option>';}).join('')+'</select>'+
       '<label class="f">Anlass</label><div class="seg" id="wakind">'+kinds.map(function(k){return '<button type="button" data-v="'+k[0]+'" aria-pressed="'+(WA.kind===k[0])+'">'+k[1]+'</button>';}).join('')+'</div>'+
+      '<label class="f" for="wacode">Vereinscode für die Anleitung</label><input id="wacode" type="text" autocomplete="off" spellcheck="false" value="'+esc(waCode())+'" placeholder="Code eingeben – wird nur auf diesem Gerät gemerkt">'+
+      (waCode()?'':'<p class="note" style="margin-top:6px">Bitte den aktuellen Vereinscode eintragen, sonst steht in der Nachricht nur [VEREINSCODE].</p>')+
       '<p class="hint">'+n+' Anmeldung'+(n===1?'':'en')+' für diesen Abend'+(n?': '+esc((SIGN[e.date]||[]).join(', ')):'')+'</p>'+
       '<label class="f" for="watxt">Text (kannst du hier noch ändern)</label><textarea id="watxt" rows="14">'+esc(WA.txt)+'</textarea>'+
       '<div class="wa-act"><a class="btn primary" id="wago" target="_blank" rel="noopener" href="https://wa.me/?text='+encodeURIComponent(WA.txt)+'">In WhatsApp teilen</a><button type="button" class="btn" id="wacopy">Kopieren</button><button type="button" class="btn" id="waroll">🔄 Neu formulieren</button></div>'+
@@ -1576,6 +1583,7 @@ function waView(){var el=$('wav'),ds=upcoming().filter(function(e){return e.mode
     $('wadate').onchange=function(){WA.date=this.value;WA.seed=0;waView();};
     $('wakind').onclick=function(ev){var b=ev.target.closest('button');if(!b)return;WA.kind=b.dataset.v;waView();};
     $('waroll').onclick=function(){WA.seed++;waView();};
+    $('wacode').onchange=function(){try{localStorage.setItem('cda-sbcode',this.value.trim().toUpperCase());}catch(x){}waView();};
     $('watxt').oninput=function(){WA.txt=this.value;$('wago').href='https://wa.me/?text='+encodeURIComponent(WA.txt);};
     $('wacopy').onclick=function(){var b=this;(navigator.clipboard?navigator.clipboard.writeText(WA.txt):Promise.reject()).then(function(){b.textContent='Kopiert ✓';setTimeout(function(){b.textContent='Kopieren';},1500);},function(){prompt('Text kopieren:',WA.txt);});};
   });}
