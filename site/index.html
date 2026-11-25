@@ -1064,14 +1064,23 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
         <div class="signup" id="signup">
           <div class="signup-head">
             <h3>Anmelden</h3>
-            <p>Einmal deinen Namen antippen, danach bist du mit einem Tippen dabei. Dein Name wird auf diesem Gerät gemerkt.</p>
+            <p>Mitglieder schalten ihr Handy einmal mit dem Vereinscode frei und tippen dann ihren Namen an. Danach bist du mit einem Tippen dabei.</p>
           </div>
           <div id="su-who">
+            <div id="su-gate">
+              <div class="field">
+                <label for="su-code">Vereinscode für Mitglieder</label>
+                <div class="su-grow" style="margin-top:0"><input id="su-code" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="steht in der WhatsApp-Gruppe"><button type="button" class="btn primary" id="su-codeok">Freischalten</button></div>
+              </div>
+              <p class="su-fine" style="margin-top:6px">Nur einmal pro Handy nötig. So kann sich niemand Fremdes unter einem Mitgliedsnamen anmelden. Code vergessen? Kurz bei Leon per WhatsApp melden.</p>
+            </div>
+            <div id="su-members" hidden>
             <div class="field">
               <label for="su-search">Wer bist du?</label>
               <input id="su-search" type="search" autocomplete="off" placeholder="Namen suchen …">
             </div>
             <div class="su-names" id="su-names" aria-live="polite"><p class="su-load">Mitgliederliste wird geladen …</p></div>
+            </div>
             <details class="su-guest">
               <summary>Ich bin kein Mitglied / zum ersten Mal da</summary>
               <div class="su-grow"><input id="su-gname" type="text" maxlength="30" autocomplete="name" placeholder="Vor- und Nachname"><button type="button" class="btn primary" id="su-gok">Weiter</button></div>
@@ -1823,7 +1832,9 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
   var store={get:function(k){try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
   // Gerätekennung erst bei der ersten An-/Abmeldung anlegen (nicht schon beim Seitenaufruf)
   var TOKEN=store.get('cda-token');function tok(){if(!TOKEN){TOKEN=Array.from(crypto.getRandomValues(new Uint8Array(16))).map(function(b){return ('0'+b.toString(16)).slice(-2);}).join('');store.set('cda-token',TOKEN);}return TOKEN;}
-  var ME=store.get('cda-me'),PLAYERS=[],SIGN=[],FOCUS=null;
+  var ME=store.get('cda-me'),PLAYERS=[],SIGN=[],FOCUS=null,OK=!!store.get('cda-ok');
+  if(ME&&ME.id&&!OK){ME=null;store.set('cda-me',null);}
+  function gate(){document.getElementById('su-gate').hidden=OK;document.getElementById('su-members').hidden=!OK;}
   var msel=document.getElementById('su-mode'),minfo=document.getElementById('su-mode-info'),serr=document.getElementById('su-err');
   var fmt=new Intl.DateTimeFormat('de-DE',{weekday:'short',day:'2-digit',month:'2-digit'});
   var pname=function(id){var p=PLAYERS.filter(function(x){return x.id===id;})[0];return p?p.name:'?';};
@@ -1841,7 +1852,7 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
   }
   function renderMe(){
     var w=document.getElementById('su-who'),m=document.getElementById('su-me');
-    w.hidden=!!ME;m.hidden=!ME;if(!ME)return renderNames();
+    w.hidden=!!ME;m.hidden=!ME;if(!ME){gate();return renderNames();}
     document.getElementById('su-mename').textContent=ME.name.split(' ')[0];
     var want=msel.value,list=dates();
     minfo.textContent=want?MODE[want][1]:'';minfo.hidden=!want;
@@ -1863,6 +1874,16 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
     ]).then(function(){renderMe();if(typeof renderHero==='function')renderHero();});
   }
   document.getElementById('su-search').addEventListener('input',renderNames);
+  function unlock(){var c=document.getElementById('su-code'),b=document.getElementById('su-codeok'),v=c.value.trim();if(!v){showErr('Bitte den Vereinscode eingeben.');return;}
+    b.disabled=true;showErr('');
+    sb('/rest/v1/rpc/cda_device_verify',{method:'POST',body:{p_token:tok(),p_code:v}}).then(function(ok){b.disabled=false;
+      if(ok){OK=true;store.set('cda-ok',true);c.value='';gate();renderNames();document.getElementById('su-search').focus();}
+      else showErr('Der Vereinscode stimmt nicht. Er steht in der WhatsApp-Gruppe des Vereins.');
+    }).catch(function(x){b.disabled=false;showErr(x.message);});}
+  document.getElementById('su-codeok').addEventListener('click',unlock);
+  document.getElementById('su-code').addEventListener('keydown',function(e){if(e.key==='Enter')unlock();});
+  // Schon freigeschaltet? Kurz bei der Datenbank nachfragen (z. B. nach Löschen des Browserspeichers)
+  if(OK&&TOKEN)sb('/rest/v1/rpc/cda_device_ok',{method:'POST',body:{p_token:TOKEN}}).then(function(r){if(r===false){OK=false;store.set('cda-ok',false);if(ME&&ME.id){ME=null;store.set('cda-me',null);}renderMe();}}).catch(function(){});
   document.getElementById('su-names').addEventListener('click',function(e){var b=e.target.closest('[data-id]');if(!b)return;var id=+b.getAttribute('data-id');ME={id:id,name:pname(id)};store.set('cda-me',ME);showErr('');renderMe();});
   document.getElementById('su-gok').addEventListener('click',function(){var n=document.getElementById('su-gname').value.trim().replace(/\s+/g,' ');
     if(n.split(' ').length<2||n.length<4){showErr('Bitte gib deinen Vor- und Nachnamen ein.');return;}
@@ -1875,7 +1896,7 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
     b.disabled=true;b.textContent=inn?'Wird gespeichert …':'Wird abgesagt …';showErr('');
     sb('/rest/v1/rpc/'+(inn?'cda_signup':'cda_cancel'),{method:'POST',body:{p_date:d,p_player:ME.id,p_guest:ME.id?null:ME.name,p_token:tok()}})
       .then(load).then(function(){if(!inn&&mine({date:d}))showErr('Absagen ging nicht: Du hast dich mit einem anderen Gerät angemeldet. Sag bitte der Turnierleitung kurz Bescheid.');})
-      .catch(function(x){showErr('Das hat nicht geklappt: '+x.message);renderMe();});
+      .catch(function(x){if(/Vereinscode/.test(x.message)){OK=false;store.set('cda-ok',false);ME=null;store.set('cda-me',null);}showErr('Das hat nicht geklappt: '+x.message);renderMe();});
   });
   // Direktlink aus WhatsApp: …#kontakt/2027-01-14
   (function(){var m=/^#(?:kontakt|anmelden)\/(\d{4}-\d{2}-\d{2})/.exec(location.hash);if(m){FOCUS=m[1];}})();
