@@ -32,6 +32,8 @@ await rpc('cda_stats', { p_days: 7 }, false);
 await rpc('cda_steckbrief_list', {}, false);
 await rpc('cda_steckbrief_code_set', { p_code: 'x' }, false);
 await rpc('cda_profiles', {}, true);
+await rpc('cda_device_ok', { p_token: 'x'.repeat(20) }, true); // Teil 10 eingerichtet?
+await read('signup_devices', false);
 // Foto-Speicher: Liste und Download ohne Anmeldung
 let r = await fetch(`${U}/storage/v1/object/list/steckbrief`, { method: 'POST', headers: { ...H, Authorization: 'Bearer ' + K }, body: JSON.stringify({ prefix: '', limit: 5 }) });
 let t = await r.text(); let n = -1; try { n = JSON.parse(t).length; } catch {}
