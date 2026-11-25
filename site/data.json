@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-25T04:27:01.351Z",
+ "updated": "2026-11-25T23:24:54.814Z",
  "season": "2026/27",
  "teams": {
   "1": {
@@ -7,7 +7,7 @@
    "league": "3K WINMAU 2. Bundesliga Süd",
    "source": "3k",
    "sourceUrl": "https://portal.3k-darts.com/frontend/events/10/event/1408/phase/2101/group/40479",
-   "fetched": "2026-11-25T04:27:01.351Z",
+   "fetched": "2026-11-25T23:24:54.814Z",
    "table": [
     {
      "pos": 1,
@@ -464,7 +464,7 @@
    "league": "1. Bezirksliga Schwaben",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211693",
-   "fetched": "2026-11-25T04:27:01.351Z",
+   "fetched": "2026-11-25T23:24:54.814Z",
    "table": [
     {
      "pos": 1,
@@ -516,6 +516,30 @@
     },
     {
      "pos": 5,
+     "name": "SV Gablingen Schmutter Darter",
+     "played": 6,
+     "w": 3,
+     "d": 1,
+     "l": 2,
+     "sets": "37:23",
+     "legs": "135:102",
+     "points": "7:5",
+     "us": false
+    },
+    {
+     "pos": 6,
+     "name": "DC River Darts",
+     "played": 7,
+     "w": 2,
+     "d": 2,
+     "l": 3,
+     "sets": "34:36",
+     "legs": "139:142",
+     "points": "6:8",
+     "us": false
+    },
+    {
+     "pos": 7,
      "name": "Walter Frosch Darters",
      "played": 7,
      "w": 2,
@@ -527,19 +551,7 @@
      "us": false
     },
     {
-     "pos": 6,
-     "name": "SV Gablingen Schmutter Darter",
-     "played": 5,
-     "w": 2,
-     "d": 1,
-     "l": 2,
-     "sets": "29:21",
-     "legs": "110:88",
-     "points": "5:5",
-     "us": false
-    },
-    {
-     "pos": 7,
+     "pos": 8,
      "name": "Steeldarter Kühlenthal",
      "played": 7,
      "w": 2,
@@ -551,27 +563,15 @@
      "us": false
     },
     {
-     "pos": 8,
-     "name": "DC River Darts",
-     "played": 6,
-     "w": 1,
-     "d": 2,
-     "l": 3,
-     "sets": "27:33",
-     "legs": "115:124",
-     "points": "4:8",
-     "us": false
-    },
-    {
      "pos": 9,
      "name": "Flying Hobby Darters Rennertshofen",
-     "played": 6,
+     "played": 7,
      "w": 2,
      "d": 0,
-     "l": 4,
-     "sets": "27:33",
-     "legs": "115:127",
-     "points": "4:8",
+     "l": 5,
+     "sets": "29:41",
+     "legs": "129:152",
+     "points": "4:10",
      "us": false
     },
     {
@@ -589,13 +589,13 @@
     {
      "pos": 11,
      "name": "Dscheina Darter Donauwörth",
-     "played": 5,
+     "played": 6,
      "w": 1,
      "d": 0,
-     "l": 4,
-     "sets": "17:33",
-     "legs": "79:113",
-     "points": "2:8",
+     "l": 5,
+     "sets": "20:40",
+     "legs": "97:137",
+     "points": "2:10",
      "us": false
     },
     {
@@ -913,10 +913,22 @@
    "league": "3. Bezirksliga Schwaben Süd",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211696",
-   "fetched": "2026-11-25T04:27:01.351Z",
+   "fetched": "2026-11-25T23:24:54.814Z",
    "table": [
     {
      "pos": 1,
+     "name": "Rabbits Lechfeld",
+     "played": 6,
+     "w": 5,
+     "d": 1,
+     "l": 0,
+     "sets": "44:16",
+     "legs": "149:72",
+     "points": "11:1",
+     "us": false
+    },
+    {
+     "pos": 2,
      "name": "Foxvalley DC",
      "played": 6,
      "w": 5,
@@ -925,18 +937,6 @@
      "sets": "41:19",
      "legs": "146:92",
      "points": "11:1",
-     "us": false
-    },
-    {
-     "pos": 2,
-     "name": "Rabbits Lechfeld",
-     "played": 5,
-     "w": 4,
-     "d": 1,
-     "l": 0,
-     "sets": "38:12",
-     "legs": "128:58",
-     "points": "9:1",
      "us": false
     },
     {
@@ -990,13 +990,13 @@
     {
      "pos": 7,
      "name": "FC Ebershausen Darts",
-     "played": 5,
+     "played": 6,
      "w": 1,
      "d": 3,
-     "l": 1,
-     "sets": "25:25",
-     "legs": "94:99",
-     "points": "5:5",
+     "l": 2,
+     "sets": "29:31",
+     "legs": "108:120",
+     "points": "5:7",
      "us": false
     },
     {
@@ -1308,7 +1308,7 @@
    "league": "4. Bezirksliga Schwaben Süd 4",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211701",
-   "fetched": "2026-11-25T04:27:01.351Z",
+   "fetched": "2026-11-25T23:24:54.814Z",
    "table": [
     {
      "pos": 1,
@@ -1324,6 +1324,18 @@
     },
     {
      "pos": 2,
+     "name": "Grüne Eiche Schönbach IV",
+     "played": 5,
+     "w": 5,
+     "d": 0,
+     "l": 0,
+     "sets": "38:12",
+     "legs": "127:58",
+     "points": "10:0",
+     "us": false
+    },
+    {
+     "pos": 3,
      "name": "SC Oberbernbach II",
      "played": 6,
      "w": 5,
@@ -1332,18 +1344,6 @@
      "sets": "38:22",
      "legs": "105:86",
      "points": "10:2",
-     "us": false
-    },
-    {
-     "pos": 3,
-     "name": "Grüne Eiche Schönbach IV",
-     "played": 4,
-     "w": 4,
-     "d": 0,
-     "l": 0,
-     "sets": "30:10",
-     "legs": "102:45",
-     "points": "8:0",
      "us": false
     },
     {
@@ -1373,13 +1373,13 @@
     {
      "pos": 6,
      "name": "TSV Göggingen",
-     "played": 6,
+     "played": 7,
      "w": 2,
      "d": 1,
-     "l": 3,
-     "sets": "33:27",
-     "legs": "123:110",
-     "points": "5:7",
+     "l": 4,
+     "sets": "35:35",
+     "legs": "136:135",
+     "points": "5:9",
      "us": false
     },
     {
