@@ -317,8 +317,6 @@ th.sorted{color:var(--green-ink)}
   .chead{padding:10px 12px}
 }
 
-.callbtn{font:700 .78rem var(--f-body);border:1.5px solid var(--line,#ccc);background:transparent;color:var(--muted);border-radius:999px;padding:4px 12px;cursor:pointer;line-height:1.2}
-.callbtn[aria-pressed=true]{background:var(--green);border-color:var(--green);color:#fff}
 .gev.gnone{cursor:default}
 .sync{font-size:.78rem;font-weight:700;padding:4px 10px;border-radius:99px;white-space:nowrap}
 .sync.ok{background:color-mix(in srgb,var(--green) 18%,transparent);color:var(--green-ink)}
@@ -475,6 +473,44 @@ th.sorted{color:var(--green-ink)}
 .inbox2.finish{border-color:#E6B43A}
 .inbox2 .who .fin{color:#F2C75C;letter-spacing:.06em}
 
+
+/* Cricket: Board-Bildschirm auf Bildschirmhöhe zugeschnitten */
+.cwrap{display:grid;gap:12px;min-width:0}
+.fitb .scorer.cr{height:var(--avail,80vh);display:grid;grid-template-rows:auto minmax(0,1fr);gap:min(1.4vh,12px);container-type:size}
+.fitb .scorer.cr .cwrap{min-height:0;height:100%;grid-template-columns:minmax(0,11fr) minmax(0,9fr);gap:min(1.6cqw,14px)}
+.fitb .scorer.cr .cboard{min-height:0;height:100%;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+.fitb .scorer.cr .chead{align-content:space-between;padding:min(2.2cqh,20px) min(1.8cqw,20px)}
+.fitb .scorer.cr .chead .pn{font-size:min(3.2cqh,1.8rem);white-space:normal;overflow-wrap:anywhere;line-height:1.15}
+.fitb .scorer.cr .chead .pts{font-size:min(15cqh,7cqw);line-height:.88}
+.fitb .scorer.cr .chead .lg{font-size:min(2.2cqh,1.1rem)}
+.fitb .scorer.cr .cmid{grid-template-rows:auto repeat(7,minmax(0,1fr));align-content:stretch;height:100%}
+.fitb .scorer.cr .crow{height:auto;min-height:0;overflow:hidden;grid-template-columns:min(9cqh,64px) min(10cqh,76px) min(9cqh,64px)}
+.fitb .scorer.cr .crow.ctop{font-size:min(1.8cqh,.8rem);padding:min(.8cqh,6px) 0}
+.fitb .scorer.cr .crow .no{font-size:min(6cqh,2.6rem)}
+.fitb .scorer.cr .crow .mk{display:grid;place-items:center}
+.fitb .scorer.cr .crow .mk svg{width:min(6cqh,40px);height:min(6cqh,40px)}
+.fitb .scorer.cr .centry{min-height:0;height:100%;display:grid;grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);gap:min(1.2cqh,10px);align-items:stretch}
+.fitb .scorer.cr .inbox{padding:min(1.4cqh,12px) 14px;gap:min(.8cqh,8px)}
+.fitb .scorer.cr .inbox .who{font-size:min(1.8cqh,.8rem)}
+.fitb .scorer.cr .cvis{min-height:0;gap:6px}
+.fitb .scorer.cr .cvis span{font-size:min(3.6cqh,1.6rem);padding:min(.4cqh,4px) 10px;min-width:0;flex:1}
+.fitb .scorer.cr .inbox .msg{min-height:1.2em;font-size:min(1.9cqh,.95rem)}
+.fitb .scorer.cr .keys{font-size:min(1.6cqh,.78rem)}
+.fitb .scorer.cr .ceing{font-size:min(1.9cqh,.9rem)!important}
+.fitb .scorer.cr .cpadw{min-height:0;height:100%;display:grid;grid-template-rows:minmax(0,7fr) minmax(0,1fr);gap:min(1cqh,8px)}
+.fitb .scorer.cr .cpad{min-height:0;height:100%;grid-template-columns:auto 1fr 1fr 1fr;grid-template-rows:repeat(7,minmax(0,1fr));gap:min(.8cqh,6px)}
+.fitb .scorer.cr .cpad .no{font-size:min(4cqh,1.8rem);padding:0 min(1cqw,10px)}
+.fitb .scorer.cr .cpad button{padding:0;min-height:0;font-size:min(3.1cqh,1.4rem)}
+.fitb .scorer.cr .cq{margin:0;height:100%}.fitb .scorer.cr .cq button{min-height:0;padding:0;font-size:min(2.6cqh,1.15rem)}
+.fitb .scorer.cr.tablet .keys,.fitb .scorer.cr.tablet .ceing{display:none}
+.fitb .scorer.cr .over{overflow:auto;max-height:100%;align-self:center;padding:min(2cqh,18px)}
+@media (orientation:portrait){
+  .fitb .scorer.cr .cwrap{grid-template-columns:1fr;grid-template-rows:minmax(0,44fr) minmax(0,56fr)}
+  .fitb .scorer.cr .chead .pts{font-size:min(9cqh,13cqw)}
+  .fitb .scorer.cr .crow .no{font-size:min(3cqh,2rem)}
+  .fitb .scorer.cr .crow .mk svg{width:min(3cqh,30px);height:min(3cqh,30px)}
+  .fitb .scorer.cr .crow.ctop{padding:2px 0}
+  .fitb .scorer.cr .cpad button{font-size:min(2.2cqh,1.3rem)}}
 
 /* Match-Karte nach dem Spiel */
 .mcard{width:100%;max-width:620px;margin:6px auto;background:var(--panel-2);border:1px solid var(--line);border-radius:14px;padding:12px 16px;display:grid;gap:4px}
@@ -1191,7 +1227,7 @@ var HITS={};function hit(p){if(SITE||HITS[p]||location.protocol==='file:'||navig
 function devType(){try{var coarse=matchMedia('(pointer: coarse)').matches,fine=matchMedia('(any-pointer: fine)').matches,touch=navigator.maxTouchPoints>0;
   return (coarse||(touch&&!fine))?'tablet':'pc';}catch(e){return 'pc';}}
 /* Board-Bildschirm: Anzeige genau auf die Bildschirmhöhe zuschneiden, damit alles ohne Scrollen sichtbar ist */
-function fitBoard(){var on=/^b\d$/.test(S.view||'')&&innerWidth>=600,sc=on&&DOC.querySelector('.scorer.x01');
+function fitBoard(){var on=/^b\d$/.test(S.view||'')&&innerWidth>=600,sc=on&&DOC.querySelector('.scorer.x01,.scorer.cr');
   DOC.documentElement.classList.toggle('fitb',!!sc);if(!sc)return;
   var top=sc.getBoundingClientRect().top+(window.scrollY||0);sc.style.setProperty('--avail',Math.max(420,innerHeight-top-12)+'px');}
 window.addEventListener('resize',function(){try{fitBoard();}catch(e){}});
@@ -1209,25 +1245,7 @@ function render(){
   else V.innerHTML=viewBoard(+v.slice(1));
   try{if(!SITE)sessionStorage.setItem('cda-sb',JSON.stringify({role:S.role,view:S.view,me:S.me}));}catch(e){}
   try{fitBoard();}catch(e){}
-  try{callerTick();}catch(e){}
 }
-/* --- Caller-Stimme: sagt Scores, „du brauchst …“ und Game Shot an (pro Gerät an/aus) --- */
-var CALL={on:false,sig:{}};try{CALL.on=localStorage.getItem('cda-caller')==='1';}catch(e){}
-var CANSPEAK=typeof window!=='undefined'&&'speechSynthesis' in window&&typeof SpeechSynthesisUtterance!=='undefined';
-function callVoice(){var vs=CANSPEAK?speechSynthesis.getVoices():[],de=vs.filter(function(v){return /^de/i.test(v.lang);});
-  return de.filter(function(v){return /google|natural|online|anna|helena|katja|hedda|petra|marlene|vicki/i.test(v.name);})[0]||de[0]||null;}
-function say(t,o){if(!CALL.on||!CANSPEAK)return;o=o||{};var u=new SpeechSynthesisUtterance(t),v=callVoice();u.lang='de-DE';if(v)u.voice=v;u.rate=o.rate||1.02;u.pitch=o.pitch||1;speechSynthesis.speak(u);}
-function vname(n){return String(n||'').replace(/ \(Gast\)/g,'').split(' & ').map(function(x){return x.split(' ')[0];}).join(' und ');}
-function callerTick(){var v=S.view||'';if(!/^b\d$/.test(v))return;var b=+v.slice(1),ev=S.ev,m=byId(ev,ev.boards[b]);if(!m||!m.legs||!m.legs.length)return;
-  var leg=curLeg(m),sig=m.id+'|'+m.legs.length+'|'+leg.visits.length+'|'+(m.over?1:0),old=CALL.sig[b];CALL.sig[b]=sig;
-  if(!CALL.on||!CANSPEAK||!old||old===sig)return;var o=old.split('|');if(o[0]!==String(m.id))return;
-  if(m.over&&o[3]!=='1'){speechSynthesis.cancel();say('Game Shot! Und das Match für '+vname(partN(ev,m.winner===0?m.a:m.b))+'!',{rate:.95,pitch:1.05});return;}
-  if(m.legs.length>+o[1]){var pl=m.legs[m.legs.length-2];if(pl&&pl.winner!=null){speechSynthesis.cancel();say('Game Shot! Leg für '+vname(partN(ev,pl.winner===0?m.a:m.b))+'.');}return;}
-  if(m.legs.length<+o[1]||leg.visits.length<=+o[2]||MD(ev).kind==='cricket')return;
-  var vv=leg.visits[leg.visits.length-1],txt=vv.bust?'Überworfen!':vv.score===0?'Keine Punkte.':vv.score===180?'Hundertachtzig!':String(vv.score)+'.';
-  var p=turn(leg),r=restX(ev,m,leg,p);if(!m.over&&CO[r]&&isIn(ev,leg,p))txt+=' '+vname(pn(thrower(ev,m,leg,p)))+', du brauchst '+r+'.';
-  speechSynthesis.cancel();say(txt,vv.score===180?{rate:.8,pitch:1.15}:vv.score>=140?{pitch:1.08}:{});}
-function callerToggle(){CALL.on=!CALL.on;try{localStorage.setItem('cda-caller',CALL.on?'1':'0');}catch(e){}if(CALL.on){CALL.sig={};say('Caller ist an. Game on!');}else if(CANSPEAK)speechSynthesis.cancel();}
 /* --- Auswahl / Anmeldung --- */
 function evLabel(ev){var md=MD(ev);return md.name+' · '+wdS(ev.date)+' '+dshort(ev.date);}
 function realNext(n){var t=realToday(),out=[],d=new Date(t+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+1);
@@ -1585,8 +1603,8 @@ function viewBoard(b){
   if(ev.phase==='done')return ceremony(ev);
   if(!m)return '<div class="panel idle"><div class="big-n">Board '+(b+1)+'</div><p class="muted" style="margin:0">'+(ev.phase==='checkin'?'Der Abend ist noch nicht gestartet.':'Gerade kein Match. Sobald zwei Teilnehmer frei sind, erscheint es hier automatisch.')+'</p></div>';
   if(!m.started)return callScreen(ev,b,m);
-  var leg=curLeg(m),t=turn(leg),dv=devType(),tab=dv==='tablet',head='<div class="sb-head"><span class="stage">Board '+(b+1)+devTag(dv)+' · '+MD(ev).name+' · '+m.stage+'</span>'+(CANSPEAK?'<button type="button" class="callbtn" data-act="caller" data-b="'+b+'" aria-pressed="'+CALL.on+'" title="Caller-Stimme an/aus">'+(CALL.on?'🔊':'🔇')+' Caller</button>':'')+'<span class="wsmall">Schreiber: '+(m.writer?pnh(m.writer):'offen')+'</span><span class="fmt num">Leg '+m.legs.length+' · '+MD(ev).sub+' · Best of '+(m.ft*2-1)+'</span></div>';
-  return '<div class="scorer'+(tab?' tablet':'')+(MD(ev).kind==='cricket'?'':' x01')+(m.over?' is-over':'')+'">'+head+(MD(ev).kind==='cricket'?cricketBoard(ev,b,m,leg,t):x01Board(ev,b,m,leg,t))+'</div>';
+  var leg=curLeg(m),t=turn(leg),dv=devType(),tab=dv==='tablet',head='<div class="sb-head"><span class="stage">Board '+(b+1)+devTag(dv)+' · '+MD(ev).name+' · '+m.stage+'</span>'+'<span class="wsmall">Schreiber: '+(m.writer?pnh(m.writer):'offen')+'</span><span class="fmt num">Leg '+m.legs.length+' · '+MD(ev).sub+' · Best of '+(m.ft*2-1)+'</span></div>';
+  return '<div class="scorer'+(tab?' tablet':'')+(MD(ev).kind==='cricket'?' cr':' x01')+(m.over?' is-over':'')+'">'+head+(MD(ev).kind==='cricket'?cricketBoard(ev,b,m,leg,t):x01Board(ev,b,m,leg,t))+'</div>';
 }
 function x01Board(ev,b,m,leg,t){
   var md=MD(ev);
@@ -1620,15 +1638,15 @@ function cricketBoard(ev,b,m,leg,t){
   var rows='<div class="crow ctop"><span></span><span style="text-align:center">Feld</span><span></span></div>'+CNUM.map(function(n){var a=st.mk[0][n]||0,c=st.mk[1][n]||0;
     return '<div class="crow'+(a>=3&&c>=3?' closed':'')+'"><span class="mk'+(a>=3?' done':'')+'">'+markSvg(a)+'</span><span class="no">'+(n===25?'B':n)+'</span><span class="mk'+(c>=3?' done':'')+'">'+markSvg(c)+'</span></div>';}).join('');
   var board='<div class="cboard">'+head(0)+'<div class="cmid">'+rows+'</div>'+head(1)+'</div>';
-  if(m.over)return board+overPanel(ev,b,m);
+  if(m.over)return '<div class="cwrap">'+board+overPanel(ev,b,m)+'</div>';
   var vis=[0,1,2].map(function(i){var d=cur[i];return d?'<span>'+(d.n?(d.m===3?'T':d.m===2?'D':'')+(d.n===25?'B':d.n):'–')+'</span>':'<span class="empty">Dart '+(i+1)+'</span>';}).join('');
   var pad=CNUM.map(function(n){return '<span class="no">'+(n===25?'Bull':n)+'</span><button data-act="cd" data-b="'+b+'" data-n="'+n+'" data-m="1">'+(n===25?'25':'Single')+'</button><button data-act="cd" data-b="'+b+'" data-n="'+n+'" data-m="2">'+(n===25?'Bull':'Double')+'</button><button class="t" data-act="cd" data-b="'+b+'" data-n="'+n+'" data-m="3"'+(n===25?' disabled':'')+'>Triple</button>';}).join('');
   var msg=S.msg[b]||'',err=msg.indexOf('err:')===0;
-  return board+'<div class="entry"><div class="inbox"><span class="who">Aufnahme von '+pnh(thrower(ev,m,leg,t))+'</span><div class="cvis">'+vis+'</div><div class="msg'+(err?' err':'')+'">'+esc(err?msg.slice(4):msg)+'</div>'+
+  return '<div class="cwrap">'+board+'<div class="entry centry"><div class="inbox"><span class="who">Aufnahme von '+pnh(thrower(ev,m,leg,t))+'</span><div class="cvis">'+vis+'</div><div class="msg'+(err?' err':'')+'">'+esc(err?msg.slice(4):msg)+'</div>'+
     '<div class="keys"><span><kbd>T</kbd>/<kbd>D</kbd> + Zahl + <kbd>Enter</kbd> = ein Dart</span><span><kbd>0</kbd> <kbd>Enter</kbd> daneben</span><span>leeres <kbd>Enter</kbd> = Aufnahme fertig</span></div>'+
-    '<div class="row muted" style="font-size:.9rem">Eingabe: <b style="color:var(--ink);font-family:var(--f-display);font-size:1.4rem;min-width:3ch">'+(esc(S.input[b]||'')||'–')+'</b></div>'+
+    '<div class="row muted ceing" style="font-size:.9rem">Eingabe: <b style="color:var(--ink);font-family:var(--f-display);font-size:1.4rem;min-width:3ch">'+(esc(S.input[b]||'')||'–')+'</b></div>'+
     (noSim()?'':'<div class="row"><button class="linkbtn" data-act="simv" data-b="'+b+'">Demo: Aufnahme simulieren</button></div>')+'</div>'+
-    '<div><div class="cpad">'+pad+'</div><div class="quick" style="grid-template-columns:1fr 1fr 1fr"><button data-act="cd" data-b="'+b+'" data-n="0" data-m="0">Daneben</button><button data-act="undo" data-b="'+b+'">↶ Zurück</button><button data-act="cend" data-b="'+b+'">Aufnahme fertig</button></div></div></div>';
+    '<div class="cpadw"><div class="cpad">'+pad+'</div><div class="quick cq" style="grid-template-columns:1fr 1fr 1fr"><button data-act="cd" data-b="'+b+'" data-n="0" data-m="0">Daneben</button><button data-act="undo" data-b="'+b+'">↶ Zurück</button><button data-act="cend" data-b="'+b+'">Aufnahme fertig</button></div></div></div></div>';
 }
 
 /* --- Recap --- */
@@ -1893,7 +1911,6 @@ function doAct(t,a,b){
   else if(a==='sim'){simMatch(ev,b);}
   else if(a==='simall'){simAll(ev);}
   else if(a==='simv'){simVisit(ev,b);}
-  else if(a==='caller'){callerToggle();}
   else if(a==='key'){key(b,t.getAttribute('data-k'));}
   else if(a==='quick'){S.input[b]=t.getAttribute('data-q');key(b,'Enter');}
   else if(a==='co'){S.msg[b]=checkoutX(ev,b,+t.getAttribute('data-d'));}
