@@ -32,7 +32,7 @@ var CNUM=[20,19,18,17,16,15,25];
 /* ================= Spielmodi, Geld, Rotation ================= */
 var MODES={
   m501:{name:'CDA Masters',sub:'501 Double-out',kind:'x01',start:501,masters:true,min:14,desc:'Alle 3 Wochen. Zählt für Rangliste und Finals. Startgeld 15 €: 5 € Tagespreisgeld für die Top 3, 10 € in den Masters-Pott.'},
-  c501:{name:'Competition 501',sub:'501 Double-out',kind:'x01',start:501,min:14,desc:'Ganz normal 501, ohne Masters-Wertung. Der Standard-Donnerstag.'},
+  c501:{name:'Competition 501',sub:'501 Double-out',kind:'x01',start:501,min:14,desc:'Ganz normal 501, ohne Masters-Wertung. Der Standard-Donnerstag. Startgeld 3 €, alles geht an die Top 3.'},
   di301:{name:'301 Double-In',sub:'301 Double-in · Double-out',kind:'x01',start:301,di:true,min:10,desc:'Punkte zählen erst nach dem ersten Doppel. Kurz und gemein.'},
   friend:{name:'Bring a Friend',sub:'Mitglied + Gast im Doppel · 501',kind:'x01',start:501,doubles:true,friend:true,min:16,desc:'Saisonstart und etwa alle 4 Monate. Jedes Mitglied spielt mit seinem Gast im Doppel.'},
   lucky:{name:'Lucky Doubles',sub:'Zugeloste Doppel · 501',kind:'x01',start:501,doubles:true,min:16,desc:'Etwa alle 3 Monate. Stark und schwach werden zusammengelost.'},
@@ -40,8 +40,10 @@ var MODES={
   finals:{name:'CDA-Masters-Finals',sub:'Gruppenphase · Doppel-K.-o. · Plätze 1–7',kind:'x01',start:501,finals:true,min:14,desc:'Saisonabschluss beim TSV Dinkelscherben. Teilnahme ab 5 Masters-Abenden. Der Pott geht an die Plätze 1 bis 7.'}
 };
 var FEE=15,DAY_FEE=5,POT_FEE=10,MIN_QUALI=5,MAX_FINALS=32,MASTERS_PER_SEASON=16,BEST_OF=10,PTS_START=5,PTS_BEHIND=2,PTS_WIN=1,PTS_BONUS={1:10,2:6,3:3};
+var OPEN_FEE=3,OPEN_FEE_FROM='2026-11-27';/* normale Competition: 3 € Startgeld, 100 % an die Top 3 (Vorstand 26.11.2026) */
 var DAY_SPLIT=[.5,.3,.2],FIN_SPLIT=[.32,.20,.13,.10,.075,.075,.05,.05];
 var FIN_SHOW=[['1.',[0]],['2.',[1]],['3.',[2]],['4.',[3]],['5. (2×)',[4,5]],['7. (2×)',[6,7]]];
+function openPersons(ev){var c=0;Object.keys(ev.parts||{}).forEach(function(k){c+=(ev.parts[k].members||[1]).length;});return c;}
 function payout(total,pcts){var r=pcts.map(function(p){return Math.floor(total*p*2)/2;});r[0]=Math.round((r[0]+total-sum(r))*2)/2;return r;}
 function eur(x){var s=(Math.round(x*100)/100).toFixed(2).replace('.',',');return s.replace(/,00$/,'')+' €';}
 var SEASON_START='2026-09-17';
@@ -410,7 +412,7 @@ function placements(ev){
   }
   var place2=Object.keys(out).length+1;
   [2,1].forEach(function(ph){if(ph===2&&!ev.groups2)return;if(ph===1&&!(ev.groups&&ev.groups.length))return;var r=rankAcross(ev,ph).filter(function(x){return !out[x.id];});r.forEach(function(x,i){set(x.id,place2+i);});place2+=r.length;});
-  var prize=md.masters?payout(n*DAY_FEE,DAY_SPLIT):md.finals?payout(potFor(ev.season),FIN_SPLIT):[];
+  var prize=md.masters?payout(n*DAY_FEE,DAY_SPLIT):md.finals?payout(potFor(ev.season),FIN_SPLIT):ev.date>=OPEN_FEE_FROM?payout(openPersons(ev)*OPEN_FEE,DAY_SPLIT):[];
   var wins={};ev.matches.forEach(function(m){if(m.status==='done'){var w=winnerPart(m);wins[w]=(wins[w]||0)+1;}});
   Object.keys(out).forEach(function(k){var o=out[k],behind=Object.keys(out).filter(function(j){return out[j].place>o.place;}).length;
     o.pts=md.masters?PTS_START+PTS_BEHIND*behind+PTS_WIN*(wins[k]||0)+(PTS_BONUS[o.place]||0):0;o.money=0;});
@@ -706,6 +708,7 @@ function viewCheckin(){
   var bt=S.boards.map(function(t,i){return '<button data-act="btype" data-i="'+i+'">Board '+(i+1)+' <span class="t-'+t+'">'+(t==='pc'?'PC':'Tablet')+'</span></button>';}).join('');
   var money='';
   if(md.masters&&p){var pr=payout(nParts*DAY_FEE,DAY_SPLIT);money='<div class="money"><div><b>'+eur(nParts*FEE)+'</b><span>Startgeld gesamt</span></div><div><b>'+eur(nParts*DAY_FEE)+'</b><span>Preisgeld heute</span></div><div><b>+'+eur(nParts*POT_FEE)+'</b><span>in den Pott</span></div></div><p class="muted" style="margin:-6px 0 14px;font-size:.85rem">Heute: 1. '+eur(pr[0])+' · 2. '+eur(pr[1])+' · 3. '+eur(pr[2])+' (50 / 30 / 20 %)</p><p class="muted" style="margin:-8px 0 14px;font-size:.85rem">Masters-Punkte: 5 fürs Mitspielen, 2 pro Spieler dahinter, 1 pro Matchsieg, Bonus +10/+6/+3 für die Top 3. Der Sieger heute bekommt rund '+(PTS_START+PTS_BEHIND*(nParts-1)+PTS_BONUS[1]+Math.ceil(Math.log2(nParts))+2)+' Punkte.</p>';}
+  if(!md.masters&&!md.finals&&p&&ids.length){var po=payout(ids.length*OPEN_FEE,DAY_SPLIT),tm=md.doubles?' je Team':'';money='<div class="money"><div><b>'+eur(ids.length*OPEN_FEE)+'</b><span>Startgeld gesamt ('+ids.length+' × '+OPEN_FEE+' €)</span></div><div><b>'+eur(po[0])+'</b><span>1. Platz'+tm+'</span></div><div><b>'+eur(po[1])+' / '+eur(po[2])+'</b><span>2. / 3. Platz'+tm+'</span></div></div><p class="muted" style="margin:-6px 0 14px;font-size:.85rem">Das ganze Startgeld wird ausgeschüttet: 50 / 30 / 20 % an die Top 3.</p>';}
   if(md.finals){var pot=potFor(CUR_SEASON),fp=payout(pot,FIN_SPLIT);money='<div class="money"><div><b>'+eur(pot)+'</b><span>Masters-Pott</span></div><div><b>'+eur(fp[0])+'</b><span>Sieger</span></div><div><b>'+fp.length+'</b><span>Plätze mit Geld</span></div></div><p class="muted" style="margin:-6px 0 14px;font-size:.85rem">'+FIN_SHOW.map(function(x){return x[0]+' '+eur(fp[x[1][0]])+(x[1].length>1?' je':'');}).join(' · ')+'</p>';}
   var plan=p?('<div class="big-n num">'+ids.length+'</div><p class="muted" style="margin:2px 0 14px">Spieler eingecheckt'+(md.doubles?' · ergibt '+nParts+' Doppel':'')+'</p>'+
     (p.warn&&!S.legs.auto&&LG.lvl===0?'<p class="warn">Für '+S.boards.length+' Boards sind das viele Teilnehmer. Legs kürzen oder mehr Boards einplanen. <button class="btn small" data-act="legauto">Legs automatisch kürzen</button></p>':'')+money+
