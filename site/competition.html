@@ -1254,6 +1254,7 @@ function render(){
   var v0=S.view;hit('spielbetrieb');if(S.view==='live'||S.view==='s-live')hit('live');if(S.view==='lead')hit('leitung');if(/^b\d$/.test(S.view))hit('board');
   if(!canSee(S.view))S.view=SITE?'season':'gate';
   renderTabs();if(!SITE)syncBadge();if(S.view==='gate')gateLoad();var ev=S.ev,v=S.view;
+  var keepX=v0===S.view?[].map.call(V.querySelectorAll('.twrap'),function(w){return w.scrollLeft;}):[];
   if(v==='gate')V.innerHTML=viewGate();
   else if(v==='lead')V.innerHTML=ev.phase==='checkin'?viewCheckin():viewLead();
   else if(v==='live'||v==='s-live')V.innerHTML=viewSpecLive();
@@ -1265,6 +1266,7 @@ function render(){
   else V.innerHTML=viewBoard(+v.slice(1));
   try{if(!SITE)sessionStorage.setItem('cda-sb',JSON.stringify({role:S.role,view:S.view,me:S.me}));}catch(e){}
   try{fitBoard();}catch(e){}
+  if(keepX.length)[].forEach.call(V.querySelectorAll('.twrap'),function(w,i){if(keepX[i])w.scrollLeft=keepX[i];});
 }
 /* --- Auswahl / Anmeldung --- */
 function evLabel(ev){var md=MD(ev);return md.name+' · '+wdS(ev.date)+' '+dshort(ev.date);}
