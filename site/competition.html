@@ -2119,10 +2119,12 @@ if(!SITE)document.addEventListener('keyup',function(e){if(KH.k&&e.key===KH.k)khF
 if(!SITE){try{var ss=JSON.parse(sessionStorage.getItem('cda-sb')||'null');if(ss&&ss.role&&(ss.role==='spec'||!LIVEAUTH)){S.role=ss.role;S.view=ss.view;S.me=ss.me||null;}}catch(e){}
   if(LIVEAUTH&&AUTH&&AUTH.role){S.role=AUTH.role;S.view=(ss&&ss.role===AUTH.role&&ss.view)||AUTH.role;authRefresh();enterLive();}
   else if(LIVEAUTH&&S.role==='spec'){S.role=null;S.view='gate';}
-  if(/#live/.test(location.hash)){S.role=S.role||'spec';if(!/^s-/.test(S.view))S.view='s-live';}
-  /* Simulation: im Zuschauermodus läuft der Abend von selbst weiter */
+  if(/#live/.test(location.hash)){S.role=S.role||'spec';if(!/^s-/.test(S.view))S.view='s-live';
+    /* Link von der Startseite: echten Abend von heute als Zuschauer öffnen */
+    if(LIVEAUTH&&S.role==='spec'){S.live=true;SV.date=realToday();realPlayersLoad().then(function(){return liveFetch(true);}).then(function(row){if(!row){S.live=false;S.role=null;S.view='gate';}render();}).catch(function(){S.live=false;S.role=null;S.view='gate';render();});}}
+  /* Simulation: im Zuschauermodus läuft der Abend von selbst weiter (nie bei echten Abenden) */
   setInterval(function(){
-    if(S.role!=='spec'||!/^s-/.test(S.view)||document.hidden)return;var ev=S.ev;if(ev.phase!=='running')return;
+    if(S.live||S.role!=='spec'||!/^s-/.test(S.view)||document.hidden)return;var ev=S.ev;if(ev.phase!=='running')return;
     var act=[];ev.boards.forEach(function(id,b){if(id)act.push(b);});if(!act.length){fill(ev);render();return;}
     var b=act[Math.floor(Math.random()*act.length)],m=byId(ev,ev.boards[b]);
     if(m.over)commit(ev,b);else{simVisit(ev,b);if(m.over)commit(ev,b);}
