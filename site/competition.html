@@ -1709,7 +1709,7 @@ function viewLead(){
   var pd=ev.phase==='done'?podium(ev):null;
   return '<div class="grid" style="gap:20px">'+modeBar(ev)+
     '<section class="panel"><div class="row" style="justify-content:space-between"><div><h2 style="margin:0">'+(pd?'Sieger: '+partH(ev,pd[0].part):'Abend läuft')+'</h2><span class="muted num">'+done+' von '+total+' Matches gespielt · '+ev.plan.txt+' · '+legTxt(MD(ev),legsOf(ev),ev.plan)+'</span></div>'+
-    '<div class="row">'+(pd?'<button class="btn small primary" data-act="archive">Abend abschließen und in die Saison übernehmen</button>':(noSim()?'':'<button class="btn small" data-act="simall">Rest simulieren</button>'))+(S.live&&!(ev&&ev.test)?'':'<button class="btn small" data-act="reset">'+(S.live?'Testabend löschen':'Neuer Abend')+'</button>')+'</div></div><div class="progress"><i style="width:'+Math.round(done/total*100)+'%"></i></div></section>'+
+    '<div class="row">'+(pd?'<button class="btn small primary" data-act="archive">Abend abschließen und in die Saison übernehmen</button>':(S.live&&ev.test?'<button class="btn small'+(S.simRun?' primary':'')+'" data-act="simrun">'+(S.simRun?'⏸ Live-Demo anhalten':'▶ Live-Demo abspielen')+'</button>':'')+(noSim()?'':'<button class="btn small" data-act="simall">Rest simulieren</button>'))+(S.live&&!(ev&&ev.test)?'':'<button class="btn small" data-act="reset">'+(S.live?'Testabend löschen':'Neuer Abend')+'</button>')+'</div></div><div class="progress"><i style="width:'+Math.round(done/total*100)+'%"></i></div></section>'+
     (pd?'<section class="panel"><h3>Siegerehrung</h3>'+resultBoard(ev)+'</section>':'')+
     '<div class="grid '+(ev.boards.length>2?'g3':'g2')+'">'+ev.boards.map(function(_,b){return boardCard(ev,b,true);}).join('')+'</div>'+
     '<div class="grid g2"><section class="panel"><h3>Als Nächstes</h3>'+queue(ev,5)+'<p class="muted" style="font-size:.82rem;margin:10px 0 0">Wird ein Board frei, kommt automatisch das nächste Match drauf. Schreiber ist der Verlierer des letzten Matches am Board.</p></section>'+
@@ -2071,6 +2071,7 @@ function doAct(t,a,b){
   else if(a==='view'){S.view=t.getAttribute('data-v');}
   else if(a==='sim'){simMatch(ev,b);}
   else if(a==='simall'){simAll(ev);}
+  else if(a==='simrun'){S.simRun=!S.simRun;}
   else if(a==='simv'){simVisit(ev,b);}
   else if(a==='key'){key(b,t.getAttribute('data-k'));}
   else if(a==='quick'){S.input[b]=t.getAttribute('data-q');key(b,'Enter');}
@@ -2122,6 +2123,16 @@ if(!SITE){try{var ss=JSON.parse(sessionStorage.getItem('cda-sb')||'null');if(ss&
   if(/#live/.test(location.hash)){S.role=S.role||'spec';if(!/^s-/.test(S.view))S.view='s-live';
     /* Link von der Startseite: echten Abend von heute als Zuschauer öffnen */
     if(LIVEAUTH&&S.role==='spec'){S.live=true;SV.date=realToday();realPlayersLoad().then(function(){return liveFetch(true);}).then(function(row){if(!row){S.live=false;S.role=null;S.view='gate';}render();}).catch(function(){S.live=false;S.role=null;S.view='gate';render();});}}
+  /* Live-Demo für Testabende: die Turnierleitung lässt den Abend Wurf für Wurf ablaufen, alles wird gespeichert (Startseite zeigt es live) */
+  setInterval(function(){
+    if(!S.simRun)return;var ev=S.ev;
+    if(!S.live||!ev||!ev.test||S.role!=='lead'||ev.phase!=='running'){if(!ev||ev.phase!=='running'){S.simRun=false;render();}return;}
+    if(SV.pending.length>4||SV.busy)return;
+    var act=[];ev.boards.forEach(function(id,b){if(id)act.push(b);});
+    if(!act.length){liveRun(null,function(){fill(S.ev);});render();return;}
+    act.forEach(function(b){liveRun(b,function(){var e=S.ev,m=byId(e,e.boards[b]);if(!m)return;if(m.over)commit(e,b);else{simVisit(e,b);if(m.over)commit(e,b);}});});
+    var ae=DOC.activeElement;if(!(ae&&/INPUT|SELECT|TEXTAREA/.test(ae.tagName)))render();
+  },1500);
   /* Simulation: im Zuschauermodus läuft der Abend von selbst weiter (nie bei echten Abenden) */
   setInterval(function(){
     if(S.live||S.role!=='spec'||!/^s-/.test(S.view)||document.hidden)return;var ev=S.ev;if(ev.phase!=='running')return;
