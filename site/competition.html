@@ -568,6 +568,21 @@ th.sorted{color:var(--green-ink)}
 .rest6{list-style:none;margin:0;padding:0;display:grid;gap:6px;width:100%;max-width:640px}
 .rest6 li{display:grid;grid-template-columns:48px 1fr auto;gap:10px;align-items:center;background:var(--panel-2);border-radius:var(--radius);padding:8px 12px;text-align:left}
 .rest6 b{font-family:var(--f-display);font-weight:900;font-size:1.4rem}
+.rb{display:grid;gap:14px}
+.rb-fin{margin:0;font-size:1rem;color:var(--muted)}.rb-fin b{color:var(--ink)}
+.rb-pod{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:10px;align-items:end}
+.rb-p{display:grid;justify-items:center;gap:4px;text-align:center;padding:14px 10px 16px;border-radius:12px;background:var(--panel-2);border-top:4px solid var(--rbc);min-width:0}
+.rb-p1{--rbc:var(--gold);min-height:150px;background:linear-gradient(180deg,color-mix(in srgb,var(--gold) 16%,var(--panel-2)),var(--panel-2))}
+.rb-p2{--rbc:#C9D1D9;min-height:124px}.rb-p3{--rbc:#D08B4C;min-height:108px}
+.rb-n{font-family:var(--f-display);font-weight:900;font-size:2rem;line-height:1;color:var(--rbc)}
+.rb-nm{font-weight:700;font-size:1rem;max-width:100%;overflow-wrap:anywhere}.rb-p1 .rb-nm{font-size:1.15rem}
+.rb-v{font-family:var(--f-display);font-weight:800;color:var(--gold);font-size:1.1rem}
+.rb-rest{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px}
+.rb-rest li{display:grid;grid-template-columns:34px 1fr auto;gap:8px;align-items:center;background:var(--panel-2);border-radius:10px;padding:7px 12px}
+.rb-rest b{font-family:var(--f-display);font-weight:900;font-size:1.15rem;color:var(--muted)}.rb-rest em{font-style:normal;font-weight:800;color:var(--gold)}
+.rb-st{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;border-top:1px solid var(--line);padding-top:12px}
+.rb-st div{display:grid;gap:2px}.rb-st b{font-family:var(--f-display);font-size:1.6rem;font-weight:900;color:var(--ink);line-height:1.1}.rb-st span{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}.rb-st small{text-transform:none;letter-spacing:0;color:var(--ink)}
+@media (max-width:640px){.rb-pod{grid-template-columns:1fr}.rb-p{min-height:0!important}.rb-p1{order:-1}}
 .rest6 .pm{font-family:var(--f-display);font-weight:800;color:var(--gold);font-size:1.2rem}
 
 /* Recap */
@@ -1352,7 +1367,7 @@ function viewSpecLive(){
   var ev=S.ev;
   if(ev.phase==='checkin')return '<div class="panel idle"><div class="big-n">Heute 20 Uhr</div><p class="muted" style="margin:0">'+MODES[S.mode].name+' · '+MODES[S.mode].sub+'. Sobald es losgeht, siehst du hier live, was auf den Boards passiert.</p></div>';
   var recent=ev.matches.filter(function(m){return m.status==='done';}).slice(-5).reverse();
-  return '<div class="grid" style="gap:20px">'+modeBar(ev)+meBox(ev)+(ev.phase==='done'?'<section class="panel"><h3>Siegerehrung</h3>'+ceremonyList(ev,podium(ev))+'</section>':'')+
+  return '<div class="grid" style="gap:20px">'+modeBar(ev)+meBox(ev)+(ev.phase==='done'?'<section class="panel"><h3>Siegerehrung</h3>'+resultBoard(ev)+'</section>':'')+
     '<div class="grid '+(ev.boards.length>2?'g3':'g2')+'">'+ev.boards.map(function(_,b){return boardCard(ev,b);}).join('')+'</div>'+
     '<div class="grid g2"><section class="panel"><h3>Als Nächstes</h3>'+queue(ev,4)+'<h3 style="margin-top:16px">Zuletzt gespielt</h3>'+(recent.length?'<ul class="mlist">'+recent.map(function(m){return mItem(ev,m);}).join('')+'</ul>':'<p class="muted" style="margin:0">Noch kein Match beendet.</p>')+'</section>'+
     '<section class="panel"><h3>Highlights des Abends</h3>'+hlList(ev)+'</section></div></div>';
@@ -1362,7 +1377,7 @@ function viewSpecTable(){
   var done=ev.matches.filter(function(m){return m.status==='done';}).length;
   return '<div class="grid" style="gap:20px">'+modeBar(ev)+meBox(ev)+
     '<section class="panel"><div class="row" style="justify-content:space-between"><h2 style="margin:0">Laufende Tabelle</h2>'+liveDot(ev)+'</div><span class="muted num">'+done+' von '+ev.plan.total+' Matches gespielt · '+ev.plan.txt+'</span><div class="progress"><i style="width:'+Math.round(done/ev.plan.total*100)+'%"></i></div></section>'+
-    (ev.phase==='done'?'<section class="panel"><h3>Endstand</h3>'+ceremonyList(ev,podium(ev))+'</section>':'')+
+    (ev.phase==='done'?'<section class="panel"><h3>Endstand</h3>'+resultBoard(ev)+'</section>':'')+
     '<div class="grid g3">'+groupTables(ev)+'</div><section class="panel"><h3>K.-o.-Runde</h3>'+koList(ev)+'</section></div>';
 }
 function viewSpecStats(){
@@ -1684,7 +1699,7 @@ function viewTree(){
     if(p3.length||p5.length)out+='<section class="panel tpanel"><h3 class="ttitle">Platzierungsspiele</h3><div class="tside">'+
       (p3.length?treeBox(ev,p3,p3[0],num):'')+(p5.length?treeBox(ev,p5,p5.filter(function(m){return m.stage==='Spiel um Platz 5';})[0]||p5[0],num):'')+'</div></section>';
   }
-  if(ev.phase==='done')out='<section class="panel"><h3>Endstand</h3>'+ceremonyList(ev,podium(ev))+'</section>'+out;
+  if(ev.phase==='done')out='<section class="panel"><h3>Endstand</h3>'+resultBoard(ev)+'</section>'+out;
   return head+out+'<p class="muted tcap" style="margin:0">Waagrecht wischen, um den ganzen Baum zu sehen. Rot = aufgerufen oder läuft gerade, mit Board und Schreiber.</p></div>';}
 function viewLead(){
   var ev=S.ev,done=ev.matches.filter(function(m){return m.status==='done';}).length,total=ev.plan.total;
@@ -1692,11 +1707,26 @@ function viewLead(){
   return '<div class="grid" style="gap:20px">'+modeBar(ev)+
     '<section class="panel"><div class="row" style="justify-content:space-between"><div><h2 style="margin:0">'+(pd?'Sieger: '+partH(ev,pd[0].part):'Abend läuft')+'</h2><span class="muted num">'+done+' von '+total+' Matches gespielt · '+ev.plan.txt+' · '+legTxt(MD(ev),legsOf(ev),ev.plan)+'</span></div>'+
     '<div class="row">'+(pd?'<button class="btn small primary" data-act="archive">Abend abschließen und in die Saison übernehmen</button>':(noSim()?'':'<button class="btn small" data-act="simall">Rest simulieren</button>'))+(S.live&&!(ev&&ev.test)?'':'<button class="btn small" data-act="reset">'+(S.live?'Testabend löschen':'Neuer Abend')+'</button>')+'</div></div><div class="progress"><i style="width:'+Math.round(done/total*100)+'%"></i></div></section>'+
-    (pd?'<section class="panel"><h3>Siegerehrung</h3>'+ceremonyList(ev,pd)+'</section>':'')+
+    (pd?'<section class="panel"><h3>Siegerehrung</h3>'+resultBoard(ev)+'</section>':'')+
     '<div class="grid '+(ev.boards.length>2?'g3':'g2')+'">'+ev.boards.map(function(_,b){return boardCard(ev,b,true);}).join('')+'</div>'+
     '<div class="grid g2"><section class="panel"><h3>Als Nächstes</h3>'+queue(ev,5)+'<p class="muted" style="font-size:.82rem;margin:10px 0 0">Wird ein Board frei, kommt automatisch das nächste Match drauf. Schreiber ist der Verlierer des letzten Matches am Board.</p></section>'+
     '<section class="panel"><h3>K.-o.-Runde</h3>'+koList(ev)+'</section></div><div class="grid g3">'+groupTables(ev)+'</div></div>';
 }
+/* Endstand eines Abends: Podest, weitere Plätze, Bestwerte */
+function resultBoard(ev){var md=MD(ev),pd=podium(ev);if(!pd.length)return '';
+  var st=stats([ev]),n180=0,hf=0,hfw=null,ba=0,baw=null,best=null;
+  Object.keys(st).forEach(function(k){n180+=st[k].t180||0;if(st[k].hf>hf){hf=st[k].hf;hfw=+k;}var a=avgOf(st[k]);if(st[k].dt>=45&&a>ba){ba=a;baw=+k;}});
+  ev.matches.forEach(function(m){if(!m.a||!m.b||md.kind!=='x01')return;m.legs.forEach(function(l){if(l.winner==null)return;var vs=l.visits.filter(function(v){return v.p===l.winner;}),d=sum(vs.map(function(v){return v.darts;}));if(vs.length&&(!best||d<best.d))best={d:d,who:vs[vs.length-1].who};});});
+  var fin=ev.matches.filter(function(m){return m.stage==='Finale';})[0],w=pd[0],by={};pd.forEach(function(x){if(x.place<=3&&!by[x.place])by[x.place]=x;});
+  var val=function(x){return x.money?eur(x.money):md.masters?x.pts+' Punkte':'';};
+  var pod=function(pl){var x=by[pl];if(!x)return '<div></div>';return '<div class="rb-p rb-p'+pl+'"><span class="rb-n">'+pl+'</span><span class="rb-nm">'+partH(ev,x.part)+'</span><span class="rb-v">'+val(x)+'</span></div>';};
+  var rest=pd.filter(function(x){return x.place>3;}).slice(0,md.finals?5:md.masters?5:3);
+  var fs=fin&&fin.status==='done'?'<p class="rb-fin">🏆 <b>'+partH(ev,w.part)+'</b> gewinnt das Finale '+legsWon(fin,fin.winner)+':'+legsWon(fin,1-fin.winner)+' gegen '+partH(ev,loserPart(fin))+'</p>':'';
+  var fn=function(id){return id?' <small>'+esc(pn(id).split(' ')[0])+'</small>':'';};
+  var sts=[[ev.pids.length,'Spieler'],md.kind==='x01'?[n180,'180er']:null,md.kind==='x01'?[hf||'–','High Finish'+fn(hfw)]:null,[ba?fmt1(ba):'–',(md.kind==='cricket'?'Beste MPR':'Bester Avg')+fn(baw)],best?[best.d,'Darts kürzestes Leg'+fn(best.who)]:null].filter(Boolean);
+  return '<div class="rb">'+fs+'<div class="rb-pod">'+pod(2)+pod(1)+pod(3)+'</div>'+
+    (rest.length?'<ol class="rb-rest">'+rest.map(function(x){return '<li><b>'+x.place+'.</b><span>'+partH(ev,x.part)+'</span><em>'+val(x)+'</em></li>';}).join('')+'</ol>':'')+
+    '<div class="rb-st">'+sts.map(function(x){return '<div><b class="num">'+x[0]+'</b><span>'+x[1]+'</span></div>';}).join('')+'</div></div>';}
 function ceremonyList(ev,pd){var md=MD(ev),n=md.finals?8:3;return '<ul class="rest6">'+pd.slice(0,n).map(function(x){return '<li><b>'+x.place+'.</b><span>'+partH(ev,x.part)+'</span><span class="pm">'+(x.money?eur(x.money):md.masters?x.pts+' P.':'')+'</span></li>';}).join('')+'</ul>';}
 
 /* --- Scorer --- */
@@ -1810,7 +1840,7 @@ function viewLive(){
   var ev=S.ev;
   if(ev.phase==='checkin')return '<div class="panel idle"><div class="big-n">Heute 20 Uhr</div><p class="muted" style="margin:0">'+MODES[S.mode].name+' · '+MODES[S.mode].sub+'. Hier siehst du dann live, was auf den Boards passiert.</p></div>';
   var recent=ev.matches.filter(function(m){return m.status==='done';}).slice(-5).reverse();
-  return '<div class="grid" style="gap:20px">'+modeBar(ev)+(ev.phase==='done'?'<section class="panel"><h3>Siegerehrung</h3>'+ceremonyList(ev,podium(ev))+'</section>':'')+
+  return '<div class="grid" style="gap:20px">'+modeBar(ev)+(ev.phase==='done'?'<section class="panel"><h3>Siegerehrung</h3>'+resultBoard(ev)+'</section>':'')+
     '<div class="grid '+(ev.boards.length>2?'g3':'g2')+'">'+ev.boards.map(function(_,b){return boardCard(ev,b);}).join('')+'</div>'+
     '<div class="grid g2"><section class="panel"><h3>Highlights des Abends</h3>'+hlList(ev)+'</section>'+
     '<section class="panel"><h3>Als Nächstes</h3>'+queue(ev,3)+'<h3 style="margin-top:16px">Zuletzt gespielt</h3>'+(recent.length?'<ul class="mlist">'+recent.map(function(m){return mItem(ev,m);}).join('')+'</ul>':'<p class="muted" style="margin:0">Noch kein Match beendet.</p>')+'</section></div>'+
@@ -1874,7 +1904,7 @@ function viewSeason(){
   var thead='<tr><th>#</th>'+cl.map(function(c){return '<th class="sort'+(c[0]===k?' sorted':'')+'" data-act="sort" data-k="'+c[0]+'">'+c[1]+(c[0]===k?(d<0?' ↓':' ↑'):'')+'</th>';}).join('')+'</tr>';
   var tbody=ids.map(function(id,i){var x=sa[id];return '<tr><td>'+(i+1)+'</td><td>'+plink(id)+'</td><td>'+x.ev+'</td><td>'+x.sp+'</td><td>'+(x.sp?Math.round(x.w/x.sp*100)+' %':'–')+'</td><td>'+(TW[id]?'<b>'+TW[id]+'</b> 🏆':'–')+'</td><td>'+fmt2(avgOf(x))+'</td><td>'+(x.t180||'–')+'</td><td>'+(x.t171||'–')+'</td><td>'+(x.sl||'–')+'</td><td>'+(x.hf||'–')+'</td><td>'+(x.best?x.best:'–')+'</td><td>'+fmt2(mprOf(x))+'</td></tr>';}).join('');
   return '<div class="grid" style="gap:20px">'+seasonSelect()+
-    (fev?'<div class="grid"><section class="panel"><h3>Masters-Finals · '+dshort(fev.date)+fev.date.slice(0,4)+' · TSV Dinkelscherben · ausgezahlt aus dem Pott: '+eur(potFor(fev.season))+'</h3>'+ceremonyList(fev,podium(fev))+'<p class="cap">'+fev.pids.length+' qualifizierte Spieler (mindestens '+MIN_QUALI+' Masters-Abende) · '+fev.plan.txt+'. Der Pott kam aus '+ms.length+' Masters-Abenden mit im Schnitt '+fmt1(sum(ms.map(function(e){return e.pids.length;}))/ms.length)+' Spielern.</p></section></div>':'')+
+    (fev?'<div class="grid"><section class="panel"><h3>Masters-Finals · '+dshort(fev.date)+fev.date.slice(0,4)+' · TSV Dinkelscherben · ausgezahlt aus dem Pott: '+eur(potFor(fev.season))+'</h3>'+resultBoard(fev)+'<p class="cap">'+fev.pids.length+' qualifizierte Spieler (mindestens '+MIN_QUALI+' Masters-Abende) · '+fev.plan.txt+'. Der Pott kam aus '+ms.length+' Masters-Abenden mit im Schnitt '+fmt1(sum(ms.map(function(e){return e.pids.length;}))/ms.length)+' Spielern.</p></section></div>':'')+
     (fev?'':'<div class="grid g2"><section class="panel"><h3>Masters-Pott</h3>'+potH+'</section>')+(fev?'':'<section class="panel"><h3>Spielplan nach Rotation</h3><div class="sched">'+sched+'</div><p class="cap">Saison = Kalenderjahr ab 07.01. Alle 3 Wochen Masters (16 pro Saison), dazwischen 501 und 301 Double-In. Cricket etwa alle 7 Wochen, Lucky Doubles alle 12, Bring a Friend zum Saisonstart und alle 4 Monate. In der Finals-Woche kein Masters, Finals am Samstag beim TSV. Pause vom 23.12. bis 6.1.</p></section></div>')+
     '<section class="panel"><div class="row" style="justify-content:space-between;align-items:baseline"><h2 style="margin:0">CDA-Masters-Rangliste</h2><span class="muted" style="font-size:.85rem">'+ms.length+' von '+MASTERS_PER_SEASON+' Masters-Abenden · Finals: die besten '+MAX_FINALS+' mit mindestens '+MIN_QUALI+' Abenden</span></div>'+
     '<p class="muted" style="font-size:.85rem;margin:6px 0 12px">Punkte pro Abend: 5 fürs Mitspielen, 2 für jeden Spieler, der hinter dir landet, 1 pro gewonnenem Match, dazu Bonus +10 / +6 / +3 für die Plätze 1 bis 3. Es zählen die besten '+BEST_OF+' Abende. Namen antippen öffnet das Spielerprofil.</p><div class="tbl-wrap">'+rankT+'</div></section>'+
