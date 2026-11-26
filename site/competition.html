@@ -317,6 +317,25 @@ th.sorted{color:var(--green-ink)}
   .chead{padding:10px 12px}
 }
 
+
+/* Turnierbaum */
+.dkos{margin:14px 0 2px;font-size:1rem}.dkos:first-child{margin-top:0}
+.dkoh{margin:12px 0 6px;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.dkoh .pnote,.tnote{color:var(--gold);text-transform:none;letter-spacing:0;font-weight:600}
+.tpanel{padding:14px 0 10px}.tpanel>.ttitle,.tpanel>.tcap{padding:0 16px}.ttitle{margin:0 0 8px}
+.twrap{overflow-x:auto;padding:0 16px 8px;-webkit-overflow-scrolling:touch}
+.tbox{position:relative}.tside{display:flex;flex-wrap:wrap;gap:8px 0}
+.thead{position:absolute;top:0;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tlines{position:absolute;left:0;top:0;pointer-events:none}.tlines path{fill:none;stroke:var(--line);stroke-width:2}.tlines path.on{stroke:color-mix(in srgb,var(--green) 70%,var(--line))}
+.tcard{position:absolute;width:232px;height:78px;box-sizing:border-box;background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:5px 8px;display:grid;grid-template-rows:auto 1fr 1fr;font-size:.84rem}
+.tcard.live{border-color:var(--green);box-shadow:0 0 0 2px color-mix(in srgb,var(--green) 35%,transparent)}
+.tt{display:flex;gap:6px;align-items:center;font-size:.68rem;color:var(--muted);min-width:0}.tt b{color:var(--ink);font-weight:700}
+.tnote{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-left:auto;font-size:.68rem}
+.tlive{background:var(--green);color:#fff;border-radius:4px;padding:0 5px;font-weight:700;white-space:nowrap;flex:none}
+.tr{display:flex;justify-content:space-between;align-items:center;gap:6px;min-width:0}
+.tn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ts{font-weight:700;min-width:1.2em;text-align:right}
+.tr.w .tn,.tr.w .ts{color:var(--green-ink);font-weight:700}.tr.l{opacity:.55}.tph{color:var(--muted)}
+.tcap{font-size:.8rem;margin:6px 0 0}
 .gev.gnone{cursor:default}
 .sync{font-size:.78rem;font-weight:700;padding:4px 10px;border-radius:99px;white-space:nowrap}
 .sync.ok{background:color-mix(in srgb,var(--green) 18%,transparent);color:var(--green-ink)}
@@ -1214,8 +1233,8 @@ function renderTabs(){
   if(SITE)return;
   var t;
   if(!S.role)t=[];
-  else if(S.role==='spec')t=[['s-live','Live'],['s-table','Tabelle'],['s-stats','Statistik'],['gate','← Auswahl']];
-  else if(S.role==='lead'){t=[['lead','Turnierleitung']];for(var b=0;b<nb();b++)t.push(['b'+b,'Board '+(b+1)]);t.push(['s-live','Live'],['season','Saison'],['logout','Abmelden']);}
+  else if(S.role==='spec')t=[['s-live','Live'],['s-table','Tabelle'],['s-tree','Turnierbaum'],['s-stats','Statistik'],['gate','← Auswahl']];
+  else if(S.role==='lead'){t=[['lead','Turnierleitung'],['s-tree','Turnierbaum']];for(var b=0;b<nb();b++)t.push(['b'+b,'Board '+(b+1)]);t.push(['s-live','Live'],['season','Saison'],['logout','Abmelden']);}
   else t=[[S.role,'Board '+(+S.role.slice(1)+1)],['logout','Abmelden']];
   var cur=S.view==='profile'?S.back:S.view;
   DOC.getElementById('tabs').innerHTML=t.map(function(x){return '<button role="tab" data-tab="'+x[0]+'" aria-selected="'+(cur===x[0])+'">'+x[1]+'</button>';}).join('');
@@ -1239,6 +1258,7 @@ function render(){
   else if(v==='lead')V.innerHTML=ev.phase==='checkin'?viewCheckin():viewLead();
   else if(v==='live'||v==='s-live')V.innerHTML=viewSpecLive();
   else if(v==='s-table')V.innerHTML=viewSpecTable();
+  else if(v==='s-tree')V.innerHTML=viewTree();
   else if(v==='s-stats')V.innerHTML=viewSpecStats();
   else if(v==='season')V.innerHTML=viewSeason();
   else if(v==='profile')V.innerHTML=viewProfile(S.pid);
@@ -1537,7 +1557,7 @@ function boardCard(ev,b,withBtn){
   if(!m)return '<div class="panel bcard"><div class="bhead">'+head+'<span class="pill free">frei</span></div><p class="muted" style="margin:0">'+(ev.phase==='done'?'Abend beendet.':'Wartet auf das nächste Match.')+'</p></div>';
   var leg=curLeg(m),t=turn(leg),cr=MD(ev).kind==='cricket',st=cr?cState(m,leg,{p:t,dl:ev.cin[b]}):null;
   var row=function(p){var id=p?m.b:m.a;return '<span class="n'+(!m.over&&m.started&&t===p?' on':'')+'">'+partH(ev,id)+'</span><span class="av num">'+sideQ(ev,m,p)+'</span><span class="l num">'+legsWon(m,p)+'</span><span class="r num">'+(m.over?'':cr?st.pts[p]:restX(ev,m,leg,p))+'</span>';};
-  return '<div class="panel bcard"><div class="bhead">'+head+'<span class="pill live">'+(m.over?'Ergebnis':m.started?'live':'aufgerufen')+'</span></div><span class="muted" style="font-size:.8rem">'+m.stage+' · Best of '+(m.ft*2-1)+' · Schreiber: '+(m.writer?pnh(m.writer):'offen')+'</span><div class="mini">'+row(0)+row(1)+'</div>'+
+  return '<div class="panel bcard"><div class="bhead">'+head+'<span class="pill live">'+(m.over?'Ergebnis':m.started?'live':'aufgerufen')+'</span></div><span class="muted" style="font-size:.8rem">'+m.stage+(placeNote(ev,m)&&placeNote(ev,m)!==m.stage?' · '+placeNote(ev,m):'')+' · Best of '+(m.ft*2-1)+' · Schreiber: '+(m.writer?pnh(m.writer):'offen')+'</span><div class="mini">'+row(0)+row(1)+'</div>'+
     (withBtn?'<div class="row"><button class="btn small" data-act="view" data-v="b'+b+'">Zum Scorer</button>'+(noSim()?'':'<button class="btn small" data-act="sim" data-b="'+b+'">Match simulieren</button>')+'</div>':'')+'</div>';
 }
 function groupTables(ev){
@@ -1551,13 +1571,80 @@ function groupTables(ev){
 }
 function queue(ev,n){var w=ev.matches.filter(function(m){return m.status==='wait';}).sort(function(x,y){return x.order-y.order;}).slice(0,n);
   return w.length?'<ul class="mlist">'+w.map(function(m){return mItem(ev,m);}).join('')+'</ul>':'<p class="muted" style="margin:0">Keine weiteren Matches.</p>';}
+function koHead(ev,t,m){var n=m?placeNote(ev,m):'';if(n===t)n='';return '<h4 class="dkoh">'+t+(n?' <span class="pnote">'+n+'</span>':'')+'</h4>';}
+function koByStage(ev,l,strip){var st=[];l.forEach(function(m){if(st.indexOf(m.stage)<0)st.push(m.stage);});
+  return st.map(function(t){var ms=l.filter(function(m){return m.stage===t;});return koHead(ev,strip?t.replace(/^(Gewinner|Verlierer)seite · /,''):t,ms[0])+'<ul class="mlist">'+ms.map(function(m){return mItem(ev,m);}).join('')+'</ul>';}).join('');}
 function koList(ev){var ko=ev.matches.filter(function(m){return m.kind==='KO';});
-  if(ev.plan&&ev.plan.dko){var sec=function(t,f){var l=ko.filter(f);return l.length?'<h4 class="dkoh">'+t+'</h4><ul class="mlist">'+l.map(function(m){return mItem(ev,m);}).join('')+'</ul>':'';};
+  if(ev.plan&&ev.plan.dko){var sec=function(t,f){var l=ko.filter(f);return l.length?'<h3 class="dkos">'+t+'</h3>'+koByStage(ev,l,true):'';};
     return sec('Gewinnerseite',function(m){return m.dk==='W';})+sec('Verliererseite',function(m){return m.dk==='L';})+sec('Finale',function(m){return m.dk==='F';});}
-  if(ev.plan&&ev.plan.sko){var st=[];ko.forEach(function(m){if(st.indexOf(m.stage)<0)st.push(m.stage);});
-    return st.map(function(t){return '<h4 class="dkoh">'+t+'</h4><ul class="mlist">'+ko.filter(function(m){return m.stage===t;}).map(function(m){return mItem(ev,m);}).join('')+'</ul>';}).join('');}
   if(!ko.length)return '<p class="muted" style="margin:0">Startet automatisch nach der '+(MD(ev).finals?'Zwischenrunde':'Gruppenphase')+'. Es kommen '+ev.plan.q+' weiter.</p>';
-  return '<ul class="mlist">'+ko.map(function(m){return mItem(ev,m);}).join('')+'</ul>';}
+  return koByStage(ev,ko);}
+/* ===== Platzierungs-Hinweise: was es in welchem K.-o.-Spiel zu gewinnen/verlieren gibt ===== */
+function plR(a,n){return 'Platz '+a+(n>1?' (geteilt)':'');}
+function placeNotes(ev){var ko=ev.matches.filter(function(m){return m.kind==='KO';}),key=ko.length+'|'+(ev.plan&&ev.plan.dko?1:0);
+  if(ev._pn&&ev._pnk===key)return ev._pn;var N={};
+  var st=function(n){return ko.filter(function(m){return m.stage===n;});};
+  if(ev.plan&&ev.plan.dko){var lr=ko.filter(function(m){return m.dk==='L';}),rs=[],p0=3;lr.forEach(function(m){if(rs.indexOf(m.dr)<0)rs.push(m.dr);});
+    rs.sort(function(a,b){return b-a;}).forEach(function(r){var c=lr.filter(function(m){return m.dr===r;}).length;N['L'+r]='Verlierer: '+plR(p0,c);p0+=c;});
+    N.F='Spiel um Platz 1';N.W='Verlierer → Verliererseite';}
+  else{N['Finale']='Spiel um Platz 1';N['Spiel um Platz 3']='Spiel um Platz 3';
+    if(st('Halbfinale').length)N['Halbfinale']=st('Spiel um Platz 3').length?'Verlierer spielen um Platz 3':'Verlierer: '+plR(3,2);
+    var has58=st('Platz 5–8').length>0,pl=5;
+    if(has58)N['Platz 5–8']='Verlierer: Platz 7 (geteilt)';N['Spiel um Platz 5']='Spiel um Platz 5';
+    ['Viertelfinale','Achtelfinale','Sechzehntelfinale','Runde der letzten 64'].forEach(function(t){var c=st(t).length;if(!c)return;
+      N[t]=t==='Viertelfinale'&&has58?'Verlierer spielen um Platz 5–8':'Verlierer: '+plR(pl,c);pl+=c;});}
+  ev._pn=N;ev._pnk=key;return N;}
+function placeNote(ev,m){if(!m||m.kind!=='KO')return '';var N=placeNotes(ev);
+  if(ev.plan&&ev.plan.dko)return m.dk==='F'?N.F:m.dk==='W'?N.W:(N['L'+m.dr]||'');
+  return N[m.stage]||'';}
+/* ===== Turnierbaum ===== */
+var TB={w:232,h:78,gx:40,gy:12,head:30};
+function koNum(ev){var o={};ev.matches.filter(function(m){return m.kind==='KO';}).forEach(function(m,i){o[m.id]=i+1;});return o;}
+var SZ={'Runde der letzten 64':0,'Sechzehntelfinale':1,'Achtelfinale':2,'Viertelfinale':3,'Halbfinale':4,'Finale':5,'Platz 5–8':0,'Spiel um Platz 5':1,'Spiel um Platz 3':5};
+function tCol(m){return m.dk==='F'?999:m.dr!=null&&!(m.sk&&m.stage==='Spiel um Platz 3')?m.dr:SZ[m.stage]||0;}
+function tCard(ev,m,num,x,y){
+  var done=m.status==='done',live=m.status==='live',n=placeNote(ev,m);
+  var side=function(s){var id=s?m.b:m.a,f=m[s?'fromB':'fromA'],won=done&&m.winner===s,lost=done&&m.winner!==s;
+    var nm=id?partH(ev,id):'<span class="tph">'+(f?(m[s?'fromBL':'fromAL']?'Verlierer':'Sieger')+' #'+num[f]:'offen')+'</span>';
+    return '<div class="tr'+(won?' w':lost?' l':'')+'"><span class="tn">'+nm+'</span><span class="ts num">'+(done||live?legsWon(m,s):'')+'</span></div>';};
+  return '<div class="tcard'+(live?' live':done?' done':'')+'" style="left:'+x+'px;top:'+y+'px"><div class="tt"><b>#'+num[m.id]+'</b>'+(live?'<span class="tlive">Board '+(m.board+1)+'</span>':'')+(n?'<span class="tnote" title="'+n+'">'+n+'</span>':'')+'</div>'+side(0)+side(1)+'</div>';}
+function treeBox(ev,set,root,num,title){
+  if(!root)return '';var inS={};set.forEach(function(m){inS[m.id]=1;});
+  var kids=function(m){var k=[];['fromA','fromB'].forEach(function(f){var id=m[f];if(id&&!m[f+'L']&&inS[id])k.push(byId(ev,id));});return k;};
+  var P={},slot=0,seen={};
+  (function walk(m){seen[m.id]=1;var k=kids(m).filter(function(c){return !seen[c.id];}),y;if(!k.length)y=slot++;else{var ys=k.map(walk);y=(ys[0]+ys[ys.length-1])/2;}P[m.id]={m:m,y:y,k:k};return y;})(root);
+  set.forEach(function(m){if(!P[m.id])P[m.id]={m:m,y:slot++,k:[]};});
+  var cs=[];Object.keys(P).forEach(function(i){var c=tCol(P[i].m);if(cs.indexOf(c)<0)cs.push(c);});cs.sort(function(a,b){return a-b;});
+  var X=function(m){return cs.indexOf(tCol(m))*(TB.w+TB.gx);},Y=function(id){return TB.head+P[id].y*(TB.h+TB.gy);};
+  var W=cs.length*(TB.w+TB.gx)-TB.gx,H=TB.head+slot*(TB.h+TB.gy)-TB.gy,lines='',cards='',heads={};
+  Object.keys(P).forEach(function(i){var o=P[i],m=o.m,x=X(m),y=Y(m.id);cards+=tCard(ev,m,num,x,y);
+    var c=cs.indexOf(tCol(m));if(!heads[c])heads[c]=m.stage.replace(/^(Gewinner|Verlierer)seite · /,'');
+    o.k.forEach(function(k){var x1=X(k)+TB.w,y1=Y(k.id)+TB.h/2,x2=x,y2=y+TB.h/2,mx=x1+TB.gx/2,on=k.status==='done';
+      lines+='<path class="'+(on?'on':'')+'" d="M'+x1+' '+y1+'H'+mx+'V'+y2+'H'+x2+'"/>';});});
+  var hd=cs.map(function(_,c){return '<div class="thead" style="left:'+c*(TB.w+TB.gx)+'px;width:'+TB.w+'px">'+(heads[c]||'')+'</div>';}).join('');
+  return (title?'<h3 class="ttitle">'+title+'</h3>':'')+'<div class="twrap"><div class="tbox" style="width:'+W+'px;height:'+H+'px">'+hd+'<svg class="tlines" width="'+W+'" height="'+H+'">'+lines+'</svg>'+cards+'</div></div>';}
+function viewTree(){
+  var ev=S.ev;if(ev.phase==='checkin')return viewSpecLive();
+  var ko=ev.matches.filter(function(m){return m.kind==='KO';}),num=koNum(ev),out='';
+  var head='<div class="grid" style="gap:20px">'+modeBar(ev)+meBox(ev);
+  if(!ko.length){var fin=MD(ev).finals;
+    return head+'<section class="panel"><div class="row" style="justify-content:space-between"><h2 style="margin:0">'+(ev.groups2?'Zwischenrunde':fin?'Vorrunde':'Gruppenphase')+'</h2>'+liveDot(ev)+'</div><p class="muted" style="margin:6px 0 0">Der Turnierbaum erscheint, sobald die '+(fin?'Zwischenrunde':'Gruppenphase')+' beendet ist. Die besten '+ev.plan.q+' kommen in die K.-o.-Runde.</p></section><div class="grid g3">'+groupTables(ev)+'</div></div>';}
+  if(ev.plan&&ev.plan.dko){
+    var W=ko.filter(function(m){return m.dk==='W'||m.dk==='F';}),L=ko.filter(function(m){return m.dk==='L';});
+    var root=ko.filter(function(m){return m.dk==='F';})[0]||W[W.length-1];
+    var lr=L.reduce(function(a,m){return !a||m.dr>a.dr?m:a;},null);
+    out+='<section class="panel tpanel">'+treeBox(ev,W,root,num,'Gewinnerseite und Finale')+'</section>';
+    if(L.length)out+='<section class="panel tpanel">'+treeBox(ev,L,lr,num,'Verliererseite')+'<p class="muted tcap">Wer auf der Gewinnerseite verliert, rutscht hierher („Verlierer #…“). Erst die zweite Niederlage scheidet aus.</p></section>';
+  }else{
+    var side=['Spiel um Platz 3','Platz 5–8','Spiel um Platz 5'],main=ko.filter(function(m){return side.indexOf(m.stage)<0;});
+    var f=main.filter(function(m){return m.stage==='Finale';})[0]||main[main.length-1];
+    out+='<section class="panel tpanel">'+treeBox(ev,main,f,num,'K.-o.-Runde')+'</section>';
+    var p3=ko.filter(function(m){return m.stage==='Spiel um Platz 3';}),p5=ko.filter(function(m){return m.stage==='Platz 5–8'||m.stage==='Spiel um Platz 5';});
+    if(p3.length||p5.length)out+='<section class="panel tpanel"><h3 class="ttitle">Platzierungsspiele</h3><div class="tside">'+
+      (p3.length?treeBox(ev,p3,p3[0],num):'')+(p5.length?treeBox(ev,p5,p5.filter(function(m){return m.stage==='Spiel um Platz 5';})[0]||p5[0],num):'')+'</div></section>';
+  }
+  if(ev.phase==='done')out='<section class="panel"><h3>Endstand</h3>'+ceremonyList(ev,podium(ev))+'</section>'+out;
+  return head+out+'<p class="muted tcap" style="margin:0">Waagrecht wischen, um den ganzen Baum zu sehen. Grün umrandet = läuft gerade.</p></div>';}
 function viewLead(){
   var ev=S.ev,done=ev.matches.filter(function(m){return m.status==='done';}).length,total=ev.plan.total;
   var pd=ev.phase==='done'?podium(ev):null;
