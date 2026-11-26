@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-25T23:24:54.814Z",
+ "updated": "2026-11-26T23:29:40.603Z",
  "season": "2026/27",
  "teams": {
   "1": {
@@ -7,7 +7,7 @@
    "league": "3K WINMAU 2. Bundesliga Süd",
    "source": "3k",
    "sourceUrl": "https://portal.3k-darts.com/frontend/events/10/event/1408/phase/2101/group/40479",
-   "fetched": "2026-11-25T23:24:54.814Z",
+   "fetched": "2026-11-26T23:29:40.603Z",
    "table": [
     {
      "pos": 1,
@@ -464,7 +464,7 @@
    "league": "1. Bezirksliga Schwaben",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211693",
-   "fetched": "2026-11-25T23:24:54.814Z",
+   "fetched": "2026-11-26T23:29:40.603Z",
    "table": [
     {
      "pos": 1,
@@ -517,13 +517,13 @@
     {
      "pos": 5,
      "name": "SV Gablingen Schmutter Darter",
-     "played": 6,
-     "w": 3,
+     "played": 7,
+     "w": 4,
      "d": 1,
      "l": 2,
-     "sets": "37:23",
-     "legs": "135:102",
-     "points": "7:5",
+     "sets": "43:27",
+     "legs": "158:117",
+     "points": "9:5",
      "us": false
     },
     {
@@ -601,13 +601,13 @@
     {
      "pos": 12,
      "name": "DJK Lechhausen III",
-     "played": 5,
+     "played": 6,
      "w": 0,
      "d": 0,
-     "l": 5,
-     "sets": "13:37",
-     "legs": "73:129",
-     "points": "0:10",
+     "l": 6,
+     "sets": "17:43",
+     "legs": "88:152",
+     "points": "0:12",
      "us": false
     }
    ],
@@ -913,7 +913,7 @@
    "league": "3. Bezirksliga Schwaben Süd",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211696",
-   "fetched": "2026-11-25T23:24:54.814Z",
+   "fetched": "2026-11-26T23:29:40.603Z",
    "table": [
     {
      "pos": 1,
@@ -942,13 +942,13 @@
     {
      "pos": 3,
      "name": "Pegasus Darter II",
-     "played": 5,
-     "w": 3,
+     "played": 6,
+     "w": 4,
      "d": 2,
      "l": 0,
-     "sets": "29:21",
-     "legs": "111:96",
-     "points": "8:2",
+     "sets": "37:23",
+     "legs": "136:107",
+     "points": "10:2",
      "us": false
     },
     {
@@ -1025,18 +1025,6 @@
     },
     {
      "pos": 10,
-     "name": "DJK Lechhausen VI",
-     "played": 6,
-     "w": 1,
-     "d": 0,
-     "l": 5,
-     "sets": "12:48",
-     "legs": "55:154",
-     "points": "2:10",
-     "us": false
-    },
-    {
-     "pos": 11,
      "name": "DC Bavarian Knights Hurlach II",
      "played": 7,
      "w": 1,
@@ -1044,6 +1032,18 @@
      "l": 6,
      "sets": "19:51",
      "legs": "96:174",
+     "points": "2:12",
+     "us": false
+    },
+    {
+     "pos": 11,
+     "name": "DJK Lechhausen VI",
+     "played": 7,
+     "w": 1,
+     "d": 0,
+     "l": 6,
+     "sets": "14:56",
+     "legs": "66:179",
      "points": "2:12",
      "us": false
     }
@@ -1308,18 +1308,18 @@
    "league": "4. Bezirksliga Schwaben Süd 4",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211701",
-   "fetched": "2026-11-25T23:24:54.814Z",
+   "fetched": "2026-11-26T23:29:40.603Z",
    "table": [
     {
      "pos": 1,
      "name": "Clochard Darter Augsburg IV",
-     "played": 6,
+     "played": 7,
      "w": 5,
-     "d": 1,
+     "d": 2,
      "l": 0,
-     "sets": "39:21",
-     "legs": "139:91",
-     "points": "11:1",
+     "sets": "44:26",
+     "legs": "159:107",
+     "points": "12:2",
      "us": true
     },
     {
@@ -1342,7 +1342,7 @@
      "d": 0,
      "l": 1,
      "sets": "38:22",
-     "legs": "105:86",
+     "legs": "129:96",
      "points": "10:2",
      "us": false
     },
@@ -1372,6 +1372,18 @@
     },
     {
      "pos": 6,
+     "name": "SV Gablingen Schmutter Darter VI",
+     "played": 6,
+     "w": 2,
+     "d": 1,
+     "l": 3,
+     "sets": "23:37",
+     "legs": "98:133",
+     "points": "5:7",
+     "us": false
+    },
+    {
+     "pos": 7,
      "name": "TSV Göggingen",
      "played": 7,
      "w": 2,
@@ -1380,18 +1392,6 @@
      "sets": "35:35",
      "legs": "136:135",
      "points": "5:9",
-     "us": false
-    },
-    {
-     "pos": 7,
-     "name": "SV Gablingen Schmutter Darter VI",
-     "played": 5,
-     "w": 2,
-     "d": 0,
-     "l": 3,
-     "sets": "18:32",
-     "legs": "82:113",
-     "points": "4:6",
      "us": false
     },
     {
@@ -1426,7 +1426,7 @@
      "d": 2,
      "l": 4,
      "sets": "16:44",
-     "legs": "74:116",
+     "legs": "84:140",
      "points": "2:10",
      "us": false
     },
@@ -1518,7 +1518,7 @@
      "moved": false,
      "home": "SV Gablingen Schmutter Darter VI",
      "away": "Clochard Darter Augsburg IV",
-     "score": null,
+     "score": "5:5",
      "venue": "Sportheim SV Gablingen"
     },
     {
@@ -1673,8 +1673,8 @@
     },
     {
      "name": "Andreas Wengenmayr",
-     "games": 4,
-     "single": "8:0"
+     "games": 5,
+     "single": "10:0"
     },
     {
      "name": "Adrian Pirner",
@@ -1693,13 +1693,13 @@
     },
     {
      "name": "Maximilian Urban",
-     "games": 6,
-     "single": "10:2"
+     "games": 7,
+     "single": "12:2"
     },
     {
      "name": "Gerald Nitzer",
-     "games": 2,
-     "single": "0:2"
+     "games": 3,
+     "single": "0:4"
     },
     {
      "name": "Dennis Meissner",
@@ -1708,8 +1708,8 @@
     },
     {
      "name": "Fabian Schreyer",
-     "games": 3,
-     "single": "1:3"
+     "games": 4,
+     "single": "1:5"
     }
    ]
   }
