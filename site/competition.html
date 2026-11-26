@@ -337,6 +337,8 @@ th.sorted{color:var(--green-ink)}
 .tn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ts{font-weight:700;min-width:1.2em;text-align:right}
 .tr.w .tn,.tr.w .ts{color:var(--green-ink);font-weight:700}.tr.l{opacity:.55}.tph{color:var(--muted)}
 .tcap{font-size:.8rem;margin:6px 0 0}
+.tcard.mine{border-color:var(--gold);box-shadow:0 0 0 2px color-mix(in srgb,var(--gold) 45%,transparent)}.tcard.live.mine{border-color:var(--red)}
+.tr.me{background:color-mix(in srgb,var(--gold) 22%,transparent);margin:0 -8px;padding:0 8px}.tr.me .tn{color:var(--gold);font-weight:700}.tr.me.l{opacity:.75}.tme{color:var(--gold)}
 .gev.gnone{cursor:default}
 .sync{font-size:.78rem;font-weight:700;padding:4px 10px;border-radius:99px;white-space:nowrap}
 .sync.ok{background:color-mix(in srgb,var(--green) 18%,transparent);color:var(--green-ink)}
@@ -1307,7 +1309,7 @@ function meBox(ev){
   if(ev.phase==='checkin')return '';
   var ids=[];Object.keys(ev.parts).forEach(function(k){ev.parts[k].members.forEach(function(p){ids.push(p);});});
   ids.sort(function(a,b){return pn(a).localeCompare(pn(b),'de');});
-  var sel='<label for="me" class="muted">Ich spiele mit:</label><select id="me" data-me="1"><option value="">– Name wählen –</option>'+ids.map(function(id){return '<option value="'+id+'"'+(S.me===id?' selected':'')+'>'+esc(pn(id))+'</option>';}).join('')+'</select>';
+  var sel='<label for="me" class="muted">Ich bin:</label><select id="me" data-me="1"><option value="">– Name wählen –</option>'+ids.map(function(id){return '<option value="'+id+'"'+(S.me===id?' selected':'')+'>'+esc(pn(id))+'</option>';}).join('')+'</select>';
   var info='';
   if(S.me&&ids.indexOf(S.me)>=0){
     var b=-1;ev.boards.forEach(function(id,i){var m=byId(ev,id);if(m&&(hasMe(ev,m.a)||hasMe(ev,m.b)))b=i;});
@@ -1608,12 +1610,14 @@ function koNum(ev){var o={};ev.matches.filter(function(m){return m.kind==='KO';}
 var SZ={'Runde der letzten 64':0,'Sechzehntelfinale':1,'Achtelfinale':2,'Viertelfinale':3,'Halbfinale':4,'Finale':5,'Platz 5–8':0,'Spiel um Platz 5':1,'Spiel um Platz 3':5};
 function tCol(m){return m.dk==='F'?999:m.dr!=null&&!(m.sk&&m.stage==='Spiel um Platz 3')?m.dr:SZ[m.stage]||0;}
 function tCard(ev,m,num,x,y){
-  var done=m.status==='done',live=m.status==='live',n=placeNote(ev,m);
+  var done=m.status==='done',live=m.status==='live',n=placeNote(ev,m),mine=0;
   var side=function(s){var id=s?m.b:m.a,f=m[s?'fromB':'fromA'],won=done&&m.winner===s,lost=done&&m.winner!==s;
     var nm=id?partH(ev,id):'<span class="tph">'+(f?(m[s?'fromBL':'fromAL']?'Verlierer':'Sieger')+' #'+num[f]:'offen')+'</span>';
-    return '<div class="tr'+(won?' w':lost?' l':'')+'"><span class="tn">'+nm+'</span><span class="ts num">'+(done||live?legsWon(m,s):'')+'</span></div>';};
-  var wr=m.writer?'✎ Schreiber: '+pn(m.writer):live?'✎ Schreiber: offen':'';
-  return '<div class="tcard'+(live?' live':done?' done':'')+'" style="left:'+x+'px;top:'+y+'px"><div class="tt"><b>#'+num[m.id]+'</b>'+(live?'<span class="tlive">Board '+(m.board+1)+(m.started?' · läuft':' · aufgerufen')+'</span>':'')+(n?'<span class="tnote" title="'+n+'">'+n+'</span>':'')+'</div>'+side(0)+side(1)+'<div class="twr">'+wr+'</div></div>';}
+    var me=S.me&&id&&ev.parts[id]&&ev.parts[id].members.indexOf(S.me)>=0;if(me)mine=1;
+    return '<div class="tr'+(won?' w':lost?' l':'')+(me?' me':'')+'"><span class="tn">'+nm+'</span><span class="ts num">'+(done||live?legsWon(m,s):'')+'</span></div>';};
+  var wr=m.writer?'✎ Schreiber: '+(S.me&&m.writer===S.me?'<b class="tme">'+pn(m.writer)+' (du)</b>':pn(m.writer)):live?'✎ Schreiber: offen':'';
+  var A=side(0),B=side(1);
+  return '<div class="tcard'+(live?' live':done?' done':'')+(mine?' mine':'')+'" style="left:'+x+'px;top:'+y+'px"><div class="tt"><b>#'+num[m.id]+'</b>'+(live?'<span class="tlive">Board '+(m.board+1)+(m.started?' · läuft':' · aufgerufen')+'</span>':'')+(n?'<span class="tnote" title="'+n+'">'+n+'</span>':'')+'</div>'+A+B+'<div class="twr">'+wr+'</div></div>';}
 function treeBox(ev,set,root,num,title){
   if(!root)return '';var inS={};set.forEach(function(m){inS[m.id]=1;});
   var kids=function(m){var k=[];['fromA','fromB'].forEach(function(f){var id=m[f];if(id&&!m[f+'L']&&inS[id])k.push(byId(ev,id));});return k;};
