@@ -327,11 +327,12 @@ th.sorted{color:var(--green-ink)}
 .tbox{position:relative}.tside{display:flex;flex-wrap:wrap;gap:8px 0}
 .thead{position:absolute;top:0;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tlines{position:absolute;left:0;top:0;pointer-events:none}.tlines path{fill:none;stroke:var(--line);stroke-width:2}.tlines path.on{stroke:color-mix(in srgb,var(--green) 70%,var(--line))}
-.tcard{position:absolute;width:232px;height:78px;box-sizing:border-box;background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:5px 8px;display:grid;grid-template-rows:auto 1fr 1fr;font-size:.84rem}
-.tcard.live{border-color:var(--green);box-shadow:0 0 0 2px color-mix(in srgb,var(--green) 35%,transparent)}
+.tcard{position:absolute;width:232px;height:98px;box-sizing:border-box;background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:5px 8px;display:grid;grid-template-rows:auto 1fr 1fr auto;font-size:.84rem}
+.tcard.live{border-color:var(--red);background:color-mix(in srgb,var(--red) 12%,var(--panel-2));box-shadow:0 0 0 2px color-mix(in srgb,var(--red) 40%,transparent)}
+.twr{font-size:.7rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:1em}.tcard.live .twr{color:var(--ink)}
 .tt{display:flex;gap:6px;align-items:center;font-size:.68rem;color:var(--muted);min-width:0}.tt b{color:var(--ink);font-weight:700}
 .tnote{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-left:auto;font-size:.68rem}
-.tlive{background:var(--green);color:#fff;border-radius:4px;padding:0 5px;font-weight:700;white-space:nowrap;flex:none}
+.tlive{background:var(--red);color:#fff;border-radius:4px;padding:0 5px;font-weight:700;white-space:nowrap;flex:none}
 .tr{display:flex;justify-content:space-between;align-items:center;gap:6px;min-width:0}
 .tn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ts{font-weight:700;min-width:1.2em;text-align:right}
 .tr.w .tn,.tr.w .ts{color:var(--green-ink);font-weight:700}.tr.l{opacity:.55}.tph{color:var(--muted)}
@@ -1255,11 +1256,13 @@ function render(){
   if(!canSee(S.view))S.view=SITE?'season':'gate';
   renderTabs();if(!SITE)syncBadge();if(S.view==='gate')gateLoad();var ev=S.ev,v=S.view;
   var keepX=v0===S.view?[].map.call(V.querySelectorAll('.twrap'),function(w){return w.scrollLeft;}):[];
+  if(v!=='s-tree')V._th=null;
   if(v==='gate')V.innerHTML=viewGate();
   else if(v==='lead')V.innerHTML=ev.phase==='checkin'?viewCheckin():viewLead();
   else if(v==='live'||v==='s-live')V.innerHTML=viewSpecLive();
   else if(v==='s-table')V.innerHTML=viewSpecTable();
-  else if(v==='s-tree')V.innerHTML=viewTree();
+  else if(v==='s-tree'){if(!V._tsc){V._tsc=1;V.addEventListener('scroll',function(e){if(e.target.classList&&e.target.classList.contains('twrap'))V._tsT=Date.now();},true);V.addEventListener('pointerdown',function(e){if(e.target.closest&&e.target.closest('.twrap'))V._tsT=Date.now();},true);}
+    var th=viewTree(),busy=v0===S.view&&V._th&&Date.now()-(V._tsT||0)<2500;if(!busy&&V._th!==th){V.innerHTML=th;V._th=th;}}
   else if(v==='s-stats')V.innerHTML=viewSpecStats();
   else if(v==='season')V.innerHTML=viewSeason();
   else if(v==='profile')V.innerHTML=viewProfile(S.pid);
@@ -1600,7 +1603,7 @@ function placeNote(ev,m){if(!m||m.kind!=='KO')return '';var N=placeNotes(ev);
   if(ev.plan&&ev.plan.dko)return m.dk==='F'?N.F:m.dk==='W'?N.W:(N['L'+m.dr]||'');
   return N[m.stage]||'';}
 /* ===== Turnierbaum ===== */
-var TB={w:232,h:78,gx:40,gy:12,head:30};
+var TB={w:232,h:98,gx:40,gy:12,head:30};
 function koNum(ev){var o={};ev.matches.filter(function(m){return m.kind==='KO';}).forEach(function(m,i){o[m.id]=i+1;});return o;}
 var SZ={'Runde der letzten 64':0,'Sechzehntelfinale':1,'Achtelfinale':2,'Viertelfinale':3,'Halbfinale':4,'Finale':5,'Platz 5–8':0,'Spiel um Platz 5':1,'Spiel um Platz 3':5};
 function tCol(m){return m.dk==='F'?999:m.dr!=null&&!(m.sk&&m.stage==='Spiel um Platz 3')?m.dr:SZ[m.stage]||0;}
@@ -1609,7 +1612,8 @@ function tCard(ev,m,num,x,y){
   var side=function(s){var id=s?m.b:m.a,f=m[s?'fromB':'fromA'],won=done&&m.winner===s,lost=done&&m.winner!==s;
     var nm=id?partH(ev,id):'<span class="tph">'+(f?(m[s?'fromBL':'fromAL']?'Verlierer':'Sieger')+' #'+num[f]:'offen')+'</span>';
     return '<div class="tr'+(won?' w':lost?' l':'')+'"><span class="tn">'+nm+'</span><span class="ts num">'+(done||live?legsWon(m,s):'')+'</span></div>';};
-  return '<div class="tcard'+(live?' live':done?' done':'')+'" style="left:'+x+'px;top:'+y+'px"><div class="tt"><b>#'+num[m.id]+'</b>'+(live?'<span class="tlive">Board '+(m.board+1)+'</span>':'')+(n?'<span class="tnote" title="'+n+'">'+n+'</span>':'')+'</div>'+side(0)+side(1)+'</div>';}
+  var wr=m.writer?'✎ Schreiber: '+pn(m.writer):live?'✎ Schreiber: offen':'';
+  return '<div class="tcard'+(live?' live':done?' done':'')+'" style="left:'+x+'px;top:'+y+'px"><div class="tt"><b>#'+num[m.id]+'</b>'+(live?'<span class="tlive">Board '+(m.board+1)+(m.started?' · läuft':' · aufgerufen')+'</span>':'')+(n?'<span class="tnote" title="'+n+'">'+n+'</span>':'')+'</div>'+side(0)+side(1)+'<div class="twr">'+wr+'</div></div>';}
 function treeBox(ev,set,root,num,title){
   if(!root)return '';var inS={};set.forEach(function(m){inS[m.id]=1;});
   var kids=function(m){var k=[];['fromA','fromB'].forEach(function(f){var id=m[f];if(id&&!m[f+'L']&&inS[id])k.push(byId(ev,id));});return k;};
@@ -1646,7 +1650,7 @@ function viewTree(){
       (p3.length?treeBox(ev,p3,p3[0],num):'')+(p5.length?treeBox(ev,p5,p5.filter(function(m){return m.stage==='Spiel um Platz 5';})[0]||p5[0],num):'')+'</div></section>';
   }
   if(ev.phase==='done')out='<section class="panel"><h3>Endstand</h3>'+ceremonyList(ev,podium(ev))+'</section>'+out;
-  return head+out+'<p class="muted tcap" style="margin:0">Waagrecht wischen, um den ganzen Baum zu sehen. Grün umrandet = läuft gerade.</p></div>';}
+  return head+out+'<p class="muted tcap" style="margin:0">Waagrecht wischen, um den ganzen Baum zu sehen. Rot = aufgerufen oder läuft gerade, mit Board und Schreiber.</p></div>';}
 function viewLead(){
   var ev=S.ev,done=ev.matches.filter(function(m){return m.status==='done';}).length,total=ev.plan.total;
   var pd=ev.phase==='done'?podium(ev):null;
