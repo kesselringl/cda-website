@@ -503,7 +503,15 @@ input[type=text]:focus,select:focus,textarea:focus{outline:2px solid var(--green
 .su-ppl{color:var(--muted)}
 .su-many{color:var(--tbd);font-weight:600}
 /* CDA Masters (eigener Reiter) */
-#masters{display:none}
+#masters,#competition{display:none}
+body.v-comp #competition{display:block;min-height:70vh}
+body.v-comp main>section:not(#competition){display:none}
+#competition .sec-head{margin-bottom:24px}
+#comp-stats-app{min-height:400px}
+.nav a.nav-cp[aria-current="page"]{color:var(--green);box-shadow:inset 0 -2px 0 var(--green)}
+.cp-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}
+.cp-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.ms-modes .ms-mnote{font-size:.85rem;opacity:.8}
 body.v-masters #masters{display:block;min-height:70vh}
 body.v-masters main>section:not(#masters){display:none}
 .nav a.nav-ms{display:inline-flex;align-items:center;gap:6px;color:#F2C75C;border:1.5px solid #E6B43A;background:rgba(230,180,58,.1);font-weight:700}
@@ -511,7 +519,6 @@ body.v-masters main>section:not(#masters){display:none}
 .nav a.nav-ms .ms-ic{font-size:.85em;line-height:1}
 .nav a.nav-ms .ms-new{font-size:.6rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;background:var(--red);color:#fff;border-radius:99px;padding:2px 6px;line-height:1.2}
 .nav a.nav-ms[aria-current="page"]{background:#E6B43A;color:#1a1300;border-color:#E6B43A}
-.nav a.nav-ms[aria-current="page"] .ms-new{display:none}
 #masters .sec-head{margin-bottom:24px}
 .ms-lead{margin:0}
 .ms-tabs{margin-bottom:24px}
@@ -866,6 +873,7 @@ a.up-go{display:inline-block}
     <nav class="nav" id="nav" data-open="false">
       <a href="#saison">Saison</a>
       <a href="#teams">Teams</a>
+      <a href="#competition" class="nav-cp">Competition</a>
       <a href="#masters" class="nav-ms"><span class="ms-ic" aria-hidden="true">★</span>CDA Masters<span class="ms-new">Neu</span></a>
       <a href="#verein">Verein</a>
       <a href="#mitglied" class="nav-mg">Mitglied werden</a>
@@ -998,37 +1006,30 @@ a.up-go{display:inline-block}
       </div>
     </div>
   </section>
-  <section id="masters" aria-labelledby="masters-title">
+  <section id="competition" aria-labelledby="comp-title">
     <div class="wrap">
       <div class="sec-head">
-        <div><p class="eyebrow">Donnerstags-Competition · Bismarck Bistro</p><h2 id="masters-title">CDA Masters</h2></div>
-        <p class="lead ms-lead">Alle drei Wochen zählt der Donnerstag für die Masters-Rangliste. Die besten 32 mit mindestens fünf Abenden spielen im Dezember die Finals, bei denen der ganze Masters-Pott ausgespielt wird.</p>
+        <div><p class="eyebrow">Jeden Donnerstag · Bismarck Bistro · seit 1986</p><h2 id="comp-title">Competition</h2></div>
+        <p class="lead ms-lead">Seit fast 40 Jahren wird beim CDA jeden Donnerstag geworfen – offen für alle, vom Einsteiger bis zum Ligaspieler. Neu ist das System: wechselnde Spielmodi, Live-Ergebnisse auf der Startseite und eine Statistik für jeden Abend.</p>
       </div>
-      <div class="tabs ms-tabs" role="tablist" aria-label="CDA Masters">
-        <button class="tab" role="tab" id="mst-stats" data-ms="stats" aria-selected="true" aria-controls="msp-stats">Rangliste &amp; Statistiken</button>
-        <button class="tab" role="tab" id="mst-regeln" data-ms="regeln" aria-selected="false" aria-controls="msp-regeln">So funktioniert's</button>
-        <button class="tab" role="tab" id="mst-termine" data-ms="termine" aria-selected="false" aria-controls="msp-termine">Termine</button>
-        <button class="tab" role="tab" id="mst-ruhm" data-ms="ruhm" aria-selected="false" aria-controls="msp-ruhm">Ruhmeshalle</button>
+      <div class="tabs ms-tabs cp-tabs" role="tablist" aria-label="Competition">
+        <button class="tab" role="tab" id="cpt-info" data-cp="info" aria-selected="true" aria-controls="cpp-info">Donnerstag</button>
+        <button class="tab" role="tab" id="cpt-statistik" data-cp="statistik" aria-selected="false" aria-controls="cpp-statistik">Statistik</button>
+        <button class="tab" role="tab" id="cpt-termine" data-cp="termine" aria-selected="false" aria-controls="cpp-termine">Termine</button>
+        <button class="tab" role="tab" id="cpt-ruhm" data-cp="ruhm" aria-selected="false" aria-controls="cpp-ruhm">Ruhmeshalle</button>
         <a class="tab ms-live" href="competition.html"><i></i>Spielbetrieb</a>
       </div>
-      <div id="msp-stats" role="tabpanel" aria-labelledby="mst-stats">
-        <script>(function(){if(new Date()>=new Date('2027-01-07T00:00:00+01:00')){var e=document.getElementById('ms-sim');if(e)e.hidden=true;}})();</script>
-
-        <div id="masters-app"><p class="ms-load">Statistiken werden geladen …</p></div>
-      </div>
-      <div id="msp-regeln" role="tabpanel" aria-labelledby="mst-regeln" hidden>
-        <div class="ms-rules">
-          <article><span class="ms-n">15 €</span><h3>Startgeld</h3><p>5 € gehen am Abend als Preisgeld an die Top 3 (50 / 30 / 20 %). 10 € wandern in den Masters-Pott für die Finals. An allen anderen Donnerstagen kostet die Competition 3 € – das komplette Startgeld geht an die Top 3 (50 / 30 / 20 %).</p></article>
-          <article><span class="ms-n">16</span><h3>Masters-Abende</h3><p>Jeder dritte Donnerstag ist ein Masters-Abend: 501 Double-out. Je nach Teilnehmerzahl entscheidet die Turnierleitung: Gruppen mit anschließendem K.-o., Doppel-K.-o. (erst die zweite Niederlage scheidet aus) oder Single-K.-o. Die Siegerehrung erscheint am Ende auf allen Boards.</p></article>
-          <article><span class="ms-n">Punkte</span><h3>Rangliste</h3><p>5 Punkte fürs Mitspielen, 2 für jeden Spieler, der hinter dir landet, 1 pro gewonnenem Match, dazu +10 / +6 / +3 für die Plätze 1 bis 3. Es zählen die besten 10 Abende.</p></article>
-          <article><span class="ms-n">Top 32</span><h3>Qualifikation</h3><p>Wer mindestens fünf Masters-Abende gespielt hat, ist qualifiziert. Bei den Finals dabei sind die besten 32 davon nach Masters-Punkten, gesetzt wird ebenfalls nach Punkten.</p></article>
-          <article><span class="ms-n">Finals</span><h3>Saisonfinale</h3><p>Beim TSV Dinkelscherben auf 6 Boards: Gruppenphase in Vierergruppen (Best of 5), die besten zwei jeder Gruppe spielen im Doppel-K.-o. weiter: Gewinnerseite und Finale Best of 7, Verliererseite Best of 5. Jeder hat eine zweite Chance, die Plätze 1 bis 7 werden ausgespielt.</p></article>
-          <article><span class="ms-n">32 %</span><h3>Pott-Verteilung</h3><p>Der Masters-Pott geht an die Plätze 1 bis 7 der Finals: 32 / 20 / 13 / 10 % für die Plätze 1 bis 4, je 7,5 % für die beiden Fünften und je 5 % für die beiden Siebten. Bei 15 Spielern im Schnitt kommen rund 2.400 € zusammen.</p></article>
+      <div id="cpp-info" role="tabpanel" aria-labelledby="cpt-info">
+        <div class="ms-rules cp-info">
+          <article><span class="ms-n">20 Uhr</span><h3>Jeden Donnerstag</h3><p>Im Bismarck Bistro, Bismarckstraße 7 in Augsburg. Spätestens um 23 Uhr ist der Abend fertig – bei vielen Spielern kürzt das System automatisch die Legs.</p></article>
+          <article><span class="ms-n">3 €</span><h3>Startgeld</h3><p>Das komplette Startgeld geht als Preisgeld an die Top 3 (50 / 30 / 20 %). An Masters-Abenden gelten 15 €, davon 10 € für den Masters-Pott.</p></article>
+          <article><span class="ms-n">Alle</span><h3>Wer mitspielt</h3><p>Mitglieder und Gäste, Einsteiger und Ligaspieler. Einfach vorbeikommen oder vorher kurz auf der Startseite anmelden.</p></article>
+          <article><span class="ms-n">Live</span><h3>Ergebnisse</h3><p>Gespielt wird am Board mit Tablet oder PC. Während des Abends läuft oben auf der Startseite die Live-Ansicht, danach stehen alle Zahlen in der Statistik.</p></article>
         </div>
         <div class="ms-modes">
-          <h3>Die anderen Donnerstage</h3>
+          <h3>Die Spielmodi im Wechsel</h3>
           <ul>
-            <li><b>Competition 501</b>Ganz normal 501 Double-out, ohne Masters-Wertung.</li>
+            <li><b>Competition 501</b>Ganz normal 501 Double-out, der Klassiker.</li><li><b>CDA Masters</b>Jeder dritte Donnerstag: 501 mit Rangliste und Finals. <a href="#masters">Mehr zu den Masters →</a></li>
             <li><b>301 Double-In</b>Punkte zählen erst nach dem ersten Doppel.</li>
             <li><b>Cricket-Nacht</b>15 bis 20 und Bull, etwa alle sieben Wochen.</li>
             <li><b>Lucky Doubles</b>Zugeloste Doppel, stark und schwach zusammen.</li>
@@ -1036,11 +1037,12 @@ a.up-go{display:inline-block}
           </ul>
           <p>Jeder Abend ist spätestens um 23 Uhr fertig: Bei vielen Spielern kürzt das System automatisch die Legs, zuerst in der Gruppenphase. Alle Ergebnisse und Statistiken werden am Board direkt erfasst, auch an den Nicht-Masters-Abenden.</p>
         </div>
+        <div class="cp-cta"><a class="btn primary" href="#kontakt">Für Donnerstag anmelden</a><a class="btn ghost" href="#competition/statistik">Zur Statistik</a></div>
       </div>
-      <div id="msp-ruhm" role="tabpanel" aria-labelledby="mst-ruhm" hidden>
-        <div id="ruhm"><p class="ms-load">Ruhmeshalle wird geladen …</p></div>
+      <div id="cpp-statistik" role="tabpanel" aria-labelledby="cpt-statistik" hidden>
+        <div id="comp-stats-app"><p class="ms-load">Statistik wird geladen …</p></div>
       </div>
-      <div id="msp-termine" role="tabpanel" aria-labelledby="mst-termine" hidden>
+      <div id="cpp-termine" role="tabpanel" aria-labelledby="cpt-termine" hidden>
         <div class="ms-abo">
           <div><h3>Termine in deinen Kalender</h3><p>Einmal abonnieren, dann stehen alle Termine mit Spielmodus automatisch in deinem Handy-Kalender. Änderungen kommen von selbst nach.</p></div>
           <div class="ms-abo-btns">
@@ -1051,6 +1053,37 @@ a.up-go{display:inline-block}
         </div>
         <div class="ms-legend"><span class="m">CDA Masters</span><span class="f">Finals</span><span class="s">Sonderabend</span><span>Competition 501 / 301 Double-In</span></div>
         <div class="ms-cal" id="ms-cal"></div>
+      </div>
+      <div id="cpp-ruhm" role="tabpanel" aria-labelledby="cpt-ruhm" hidden>
+        <div id="ruhm"><p class="ms-load">Ruhmeshalle wird geladen …</p></div>
+      </div>
+    </div>
+  </section>
+  <section id="masters" aria-labelledby="masters-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="eyebrow">Neu ab 2027 · die Serie in der Competition</p><h2 id="masters-title">CDA Masters</h2></div>
+        <p class="lead ms-lead">Alle drei Wochen zählt der Donnerstag für die Masters-Rangliste. Die besten 32 mit mindestens fünf Abenden spielen im Dezember die Finals, bei denen der ganze Masters-Pott ausgespielt wird.</p>
+      </div>
+      <div class="tabs ms-tabs" role="tablist" aria-label="CDA Masters">
+        <button class="tab" role="tab" id="mst-stats" data-ms="stats" aria-selected="true" aria-controls="msp-stats">Rangliste &amp; Pott</button>
+        <button class="tab" role="tab" id="mst-regeln" data-ms="regeln" aria-selected="false" aria-controls="msp-regeln">So funktioniert's</button>
+        <a class="tab ms-live" href="competition.html"><i></i>Spielbetrieb</a>
+      </div>
+      <div id="msp-stats" role="tabpanel" aria-labelledby="mst-stats">
+        <script>(function(){if(new Date()>=new Date('2027-01-07T00:00:00+01:00')){var e=document.getElementById('ms-sim');if(e)e.hidden=true;}})();</script>
+
+        <div id="masters-app"><p class="ms-load">Statistiken werden geladen …</p></div>
+      </div>
+      <div id="msp-regeln" role="tabpanel" aria-labelledby="mst-regeln" hidden>
+        <div class="ms-rules">
+          <article><span class="ms-n">15 €</span><h3>Startgeld</h3><p>5 € gehen am Abend als Preisgeld an die Top 3 (50 / 30 / 20 %). 10 € wandern in den Masters-Pott für die Finals.</p></article>
+          <article><span class="ms-n">16</span><h3>Masters-Abende</h3><p>Jeder dritte Donnerstag ist ein Masters-Abend: 501 Double-out. Je nach Teilnehmerzahl entscheidet die Turnierleitung: Gruppen mit anschließendem K.-o., Doppel-K.-o. (erst die zweite Niederlage scheidet aus) oder Single-K.-o. Die Siegerehrung erscheint am Ende auf allen Boards.</p></article>
+          <article><span class="ms-n">Punkte</span><h3>Rangliste</h3><p>5 Punkte fürs Mitspielen, 2 für jeden Spieler, der hinter dir landet, 1 pro gewonnenem Match, dazu +10 / +6 / +3 für die Plätze 1 bis 3. Es zählen die besten 10 Abende.</p></article>
+          <article><span class="ms-n">Top 32</span><h3>Qualifikation</h3><p>Wer mindestens fünf Masters-Abende gespielt hat, ist qualifiziert. Bei den Finals dabei sind die besten 32 davon nach Masters-Punkten, gesetzt wird ebenfalls nach Punkten.</p></article>
+          <article><span class="ms-n">Finals</span><h3>Saisonfinale</h3><p>Beim TSV Dinkelscherben auf 6 Boards: Gruppenphase in Vierergruppen (Best of 5), die besten zwei jeder Gruppe spielen im Doppel-K.-o. weiter: Gewinnerseite und Finale Best of 7, Verliererseite Best of 5. Jeder hat eine zweite Chance, die Plätze 1 bis 7 werden ausgespielt.</p></article>
+          <article><span class="ms-n">32 %</span><h3>Pott-Verteilung</h3><p>Der Masters-Pott geht an die Plätze 1 bis 7 der Finals: 32 / 20 / 13 / 10 % für die Plätze 1 bis 4, je 7,5 % für die beiden Fünften und je 5 % für die beiden Siebten. Bei 15 Spielern im Schnitt kommen rund 2.400 € zusammen.</p></article>
+        </div>
       </div>
     </div>
   </section>
@@ -1070,7 +1103,7 @@ a.up-go{display:inline-block}
           <div class="join-abo-box">
             <span class="jab-ic" aria-hidden="true">📅</span>
             <div><b>Nie wieder einen Donnerstag verpassen</b><span>Alle Termine mit Spielmodus automatisch im Handy-Kalender.</span></div>
-            <div class="jab-btns"><a class="jab-main" data-ics="cda-competition" href="kalender/cda-competition.ics">Termine abonnieren</a><a data-ics="cda-masters" href="kalender/cda-masters.ics">Nur Masters</a><a href="#masters/termine">Hilfe</a></div>
+            <div class="jab-btns"><a class="jab-main" data-ics="cda-competition" href="kalender/cda-competition.ics">Termine abonnieren</a><a data-ics="cda-masters" href="kalender/cda-masters.ics">Nur Masters</a><a href="#competition/termine">Hilfe</a></div>
           </div>
         </div>
         <div class="signup" id="signup">
@@ -1940,10 +1973,18 @@ a.up-go{display:inline-block}
     var body=document.body,navMs=document.querySelector('.nav-ms'),loaded=false,calDone=false,ruhmDone=false;
     var nav=document.getElementById('nav'),mbtn=document.getElementById('menu-btn');
     function sub(name){
-      ['stats','regeln','termine','ruhm'].forEach(function(k){
+      ['stats','regeln'].forEach(function(k){
         document.getElementById('mst-'+k).setAttribute('aria-selected',k===name);
         document.getElementById('msp-'+k).hidden=k!==name;});
-      if(name==='stats'&&!loaded){loaded=true;var sc=document.createElement('script');sc.src='masters.js';sc.onerror=function(){document.getElementById('masters-app').innerHTML='<p class="ms-load">Die Statistiken konnten nicht geladen werden.</p>';};document.body.appendChild(sc);}
+      if(name==='stats')loadEngine();
+    }
+    function loadEngine(){if(loaded)return;loaded=true;var sc=document.createElement('script');sc.src='masters.js';sc.onerror=function(){['masters-app','comp-stats-app'].forEach(function(id){var e=document.getElementById(id);if(e)e.innerHTML='<p class="ms-load">Die Statistiken konnten nicht geladen werden.</p>';});};document.body.appendChild(sc);}
+    function csub(name){
+      if(['info','statistik','termine','ruhm'].indexOf(name)<0)name='info';
+      ['info','statistik','termine','ruhm'].forEach(function(k){
+        document.getElementById('cpt-'+k).setAttribute('aria-selected',k===name);
+        document.getElementById('cpp-'+k).hidden=k!==name;});
+      if(name==='statistik')loadEngine();
       if(name==='termine'&&!calDone){calDone=true;renderCal();}
       if(name==='ruhm'&&!ruhmDone){ruhmDone=true;loadRuhm();}
     }
@@ -2033,17 +2074,24 @@ a.up-go{display:inline-block}
           var cls=e.mode==='m501'?'m':e.mode==='finals'?'f':(e.mode==='c501'||e.mode==='di301')?'':'s';
           return '<li class="'+cls+(e.date<today?' past':'')+'"><span>'+(e.mode==='finals'?'Sa ':'Do ')+e.date.slice(8)+'.'+e.date.slice(5,7)+'.</span><b>'+C.MODE[e.mode][0]+'</b>'+(e.note?'<small>'+e.note+'</small>':'')+(e.mode==='finals'?'<small>TSV Dinkelscherben</small>':'')+'</li>';}).join('')+'</ul></div>';}).join('');
     }
+    var navCp=document.querySelector('.nav-cp');
     function route(){
-      var h=location.hash,on=h.indexOf('#masters')===0;
-      var was=body.classList.contains('v-masters');
-      body.classList.toggle('v-masters',on);
+      var h=location.hash;
+      if(/^#masters\/(termine|ruhm)/.test(h)){history.replaceState(null,'','#competition/'+h.split('/')[1]);h=location.hash;}
+      var on=h.indexOf('#masters')===0,onC=h.indexOf('#competition')===0;
+      var was=body.classList.contains('v-masters')||body.classList.contains('v-comp');
+      body.classList.toggle('v-masters',on);body.classList.toggle('v-comp',onC);
       if(navMs){if(on)navMs.setAttribute('aria-current','page');else navMs.removeAttribute('aria-current');}
+      if(navCp){if(onC)navCp.setAttribute('aria-current','page');else navCp.removeAttribute('aria-current');}
+      if(onC){csub(h.split('/')[1]||currentCSub());if(!was)window.scrollTo(0,0);}
       if(on){sub(h.split('/')[1]||currentSub());if(!was)window.scrollTo(0,0);}
       else if(was){var el=h&&h.length>1?document.getElementById(h.slice(1)):null;if(el)el.scrollIntoView();else window.scrollTo(0,0);}
       if(nav&&mbtn&&nav.getAttribute('data-open')==='true'){nav.setAttribute('data-open','false');mbtn.setAttribute('aria-expanded','false');}
     }
-    function currentSub(){var t=document.querySelector('.ms-tabs [aria-selected="true"]');return t?t.getAttribute('data-ms'):'stats';}
-    document.querySelector('.ms-tabs').addEventListener('click',function(e){var b=e.target.closest('[data-ms]');if(!b)return;history.replaceState(null,'','#masters'+(b.getAttribute('data-ms')==='stats'?'':'/'+b.getAttribute('data-ms')));sub(b.getAttribute('data-ms'));});
+    function currentSub(){var t=document.querySelector('#masters .ms-tabs [aria-selected="true"]');return t?t.getAttribute('data-ms'):'stats';}
+    function currentCSub(){var t=document.querySelector('.cp-tabs [aria-selected="true"]');return t?t.getAttribute('data-cp'):'info';}
+    document.querySelector('.cp-tabs').addEventListener('click',function(e){var b=e.target.closest('[data-cp]');if(!b)return;history.replaceState(null,'','#competition'+(b.getAttribute('data-cp')==='info'?'':'/'+b.getAttribute('data-cp')));csub(b.getAttribute('data-cp'));});
+    document.querySelector('#masters .ms-tabs').addEventListener('click',function(e){var b=e.target.closest('[data-ms]');if(!b)return;history.replaceState(null,'','#masters'+(b.getAttribute('data-ms')==='stats'?'':'/'+b.getAttribute('data-ms')));sub(b.getAttribute('data-ms'));});
     window.addEventListener('hashchange',route);route();
   })();
 })();
