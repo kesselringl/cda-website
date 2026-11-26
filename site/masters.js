@@ -1071,10 +1071,10 @@ function x01Board(ev,b,m,leg,t){
   else if(ev.ask[b]){var a=ev.ask[b],btns='';for(var d=a.min;d<=3;d++)btns+='<button class="btn primary" data-act="co" data-b="'+b+'" data-d="'+d+'">'+d+' Dart'+(d>1?'s':'')+'</button>';
     input='<div class="ask"><p>Check! '+pnh(a.who)+' macht '+a.score+'. Mit wie vielen Darts in dieser Aufnahme?</p><div class="row">'+btns+'<button class="btn" data-act="undo" data-b="'+b+'">Abbrechen</button></div></div>';}
   else{
-    var cd=checkDarts(ev,b),pad='';[7,8,9,4,5,6,1,2,3].forEach(function(k){var c=cd.indexOf(k)>=0;pad+='<button data-act="key" data-b="'+b+'" data-k="'+k+'"'+(k<=3?' class="clp"':'')+'><span>'+k+'</span></button>';});
+    var cd=checkDarts(ev,b),pad='';[7,8,9,4,5,6,1,2,3].forEach(function(k){var c=cd.indexOf(k)>=0;pad+='<button data-act="key" data-b="'+b+'" data-k="'+k+'"'+(c?' class="cok" title="Lange drücken: gecheckt mit '+k+' Dart'+(k>1?'s':'')+'"':'')+'><span>'+k+'</span>'+(c?'<small>Check</small>':'')+'</button>';});
     pad+='<button class="fn" data-act="key" data-b="'+b+'" data-k="Backspace">Löschen</button><button data-act="key" data-b="'+b+'" data-k="0">0</button><button class="ok" data-act="key" data-b="'+b+'" data-k="Enter">Eintragen</button><button class="fn" data-act="undo" data-b="'+b+'">↶ Zurück</button><button class="rs" data-act="key" data-b="'+b+'" data-k="Rest">Restscore</button>';
     var qL=[26,41,45,60,81,85,100,140,180].map(function(q){return '<button data-act="quick" data-b="'+b+'" data-q="'+q+'"'+(q===180?' class="q180"':'')+'>'+q+'</button>';}).join('');
-    input='<div class="entry2"><div class="quick2 ql">'+qL+'</div><div class="inbox2"><span class="who">Aufnahme von '+pnh(thrower(ev,m,leg,t))+'</span><div class="val num">'+esc(S.input[b]||'')+'<span class="cursor"></span></div><div class="msg'+(err?' err':'')+'">'+esc(err?msg.slice(4):msg)+'</div><div class="pad">'+pad+'</div></div></div>'+
+    input='<div class="entry2"><div class="quick2 ql">'+qL+'</div><div class="inbox2'+(cd.length?' finish':'')+'"><span class="who">Aufnahme von '+pnh(thrower(ev,m,leg,t))+(cd.length?' · <b class="fin">Finish! '+cd.join('/')+' lange drücken = gecheckt</b>':'')+'</span><div class="val num">'+esc(S.input[b]||'')+'<span class="cursor"></span></div><div class="msg'+(err?' err':'')+'">'+esc(err?msg.slice(4):msg)+'</div><div class="pad">'+pad+'</div></div></div>'+
       '<div class="legend"><span><kbd>0–9</kbd> Punkte</span><span><kbd>Enter</kbd> eintragen</span><span><kbd>R</kbd> Restscore</span><span><kbd>Strg+Z</kbd> zurück</span>'+(md.di?'<span>Double-In: nur die Punkte ab dem Doppel eintragen</span>':'')+'<button class="linkbtn" data-act="simv" data-b="'+b+'">Demo: Aufnahme simulieren</button></div>'+
       (devType()==='tablet'&&!noSim()?'<div class="row" style="justify-content:center"><button class="linkbtn" data-act="simv" data-b="'+b+'">Demo: Aufnahme simulieren</button></div>':'');
   }
@@ -1309,12 +1309,12 @@ function top(){if(SITE){var h=CFG.host;if(h&&h.getBoundingClientRect().top<0)h.s
 var LT=SITE?DOC:document;
 var LP={t:null,fired:false,el:null};
 function lpClear(){if(LP.t)clearTimeout(LP.t);LP.t=null;if(LP.el)LP.el.classList.remove('holding');LP.el=null;}
-LT.addEventListener('pointerdown',function(e){var t=e.target.closest('button.clp[data-k]');if(!t)return;lpClear();LP.fired=false;LP.el=t;
+LT.addEventListener('pointerdown',function(e){var t=e.target.closest('button.cok[data-k]');if(!t)return;lpClear();LP.fired=false;LP.el=t;t.classList.add('holding');
   var b=+t.getAttribute('data-b'),d=+t.getAttribute('data-k');
-  LP.t=setTimeout(function(){LP.t=null;if(checkDarts(S.ev,b).indexOf(d)<0){LP.el=null;return;}LP.fired=true;if(LP.el)LP.el.classList.remove('holding');try{navigator.vibrate&&navigator.vibrate(40);}catch(x){}
+  LP.t=setTimeout(function(){LP.t=null;LP.fired=true;if(LP.el)LP.el.classList.remove('holding');try{navigator.vibrate&&navigator.vibrate(40);}catch(x){}
     liveRun(b,function(){quickCheck(S.ev,b,d);});render();},550);});
 ['pointerup','pointerleave','pointercancel'].forEach(function(n){LT.addEventListener(n,function(){if(LP.t)lpClear();},true);});
-LT.addEventListener('contextmenu',function(e){if(e.target.closest('button.clp'))e.preventDefault();});
+LT.addEventListener('contextmenu',function(e){if(e.target.closest('button.cok'))e.preventDefault();});
 LT.addEventListener('click',function(e){if(LP.fired){LP.fired=false;e.stopImmediatePropagation();e.preventDefault();}},true);
 LT.addEventListener('click',function(e){
   var tb=e.target.closest('[data-tab]');if(tb){var tv=tb.getAttribute('data-tab');if(tv==='logout'){authLogout();S.live=false;S.ev=SIM_EV;SV.gateLoaded=false;}if(tv==='logout'||tv==='gate'){S.role=null;S.login={};tv='gate';}S.view=tv;render();window.scrollTo(0,0);return;}
