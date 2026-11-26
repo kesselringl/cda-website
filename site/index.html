@@ -692,6 +692,18 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
 .up-main b{font-family:var(--f-display);font-size:1.35rem;font-weight:800;white-space:normal}
 .up-main .up-sub{white-space:normal}
 .up-masters,.upnext.masters .up-main{background:linear-gradient(135deg,rgba(230,180,58,.2),rgba(230,180,58,.04));border-color:rgba(230,180,58,.5)}.upnext.masters .up-main .up-kind{color:#F2C75C}
+.up-main[data-href]{cursor:pointer}
+.up-att{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px;padding:10px 12px;border-radius:12px;background:rgba(0,0,0,.28);border:1px solid rgba(43,198,83,.3)}
+.up-ms .up-att{border-color:rgba(230,180,58,.45)}
+.up-attn{display:flex;align-items:center;gap:8px;font-size:.72rem;line-height:1.15;color:#c9d6cd;text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.up-attn b{font-family:var(--f-display,inherit);font-size:2.3rem;line-height:1;color:#2BC653;letter-spacing:0}.up-ms .up-attn b{color:#E6B43A}
+.up-av{display:flex}.up-av i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:.7rem;font-weight:800;color:#fff;background:#1f2a23;border:2px solid #2BC653;margin-left:-8px}.up-av i:first-child{margin-left:0}.up-av i.more{background:#2BC653;color:#0b1a10}
+.up-whob{margin-left:auto;border:1px solid #2BC653;background:#2BC653;color:#07140b;font-weight:800;font-size:.82rem;padding:8px 14px;border-radius:999px;cursor:pointer;font-family:inherit}
+.up-whob:hover{filter:brightness(1.1)}.up-whob[aria-expanded="true"]{background:transparent;color:#2BC653}
+.up-wl{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.up-wl[hidden]{display:none}
+.up-wl span{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:4px 10px;font-size:.82rem;color:#eef3ef}.up-wl span.g{border-style:dashed}.up-wl small{color:#9fb0a5;font-size:.7rem}
+.up-att0 .up-attn b{color:#9fb0a5}.up-first{font-size:.82rem;color:#c9d6cd}
+a.up-go{display:inline-block}
 .up-count{display:flex;gap:8px;margin-top:10px}.up-count:empty{display:none}
 .up-count span{display:flex;align-items:baseline;gap:4px;font-size:.7rem;font-weight:700;color:#b9c2bb;text-transform:uppercase;letter-spacing:.06em;background:rgba(0,0,0,.35);border-radius:8px;padding:6px 9px}
 .up-count b{font-family:var(--f-display);font-size:1.35rem;color:#fff;font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -1730,8 +1742,18 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
     var preRL=nx&&nx.date<'2027-01-07',isoNx=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
     var cnt=typeof window.CDA_SIGNCOUNT==='function'&&nx?window.CDA_SIGNCOUNT(nx.date):0;
     var rows=[];
-    rows.push('<a class="up-row up-main'+(isM?' up-ms':'')+'" href="#kontakt'+(nx?'/'+nx.date:'')+'">'+tile(isoNx,isM?'gold':'green')+'<span class="up-tx"><span class="up-kind">'+esc(name)+(isM?' · zählt für die Rangliste':'')+'</span><b>Competition im Bismarck Bistro</b><span class="up-sub">20–23 Uhr · '+esc(sub)+(cnt?' · 👥 '+cnt+' angemeldet':'')+'</span>'+
-      '<span class="up-count" id="t-count" aria-live="polite"></span><span class="up-go">Jetzt anmelden →</span></span></a>');
+    var nm=typeof window.CDA_SIGNNAMES==='function'&&nx?window.CDA_SIGNNAMES(nx.date):[],hrf='#kontakt'+(nx?'/'+nx.date:'');
+    var ini=function(n){return n.replace(/[^A-Za-zÄÖÜäöüß ]/g,'').split(' ').filter(Boolean).map(function(w){return w[0];}).slice(0,2).join('').toUpperCase();};
+    var att=cnt?'<div class="up-att"><span class="up-attn"><b>'+cnt+'</b>'+(cnt===1?'Spieler':'Spieler')+'<br>angemeldet</span><span class="up-av" aria-hidden="true">'+nm.slice(0,5).map(function(x){return '<i>'+esc(ini(x.n))+'</i>';}).join('')+(cnt>5?'<i class="more">+'+(cnt-5)+'</i>':'')+'</span>'+
+      '<button type="button" class="up-whob" aria-expanded="'+(window.CDA_WHO_OPEN?'true':'false')+'">'+(window.CDA_WHO_OPEN?'Liste schließen':'Wer ist dabei?')+'</button></div>'+
+      '<div class="up-wl"'+(window.CDA_WHO_OPEN?'':' hidden')+'>'+nm.map(function(x){return '<span'+(x.g?' class="g"':'')+'>'+esc(x.n)+(x.g?' <small>Gast</small>':'')+'</span>';}).join('')+'</div>'
+      :'<div class="up-att up-att0"><span class="up-attn"><b>0</b>Noch niemand<br>angemeldet</span><span class="up-first">Sei der Erste – die anderen sehen, dass du kommst!</span></div>';
+    rows.push('<div class="up-row up-main'+(isM?' up-ms':'')+'" data-href="'+hrf+'" role="link" tabindex="0">'+tile(isoNx,isM?'gold':'green')+'<span class="up-tx"><span class="up-kind">'+esc(name)+(isM?' · zählt für die Rangliste':'')+'</span><b>Competition im Bismarck Bistro</b><span class="up-sub">20–23 Uhr · '+esc(sub)+'</span>'+att+
+      '<span class="up-count" id="t-count" aria-live="polite"></span><a class="up-go" href="'+hrf+'">Jetzt anmelden →</a></span></div>');
+    if(!window.CDA_UPCLICK){window.CDA_UPCLICK=1;document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.up-whob');
+      if(b){e.preventDefault();window.CDA_WHO_OPEN=!window.CDA_WHO_OPEN;var l=b.parentNode.nextElementSibling;if(l)l.hidden=!window.CDA_WHO_OPEN;b.setAttribute('aria-expanded',window.CDA_WHO_OPEN?'true':'false');b.textContent=window.CDA_WHO_OPEN?'Liste schließen':'Wer ist dabei?';return;}
+      if(e.target.closest('.up-wl,a'))return;var r=e.target.closest('.up-main[data-href]');if(r)location.hash=r.getAttribute('data-href');});
+      document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.matches&&e.target.matches('.up-main[data-href]'))location.hash=e.target.getAttribute('data-href');});}
     var ev=[];
     if(LIVE&&LIVE.teams)['1','2','3','4'].forEach(function(k){var t=LIVE.teams[k];if(!t)return;var g=teamGames(t).filter(function(x){return !x.score&&x.date>=todayStr;}).sort(function(x,y){return x.date<y.date?-1:1;})[0];
       if(g)ev.push({date:g.date,k:k,html:'<a class="up-row" href="'+(k==='1'?'#saison':'#teams')+'">'+tile(g.date,k==='1'?'red':'dark')+'<span class="up-tx"><span class="up-kind">'+esc(t.label||'CDA '+k)+(g.homeDay||g.home?' · Heimspiel':' · Auswärts')+'</span><b>'+(g.home?'gegen ':'bei ')+esc(g.opp)+'</b><span class="up-sub">'+(g.time?g.time+' Uhr · ':'')+esc(String(t.league||'').replace('3K WINMAU ',''))+'</span></span></a>'});});
@@ -1844,6 +1866,7 @@ footer nav a,footer nav button{display:inline-block;padding:6px 2px;min-height:2
   function who(e){return SIGN.filter(function(x){return x.event_date===e.date;});}
   function mine(e){return who(e).some(function(x){return ME&&(ME.id?x.player_id===ME.id:(x.guest_name||'').toLowerCase()===ME.name.toLowerCase());});}
   window.CDA_SIGNCOUNT=function(date){return SIGN.filter(function(x){return x.event_date===date;}).length;};
+  window.CDA_SIGNNAMES=function(date){return who({date:date}).map(function(x){return x.player_id?{n:short(pname(x.player_id)),g:false}:{n:short(x.guest_name||'Gast'),g:true};});};
   function renderNames(){
     var q=(document.getElementById('su-search').value||'').toLowerCase().trim(),box=document.getElementById('su-names');
     if(!PLAYERS.length){box.innerHTML='<p class="su-load">Die Mitgliederliste ist gerade nicht erreichbar. Als Gast geht es unten trotzdem.</p>';return;}
