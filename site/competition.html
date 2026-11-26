@@ -343,6 +343,7 @@ th.sorted{color:var(--green-ink)}
 .finrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:6px}
 .finrow label{display:grid;gap:4px;font-size:.78rem;color:var(--muted)}
 .finrow select{width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);color:var(--ink);font:inherit;font-size:.9rem}
+.tq{font-size:.7rem;color:var(--muted);margin-left:auto;flex:none;font-weight:400}.tr.w .tq{color:var(--muted);font-weight:400}
 .gev.gnone{cursor:default}
 .sync{font-size:.78rem;font-weight:700;padding:4px 10px;border-radius:99px;white-space:nowrap}
 .sync.ok{background:color-mix(in srgb,var(--green) 18%,transparent);color:var(--green-ink)}
@@ -1644,7 +1645,7 @@ function tCard(ev,m,num,x,y){
   var side=function(s){var id=s?m.b:m.a,f=m[s?'fromB':'fromA'],won=done&&m.winner===s,lost=done&&m.winner!==s;
     var nm=id?partH(ev,id):'<span class="tph">'+(f?(m[s?'fromBL':'fromAL']?'Verlierer':'Sieger')+' #'+num[f]:'offen')+'</span>';
     var me=S.me&&id&&ev.parts[id]&&ev.parts[id].members.indexOf(S.me)>=0;if(me)mine=1;
-    return '<div class="tr'+(won?' w':lost?' l':'')+(me?' me':'')+'"><span class="tn">'+nm+'</span><span class="ts num">'+(done||live?legsWon(m,s):'')+'</span></div>';};
+    return '<div class="tr'+(won?' w':lost?' l':'')+(me?' me':'')+'"><span class="tn">'+nm+'</span>'+(done||live?'<span class="tq num" title="'+(MD(ev).kind==='cricket'?'MPR':'Average')+' in diesem Match">'+sideQ(ev,m,s)+'</span>':'')+'<span class="ts num">'+(done||live?legsWon(m,s):'')+'</span></div>';};
   var wr=m.writer?'✎ Schreiber: '+(S.me&&m.writer===S.me?'<b class="tme">'+pn(m.writer)+' (du)</b>':pn(m.writer)):live?'✎ Schreiber: offen':'';
   var A=side(0),B=side(1);
   return '<div class="tcard'+(live?' live':done?' done':'')+(mine?' mine':'')+'" style="left:'+x+'px;top:'+y+'px"><div class="tt"><b>#'+num[m.id]+'</b>'+(live?'<span class="tlive">Board '+(m.board+1)+(m.started?' · läuft':' · aufgerufen')+'</span>':'')+(n?'<span class="tnote" title="'+n+'">'+n+'</span>':'')+'</div>'+A+B+'<div class="twr">'+wr+'</div></div>';}
