@@ -5,7 +5,7 @@ import { chromium, devices } from 'playwright';
 
 const OUT = process.argv[2] || 'out';
 mkdirSync(OUT, { recursive: true });
-const BASE = (process.env.SITE_URL || 'https://kesselringl.github.io/cda-website').replace(/\/?$/, '/');
+const BASE = (process.env.SITE_URL || 'https://cda-ev.eu').replace(/\/?$/, '/');
 const PAGES = ['', 'impressum.html', 'datenschutz.html', 'steckbrief.html', 'competition.html', 'grafik-studio.html'];
 const CHROME = chromium.executablePath();
 const summary = [];

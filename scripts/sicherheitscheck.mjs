@@ -48,7 +48,7 @@ console.log(`\nErgebnis: ${out.length - bad.length} von ${out.length} Prüfungen
 if (bad.length) process.exitCode = 1;
 
 // Live-Seite: lädt sie etwas von fremden Servern?
-const SITE = process.env.SITE || 'https://kesselringl.github.io/cda-website/';
+const SITE = process.env.SITE || 'https://cda-ev.eu/';
 const hosts = new Set();
 for (const f of ['', 'impressum.html', 'datenschutz.html', 'competition.html', 'steckbrief.html', 'grafik-studio.html', 'masters.js']) {
   const h = await (await fetch(SITE + f)).text();

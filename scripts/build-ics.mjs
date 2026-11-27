@@ -6,7 +6,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 
 // Adresse der Seite kommt im Workflow von GitHub Pages (passt sich nach dem Domain-Umzug automatisch an)
-const SITE = (process.env.SITE_URL || 'https://kesselringl.github.io/cda-website').replace(/\/?$/, '/');
+const SITE = (process.env.SITE_URL || 'https://cda-ev.eu').replace(/\/?$/, '/');
 const RELAUNCH = '2027-01-07';
 const MASTERS_PER_SEASON = 16;
 const BISTRO = 'Bismarck Bistro, Bismarckstraße 7, 86159 Augsburg';
