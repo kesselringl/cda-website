@@ -1067,6 +1067,8 @@ a.up-go{display:inline-block}
       </div>
       <div class="tabs ms-tabs" role="tablist" aria-label="CDA Masters">
         <button class="tab" role="tab" id="mst-stats" data-ms="stats" aria-selected="true" aria-controls="msp-stats">Rangliste &amp; Pott</button>
+        <button class="tab" role="tab" id="mst-statistik" data-ms="statistik" aria-selected="false" aria-controls="msp-statistik">Statistik</button>
+        <button class="tab" role="tab" id="mst-termine" data-ms="termine" aria-selected="false" aria-controls="msp-termine">Termine</button>
         <button class="tab" role="tab" id="mst-regeln" data-ms="regeln" aria-selected="false" aria-controls="msp-regeln">So funktioniert's</button>
         <a class="tab ms-live" href="competition.html"><i></i>Spielbetrieb</a>
       </div>
@@ -1074,6 +1076,18 @@ a.up-go{display:inline-block}
         <script>(function(){if(new Date()>=new Date('2027-01-07T00:00:00+01:00')){var e=document.getElementById('ms-sim');if(e)e.hidden=true;}})();</script>
 
         <div id="masters-app"><p class="ms-load">Statistiken werden geladen …</p></div>
+      </div>
+      <div id="msp-statistik" role="tabpanel" aria-labelledby="mst-statistik" hidden>
+        <div id="ms-stats-app"><p class="ms-load">Statistik wird geladen …</p></div>
+      </div>
+      <div id="msp-termine" role="tabpanel" aria-labelledby="mst-termine" hidden>
+        <div class="ms-abo">
+          <div><h3>Masters-Termine in deinen Kalender</h3><p>Einmal abonnieren, dann stehen alle Masters-Abende und die Finals automatisch in deinem Handy-Kalender.</p></div>
+          <div class="ms-abo-btns"><a class="btn primary" data-ics="cda-masters" href="kalender/cda-masters.ics">CDA Masters abonnieren</a></div>
+          <p class="ms-abo-help">iPhone: Link antippen und „Abonnieren“ wählen. Android / Google: <a data-gcal="cda-masters" href="#">in Google Kalender hinzufügen</a>. Outlook: <a data-copy="cda-masters" href="#">Link kopieren</a> und unter „Kalender hinzufügen → Aus dem Internet“ einfügen.</p>
+        </div>
+        <div class="ms-legend"><span class="m">CDA Masters</span><span class="f">Finals</span></div>
+        <div class="ms-cal" id="ms-cal-m"></div>
       </div>
       <div id="msp-regeln" role="tabpanel" aria-labelledby="mst-regeln" hidden>
         <div class="ms-rules">
@@ -1970,15 +1984,17 @@ a.up-go{display:inline-block}
   })();
   // Reiter "CDA Masters": eigene Ansicht per #masters, Statistik lädt erst beim ersten Öffnen
   (function(){
-    var body=document.body,navMs=document.querySelector('.nav-ms'),loaded=false,calDone=false,ruhmDone=false;
+    var body=document.body,navMs=document.querySelector('.nav-ms'),loaded=false,calDone=false,calMDone=false,ruhmDone=false;
     var nav=document.getElementById('nav'),mbtn=document.getElementById('menu-btn');
     function sub(name){
-      ['stats','regeln'].forEach(function(k){
+      if(['stats','statistik','termine','regeln'].indexOf(name)<0)name='stats';
+      ['stats','statistik','termine','regeln'].forEach(function(k){
         document.getElementById('mst-'+k).setAttribute('aria-selected',k===name);
         document.getElementById('msp-'+k).hidden=k!==name;});
-      if(name==='stats')loadEngine();
+      if(name==='stats'||name==='statistik')loadEngine();
+      if(name==='termine'&&!calMDone){calMDone=true;renderCal('ms-cal-m',true);}
     }
-    function loadEngine(){if(loaded)return;loaded=true;var sc=document.createElement('script');sc.src='masters.js';sc.onerror=function(){['masters-app','comp-stats-app'].forEach(function(id){var e=document.getElementById(id);if(e)e.innerHTML='<p class="ms-load">Die Statistiken konnten nicht geladen werden.</p>';});};document.body.appendChild(sc);}
+    function loadEngine(){if(loaded)return;loaded=true;var sc=document.createElement('script');sc.src='masters.js';sc.onerror=function(){['masters-app','comp-stats-app','ms-stats-app'].forEach(function(id){var e=document.getElementById(id);if(e)e.innerHTML='<p class="ms-load">Die Statistiken konnten nicht geladen werden.</p>';});};document.body.appendChild(sc);}
     function csub(name){
       if(['info','statistik','termine','ruhm'].indexOf(name)<0)name='info';
       ['info','statistik','termine','ruhm'].forEach(function(k){
@@ -2065,11 +2081,11 @@ a.up-go{display:inline-block}
         draw();
       }).catch(function(){R.innerHTML='<p class="ms-load">Die Ruhmeshalle konnte nicht geladen werden.</p>';});
     }
-    function renderCal(){
+    function renderCal(target,onlyM){
       var C=window.CDA_CAL,y=new Date().getFullYear()<2027?2027:new Date().getFullYear(),today=new Date().toISOString().slice(0,10),months={};
-      C.cal(y).forEach(function(e){var k=e.date.slice(0,7);(months[k]=months[k]||[]).push(e);});
+      C.cal(y).forEach(function(e){if(onlyM&&e.mode!=='m501'&&e.mode!=='finals')return;var k=e.date.slice(0,7);(months[k]=months[k]||[]).push(e);});
       var mn=new Intl.DateTimeFormat('de-DE',{month:'long',year:'numeric'});
-      document.getElementById('ms-cal').innerHTML=Object.keys(months).map(function(k){
+      document.getElementById(target||'ms-cal').innerHTML=Object.keys(months).map(function(k){
         return '<div class="ms-month"><h4>'+mn.format(new Date(k+'-15T12:00:00'))+'</h4><ul>'+months[k].map(function(e){
           var cls=e.mode==='m501'?'m':e.mode==='finals'?'f':(e.mode==='c501'||e.mode==='di301')?'':'s';
           return '<li class="'+cls+(e.date<today?' past':'')+'"><span>'+(e.mode==='finals'?'Sa ':'Do ')+e.date.slice(8)+'.'+e.date.slice(5,7)+'.</span><b>'+C.MODE[e.mode][0]+'</b>'+(e.note?'<small>'+e.note+'</small>':'')+(e.mode==='finals'?'<small>TSV Dinkelscherben</small>':'')+'</li>';}).join('')+'</ul></div>';}).join('');
@@ -2077,7 +2093,7 @@ a.up-go{display:inline-block}
     var navCp=document.querySelector('.nav-cp');
     function route(){
       var h=location.hash;
-      if(/^#masters\/(termine|ruhm)/.test(h)){history.replaceState(null,'','#competition/'+h.split('/')[1]);h=location.hash;}
+      if(/^#masters\/ruhm/.test(h)){history.replaceState(null,'','#competition/'+h.split('/')[1]);h=location.hash;}
       var on=h.indexOf('#masters')===0,onC=h.indexOf('#competition')===0;
       var was=body.classList.contains('v-masters')||body.classList.contains('v-comp');
       body.classList.toggle('v-masters',on);body.classList.toggle('v-comp',onC);
