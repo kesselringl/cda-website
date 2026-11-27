@@ -1,0 +1,20 @@
+name: DNS-Check (Umzug cda-ev.eu)
+on: workflow_dispatch
+jobs:
+  dns:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          sudo apt-get -qq install -y dnsutils >/dev/null 2>&1 || true
+          echo "== Nameserver"; dig +short NS cda-ev.eu
+          NS=$(dig +short NS cda-ev.eu | head -1)
+          for h in cda-ev.eu www.cda-ev.eu; do
+            for t in A AAAA CNAME; do
+              echo "== $t $h  @NS($NS): $(dig +short $t $h @$NS | tr '\n' ' ')  @8.8.8.8: $(dig +short $t $h @8.8.8.8 | tr '\n' ' ')  @1.1.1.1: $(dig +short $t $h @1.1.1.1 | tr '\n' ' ')"
+            done
+          done
+          echo "== MX: $(dig +short MX cda-ev.eu @8.8.8.8 | tr '\n' ' ')"
+          echo "== HTTP"; curl -sI -m 20 http://cda-ev.eu/ | head -8
+          echo "== HTTP www"; curl -sI -m 20 http://www.cda-ev.eu/ | head -8
+          echo "== HTTPS"; curl -sI -m 20 https://cda-ev.eu/ | head -8 || true
+          echo "== Inhalt"; curl -s -m 20 http://cda-ev.eu/ | grep -o '<title>[^<]*' | head -2
