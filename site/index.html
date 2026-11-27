@@ -1211,7 +1211,7 @@ a.up-go{display:inline-block}
         <div><b class="num">32</b><span>Bayerische Meistertitel</span></div>
         <div><b class="num">3×</b><span>Bayerischer Mannschaftsmeister</span></div>
         <div><b class="num">2×</b><span>Bronze bei der Deutschen Meisterschaft</span></div>
-        <div><b class="num">14×</b><span>NSDV-Pokal und -Cup</span></div>
+        <div><b class="num">23×</b><span>NSDV-Cup und Schwabenpokal</span></div>
         <div><b class="num">3×</b><span>BDV-8er-Cup</span></div>
         <div><b class="num">12</b><span>Aufstiege</span></div>
       </div>
@@ -2151,6 +2151,7 @@ a.up-go{display:inline-block}
     var b=t.closest('[data-ms]');if(b)hit('masters-'+b.getAttribute('data-ms'));
     if(t.closest('.su-btn[data-act="in"]'))hit('anmeldung-klick');if(t.closest('.su-btn[data-act="out"]'))hit('absage-klick');
     var sp=t.closest('[data-sp]');if(sp)hit('sp-'+sp.getAttribute('data-sp'));
+    var fa=t.closest('[data-ics],[data-gcal],[data-copy]');if(fa){var fn=(fa.getAttribute('data-ics')||fa.getAttribute('data-gcal')||fa.getAttribute('data-copy')||'').replace(/^cda-/,'');hit('abo-klick');hit('abo-'+(fa.hasAttribute('data-gcal')?'google':fa.hasAttribute('data-copy')?'link':'apple'));if(fn)hit('abo-f-'+fn);return;}
     var a=t.closest('a');if(!a)return;var h=a.getAttribute('href')||'';
     if(a.closest('.su-cal'))hit(/google/.test(h)?'kal-google':'kal-ics');
     else if(/kalender\/cda-|webcal:|calendar\.google\.com\/calendar\/r\?cid/.test(h))hit('abo-klick');
