@@ -68,6 +68,19 @@ p{margin:0}
 
 /* Hero */
 .hero{background:var(--board);color:var(--board-ink);overflow:hidden;position:relative}
+/* Startseite: Hintergrund mit Dartscheibe und großem CDA (27.11.2026) */
+.hero{background:radial-gradient(900px 620px at 80% 42%,rgba(12,161,45,.20),transparent 62%),radial-gradient(760px 520px at 6% 112%,rgba(227,2,18,.17),transparent 60%),linear-gradient(180deg,#080C09,#0C130E 60%,#0A110C)}
+.hero .wrap{position:relative;z-index:1}
+.hero-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.hb-board,.hb-wire{position:absolute;right:-300px;top:50%;width:1120px;height:1120px;transform:translateY(-50%) rotate(9deg);border-radius:50%}
+.hb-board{background:radial-gradient(circle,#0B110D 0 3.2%,#C8102E 3.3% 6%,#0B110D 6.1% 6.6%,transparent 6.7%),repeating-conic-gradient(from -9deg,rgba(227,2,18,.6) 0 18deg,rgba(12,161,45,.55) 18deg 36deg),#0B110D;
+ -webkit-mask:radial-gradient(circle,#000 0 6.6%,transparent 6.7% 36%,#000 36.1% 39%,transparent 39.1% 59%,#000 59.1% 62%,transparent 62.1%);mask:radial-gradient(circle,#000 0 6.6%,transparent 6.7% 36%,#000 36.1% 39%,transparent 39.1% 59%,#000 59.1% 62%,transparent 62.1%);opacity:.36}
+.hb-wire{background:repeating-conic-gradient(from -9deg,rgba(255,255,255,.07) 0 .25deg,transparent .25deg 18deg),radial-gradient(circle,transparent 0 61.6%,rgba(255,255,255,.08) 61.7% 62%,transparent 62.1%);
+ -webkit-mask:radial-gradient(circle,transparent 0 6.6%,#000 6.7% 62%,transparent 62.1%);mask:radial-gradient(circle,transparent 0 6.6%,#000 6.7% 62%,transparent 62.1%)}
+.hb-cda{position:absolute;left:-1.5%;top:50%;transform:translateY(-52%);font-family:var(--f-display);font-weight:900;font-size:min(36vw,560px);line-height:.8;letter-spacing:-.02em;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.08);white-space:nowrap;user-select:none}
+@media (max-width:900px){.hb-board,.hb-wire{width:760px;height:760px;right:-420px;top:30%}.hb-cda{font-size:54vw;top:16%;transform:none}}
+@media (prefers-reduced-motion:no-preference){.hb-board,.hb-wire{animation:hbturn 240s linear infinite}@keyframes hbturn{to{transform:translateY(-50%) rotate(369deg)}}}
+@media (prefers-reduced-motion:no-preference) and (max-width:900px){.hb-board,.hb-wire{animation:none}}
 .hero::after{content:"";position:absolute;inset:auto 0 0;height:6px;background:repeating-linear-gradient(90deg,var(--red) 0 48px,var(--green-bright) 48px 96px)}
 .hero .wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:56px;align-items:center;padding-block:64px 84px}
 .hero-copy{min-width:0}
@@ -885,6 +898,7 @@ a.up-go{display:inline-block}
 
 <main id="start">
   <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-bg" aria-hidden="true"><span class="hb-board"></span><span class="hb-wire"></span><span class="hb-cda">CDA</span></div>
     <div class="wrap">
       <div class="hero-copy">
         <p class="eyebrow" id="hero-eyebrow">Steeldart in Augsburg · seit 1986</p>
