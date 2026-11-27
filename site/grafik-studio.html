@@ -86,12 +86,13 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 .sbox{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:16px;max-width:380px;width:100%;padding:24px 22px;text-align:center;color:var(--fg)}
 .sbox img{border-radius:16px}.sbox h3{margin:10px 0 6px}.sbox ol{text-align:left;padding-left:1.3em}.sbox li+li{margin-top:6px}
 .sx{position:absolute;top:6px;right:10px;background:none;border:0;color:var(--mute);font-size:28px;cursor:pointer}
+.hp-box{max-width:760px}.hp-link{display:flex;gap:8px;flex-wrap:wrap}.hp-link input{flex:1 1 220px;min-width:0;font:600 16px Archivo,Arial,sans-serif;background:#0f1311;color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:12px}.hp-link .btn{flex:0 0 auto}.btn.ghost{background:#202623}.hp-wrap{margin:14px auto;max-width:340px}.hp-wrap canvas{width:100%;height:auto;border-radius:14px;display:block;box-shadow:0 10px 30px rgba(0,0,0,.4)}.hp-steps{margin:14px 0 0;padding-left:1.3em;color:var(--mute);font-size:14px;line-height:1.5}.hp-steps b{color:var(--fg)}
 </style>
 
 <header class="top">
   <img src="logo.png" alt="" width="296" height="378">
   <h1>CDA <span>Grafik-Studio</span></h1>
-  <nav class="vtabs" id="vtabs" hidden><button type="button" data-view="g" aria-pressed="true">Grafiken</button><button type="button" data-view="s" aria-pressed="false">Besucherzahlen</button><button type="button" data-view="a" aria-pressed="false">Autopilot</button><button type="button" data-view="w" aria-pressed="false">WhatsApp</button><button type="button" data-view="o" aria-pressed="false">Gegner-Check</button><button type="button" data-view="p" aria-pressed="false">Steckbriefe<span id="pbadge" class="pbadge" hidden></span></button></nav>
+  <nav class="vtabs" id="vtabs" hidden><button type="button" data-view="g" aria-pressed="true">Grafiken</button><button type="button" data-view="s" aria-pressed="false">Besucherzahlen</button><button type="button" data-view="a" aria-pressed="false">Autopilot</button><button type="button" data-view="w" aria-pressed="false">WhatsApp</button><button type="button" data-view="o" aria-pressed="false">Gegner-Check</button><button type="button" data-view="h" aria-pressed="false">Homepage-Werbung</button><button type="button" data-view="p" aria-pressed="false">Steckbriefe<span id="pbadge" class="pbadge" hidden></span></button></nav>
   <button type="button" id="sapp" class="sapp" hidden>📲 Als App installieren</button><a href="./">zur Homepage</a><a href="#" id="logout" hidden style="margin-left:14px">Abmelden</a>
 </header>
 <div class="smodal" id="smodal" hidden role="dialog" aria-modal="true" aria-labelledby="smt"><div class="sbox"><button type="button" class="sx" aria-label="Schließen">×</button>
@@ -134,6 +135,7 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 <section class="statsv" id="gegv" hidden></section>
 <section class="statsv" id="wav" hidden></section>
 <section class="statsv" id="apv" hidden></section>
+<section class="statsv" id="hpv" hidden></section>
 <script>
 /* Gegner-Check: 2. Bundesliga, Doppelspieltag = zwei Gegner am selben Tag (Daten: liga.json aus den 3K-Spielberichten) */
 (function(){
@@ -401,7 +403,7 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
       var data={};c.querySelectorAll('[data-k]').forEach(function(i){var v=i.value.trim();if(v)data[i.getAttribute('data-k')]=v;});
       b.disabled=true;rpc('cda_steckbrief_set',{p_id:id,p_status:a,p_data:data,p_name:c.querySelector('.pname').value}).then(profiles).catch(function(x){alert(x.message);b.disabled=false;});};}
   document.getElementById('vtabs').onclick=function(e){var b=e.target.closest('[data-view]');if(!b)return;var v=b.getAttribute('data-view');this.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed',x===b);});
-    document.getElementById('statsv').hidden=v!=='s';document.getElementById('profv').hidden=v!=='p';document.getElementById('gegv').hidden=v!=='o';document.getElementById('wav').hidden=v!=='w';document.getElementById('apv').hidden=v!=='a';document.getElementById('app').hidden=v!=='g';if(v==='s')stats();if(v==='p')profiles();if(v==='o')window.cdaGegner();if(v==='w')window.cdaWA();if(v==='a')window.cdaAP();};
+    document.getElementById('statsv').hidden=v!=='s';document.getElementById('profv').hidden=v!=='p';document.getElementById('gegv').hidden=v!=='o';document.getElementById('wav').hidden=v!=='w';document.getElementById('apv').hidden=v!=='a';document.getElementById('hpv').hidden=v!=='h';document.getElementById('app').hidden=v!=='g';if(v==='s')stats();if(v==='p')profiles();if(v==='o')window.cdaGegner();if(v==='w')window.cdaWA();if(v==='a')window.cdaAP();if(v==='h')window.cdaHP();};
   // Zahl neuer Einsendungen gleich nach dem Anmelden im Reiter anzeigen
   window.addEventListener('cda-open',function(){rpc('cda_steckbrief_list').then(function(rows){PROWS=rows||[];badge();}).catch(function(){});});
 })();
@@ -1791,5 +1793,71 @@ window.cdaAP=apView;
 // Direktlink aus der Benachrichtigung: grafik-studio.html#ap=<id>
 function apFromHash(){var m=/[#&]ap=([^&]+)/.exec(location.hash);if(!m)return;var id=decodeURIComponent(m[1]),o=apItems().filter(function(x){return x.id===id;})[0];
   if(o){var go=function(){if(document.getElementById('vtabs').hidden){setTimeout(go,500);return;}apOpen(o);};go();}else{var g=function(){if(document.getElementById('vtabs').hidden){setTimeout(g,500);return;}document.querySelector('#vtabs [data-view=a]').click();};g();}}
+// ================= Homepage-Werbung: Story-Grafiken (1080×1920) + Link zum Kopieren =================
+var HP={m:'app',seed:0};function hpLink(){return 'https://cda-ev.eu/?s=ig'+(HP.m==='masters'?'#masters':'');}
+var HPM={
+  app:{t:'CDA-App',k:'Kostenlos · ohne App Store',h:['Die CDA-App','aufs Handy'],l:['Für Donnerstag anmelden','Competition live verfolgen','Termine & CDA Masters','Ergebnisse aller 4 Teams'],c:'Jetzt holen'},
+  anm:{t:'Anmelden',k:'Donnerstags-Competition',h:['Bist du','dabei?'],l:['Mit einem Tipp anmelden','Sehen, wer schon kommt','3 € Startgeld · 100 % Ausschüttung','Bismarck Bistro · 20 Uhr'],c:'Jetzt anmelden'},
+  live:{t:'Live dabei',k:'Jeden Donnerstag',h:['Live','mitfiebern'],l:['Boards & Restscores in Echtzeit','Turnierbaum mit Averages','Tabellen & Platzierungen','Direkt auf der Startseite'],c:'Live zuschauen'},
+  home:{t:'Neue Homepage',k:'Online · cda-ev.eu',h:['Unsere neue','Homepage'],l:['Alle 4 Mannschaften','CDA Masters & Rangliste','Spielerkarten & Steckbriefe','Termine zum Download'],c:'Jetzt reinschauen'},
+  masters:{t:'CDA Masters',k:'16 Abende · 1 Finale',h:['CDA','Masters'],l:['Rangliste & Statistik','Alle Termine im Kalender','Pott für die Finals','Hall of Fame'],c:'Zur Rangliste'}
+};
+function hpDraw(c){var x=c.getContext('2d'),w=1080,h=1920,m=HPM[HP.m],r=function(s){s=Math.sin((HP.seed+1)*9301+s*49297)*233280;return s-Math.floor(s);};
+  c.width=w;c.height=h;
+  var F=function(wt,s,f){x.font=wt+' '+s+'px '+(f||'"Big Shoulders Display"')+',Impact,"Arial Narrow",sans-serif';};
+  x.fillStyle='#0B110D';x.fillRect(0,0,w,h);
+  var g=x.createRadialGradient(w*.9,h*.12,0,w*.9,h*.12,w*.9);g.addColorStop(0,'rgba(12,161,45,.45)');g.addColorStop(1,'rgba(12,161,45,0)');x.fillStyle=g;x.fillRect(0,0,w,h);
+  g=x.createRadialGradient(0,h*.95,0,0,h*.95,w*.95);g.addColorStop(0,'rgba(227,2,18,.4)');g.addColorStop(1,'rgba(227,2,18,0)');x.fillStyle=g;x.fillRect(0,0,w,h);
+  // Dartscheibe im Hintergrund
+  var bx=w*(.78+r(1)*.1),by=h*(.34+r(2)*.06),R=520;x.save();x.globalAlpha=.09;
+  for(var i=0;i<20;i++){x.beginPath();x.moveTo(bx,by);x.arc(bx,by,R,(i-.5)*Math.PI/10-Math.PI/2,(i+.5)*Math.PI/10-Math.PI/2);x.closePath();x.fillStyle=i%2?'#0CA12D':'#E30212';x.fill();}
+  x.globalAlpha=.18;x.strokeStyle='#fff';x.lineWidth=3;[1,.62,.55,.14,.06].forEach(function(f){x.beginPath();x.arc(bx,by,R*f,0,7);x.stroke();});x.restore();
+  // großes CDA als Umriss
+  x.save();F(900,560);x.textAlign='left';x.lineWidth=3;x.strokeStyle='rgba(255,255,255,.07)';x.strokeText('CDA',-30,h*.6);x.restore();
+  // Kopf: Logo + Verein
+  var lg=IMG['logo.png'];if(lg){var lh=150,lw=lg.width/lg.height*lh;x.drawImage(lg,80,150,lw,lh);}
+  x.fillStyle='#EEF2EC';F(800,52);x.fillText('CLOCHARD DARTER',80+(lg?140:0),215);x.fillStyle='#9FB0A3';F(600,30,'Archivo');x.fillText('AUGSBURG E.V. · SEIT 1986',80+(lg?140:0),262);
+  // Kicker + Headline
+  var y=520;x.fillStyle='#2BC653';F(700,34,'Archivo');x.fillText(m.k.toUpperCase().split('').join(String.fromCharCode(8202)),80,y);
+  y+=40;x.fillStyle='#fff';var hs=hpFit(x,m.h[0],920,170,F);F(900,hs);y+=hs*.9;x.fillText(m.h[0].toUpperCase(),74,y);
+  x.fillStyle='#2BC653';hs=hpFit(x,m.h[1],920,170,F);F(900,hs);y+=hs*.92;x.fillText(m.h[1].toUpperCase(),74,y);
+  // Streifen
+  y+=50;for(var j=0;j<8;j++){x.fillStyle=j%2?'#0CA12D':'#E30212';x.fillRect(80+j*60,y,60,12);}
+  // Liste
+  y+=100;m.l.forEach(function(t){x.fillStyle='#2BC653';x.beginPath();x.arc(104,y-16,22,0,7);x.fill();x.strokeStyle='#07140b';x.lineWidth=6;x.lineCap='round';x.beginPath();x.moveTo(93,y-16);x.lineTo(101,y-7);x.lineTo(116,y-26);x.stroke();
+    x.fillStyle='#EEF2EC';F(600,42,'Archivo');x.fillText(t,150,y);y+=80;});
+  // nächster Termin
+  var nx=(upcoming()||[]).filter(function(e){return HP.m==='masters'?e.mode==='m501':e.mode!=='finals';})[0];
+  if(nx&&HP.m!=='home'&&HP.m!=='app'){y+=4;x.fillStyle='rgba(255,255,255,.08)';hpRR(x,80,y,920,120,24);x.fill();x.fillStyle='#E6B43A';F(800,30,'Archivo');x.fillText('ALS NÄCHSTES',120,y+50);
+    var nt=dow(nx.date)+', '+dmy(nx.date)+' · '+(nx.mode==='alt'?'Competition':(MODE[nx.mode]||MODE.alt)[0]+(nx.no?' #'+nx.no:''));x.fillStyle='#fff';var ns=52;F(800,ns);while(x.measureText(nt).width>840&&ns>30){ns-=2;F(800,ns);}x.fillText(nt,120,y+102);y+=120;}
+  // Platz für den Link-Sticker
+  var sy=Math.min(1580,Math.max(y+150,1460));x.save();x.setLineDash([18,14]);x.strokeStyle='rgba(255,255,255,.55)';x.lineWidth=4;hpRR(x,190,sy,700,150,75);x.stroke();x.restore();
+  x.fillStyle='rgba(255,255,255,.45)';F(600,30,'Archivo');x.textAlign='center';x.fillText('Link-Sticker hier platzieren',540,sy+86);
+  x.fillStyle='#fff';F(900,70);x.fillText(m.c.toUpperCase()+'  ↓',540,sy-34);
+  x.fillStyle='#9FB0A3';F(700,36,'Archivo');x.fillText('cda-ev.eu',540,sy+210);x.textAlign='left';
+  x.fillStyle='#E30212';x.fillRect(0,h-16,w/2,16);x.fillStyle='#0CA12D';x.fillRect(w/2,h-16,w/2,16);}
+function hpFit(x,t,mw,s,F){F(900,s);while(x.measureText(t.toUpperCase()).width>mw&&s>60){s-=4;F(900,s);}return s;}
+function hpRR(x,a,b,w,h,r){x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath();}
+function hpCopy(btn,val,lab){(navigator.clipboard?navigator.clipboard.writeText(val):Promise.reject()).then(function(){btn.textContent='Kopiert ✓';setTimeout(function(){btn.textContent=lab;},1500);},function(){prompt('Kopieren:',val);});}
+function hpView(){var el=$('hpv');
+  el.innerHTML='<div class="box wa-box hp-box"><h2>Werbung für unsere Homepage</h2>'+
+    '<p class="hint">Story-Grafik (1080 × 1920) erstellen, speichern und in Instagram als Story posten. Dann den Link-Sticker auf das gestrichelte Feld setzen.</p>'+
+    '<label class="f">Link für den Sticker</label><div class="hp-link"><input id="hplink" type="text" readonly value="'+esc(hpLink())+'"><button type="button" class="btn" id="hpcopy">Link kopieren</button></div>'+
+    '<label class="f">Sticker-Text (optional)</label><div class="hp-link"><input id="hpst" type="text" readonly value="'+esc(HPM[HP.m].c)+'"><button type="button" class="btn ghost" id="hpcopy2">Text kopieren</button></div>'+
+    '<label class="f">Motiv</label><div class="seg" id="hpm">'+Object.keys(HPM).map(function(k){return '<button type="button" data-v="'+k+'" aria-pressed="'+(HP.m===k)+'">'+HPM[k].t+'</button>';}).join('')+'</div>'+
+    '<div class="hp-wrap"><canvas id="hpcv" width="1080" height="1920"></canvas></div>'+
+    '<div class="wa-act"><button type="button" class="btn primary" id="hpdl">Bild speichern</button><button type="button" class="btn" id="hpsh" hidden>Teilen</button><button type="button" class="btn" id="hproll">🔄 Variante</button></div>'+
+    '<ol class="hp-steps"><li>Bild speichern bzw. teilen und in Instagram als <b>Story</b> öffnen.</li><li>Oben auf das Sticker-Symbol tippen → <b>Link</b>.</li><li>Den kopierten Link einfügen, bei „Sticker-Text anpassen“ optional den Text einfügen.</li><li>Sticker auf das gestrichelte Feld ziehen – fertig. Klicks kommen in den Besucherzahlen unter „Instagram“ an.</li></ol></div>';
+  var c=$('hpcv');hpDraw(c);
+  var nm=function(){return 'CDA-Story-'+HP.m+'.png';};
+  $('hpcopy').onclick=function(){hpCopy(this,hpLink(),'Link kopieren');};
+  $('hpcopy2').onclick=function(){hpCopy(this,HPM[HP.m].c,'Text kopieren');};
+  $('hplink').onfocus=function(){this.select();};
+  $('hpm').onclick=function(e){var b=e.target.closest('[data-v]');if(!b)return;HP.m=b.dataset.v;HP.seed=0;hpView();};
+  $('hproll').onclick=function(){HP.seed++;hpDraw(c);};
+  $('hpdl').onclick=function(){c.toBlob(function(b){var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=nm();document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},1500);},'image/png');};
+  try{if(navigator.canShare&&navigator.canShare({files:[new File([''],'x.png',{type:'image/png'})]})){var sh=$('hpsh');sh.hidden=false;sh.onclick=function(){c.toBlob(function(b){navigator.share({files:[new File([b],nm(),{type:'image/png'})]}).catch(function(){});},'image/png');};}}catch(e){}}
+window.cdaHP=hpView;
+
 })();
 </script>
