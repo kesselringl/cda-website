@@ -300,11 +300,11 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
   function hbars(items,unit){var mx=Math.max.apply(null,items.map(function(x){return x[1];}).concat([1])),tot=items.reduce(function(a,x){return a+x[1];},0);
     return items.length?'<div class="hb">'+items.map(function(x){return '<div class="hbr"><span class="hbl">'+e(x[0])+'</span><span class="hbt"><i style="width:'+Math.max(1,Math.round(x[1]/mx*100))+'%"></i></span><b>'+x[1]+'</b><small>'+pct(x[1],tot)+'</small></div>';}).join('')+'</div>':'<p class="hint">Noch keine Daten.</p>';}
   function vbars(vals,labels,cls){var mx=Math.max.apply(null,vals.concat([1]));return '<div class="bars '+(cls||'')+'">'+vals.map(function(v,i){return '<i style="height:'+Math.max(1,Math.round(v/mx*100))+'%" data-t="'+e(labels[i])+': '+v+'"></i>';}).join('')+'</div><div class="bl">'+labels.map(function(l,i){return '<span>'+(cls==='hours'?(i%3===0?l+'h':''):labels.length>14?(i%5===0?l:''):l)+'</span>';}).join('')+'</div>';}
-  var RANGE=30;
-  function stats(){var el=document.getElementById('statsv');el.innerHTML='<p class="hint">Lade Besucherzahlen …</p>';
+  var RANGE=30,SMODE='web';
+  function stats(){var el=document.getElementById('statsv');el.onclick=function(ev){var bt=ev.target.closest('.rangebar button');if(!bt)return;if(bt.dataset.range)RANGE=+bt.dataset.range;if(bt.dataset.smode)SMODE=bt.dataset.smode;stats();};el.innerHTML='<p class="hint">Lade Besucherzahlen …</p>';
     var tok=function(){return (A&&A.exp<Date.now()+60000?refresh():Promise.resolve(true));};
     var since=day(119),todayS=day(0);
-    Promise.all([tok().then(function(){return fetch(U+'/rest/v1/rpc/cda_stats',{method:'POST',headers:{apikey:K,Authorization:'Bearer '+(A&&A.access),'Content-Type':'application/json'},body:JSON.stringify({p_days:120})});})
+    Promise.all([tok().then(function(){return fetch(U+'/rest/v1/rpc/cda_stats',{method:'POST',headers:{apikey:K,Authorization:'Bearer '+(A&&A.access),'Content-Type':'application/json'},body:JSON.stringify({p_days:400})});})
         .then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j&&j.message&&/cda_stats/.test(j.message)?'Die Besucherzählung ist noch nicht eingerichtet (SQL-Skript 06_besucher.sql in Supabase ausführen).':(j&&j.message)||'Fehler '+r.status);return j;});}),
       fetch(U+'/rest/v1/signups?select=event_date,player_id,guest_name,created_at&created_at=gte.'+since+'&order=created_at',{headers:{apikey:K}}).then(function(r){return r.ok?r.json():[];}).catch(function(){return[];}),
       fetch(U+'/rest/v1/events?select=date,mode,test,summary:state->summary&status=eq.done&order=date.desc&limit=200',{headers:{apikey:K}}).then(function(r){return r.ok?r.json():[];}).catch(function(){return[];})])
@@ -329,7 +329,21 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
       // Bereiche
       var keys=Object.keys(tot).filter(function(k){return !/^(src|dev|h|wd)-/.test(k);}).sort(function(a,b){return (cur[b]||0)-(cur[a]||0)||tot[b]-tot[a];});
       var kpi=function(v,l,sub){return '<div class="kpi"><b>'+v+'</b><span>'+l+'</span>'+(sub?'<em>'+sub+'</em>':'')+'</div>';};
-      el.innerHTML='<div class="rangebar"><span class="hint" style="margin:0">Zeitraum:</span>'+[7,30,90].map(function(n){return '<button type="button" data-range="'+n+'" aria-pressed="'+(N===n)+'">'+n+' Tage</button>';}).join('')+'<button type="button" data-reload="1">↻ Aktualisieren</button></div>'+
+      var modeBar='<div class="rangebar" style="margin-bottom:6px"><button type="button" data-smode="web" aria-pressed="'+(SMODE==='web')+'">Besucher</button><button type="button" data-smode="app" aria-pressed="'+(SMODE==='app')+'">📲 CDA-App</button></div>';
+      if(SMODE==='app'){
+        var all=function(k){return rows.filter(function(r){return r.page===k;}).reduce(function(a,r){return a+r.views;},0);};
+        var PL=[['android','Android'],['pc','PC / Mac'],['ios','iPhone / iPad']];
+        var instAll=all('app-installiert'),instN=g('app-installiert'),stN=PL.reduce(function(a,p){return a+g('app-start-'+p[0]);},0),clk=g('app-install-klick');
+        var av=[],ai=[],al=[];for(var j=N-1;j>=0;j--){var dd=day(j);var st=rows.filter(function(r){return r.day===dd&&/^app-start-/.test(r.page);}).reduce(function(a,r){return a+r.views;},0);av.push(st);ai.push(rows.filter(function(r){return r.day===dd&&r.page==='app-installiert';}).reduce(function(a,r){return a+r.views;},0));al.push(dd.slice(8,10)+'.'+dd.slice(5,7)+'.');}
+        var first=rows.filter(function(r){return r.page==='app-installiert';}).map(function(r){return r.day;}).sort()[0];
+        el.innerHTML=modeBar+'<div class="rangebar"><span class="hint" style="margin:0">Zeitraum:</span>'+[7,30,90].map(function(n){return '<button type="button" data-range="'+n+'" aria-pressed="'+(N===n)+'">'+n+' Tage</button>';}).join('')+'<button type="button" data-reload="1">↻ Aktualisieren</button></div>'+
+          '<div class="kpis">'+kpi(instAll,'App installiert (gesamt)',first?'gezählt seit '+first.split('-').reverse().join('.'):'')+kpi(instN,'Installationen ('+N+' Tage)')+kpi(stN,'App-Starts ('+N+' Tage)')+kpi((stN/N).toFixed(1).replace('.',','),'App-Starts pro Tag')+kpi(clk,'Klicks auf „App installieren“ ('+N+' Tage)')+'</div>'+
+          '<div class="box"><h2>App-Starts pro Tag</h2>'+vbars(av,al)+'<p class="hint">Jedes Öffnen der installierten App zählt einmal. Wer die App täglich nutzt, zählt also täglich.</p></div>'+
+          '<div class="grid2"><div class="box"><h2>Installationen nach Gerät ('+N+' Tage)</h2>'+hbars(PL.map(function(p){return [p[1],g('app-inst-'+p[0])];}).filter(function(x){return x[1];}))+'<p class="hint">iPhone und iPad melden eine Installation nicht – dort zeigen die App-Starts, dass sie genutzt wird.</p></div>'+
+          '<div class="box"><h2>App-Starts nach Gerät ('+N+' Tage)</h2>'+hbars(PL.map(function(p){return [p[1],g('app-start-'+p[0])];}).filter(function(x){return x[1];}))+'</div></div>'+
+          '<div class="box"><h2>Installationen pro Tag</h2>'+vbars(ai,al)+'<p class="hint">Gezählt wird ohne Kennung: nur „Installation + Tag“ bzw. „App-Start + Gerätetyp + Tag“. Die Geräteaufteilung gibt es ab dem 27.11.2026.</p></div>';
+        return;}
+      el.innerHTML=modeBar+'<div class="rangebar"><span class="hint" style="margin:0">Zeitraum:</span>'+[7,30,90].map(function(n){return '<button type="button" data-range="'+n+'" aria-pressed="'+(N===n)+'">'+n+' Tage</button>';}).join('')+'<button type="button" data-reload="1">↻ Aktualisieren</button></div>'+
         '<div class="kpis">'+kpi(tdy,'Aufrufe Startseite heute')+kpi(h,'Aufrufe Startseite ('+N+' Tage)',trend==null?'':(trend>=0?'▲ +':'▼ ')+trend+' % zum Zeitraum davor')+kpi((h/N).toFixed(1).replace('.',','),'Aufrufe pro Tag im Schnitt')+kpi(g('masters'),'CDA-Masters-Reiter')+kpi(g('spielbetrieb'),'Spielbetrieb-Seite')+kpi(g('src-instagram'),'Besuche über Instagram')+'</div>'+
         '<div class="box"><h2>Startseite – Aufrufe pro Tag</h2>'+vbars(dv,dl)+(dv[best]?'<p class="hint">Stärkster Tag: <b>'+dl[best]+'</b> mit '+dv[best]+' Aufrufen.</p>':'')+'</div>'+
         '<div class="grid2"><div class="box"><h2>Woher kommen die Besucher?</h2>'+hbars(src)+'<p class="hint">Tipp: Im Instagram-Profil die Adresse mit <b>?s=ig</b> am Ende verlinken (z. B. …/cda-website/?s=ig), dann wird Instagram sicher erkannt. In WhatsApp-Nachrichten entsprechend <b>?s=wa</b>.</p></div>'+
@@ -348,7 +362,7 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
         '<div class="box"><h2>Alle Bereiche und Klicks</h2><table class="stbl"><thead><tr><th>Bereich</th><th>'+N+' Tage</th><th>davor</th><th>seit Beginn</th></tr></thead><tbody>'+(keys.length?keys.map(function(k){return '<tr><td>'+(NAMES[k]||k)+'</td><td>'+(cur[k]||0)+'</td><td>'+(prev[k]||0)+'</td><td>'+tot[k]+'</td></tr>';}).join(''):'<tr><td colspan="4">Noch keine Aufrufe gezählt.</td></tr>')+'</tbody></table>'+
         '<p class="hint">Gezählt werden Aufrufe, nicht Personen: Wer die Seite dreimal öffnet, zählt dreimal. Herkunft, Gerät und Uhrzeit werden nur als grobe Kategorie gezählt – ohne Cookies, ohne IP-Adresse, ohne Kennung. Die Merkmale gibt es erst ab dem 11.11.2026, Suchmaschinen-Roboter werden weitgehend herausgefiltert.</p></div>';
       el.querySelectorAll('[data-copyrep]').forEach(function(bt){bt.onclick=function(){navigator.clipboard.writeText(bt.getAttribute('data-copyrep')).then(function(){bt.textContent='Kopiert ✓';});};});
-      el.querySelector('.rangebar').onclick=function(ev){var b=ev.target.closest('button');if(!b)return;if(b.dataset.range)RANGE=+b.dataset.range;stats();};})
+      })
     .catch(function(x){el.innerHTML='<p class="note">'+e(x.message)+'</p>';});}
   // ===== Steckbriefe: Einsendungen aus dem Formular (steckbrief.html) prüfen und freigeben =====
   var PF=[['nick','Spitzname'],['since','Im Verein seit'],['hand','Wurfhand'],['darts','Darts'],['checkout','Lieblings-Checkout'],['highlight','Bestes Highlight'],['walkon','Walk-on-Song'],['profi','Lieblings-Profi'],['typ','Spielertyp'],['erfolg','Größter Erfolg'],['beruf','Beruf'],['hobby','Hobby'],['cda','Was ich am CDA mag'],['motto','Motto']];

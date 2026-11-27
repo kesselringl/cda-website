@@ -1393,7 +1393,7 @@ a.up-go{display:inline-block}
   if(standalone)return;
   if(ios||macSafari)show(true);
   window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;show(true);});
-  window.addEventListener('appinstalled',function(){show(false);hit('app-installiert');});
+  window.addEventListener('appinstalled',function(){show(false);hit('app-installiert');hit('app-inst-'+(ios?'ios':/Android/i.test(ua)?'android':'pc'));});
   function steps(){return ios?['Unten (iPad: oben) auf <b>Teilen</b> tippen – das Quadrat mit dem Pfeil nach oben.','<b>„Zum Home-Bildschirm“</b> wählen (evtl. etwas nach unten scrollen).','Oben rechts auf <b>„Hinzufügen“</b> tippen. Fertig!']:
     ['In der Menüleiste oben auf <b>„Ablage“</b> klicken.','<b>„Zum Dock hinzufügen …“</b> wählen.','Mit <b>„Hinzufügen“</b> bestätigen. Fertig!'];}
   btns.forEach(function(b){b.addEventListener('click',function(){hit('app-install-klick');
@@ -2138,6 +2138,8 @@ a.up-go{display:inline-block}
   var dev=/iPad|Tablet/i.test(ua)||(/Android/i.test(ua)&&!/Mobile/i.test(ua))||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1)?'tablet':/Mobi|iPhone|Android/i.test(ua)?'handy':'computer';
   var now=new Date(),hh=+new Intl.DateTimeFormat('de-DE',{hour:'numeric',hourCycle:'h23',timeZone:'Europe/Berlin'}).format(now),wd=['so','mo','di','mi','do','fr','sa'][+new Date(now.toLocaleString('en-US',{timeZone:'Europe/Berlin'})).getDay()];
   function route(){var h=location.hash;if(h.indexOf('#masters')===0){hit('masters');var s2=h.split('/')[1];if(s2)hit('masters-'+s2);}else if(/^#(kontakt|anmelden)/.test(h))hit('mitspielen');}
+  var plat=/iPhone|iPad|iPod/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1)?'ios':/Android/i.test(ua)?'android':'pc';
+  if(app)hit('app-start-'+plat);
   hit('home');if(src)hit('src-'+src);hit('dev-'+dev);hit('h-'+hh);hit('wd-'+wd);route();window.addEventListener('hashchange',route);
   // Mitspielen-Bereich wirklich angesehen (gescrollt)
   try{var pt=document.querySelector('#partner .partners');if(pt&&'IntersectionObserver' in window)new IntersectionObserver(function(es,o){es.forEach(function(e){if(e.isIntersecting){hit('partner-sicht');o.disconnect();}});},{threshold:.4}).observe(pt);}catch(e){}
