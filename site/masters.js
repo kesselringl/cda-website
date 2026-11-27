@@ -61,12 +61,14 @@ function cdaCalendar(year){
     var iso=d.toISOString().slice(0,10);if(iso.slice(5)>='12-23')continue;
     var m=null;
     if(i%3===1&&ms<16){m='m501';ms++;}
-    if(!m){var w=i;if(i===0||w-lf>=17){m='friend';lf=w;}else if(w-lc>=7){m='cricket';lc=w;}else if(w-ll>=11){m='lucky';ll=w;}else{m=(alt++%2)?'di301':'c501';}}
+    if (!m) m = 'c501';
     out.push({date:iso,mode:m});i++;
   }
   var lm=null;out.forEach(function(e){if(e.mode==='m501')lm=e.date;});
     if(lm&&ms>=16){out.forEach(function(e){if(e.date===addDays(lm,7))e.note='Finals am Samstag';});out.push({date:addDays(lm,9),mode:'finals'});out.sort(function(a,b){return a.date<b.date?-1:1;});}
-    return out;
+    var SPX=[[2,'di301'],[3,'cricket'],[4,'lucky'],[5,'di301'],[6,'cricket'],[7,'lucky'],[8,'di301'],[9,'friend'],[10,'cricket'],[10,'lucky'],[11,'di301'],[12,'cricket']];/* Stamm ist 501 – Specials eingestreut, Bring a Friend 1x im Jahr (Vorstand 27.11.2026) */
+  SPX.forEach(function(s){var c=out.filter(function(e){return e.mode==='c501'&&!e.note&&+e.date.slice(5,7)===s[0];});var e=c.filter(function(e){return +e.date.slice(8)>=8;})[0]||c[0];if(e)e.mode=s[1];});
+  return out;
 }
 var CALS={};function cal(y){return CALS[y]||(CALS[y]=cdaCalendar(+y));}
 function calMode(date){var e=cal(date.slice(0,4)).filter(function(x){return x.date===date;})[0];return e?e.mode:'c501';}

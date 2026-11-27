@@ -33,7 +33,7 @@ export function cdaCalendar(year) {
     const iso = d.toISOString().slice(0, 10); if (iso.slice(5) >= '12-23') continue;
     let m = null;
     if (i % 3 === 1 && ms < MASTERS_PER_SEASON) { m = 'm501'; ms++; }
-    if (!m) { const w = i; if (i === 0 || w - lf >= 17) { m = 'friend'; lf = w; } else if (w - lc >= 7) { m = 'cricket'; lc = w; } else if (w - ll >= 11) { m = 'lucky'; ll = w; } else { m = (alt++ % 2) ? 'di301' : 'c501'; } }
+    if (!m) m = 'c501';
     out.push({ date: iso, mode: m }); i++;
   }
   // Finals: Samstag, 9 Tage nach dem letzten Masters-Abend (Anfang Dezember, mit Abstand zu Weihnachten)
@@ -42,6 +42,8 @@ export function cdaCalendar(year) {
     out.forEach(e => { if (e.date === plusDays(lm, 7)) e.note = 'Finals am Samstag'; });
     out.push({ date: plusDays(lm, 9), mode: 'finals' }); out.sort((a, b) => a.date < b.date ? -1 : 1);
   }
+  var SPX=[[2,'di301'],[3,'cricket'],[4,'lucky'],[5,'di301'],[6,'cricket'],[7,'lucky'],[8,'di301'],[9,'friend'],[10,'cricket'],[10,'lucky'],[11,'di301'],[12,'cricket']];/* Stamm ist 501 – Specials eingestreut, Bring a Friend 1x im Jahr (Vorstand 27.11.2026) */
+  SPX.forEach(function(s){var c=out.filter(function(e){return e.mode==='c501'&&!e.note&&+e.date.slice(5,7)===s[0];});var e=c.filter(function(e){return +e.date.slice(8)>=8;})[0]||c[0];if(e)e.mode=s[1];});
   return out;
 }
 
