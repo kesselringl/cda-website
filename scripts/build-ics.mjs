@@ -42,7 +42,7 @@ export function cdaCalendar(year) {
     out.forEach(e => { if (e.date === plusDays(lm, 7)) e.note = 'Finals am Samstag'; });
     out.push({ date: plusDays(lm, 9), mode: 'finals' }); out.sort((a, b) => a.date < b.date ? -1 : 1);
   }
-  var SPX=[[2,'di301'],[3,'cricket'],[4,'lucky'],[5,'di301'],[6,'cricket'],[7,'lucky'],[8,'di301'],[9,'friend'],[10,'cricket'],[10,'lucky'],[11,'di301'],[12,'cricket']];/* Stamm ist 501 – Specials eingestreut, Bring a Friend 1x im Jahr (Vorstand 27.11.2026) */
+  var SPX=[[2,'di301'],[3,'cricket'],[5,'di301'],[6,'cricket'],[8,'di301'],[9,'friend'],[10,'cricket'],[11,'di301'],[12,'cricket']];/* Stamm ist 501 – Specials eingestreut, Bring a Friend 1x im Jahr (Vorstand 27.11.2026) */
   SPX.forEach(function(s){var c=out.filter(function(e){return e.mode==='c501'&&!e.note&&+e.date.slice(5,7)===s[0];});var e=c.filter(function(e){return +e.date.slice(8)>=8;})[0]||c[0];if(e)e.mode=s[1];});
   return out;
 }

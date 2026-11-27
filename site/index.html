@@ -1046,7 +1046,6 @@ a.up-go{display:inline-block}
             <li><b>Competition 501</b>Der Stamm: ganz normal 501 Double-out, an den meisten Donnerstagen.</li><li><b>CDA Masters</b>Jeder dritte Donnerstag: 501 mit Rangliste und Finals. <a href="#masters">Mehr zu den Masters →</a></li>
             <li><b>301 Double-In</b>Special, 4× im Jahr: Punkte zählen erst nach dem ersten Doppel.</li>
             <li><b>Cricket-Nacht</b>Special, 4× im Jahr: 15 bis 20 und Bull.</li>
-            <li><b>Lucky Doubles</b>Special, 3× im Jahr: zugeloste Doppel, stark und schwach zusammen.</li>
             <li><b>Bring a Friend</b>Das Special-Event, 1× im Jahr im September: Mitglied und Gast spielen zusammen im Doppel.</li>
           </ul>
           <p>Jeder Abend ist spätestens um 23 Uhr fertig: Bei vielen Spielern kürzt das System automatisch die Legs, zuerst in der Gruppenphase. Alle Ergebnisse und Statistiken werden am Board direkt erfasst, auch an den Nicht-Masters-Abenden.</p>
@@ -1126,7 +1125,7 @@ a.up-go{display:inline-block}
             <div><small>Wann</small><b>Jeden Donnerstag, 20 bis 23 Uhr</b></div>
             <div><small>Wo</small><b>Bismarck Bistro, Bismarckstr. 7, 86159 Augsburg</b></div>
           </div>
-          <p class="join-new">Ab dem 7. Januar 2027 läuft die neue Competition: jeder dritte Donnerstag ist ein CDA-Masters-Abend mit Rangliste, Preisgeld und Finals, dazwischen 501, 301 Double-In und Sonderabende wie Cricket, Lucky Doubles oder Bring a Friend. Welcher Modus wann gespielt wird, siehst du bei der Anmeldung.</p>
+          <p class="join-new">Ab dem 7. Januar 2027 läuft die neue Competition: jeder dritte Donnerstag ist ein CDA-Masters-Abend mit Rangliste, Preisgeld und Finals, dazwischen Competition 501 und Specials wie 301 Double-In, Cricket oder Bring a Friend. Welcher Modus wann gespielt wird, siehst du bei der Anmeldung.</p>
           <div class="join-links"><a class="btn ghost join-sim" href="#masters">Mehr zu den CDA Masters</a><a class="btn ghost join-sim" href="competition.html">Abend live verfolgen</a><button type="button" class="btn ghost join-sim app-install" hidden>📲 CDA-App aufs Handy</button></div>
           <div class="join-abo-box">
             <span class="jab-ic" aria-hidden="true">📅</span>
@@ -1171,7 +1170,6 @@ a.up-go{display:inline-block}
                 <option value="c501">Competition 501</option>
                 <option value="di301">301 Double-In / Double-Out</option>
                 <option value="cricket">Cricket-Nacht</option>
-                <option value="lucky">Lucky Doubles</option>
                 <option value="friend">Bring a Friend</option>
               </select>
             </div>
@@ -1875,9 +1873,9 @@ a.up-go{display:inline-block}
   // Pause 23.12.–6.1., alle 3 Wochen CDA Masters (16 pro Saison), Finals am Samstag 9 Tage nach dem letzten Masters-Abend.
   var RELAUNCH='2027-01-07';
   var MODE={m501:['CDA Masters','501 Double-out · zählt für Rangliste und Finals · Startgeld 15 € (5 € Preisgeld am Abend, 10 € in den Masters-Pott)'],
-    c501:['Competition 501','501 Double-out · ohne Masters-Wertung'],di301:['301 Double-In','301 Double-in / Double-out · Punkte zählen erst nach dem ersten Doppel'],
-    cricket:['Cricket-Nacht','15 bis 20 und Bull mit Punkten · etwa alle 7 Wochen'],lucky:['Lucky Doubles','zugeloste Doppel, stark und schwach zusammen · etwa alle 12 Wochen'],
-    friend:['Bring a Friend','Mitglied und Gast spielen zusammen im Doppel · zum Saisonstart und etwa alle 4 Monate'],
+    c501:['Competition 501','501 Double-out · ohne Masters-Wertung'],di301:['301 Double-In','301 Double-in / Double-out · Punkte zählen erst nach dem ersten Doppel · Special, 4× im Jahr'],
+    cricket:['Cricket-Nacht','15 bis 20 und Bull mit Punkten · Special, 4× im Jahr'],lucky:['Lucky Doubles','zugeloste Doppel, stark und schwach zusammen · etwa alle 12 Wochen'],
+    friend:['Bring a Friend','Mitglied und Gast spielen zusammen im Doppel · Special-Event, 1× im Jahr im September'],
     finals:['CDA-Masters-Finals','beim TSV Dinkelscherben, nur für Qualifizierte'],alt:['Competition','offene Competition im bisherigen Format']};
   function plusDays(iso,n){var t=new Date(iso+'T12:00:00Z');t.setUTCDate(t.getUTCDate()+n);return t.toISOString().slice(0,10);}
   function cdaCalendar(year){
@@ -1892,7 +1890,7 @@ a.up-go{display:inline-block}
     }
     var lm=null;out.forEach(function(e){if(e.mode==='m501')lm=e.date;});
     if(lm&&ms>=16){out.forEach(function(e){if(e.date===plusDays(lm,7))e.note='Finals am Samstag';});out.push({date:plusDays(lm,9),mode:'finals'});out.sort(function(a,b){return a.date<b.date?-1:1;});}
-    var SPX=[[2,'di301'],[3,'cricket'],[4,'lucky'],[5,'di301'],[6,'cricket'],[7,'lucky'],[8,'di301'],[9,'friend'],[10,'cricket'],[10,'lucky'],[11,'di301'],[12,'cricket']];/* Stamm ist 501 – Specials eingestreut, Bring a Friend 1x im Jahr (Vorstand 27.11.2026) */
+    var SPX=[[2,'di301'],[3,'cricket'],[5,'di301'],[6,'cricket'],[8,'di301'],[9,'friend'],[10,'cricket'],[11,'di301'],[12,'cricket']];/* Stamm ist 501 – Specials eingestreut, Bring a Friend 1x im Jahr (Vorstand 27.11.2026) */
   SPX.forEach(function(s){var c=out.filter(function(e){return e.mode==='c501'&&!e.note&&+e.date.slice(5,7)===s[0];});var e=c.filter(function(e){return +e.date.slice(8)>=8;})[0]||c[0];if(e)e.mode=s[1];});
   return out;
   }

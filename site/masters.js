@@ -37,7 +37,7 @@ var MODES={
   m501:{name:'CDA Masters',sub:'501 Double-out',kind:'x01',start:501,masters:true,min:14,desc:'Alle 3 Wochen. Zählt für Rangliste und Finals. Startgeld 15 €: 5 € Tagespreisgeld für die Top 3, 10 € in den Masters-Pott.'},
   c501:{name:'Competition 501',sub:'501 Double-out',kind:'x01',start:501,min:14,desc:'Ganz normal 501, ohne Masters-Wertung. Der Standard-Donnerstag. Startgeld 3 €, alles geht an die Top 3.'},
   di301:{name:'301 Double-In',sub:'301 Double-in · Double-out',kind:'x01',start:301,di:true,min:10,desc:'Punkte zählen erst nach dem ersten Doppel. Kurz und gemein.'},
-  friend:{name:'Bring a Friend',sub:'Mitglied + Gast im Doppel · 501',kind:'x01',start:501,doubles:true,friend:true,min:16,desc:'Saisonstart und etwa alle 4 Monate. Jedes Mitglied spielt mit seinem Gast im Doppel.'},
+  friend:{name:'Bring a Friend',sub:'Mitglied + Gast im Doppel · 501',kind:'x01',start:501,doubles:true,friend:true,min:16,desc:'Special-Event, 1× im Jahr im September. Jedes Mitglied spielt mit seinem Gast im Doppel.'},
   lucky:{name:'Lucky Doubles',sub:'Zugeloste Doppel · 501',kind:'x01',start:501,doubles:true,min:16,desc:'Etwa alle 3 Monate. Stark und schwach werden zusammengelost.'},
   cricket:{name:'Cricket-Nacht',sub:'15 bis 20 und Bull · mit Punkten',kind:'cricket',min:16,desc:'Etwa alle 7 Wochen. Felder schließen, Punkte sammeln.'},
   finals:{name:'CDA-Masters-Finals',sub:'Gruppenphase · Doppel-K.-o. · Plätze 1–7',kind:'x01',start:501,finals:true,min:14,desc:'Saisonabschluss beim TSV Dinkelscherben. Teilnahme ab 5 Masters-Abenden. Der Pott geht an die Plätze 1 bis 7.'}
@@ -66,7 +66,7 @@ function cdaCalendar(year){
   }
   var lm=null;out.forEach(function(e){if(e.mode==='m501')lm=e.date;});
     if(lm&&ms>=16){out.forEach(function(e){if(e.date===addDays(lm,7))e.note='Finals am Samstag';});out.push({date:addDays(lm,9),mode:'finals'});out.sort(function(a,b){return a.date<b.date?-1:1;});}
-    var SPX=[[2,'di301'],[3,'cricket'],[4,'lucky'],[5,'di301'],[6,'cricket'],[7,'lucky'],[8,'di301'],[9,'friend'],[10,'cricket'],[10,'lucky'],[11,'di301'],[12,'cricket']];/* Stamm ist 501 – Specials eingestreut, Bring a Friend 1x im Jahr (Vorstand 27.11.2026) */
+    var SPX=[[2,'di301'],[3,'cricket'],[5,'di301'],[6,'cricket'],[8,'di301'],[9,'friend'],[10,'cricket'],[11,'di301'],[12,'cricket']];/* Stamm ist 501 – Specials eingestreut, Bring a Friend 1x im Jahr (Vorstand 27.11.2026) */
   SPX.forEach(function(s){var c=out.filter(function(e){return e.mode==='c501'&&!e.note&&+e.date.slice(5,7)===s[0];});var e=c.filter(function(e){return +e.date.slice(8)>=8;})[0]||c[0];if(e)e.mode=s[1];});
   return out;
 }
@@ -708,7 +708,7 @@ function modeBar(ev){var md=MD(ev);return '<div class="modebar"><b>'+md.name+'</
 function viewCheckin(){
   var ids=ckPlayers().filter(function(p){return S.checked[p.id];}).map(function(p){return p.id;}),md=MODES[S.mode];
   var nParts=md.doubles?Math.floor(ids.length/2):ids.length,LG=chooseLegs(md,nParts),p=makePlan(nParts,S.mode,S.boards.length,LG.L);
-  var modes=Object.keys(MODES).map(function(k){var x=MODES[k];return '<button class="mode" data-act="mode" data-m="'+k+'" aria-pressed="'+(S.mode===k)+'">'+flag(x)+'<b>'+x.name+'</b><span class="ms">'+x.sub+(calMode(TONIGHT)===k?' · laut Plan heute':'')+'</span><p>'+x.desc+'</p></button>';}).join('');
+  var modes=Object.keys(MODES).filter(function(k){return k!=='lucky'||S.mode==='lucky';}).map(function(k){var x=MODES[k];return '<button class="mode" data-act="mode" data-m="'+k+'" aria-pressed="'+(S.mode===k)+'">'+flag(x)+'<b>'+x.name+'</b><span class="ms">'+x.sub+(calMode(TONIGHT)===k?' · laut Plan heute':'')+'</span><p>'+x.desc+'</p></button>';}).join('');
   var mt=mastersTable(ARCHIVE.filter(function(e){return e.season===CUR_SEASON;}));
   var chips=ckPlayers().map(function(x){var on=!!S.checked[x.id],q=mt[x.id]?mt[x.id].n:0;return '<button class="chip" data-act="toggle" data-id="'+x.id+'" aria-pressed="'+on+'"><span class="box" aria-hidden="true">'+(on?'✓':'')+'</span><span>'+esc(x.name.replace(' (Gast)',''))+tmTag(x.team)+'</span>'+(x.guest?'<small>'+(x.by?'Gast von '+esc(pn(x.by).split(' ')[0]):'Gast')+'</small>':md.finals?'<small style="color:'+(q>=MIN_QUALI?'var(--green-ink)':'var(--muted)')+'">'+q+'/'+MIN_QUALI+'</small>':'')+'</button>';}).join('');
   var vb=Object.keys(VENUES).map(function(k){return '<button data-act="venue" data-v="'+k+'" aria-pressed="'+(S.venue===k)+'">'+VENUES[k].name+'<small>'+VENUES[k].note+'</small></button>';}).join('');
@@ -1239,7 +1239,7 @@ function viewCStats(){
   var evs=all.filter(function(e){var md=MODES[e.mode];if(!md)return false;if(dbl)return !!md.doubles;if(md.doubles)return false;return onlyM?(md.masters||md.finals):true;});
   var seg=function(k,opts){return '<div class="cseg" role="group">'+opts.map(function(o){return '<button data-act="cf" data-k="'+k+'" data-v="'+o[0]+'" aria-pressed="'+(S.cf[k]===o[0])+'">'+o[1]+'</button>';}).join('')+'</div>';};
   var ctrl='<div class="cbar">'+seasonSelect()+(MFIX?'':seg('t',[['e','Einzel'],['d','Doppel']])+(dbl?'':seg('m',[['a','Alle Abende'],['m','Nur Masters']])))+'</div>';
-  var title=dbl?'Doppel-Abende':onlyM?'Masters-Abende':'Alle Einzel-Abende',sub=dbl?'Lucky Doubles und Bring a Friend. Siege zählen für beide Partner, Average und 180er pro Spieler.':onlyM?'Nur die Abende mit Masters-Wertung und die Finals.':'Competition 501, 301 Double-In, Cricket, Masters und Finals.';
+  var title=dbl?'Doppel-Abende':onlyM?'Masters-Abende':'Alle Einzel-Abende',sub=dbl?'Bring a Friend und andere Doppel-Abende. Siege zählen für beide Partner, Average und 180er pro Spieler.':onlyM?'Nur die Abende mit Masters-Wertung und die Finals.':'Competition 501, 301 Double-In, Cricket, Masters und Finals.';
   if(!evs.length)return '<div class="grid" style="gap:20px">'+ctrl+'<section class="panel"><h3>'+title+'</h3><p class="muted" style="margin:0">'+(all.length?'In diesem Jahr gibt es noch keine '+title+'.':'Noch keine Abende in diesem Jahr. Sobald ein Abend abgeschlossen ist, erscheinen hier alle Zahlen automatisch.')+'</p></section></div>';
   var P=statsParts(evs,dbl),ids=Object.keys(P.sa),t180=0,hf=0,hfw=null,bt=0,btw=null,ba=0,baw=null;
   ids.forEach(function(k){var x=P.sa[k];t180+=x.t180||0;if((x.hf||0)>hf){hf=x.hf;hfw=+k;}var a=avgOf(x);if(x.dt>=90&&a>ba){ba=a;baw=+k;}});
