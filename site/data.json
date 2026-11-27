@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-26T23:29:40.603Z",
+ "updated": "2026-11-27T06:20:40.594Z",
  "season": "2026/27",
  "teams": {
   "1": {
@@ -7,7 +7,7 @@
    "league": "3K WINMAU 2. Bundesliga Süd",
    "source": "3k",
    "sourceUrl": "https://portal.3k-darts.com/frontend/events/10/event/1408/phase/2101/group/40479",
-   "fetched": "2026-11-26T23:29:40.603Z",
+   "fetched": "2026-11-27T06:20:40.594Z",
    "table": [
     {
      "pos": 1,
@@ -906,7 +906,9 @@
      "games": 3,
      "single": "4:2"
     }
-   ]
+   ],
+   "stale": true,
+   "failSince": "2026-11-27T06:20:40.594Z"
   },
   "3": {
    "label": "CDA III",
@@ -1301,7 +1303,9 @@
      "games": 6,
      "single": "4:8"
     }
-   ]
+   ],
+   "stale": true,
+   "failSince": "2026-11-27T06:20:40.594Z"
   },
   "4": {
    "label": "CDA IV",
@@ -1711,7 +1715,9 @@
      "games": 4,
      "single": "1:5"
     }
-   ]
+   ],
+   "stale": true,
+   "failSince": "2026-11-27T06:20:40.594Z"
   }
  },
  "week": "2026-W48"
