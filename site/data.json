@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-27T06:25:17.427Z",
+ "updated": "2026-11-27T07:57:33.681Z",
  "season": "2026/27",
  "teams": {
   "1": {
@@ -7,7 +7,7 @@
    "league": "3K WINMAU 2. Bundesliga Süd",
    "source": "3k",
    "sourceUrl": "https://portal.3k-darts.com/frontend/events/10/event/1408/phase/2101/group/40479",
-   "fetched": "2026-11-27T06:25:17.427Z",
+   "fetched": "2026-11-27T07:57:33.681Z",
    "table": [
     {
      "pos": 1,
@@ -464,7 +464,7 @@
    "league": "1. Bezirksliga Schwaben",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211693",
-   "fetched": "2026-11-27T06:25:17.427Z",
+   "fetched": "2026-11-27T07:57:33.681Z",
    "table": [
     {
      "pos": 1,
@@ -913,7 +913,7 @@
    "league": "3. Bezirksliga Schwaben Süd",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211696",
-   "fetched": "2026-11-27T06:25:17.427Z",
+   "fetched": "2026-11-27T07:57:33.681Z",
    "table": [
     {
      "pos": 1,
@@ -1308,7 +1308,7 @@
    "league": "4. Bezirksliga Schwaben Süd 4",
    "source": "nuliga",
    "sourceUrl": "https://bdv-dart.liga.nu/cgi-bin/WebObjects/nuLigaDARTDE.woa/wa/groupPage?championship=Schw+2026%2F27&group=211701",
-   "fetched": "2026-11-27T06:25:17.427Z",
+   "fetched": "2026-11-27T07:57:33.681Z",
    "table": [
     {
      "pos": 1,
@@ -1348,26 +1348,26 @@
     },
     {
      "pos": 4,
-     "name": "Steeldarter Kühlenthal VI",
-     "played": 5,
+     "name": "D´Augschburger III",
+     "played": 6,
      "w": 4,
-     "d": 0,
+     "d": 1,
      "l": 1,
-     "sets": "36:14",
-     "legs": "119:71",
-     "points": "8:2",
+     "sets": "40:20",
+     "legs": "143:95",
+     "points": "9:3",
      "us": false
     },
     {
      "pos": 5,
-     "name": "D´Augschburger III",
-     "played": 5,
-     "w": 3,
-     "d": 1,
-     "l": 1,
-     "sets": "34:16",
-     "legs": "120:79",
-     "points": "7:3",
+     "name": "Steeldarter Kühlenthal VI",
+     "played": 6,
+     "w": 4,
+     "d": 0,
+     "l": 2,
+     "sets": "40:20",
+     "legs": "135:94",
+     "points": "8:4",
      "us": false
     },
     {
