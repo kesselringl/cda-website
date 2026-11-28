@@ -44,8 +44,8 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 
 .hint{font-size:12px;color:var(--mute);margin:6px 0 0}
 .note{font-size:12px;color:#ffd27a;margin:4px 0 6px}
-.vtabs{display:flex;gap:6px;margin-left:16px}.vtabs button{background:#202623;color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font:700 13px Archivo,Arial,sans-serif;cursor:pointer}.vtabs button[aria-pressed=true]{background:var(--green);border-color:var(--green)}
-@media(max-width:620px){header.top{flex-wrap:wrap}.vtabs{order:3;width:100%;margin:6px 0 0;flex-wrap:wrap}.vtabs button{padding:6px 11px}}
+.vtabs{display:flex;gap:6px;margin-left:16px;flex-wrap:wrap;min-width:0}.vtabs button{background:#202623;color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font:700 13px Archivo,Arial,sans-serif;cursor:pointer}.vtabs button[aria-pressed=true]{background:var(--green);border-color:var(--green)}
+@media(max-width:1100px){header.top{flex-wrap:wrap}.vtabs{order:3;width:100%;margin:6px 0 0}}@media(max-width:620px){header.top{flex-wrap:wrap}.vtabs{order:3;width:100%;margin:6px 0 0;flex-wrap:wrap}.vtabs button{padding:6px 11px}}
 .statsv{max-width:1100px;margin:0 auto;padding:16px;display:grid;gap:16px}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}.kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}.kpi b{display:block;font:900 40px/1 "Big Shoulders Display",Impact,sans-serif;color:#fff}.kpi span{color:var(--mute);font-size:13px}
 .bars{display:flex;align-items:flex-end;gap:3px;height:180px;padding-top:10px}.bars i{flex:1;background:linear-gradient(#22d150,#0CA12D);border-radius:3px 3px 0 0;min-height:2px;position:relative}.bars i:hover::after{content:attr(data-t);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);white-space:nowrap;background:#000;padding:3px 6px;border-radius:4px;font:600 11px Archivo,sans-serif;font-style:normal}
@@ -89,12 +89,13 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 .hp-box{max-width:760px}.hp-link{display:flex;gap:8px;flex-wrap:wrap}.hp-link input{flex:1 1 220px;min-width:0;font:600 16px Archivo,Arial,sans-serif;background:#0f1311;color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:12px}.hp-link .btn{flex:0 0 auto}.btn.ghost{background:#202623}.hp-wrap{margin:14px auto;max-width:340px;position:relative}.hp-zone{position:absolute;left:17.6%;right:17.6%;border:2px dashed rgba(255,255,255,.75);border-radius:999px;display:grid;place-items:center;pointer-events:none;background:rgba(0,0,0,.18)}.hp-zone span{font:700 11px Archivo,Arial,sans-serif;color:#fff;text-transform:uppercase;letter-spacing:.08em}.hp-chk{display:flex;gap:8px;align-items:center;justify-content:center;font-size:13px;color:var(--mute);margin-bottom:8px}.hp-wrap canvas{width:100%;height:auto;border-radius:14px;display:block;box-shadow:0 10px 30px rgba(0,0,0,.4)}.hp-steps{margin:14px 0 0;padding-left:1.3em;color:var(--mute);font-size:14px;line-height:1.5}.hp-steps b{color:var(--fg)}
 .gkeep{display:flex;align-items:center;gap:8px;justify-content:center;font-size:14px;color:var(--mute);margin:4px 0 2px}.gkeep input{width:18px;height:18px;margin:0;accent-color:#0CA12D}
 .box h3.sub{font-size:13px;color:var(--mute);margin:0 0 8px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.madd{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.madd input{flex:1 1 220px;min-width:0}.madd input,.mrow select,.madd select{background:#0f1311;color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:600 15px Archivo,Arial,sans-serif;color-scheme:dark}.mlist{list-style:none;margin:0;padding:0;display:grid;gap:6px}.mrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:6px 0;border-bottom:1px solid var(--line)}.mrow .mn{flex:1 1 180px;font-weight:700}.mrow select{padding:6px 8px;font-size:14px}.mrow .btn{padding:6px 10px;font-size:13px}.mrow.off .mn{opacity:.5;text-decoration:line-through}.mcount{font-size:14px;color:var(--mute);font-weight:600}.mdiff{border-color:#E6B43A}.mdiff ul{margin:8px 0 14px;padding-left:1.2em;line-height:1.6}
 </style>
 
 <header class="top">
   <img src="logo.png" alt="" width="296" height="378">
   <h1>CDA <span>Grafik-Studio</span></h1>
-  <nav class="vtabs" id="vtabs" hidden><button type="button" data-view="g" aria-pressed="true">Grafiken</button><button type="button" data-view="s" aria-pressed="false">Besucherzahlen</button><button type="button" data-view="a" aria-pressed="false">Autopilot</button><button type="button" data-view="w" aria-pressed="false">WhatsApp</button><button type="button" data-view="o" aria-pressed="false">Gegner-Check</button><button type="button" data-view="h" aria-pressed="false">Homepage-Werbung</button><button type="button" data-view="p" aria-pressed="false">Steckbriefe<span id="pbadge" class="pbadge" hidden></span></button></nav>
+  <nav class="vtabs" id="vtabs" hidden><button type="button" data-view="g" aria-pressed="true">Grafiken</button><button type="button" data-view="s" aria-pressed="false">Besucherzahlen</button><button type="button" data-view="a" aria-pressed="false">Autopilot</button><button type="button" data-view="w" aria-pressed="false">WhatsApp</button><button type="button" data-view="o" aria-pressed="false">Gegner-Check</button><button type="button" data-view="h" aria-pressed="false">Homepage-Werbung</button><button type="button" data-view="m" aria-pressed="false">Mitglieder</button><button type="button" data-view="p" aria-pressed="false">Steckbriefe<span id="pbadge" class="pbadge" hidden></span></button></nav>
   <button type="button" id="sapp" class="sapp" hidden>📲 Als App installieren</button><a href="./">zur Homepage</a><a href="#" id="logout" hidden style="margin-left:14px">Abmelden</a>
 </header>
 <div class="smodal" id="smodal" hidden role="dialog" aria-modal="true" aria-labelledby="smt"><div class="sbox"><button type="button" class="sx" aria-label="Schließen">×</button>
@@ -138,6 +139,7 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
 <section class="statsv" id="wav" hidden></section>
 <section class="statsv" id="apv" hidden></section>
 <section class="statsv" id="hpv" hidden></section>
+<section class="statsv" id="memv" hidden></section>
 <script>
 /* Gegner-Check: 2. Bundesliga, Doppelspieltag = zwei Gegner am selben Tag (Daten: liga.json aus den 3K-Spielberichten) */
 (function(){
@@ -433,8 +435,42 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 10px
         b.disabled=true;rpc('cda_steckbrief_delete',{p_id:id}).then(function(ph){if(ph)return tok2().then(function(){return fetch(U+'/storage/v1/object/steckbrief/'+ph,{method:'DELETE',headers:{apikey:K,Authorization:'Bearer '+(A&&A.access)}});});}).then(profiles).catch(function(x){alert(x.message);b.disabled=false;});return;}
       var data={};c.querySelectorAll('[data-k]').forEach(function(i){var v=i.value.trim();if(v)data[i.getAttribute('data-k')]=v;});
       b.disabled=true;rpc('cda_steckbrief_set',{p_id:id,p_status:a,p_data:data,p_name:c.querySelector('.pname').value}).then(profiles).catch(function(x){alert(x.message);b.disabled=false;});};}
+  // ===== Mitglieder: wer in der Competition-Anmeldung und im Spielbetrieb auswählbar ist (Tabelle players) =====
+  var MEL={1:['Leon Crump','Marco Geiger','Florian Kaiser','Leon Kesselring','Marcus Kreiner','Bastian Rauh','Franz Rötzsch','Markus Stiegeler','Florian Zitzler','Simon Schreier','Markus Görg','Jürgen Pistl','Ivo Schubert','Tobias Jäckle'],
+    2:['Ewald Lautenschlager','Martin Hungbaur','Michael Voigt','Andreas Mors','Claus Mader','Dominik Thoma','Jonas Thoma','Leo Hörmann','Sancha Koal','Daniel Müller','Simon Seifert'],
+    3:['Robert Strehl','Dennis Mandl','Markus Ziegler','Carola Wüstner','Manfred Tochtermann','Simon Schmidbaur'],
+    4:['Clemens Fleischmann','Dennis Meissner','Gerald Nitzer','Sebastian Röck','Adrian Pirner','Andreas Wengenmayr','Fabian Schreyer','Adrian Seidl','Jürgen Wüstner','Stephen Crump','Maximilian Urban'],
+    0:['Christoph Maschke']};
+  function mkpi(v,l){return '<div class="kpi"><b>'+v+'</b><span>'+l+'</span></div>';}
+  var MROWS=[],TNAME={1:'CDA I',2:'CDA II',3:'CDA III',4:'CDA IV',0:'Verein (ohne Mannschaft)'};
+  function db(method,path,body){return tok2().then(function(){return fetch(U+'/rest/v1/'+path,{method:method,headers:{apikey:K,Authorization:'Bearer '+(A&&A.access),'Content-Type':'application/json',Prefer:'return=representation'},body:body?JSON.stringify(body):undefined});})
+    .then(function(r){return r.text().then(function(t){var j=t?JSON.parse(t):null;if(!r.ok)throw new Error((j&&j.message)||'Fehler '+r.status);return j;});});}
+  function mDiff(){var by={};MROWS.forEach(function(p){by[p.name]=p;});var out=[];
+    Object.keys(MEL).forEach(function(k){var t=+k||null;MEL[k].forEach(function(n){var p=by[n];if(!p)out.push({n:n,t:t,txt:'neu anlegen · '+TNAME[k]});else if(p.team!==t||!p.active)out.push({id:p.id,n:n,t:t,txt:(p.team!==t?(TNAME[p.team||0]+' → '+TNAME[k]):'')+(p.active?'':(p.team!==t?' · ':'')+'wieder aktiv')});});});return out;}
+  function mOpt(sel){return [1,2,3,4,0].map(function(k){return '<option value="'+k+'"'+((sel||0)===k?' selected':'')+'>'+TNAME[k]+'</option>';}).join('');}
+  function members(){var el=document.getElementById('memv');el.innerHTML='<p class="hint">Lade Mitglieder …</p>';
+    db('GET','players?select=id,name,team,active&order=name').then(function(rows){MROWS=rows||[];mRender();}).catch(function(e){el.innerHTML='<div class="box"><p class="hint">Mitglieder konnten nicht geladen werden: '+esc(e.message)+'</p></div>';});}
+  function mRender(){var el=document.getElementById('memv'),d=mDiff(),grp={1:[],2:[],3:[],4:[],0:[],x:[]};
+    MROWS.forEach(function(p){(p.active?grp[p.team||0]:grp.x).push(p);});
+    var row=function(p){return '<li class="mrow'+(p.active?'':' off')+'" data-id="'+p.id+'"><span class="mn">'+esc(p.name)+'</span><select data-mt aria-label="Mannschaft">'+mOpt(p.team)+'</select><button type="button" class="btn ghost" data-mren>Umbenennen</button><button type="button" class="btn ghost" data-mact>'+(p.active?'Ausblenden':'Wieder aktiv')+'</button></li>';};
+    var act=MROWS.filter(function(p){return p.active;}).length;
+    el.innerHTML='<div class="box"><h2>Mitglieder</h2><p class="hint">Diese Liste steuert, wer sich auf der Homepage mit Vereinscode für die Competition anmelden kann und wer im Spielbetrieb auswählbar ist. Passive Mitglieder bekommen „Verein (ohne Mannschaft)“. Ausgeblendete Mitglieder erscheinen nicht mehr in der Anmeldung, ihre Ergebnisse bleiben erhalten.</p>'+
+      '<div class="kpis">'+mkpi(act,'aktive Mitglieder in der Anmeldung')+mkpi(grp[0].length,'ohne Mannschaft (passiv)')+mkpi(grp.x.length,'ausgeblendet')+'</div>'+
+      '<form id="madd" class="madd"><input id="mname" type="text" maxlength="40" placeholder="Vor- und Nachname" required><select id="mteam">'+mOpt(0)+'</select><button class="btn primary" type="submit">Hinzufügen</button></form><p id="mmsg" class="hint" hidden></p></div>'+
+      (d.length?'<div class="box mdiff"><h2>Abgleich mit der Teammeldung 2026/27</h2><p class="hint">Laut Mannschaftsmeldung vom 26.11.2026 (Tobias Jäckle in CDA I festgespielt) und Hinweis auf fehlende passive Mitglieder:</p><ul>'+d.map(function(x){return '<li><b>'+esc(x.n)+'</b> – '+esc(x.txt)+'</li>';}).join('')+'</ul><button type="button" class="btn primary" id="mapply">Alle '+d.length+' Änderungen übernehmen</button></div>':'<div class="box"><p class="hint">✓ Die Liste passt zur Teammeldung 2026/27.</p></div>')+
+      [1,2,3,4,0,'x'].map(function(k){var L=grp[k];if(!L.length)return '';return '<div class="box"><h2>'+(k==='x'?'Ausgeblendet':TNAME[k])+' <small class="mcount">'+L.length+'</small></h2><ul class="mlist">'+L.map(row).join('')+'</ul></div>';}).join('');
+    var msg=function(t){var m=document.getElementById('mmsg');m.hidden=false;m.textContent=t;};
+    document.getElementById('madd').onsubmit=function(ev){ev.preventDefault();var n=document.getElementById('mname').value.trim().replace(/\s+/g,' '),t=+document.getElementById('mteam').value||null;if(n.split(' ').length<2){msg('Bitte Vor- und Nachnamen eingeben.');return;}
+      var ex=MROWS.filter(function(p){return p.name.toLowerCase()===n.toLowerCase();})[0];
+      (ex?db('PATCH','players?id=eq.'+ex.id,{team:t,active:true}):db('POST','players',{name:n,team:t,active:true})).then(members).catch(function(e){msg('Ging nicht: '+e.message);});};
+    var ap=document.getElementById('mapply');if(ap)ap.onclick=function(){ap.disabled=true;ap.textContent='Übernehme …';var news=d.filter(function(x){return !x.id;}).map(function(x){return {name:x.n,team:x.t,active:true};});
+      Promise.all([news.length?db('POST','players',news):null].concat(d.filter(function(x){return x.id;}).map(function(x){return db('PATCH','players?id=eq.'+x.id,{team:x.t,active:true});}))).then(members).catch(function(e){ap.disabled=false;ap.textContent='Nochmal versuchen';alert('Ging nicht: '+e.message);});};
+    el.onchange=function(ev){var s=ev.target.closest('[data-mt]');if(!s)return;var id=s.closest('[data-id]').getAttribute('data-id');db('PATCH','players?id=eq.'+id,{team:+s.value||null}).then(members).catch(function(e){alert('Ging nicht: '+e.message);});};
+    el.onclick=function(ev){var b=ev.target.closest('[data-mact],[data-mren]');if(!b)return;var li=b.closest('[data-id]'),id=li.getAttribute('data-id'),p=MROWS.filter(function(x){return String(x.id)===id;})[0];if(!p)return;
+      if(b.hasAttribute('data-mren')){var nn=prompt('Neuer Name für '+p.name+':',p.name);if(!nn||!(nn=nn.trim())||nn===p.name)return;db('PATCH','players?id=eq.'+id,{name:nn}).then(members).catch(function(e){alert('Ging nicht: '+e.message);});return;}
+      db('PATCH','players?id=eq.'+id,{active:!p.active}).then(members).catch(function(e){alert('Ging nicht: '+e.message);});};}
   document.getElementById('vtabs').onclick=function(e){var b=e.target.closest('[data-view]');if(!b)return;var v=b.getAttribute('data-view');this.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed',x===b);});
-    document.getElementById('statsv').hidden=v!=='s';document.getElementById('profv').hidden=v!=='p';document.getElementById('gegv').hidden=v!=='o';document.getElementById('wav').hidden=v!=='w';document.getElementById('apv').hidden=v!=='a';document.getElementById('hpv').hidden=v!=='h';document.getElementById('app').hidden=v!=='g';if(v==='s')stats();if(v==='p')profiles();if(v==='o')window.cdaGegner();if(v==='w')window.cdaWA();if(v==='a')window.cdaAP();if(v==='h')window.cdaHP();};
+    document.getElementById('statsv').hidden=v!=='s';document.getElementById('profv').hidden=v!=='p';document.getElementById('gegv').hidden=v!=='o';document.getElementById('wav').hidden=v!=='w';document.getElementById('apv').hidden=v!=='a';document.getElementById('hpv').hidden=v!=='h';document.getElementById('memv').hidden=v!=='m';if(v==='m')members();document.getElementById('app').hidden=v!=='g';if(v==='s')stats();if(v==='p')profiles();if(v==='o')window.cdaGegner();if(v==='w')window.cdaWA();if(v==='a')window.cdaAP();if(v==='h')window.cdaHP();};
   // Zahl neuer Einsendungen gleich nach dem Anmelden im Reiter anzeigen
   window.addEventListener('cda-open',function(){rpc('cda_steckbrief_list').then(function(rows){PROWS=rows||[];badge();}).catch(function(){});});
 })();
