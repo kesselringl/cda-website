@@ -1,0 +1,9 @@
+name: DB-Check (nur lesen)
+on: workflow_dispatch
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          K=sb_publishable_pwnzx63cque5lKZEVCe4mA_5SvBP8Yd
+          curl -s "https://qeevsqrmltewbtrnfrfm.supabase.co/rest/v1/players?select=id,name,team,active&order=id" -H "apikey: $K" | python3 -c "import json,sys;d=json.load(sys.stdin);print(len(d));[print(x) for x in d]"
